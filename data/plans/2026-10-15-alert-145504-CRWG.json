@@ -1,0 +1,124 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T14:55:04-04:00",
+ "dry_run": false,
+ "equity": 10040.3,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "CRWG",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 10.52,
+   "atr_pct": 21.76,
+   "why_scanned": [
+    "breaking move: +6.7% since research"
+   ],
+   "setups": [
+    "volume surge (3.22x normal)",
+    "strong 20-day move (-32.3%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "RSI 31.92 indicates oversold",
+      "price 10.52 far below SMA20 16.90, SMA50 19.21, SMA200 31.33",
+      "ATR 2.289 (~21.8% of price) suggests wide range"
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "Net margin -780% and ROE -56% show severe loss making the business unsustainable",
+      "Debt\u2011to\u2011equity 206.27 signals extreme leverage",
+      "Market cap only $0.56\u202fM makes the stock illiquid"
+     ]
+    },
+    "news_sentiment": {
+     "score": 1,
+     "points": [
+      "No news or catalyst released"
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "Short volume 66.2% (well above normal) shows bearish pressure",
+      "5\u2011day avg short volume 64.4% reinforces the bias"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The stock jumped 6.7% in one day on a 3.22\u00d7 volume surge and its RSI is near oversold levels, suggesting a short\u2011term bounce could occur despite the longer downtrend.",
+    "catalysts": [
+     "Volume surge (3.22x normal)",
+     "RSI 31.9 (oversold)",
+     "1\u2011day gain +6.69%"
+    ]
+   },
+   "bear": {
+    "case": "Fundamentals are deeply negative, the price is far below all moving averages, short interest is extremely high and the market regime is risk\u2011off, so the bias remains strongly bearish.",
+    "risks": [
+     "Unexpected positive news could trigger a short\u2011squeeze",
+     "High volatility may hit the stop quickly",
+     "Low liquidity could widen slippage"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The stock rebounds sharply on unexpected news, the put premium expires worthless and the price climbs above the stop at $11.5, wiping out the trade.",
+     "failure_more_likely": false
+    },
+    "decision": "short",
+    "reason": "Bearish fundamentals, massive short interest and a risk\u2011off environment outweigh the brief oversold bounce, giving a clearer edge to a put trade.",
+    "bucket": "tactical",
+    "style": "short/fade",
+    "expression": "put_options",
+    "order_type": "market",
+    "entry": null,
+    "stop": 11.5,
+    "target": 8.5,
+    "conviction": 7,
+    "confidence_pct": 55,
+    "horizon": "1-5 days",
+    "thesis": "We expect CRWG to continue its multi\u2011week decline. The stock is trading far below its 20\u2011day, 50\u2011day and 200\u2011day averages and carries a net\u2011loss margin and extreme leverage. Short interest at 66% confirms market participants are betting on further downside. A put option lets us profit if the price falls toward $8.5 while limiting loss if it spikes above $11.5.",
+    "invalidation": "If CRWG breaks above $11.5 or releases a materially positive catalyst, the bearish thesis is invalidated.",
+    "plain_english": "The stock looks very weak: it\u2019s far below its usual price lines, loses money on every sale and has a lot of debt. Most traders are already betting it will fall (66% short). We\u2019ll buy a put option so we make money if the price drops to about $8.5, and we\u2019ll get out if it climbs above $11.5. This fits a short\u2011term, defensive trade in a risk\u2011off market.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 31.920396
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 16.9025
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 19.2104
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 66.2
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -780.045
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "entry, stop and target must all be prices"
+    ]
+   },
+   "status": "blocked_by_fact_check"
+  }
+ ]
+}

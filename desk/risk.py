@@ -94,7 +94,7 @@ def check_order(idea: OrderIdea, book: Book, state: dict, *, stock_blackout: boo
     if idea.notional <= 0 or idea.entry <= 0:
         reasons.append("order size and price must be positive")
 
-    max_pos = eq * config.MAX_POSITION_PCT / 100
+    max_pos = eq * (config.MAX_FOREX_POSITION_X if idea.venue == "oanda" else config.MAX_POSITION_PCT / 100)
     if idea.notional > max_pos + 0.01:
         reasons.append(f"position ${idea.notional:,.0f} is over the ${max_pos:,.0f} single-position limit")
 

@@ -9,6 +9,18 @@ from desk import config
 from desk.http import ApiError, request
 
 BASE = "https://generativelanguage.googleapis.com/v1beta/models"
+MIN_GAP_SECONDS = 6.0   # stay under the free tier's requests-per-minute limit
+_last_call = 0.0
+calls_made = 0
+
+
+def _pace() -> None:
+    global _last_call, calls_made
+    wait = MIN_GAP_SECONDS - (time.monotonic() - _last_call)
+    if wait > 0:
+        time.sleep(wait)
+    _last_call = time.monotonic()
+    calls_made += 1
 
 
 def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
@@ -32,6 +44,7 @@ def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
             payload = {"contents": [{"role": "user", "parts": [{"text": text}]}],
                        "generationConfig": {"temperature": temperature}}
         try:
+            _pace()
             d = request("Gemini", "POST", f"{BASE}/{model}:generateContent",
                         headers={"x-goog-api-key": config.gemini_key(), "Content-Type": "application/json"},
                         json=payload, retries=2, timeout=120)

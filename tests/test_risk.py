@@ -58,6 +58,7 @@ class RiskTests(unittest.TestCase):
         fx = idea(symbol="EUR_USD", venue="oanda", entry=1.10, stop=1.09, target=1.12, notional=2_000)
         self.assertTrue(check_order(fx, book(), STATE).ok)
         self.assertFalse(check_order(fx, book(forex_gross_notional=49_000), STATE).ok)
+        self.assertFalse(check_order(OrderIdea(**{**fx.__dict__, "notional": 25_000}), book(), STATE).ok)
 
     def test_daily_loss_limit(self):
         self.assertTrue(daily_limit_hit(book(alpaca_equity=9_400), 10_000))

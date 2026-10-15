@@ -2,6 +2,7 @@
 
     python -m desk.main healthcheck   # test every connection and say hi on Telegram
     python -m desk.main tick          # recurring run: commands, risk checks, saving state
+    python -m desk.main research morning|evening   # the research team builds the game plan
 """
 from __future__ import annotations
 
@@ -115,10 +116,17 @@ def listen(state: dict, seconds: int) -> None:
             time.sleep(10)
 
 
+def research() -> int:
+    from desk.research import planner
+    session = sys.argv[2] if len(sys.argv) > 2 else "morning"
+    planner.run(session)
+    return 0
+
+
 def main() -> int:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "tick"
     try:
-        return {"healthcheck": healthcheck, "tick": tick}[cmd]()
+        return {"healthcheck": healthcheck, "tick": tick, "research": research}[cmd]()
     except Exception as exc:
         traceback.print_exc()
         try:

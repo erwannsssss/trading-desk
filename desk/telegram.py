@@ -15,14 +15,30 @@ def _url(method: str) -> str:
 
 def send(text: str, *, silent: bool = False) -> None:
     """Send a message to Erwann. Supports Telegram HTML (<b>, <i>, <code>)."""
-    for start in range(0, len(text), MAX_LEN):
+    for chunk in _split(text):
         request("Telegram", "POST", _url("sendMessage"), json={
             "chat_id": config.telegram_chat(),
-            "text": text[start:start + MAX_LEN],
+            "text": chunk,
             "parse_mode": "HTML",
             "disable_web_page_preview": True,
             "disable_notification": silent,
         })
+
+
+def _split(text: str) -> list[str]:
+    """Split long messages between lines so HTML tags never get cut in half."""
+    chunks, cur = [], ""
+    for line in text.split("\n"):
+        while len(line) > MAX_LEN:  # a single giant line: hard cut
+            chunks.append(line[:MAX_LEN])
+            line = line[MAX_LEN:]
+        if len(cur) + len(line) + 1 > MAX_LEN:
+            chunks.append(cur)
+            cur = ""
+        cur = f"{cur}\n{line}" if cur else line
+    if cur:
+        chunks.append(cur)
+    return chunks
 
 
 def esc(text) -> str:

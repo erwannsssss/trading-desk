@@ -46,5 +46,4 @@ jobs:
           git add data
           git diff --cached --quiet && exit 0
           git commit -m "Bot state $(date -u +%Y-%m-%dT%H:%MZ)"
-          git pull --rebase -X theirs origin main || true
-          git push origin HEAD:main
+          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push origin HEAD:main && break; sleep 5; done

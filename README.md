@@ -195,3 +195,17 @@ Add these in **Settings → Secrets and variables → Actions**:
 - **Compliance.** Diane Foster audits every trade after the fact: stops, risk at the actual fill, slippage, blackout windows, stops that were widened, oversized losses, holding periods, and firm-wide limits. Major findings go to Telegram, and every finding feeds the HR reviews.
 - **Date pickers.** The trade log, game plan, passed ideas, compliance log, reviews, letters, cards and recaps show one day (or week, or month) at a time. Past days' plans are archived in `docs/days/`.
 - **Staff photos.** AI headshots in suits live in `docs/faces/`. The photo job runs hourly within the free image service's limit until everyone has one.
+
+## Making it more profitable
+
+- **Realistic borrowing.** A forex position only ties up its margin (about 2 to 5% of its size), so that's all it borrows. Stock, crypto and options trades borrow from the bank only at conviction 7+; lower-conviction trades are sized to the firm's own free cash.
+- **No doubled-up bets.** At most 2 positions leaning the same way on one currency, 3 crypto longs, or 3 stock positions with the same direction and style.
+- **Better stocks.** Stocks must trade above $10 with at least $50M traded a day.
+- **Risk-off rule.** When the market read is risk-off or panic, buying stocks needs conviction 6+.
+- **Earnings.** No new stock trade is held through an earnings report unless it's an earnings play. Positions are closed in the afternoon before a report.
+- **Debit spreads.** Options trades buy one option near the money and sell one at the target with the same expiry. That costs roughly 25 to 45% less than a single option, with the profit capped at the gap between the strikes.
+- **Puts instead of shorts.** Alpaca doesn't allow shorting stocks on this account, so bearish stock views are traded with puts.
+- **Results-driven sizing.** After 30+ closed trades, every bet is scaled from 0.7x to 1.2x by the measured edge. Any simple shadow rule that clearly beats the desk is shown to the portfolio manager.
+- **AI budget.** Gemini comes first, with Groq as a backup that has its own free limits. Everyday chatter goes to Groq first, and the full team works on only the top 8 ideas per session.
+- **`/ask` on Telegram.** Message anyone at the firm (for example, `/ask Nadia why ONDS?`) and they answer from their own records.
+- **Trade replay.** Every trade's research drawer shows its price chart with the entry, each stop move, the target and the exit.

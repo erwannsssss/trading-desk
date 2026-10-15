@@ -148,7 +148,8 @@ def scan_stocks(n: int, max_etfs: int = 5, core_slots: int = 5) -> tuple[list[di
         extra = [a for a in analyzed if a.get("earnings") and a not in picks][:max(0, 3 - have)]
         picks = picks[:max(0, n - len(extra))] + extra
     return picks, {"etf_readings": etf_readings, "scanned": len(analyzed), "earnings_soon": list(earnings)[:40],
-                   "earnings_season": season, "big_reporting": big_reporting}
+                   "earnings_season": season, "big_reporting": big_reporting,
+                   "analyzed": [a for a in analyzed if a.get("asset") == "stock"]}
 
 
 def scan_crypto(n: int) -> tuple[list[dict], dict]:

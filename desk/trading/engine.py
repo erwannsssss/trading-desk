@@ -153,6 +153,17 @@ class Engine:
         floor.working("positions", f"Watching {len(active)} open trade{'s' if len(active) != 1 else ''}") if active else None
         floor.working("execution", f"Working through {len(ideas)} idea{'s' if len(ideas) != 1 else ''} from the latest plans")
         for t in [t for t in self.trades if t["status"] in ledger.ACTIVE]:
+            if t.get("pair_id"):
+                mate = next((x for x in self.trades if x.get("pair_id") == t["pair_id"] and x is not t), None)
+                if mate and mate["status"] in ("closed", "cancelled", "skipped"):
+                    if t["status"] == "open" and (t["asset"] not in ("stock", "etf", "option") or self.stock_market_open()):
+                        try:
+                            self._exit_now(t, f"the other leg of the pair ({mate['symbol']}) closed")
+                        except Exception as exc:
+                            ledger.note(t, f"pair exit failed: {str(exc)[:120]}", self.iso)
+                        continue
+                    if t["status"] == "pending":
+                        t["expires_at"] = self.iso   # cancel the unfilled leg on this check
             if t.get("asset") in ("stock", "option") and "industry" not in t:
                 t["industry"] = _industry(t["symbol"])   # older trades, for the same-industry limit
             try:
@@ -209,7 +220,11 @@ class Engine:
             return "forex market closed"
         if asset == "crypto" and direction == "short":
             return self._record_skip(trade_id, plan_file, idea, "crypto can't be shorted on Alpaca")
-        why = guards.risk_off_block((plan.get("macro") or {}).get("regime"), asset, direction, d.get("conviction"))
+        if idea.get("pair_with"):   # both legs of a pair go on together, or neither does
+            partner = ledger.find(self.trades, f"{plan_file.removesuffix('.json')}-{idea['pair_with'].replace('/', '')}")
+            if partner and partner["status"] in ("skipped", "cancelled"):
+                return self._record_skip(trade_id, plan_file, idea, f"the other leg of the pair ({idea['pair_with']}) couldn't be placed")
+        why = None if idea.get("pair_id") else guards.risk_off_block((plan.get("macro") or {}).get("regime"), asset, direction, d.get("conviction"))
         if why:
             return self._record_skip(trade_id, plan_file, idea, why)
         industry = _industry(idea["symbol"]) if asset == "stock" else None
@@ -247,7 +262,8 @@ class Engine:
                 return self._record_skip(trade_id, plan_file, idea, "this Alpaca account can't short stocks, and no affordable put contract was found")
 
         from desk import learning
-        kw = {"multiplier": learning.risk_multiplier(d.get("style")) * ((idea.get("second_opinion") or {}).get("size_multiplier") or 1.0)}
+        kw = {"multiplier": learning.risk_multiplier(d.get("style")) * ((idea.get("second_opinion") or {}).get("size_multiplier") or 1.0)
+              * (0.6 if idea.get("pair_id") else 1.0)}
         if asset == "forex":
             kw.update(quote_to_usd=quote_to_usd(idea["symbol"]), unit_usd=oanda.usd_value_per_unit(idea["symbol"]))
         sizing = team.size({**d, "entry": entry}, self.book.equity, asset, **kw)
@@ -299,6 +315,7 @@ class Engine:
             "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target, "qty": units,
             "notional_usd": round(notional, 2), "risk_usd": sizing["risk_usd"], "risk_pct": sizing["risk_pct"],
             "quote_to_usd": kw.get("quote_to_usd", 1.0), "created_at": self.iso, "industry": industry,
+            "pair_id": idea.get("pair_id"), "pair_with": idea.get("pair_with"),
             "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),
         }
 
@@ -387,7 +404,7 @@ class Engine:
                 "spread_width": c["width"], "credit_limit": limit, "iv_at_entry": c.get("iv"),
                 "realized_vol_at_entry": c.get("realized_vol")} if credit else {}),
             "direction": "long" if long else "short", "bucket": d.get("bucket") or "high_risk", "style": d.get("style"),
-            "industry": _industry(idea["symbol"]),
+            "industry": _industry(idea["symbol"]), "pair_id": idea.get("pair_id"), "pair_with": idea.get("pair_with"),
             "conviction": d.get("conviction"), "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"),
             "thesis": d.get("thesis"), "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target,
             "qty": qty, "premium_limit": limit, "notional_usd": premium_total, "risk_usd": premium_total,
@@ -503,7 +520,7 @@ class Engine:
                             "skip_reason": reason, "entry_plan": d.get("entry"), "initial_stop": d.get("stop"),
                             "stop": d.get("stop"), "target": d.get("target"), "bucket": d.get("bucket"),
                             "style": d.get("style"), "conviction": d.get("conviction"), "thesis": d.get("thesis"),
-                            "created_at": self.iso})
+                            "created_at": self.iso, "pair_id": idea.get("pair_id"), "pair_with": idea.get("pair_with")})
         return reason
 
     # ------------------------------------------------------------- MANAGEMENT

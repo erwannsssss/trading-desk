@@ -68,6 +68,34 @@ class GuardTests(unittest.TestCase):
             self.assertEqual(bank.reprice_forex_loans(trades), [])   # only once
 
 
+class PairTests(unittest.TestCase):
+    def test_pairs_pick_the_widest_split_inside_one_industry(self):
+        from desk.research import pairs
+        def a(sym, r):
+            return {"symbol": sym, "asset": "stock", "technicals": {"ret_20d": r}}
+        stocks = [a("NVDA", 25), a("AMD", -4), a("AVGO", 8), a("JPM", 6), a("BAC", -1)]
+        ind = {"NVDA": "Semis", "AMD": "Semis", "AVGO": "Semis", "JPM": "Banks", "BAC": "Banks"}
+        with mock.patch("desk.research.extra.sector", side_effect=lambda s: {"industry": ind[s]}):
+            got = pairs.candidates(stocks, skip=set())
+        self.assertEqual([(l["symbol"], g["symbol"], i, gap) for l, g, i, gap in got], [("NVDA", "AMD", "Semis", 29)])
+
+    def test_both_legs_or_neither(self):
+        from desk.research import pairs
+        tech = {"price": 100.0, "atr_pct": 2.0, "ret_20d": 10.0, "rsi14": 60.0}
+        dz = {"symbol": "X", "asset_type": "stock", "technicals": tech}
+        good = {"entry": 100, "stop": 96, "target": 108, "conviction": 6, "evidence": [{"fact": "technicals.ret_20d", "value": 10}, {"fact": "technicals.rsi14", "value": 60}]}
+        bad = {**good, "evidence": [{"fact": "technicals.made_up", "value": 1}]}
+        lead, lag = {"symbol": "A", "technicals": tech}, {"symbol": "B", "technicals": tech}
+        ok = pairs.ideas_from({"decision": {"decision": "pair", "long": good, "short": {**good, "stop": 104, "target": 92}},
+                               "lead_dossier": dz, "lag_dossier": dz}, lead, lag, "Semis", 20, "2026-10-16")
+        self.assertEqual([i["status"] for i in ok], ["approved", "approved"])
+        self.assertEqual(ok[0]["pair_id"], ok[1]["pair_id"])
+        self.assertEqual(ok[1]["decision"]["expression"], "put_options")
+        half = pairs.ideas_from({"decision": {"decision": "pair", "long": good, "short": {**bad, "stop": 104, "target": 92}},
+                                 "lead_dossier": dz, "lag_dossier": dz}, lead, lag, "Semis", 20, "2026-10-16")
+        self.assertTrue(all(i["status"] == "blocked_by_fact_check" for i in half))
+
+
 class SpreadTests(unittest.TestCase):
     def _chain(self):
         def snap(bid, ask, delta):

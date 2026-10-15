@@ -283,6 +283,24 @@ def run(session: str = "morning") -> dict:
                 if floor._state.get("agents", {}).get(a, {}).get("status") == "working":
                     floor.done(a, f"{sym}: research hit an error and was dropped", sym, kind="error")
 
+    # 4. Pair trade (morning only): strongest vs weakest stock in one industry
+    if session == "morning" and stock_ctx.get("analyzed"):
+        try:
+            from desk.research import pairs
+            for lead, lag, ind, gap in pairs.candidates(stock_ctx["analyzed"], skip=set(active))[:1]:
+                floor.working("pm", f"Pair trade: long {lead['symbol']} vs {lag['symbol']} in {ind} ({gap} pt gap over 20 days)")
+                res = pairs.research(lead, lag, ind, gap, macro, extra)
+                new = pairs.ideas_from(res, lead, lag, ind, gap, now().date().isoformat())
+                for i in new:
+                    if i["status"] == "approved":
+                        i["sizing"] = team.size(i["decision"], book.equity, "stock", multiplier=0.6)
+                ideas += new
+                verdict = "PAIR" if any(i["status"] == "approved" for i in new) else "PASS"
+                floor.done("pm", f"Pair trade {lead['symbol']}/{lag['symbol']} ({ind}): {verdict}. {res['decision'].get('reason') or ''}",
+                           lead["symbol"], kind="decision" if verdict == "PAIR" else "pass")
+        except Exception:
+            traceback.print_exc()
+
     stamp = now()
     plan = {
         "earnings_season": bool(stock_ctx.get("earnings_season")),

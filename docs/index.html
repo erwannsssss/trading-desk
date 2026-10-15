@@ -568,7 +568,7 @@ function renderPositions(d) {
 function tradeTable(rows, full = true) {
   return `<div class="scroll"><table><thead><tr><th>Symbol</th><th>Status</th><th class="hide-sm">Opened</th><th class="num">Entry</th><th class="num hide-sm">Exit</th><th class="num">Profit</th>${full ? '<th class="hide-sm">Why it ended</th>' : ""}</tr></thead><tbody>
   ${rows.map(t => `<tr class="click" data-memo="${esc(t.plan_file)}|${esc(t.symbol)}">
-    <td><span class="sym">${esc(t.symbol)}</span> ${t.direction === "pass" ? "" : sideTag(t)}<div class="tag">${esc(assetName[t.asset] || "")}${t.bucket ? ", " + esc(t.bucket) : ""}${t.conviction ? ", conviction " + t.conviction + "/10" : ""}</div></td>
+    <td><span class="sym">${esc(t.symbol)}</span> ${t.direction === "pass" ? "" : sideTag(t)}<div class="tag">${esc(assetName[t.asset] || "")}${t.bucket ? ", " + esc(t.bucket) : ""}${t.conviction ? ", conviction " + t.conviction + "/10" : ""}${t.pair_with ? `, pair vs ${esc(t.pair_with)}` : ""}${t.style === "hedge" ? ", portfolio hedge" : ""}</div></td>
     <td>${esc(statusName[t.status] || t.status)}</td>
     <td class="small hide-sm">${when(t.opened_at || t.created_at)}</td>
     <td class="num">${px(t.entry_price ?? t.entry_plan)}</td><td class="num hide-sm">${px(t.exit_price)}</td>

@@ -209,3 +209,16 @@ Add these in **Settings → Secrets and variables → Actions**:
 - **AI budget.** Gemini comes first, with Groq as a backup that has its own free limits. Everyday chatter goes to Groq first, and the full team works on only the top 8 ideas per session.
 - **`/ask` on Telegram.** Message anyone at the firm (for example, `/ask Nadia why ONDS?`) and they answer from their own records.
 - **Trade replay.** Every trade's research drawer shows its price chart with the entry, each stop move, the target and the exit.
+
+## Extra free data (desk/research/extra.py)
+
+| Source | What it adds | Read by |
+|---|---|---|
+| edgartools | Latest quarter and year from SEC filings, plus insider Form 4 buys and sells | Fundamental analyst, smart money tracker |
+| yfinance | Short interest (% of float, days to cover), analyst targets and ratings, ownership, beta | Sentiment analyst, the bear |
+| FINRA short volume | Share of each day's trading that was short selling | Technical analyst |
+| CFTC Commitments of Traders | Speculator positioning in currencies, gold, oil, stock indexes, Treasuries and bitcoin, with a 3-year percentile | Macro strategist, FX desk |
+| alternative.me and DefiLlama | Crypto Fear & Greed, stablecoin supply and DeFi value locked | Crypto ideas, macro strategist |
+| FinanceDatabase | Sector and industry for about 19,000 US stocks | Risk: at most 2 same-direction positions per industry |
+
+Every source is cached and fails quietly. The health check tests all of them.

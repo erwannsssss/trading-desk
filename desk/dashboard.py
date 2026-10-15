@@ -92,12 +92,21 @@ def build(state: dict) -> None:
                             "approved": sum(i.get("status") == "approved" for i in p.get("ideas", [])),
                             "researched": len(p.get("ideas", []))} for p in plans if p.get("date") == now().date().isoformat()],
         "letters": _json(config.DATA_DIR / "letters.json", []),
+        "calendar": _safe(lambda: _calendar(plans, trades), None),
     }
     DOCS.mkdir(exist_ok=True)
     (DOCS / "data.json").write_text(json.dumps(data, default=str, separators=(",", ":")))
 
 
 # ---- pieces ------------------------------------------------------------------
+def _calendar(plans: list[dict], trades: list[dict]) -> dict:
+    from desk import schedule
+    from desk.trading import guards
+    econ = next(((p.get("macro_inputs") or {}).get("calendar_next_10_days") for p in reversed(plans)
+                 if (p.get("macro_inputs") or {}).get("calendar_next_10_days")), None)
+    return schedule.build(plans, trades, econ, guards.earnings_calendar())
+
+
 def _safe(fn, default):
     try:
         return fn()

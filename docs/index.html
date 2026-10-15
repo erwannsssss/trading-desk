@@ -175,6 +175,39 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 
 /* org chart */
 .org { margin-top: 18px; }
+.floor-bottom { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 30px; }
+.floor-bottom .feed { margin-top: 0; }
+@media (min-width: 861px) { .floor-bottom .feed { max-height: 1100px; overflow-y: auto; padding-right: 6px; } }
+@media (max-width: 860px) { .floor-bottom { grid-template-columns: minmax(0, 1fr); } }
+.cal-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cal-head h3 { margin: 0; }
+.cal-item { border-bottom: 1px solid var(--rule); }
+.cal-item summary { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 2px; cursor: pointer; list-style: none; }
+.cal-item summary::-webkit-details-marker { display: none; }
+.cal-item summary:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.cal-item summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cal-time { font-size: 12.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.cal-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.cal-title { font-weight: 700; font-size: 14px; }
+.cal-state { font-size: 11.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+.cal-item.done .cal-title, .cal-item.missed .cal-title { color: var(--ink-2); }
+.cal-item.done .cal-state { color: var(--gain); }
+.cal-item.now .cal-state { color: var(--ink); background: var(--signal); padding: 2px 6px; border-radius: 4px; }
+.cal-item.missed .cal-state { color: var(--loss); }
+.cal-item.kind-data .cal-title { font-weight: 600; }
+.cal-body { padding: 2px 0 12px 74px; }
+.cal-body ul { margin: 4px 0 8px; padding-left: 18px; }
+.cal-now { display: flex; align-items: center; gap: 8px; margin: 6px 0; color: var(--loss); font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.cal-now::after { content: ""; flex: 1; height: 2px; background: var(--loss); }
+.minis { display: flex; }
+.mini { position: relative; width: 22px; height: 22px; border-radius: 50%; overflow: hidden; background: var(--ink-2); color: var(--paper);
+  font-size: 9px; font-weight: 700; display: inline-grid; place-items: center; border: 2px solid var(--paper); margin-left: -6px; flex: none; }
+.minis .mini:first-child { margin-left: 0; }
+.mini .face { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.mini.more { background: var(--rule); color: var(--ink-2); }
+.quote { display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: start; margin: 6px 0; }
+.quote .mini { margin-left: 0; }
+@media (max-width: 520px) { .cal-body { padding-left: 0; } .cal-item summary { grid-template-columns: 54px minmax(0, 1fr) auto; } }
 .datebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0 14px; }
 .datebar select { font: inherit; font-size: 14px; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); max-width: 100%; }
 .datebar .dstep { font: inherit; font-size: 13px; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: none; color: var(--ink-2); cursor: pointer; }
@@ -1351,12 +1384,69 @@ function renderFloor() {
         ${(DATA.interns || []).filter(i => i.status === "let_go").map(i => `<li>${esc(i.name)}, intern, let go ${esc(i.left || "")} at $${(+i.equity).toFixed(2)}</li>`).join("")}
         </ul>` : ""}
     </div>
+    <div class="floor-bottom">
+    ${calendarBlock(people)}
     <div class="feed"><h3>Floor feed, last hour</h3>
       ${recent.length ? recent.slice(0, 80).map(e => feedRow(e, people)).join("") : `<p class="empty">Nothing in the last hour. ${esc(nextUp() ? "Next up: " + nextUp() + "." : "")}</p>`}
-    </div>`;
+    </div></div>`;
   if (floorOpen) showPerson(floorOpen, true);
   gloss(el);
 }
+
+/* daily calendar: who meets when, what's on the agenda, and what they decided */
+let CALDAY = 0;
+const calOpen = new Set(), calClosed = new Set();
+function calStatus(it, isToday) {
+  if (!isToday) return {cls: "later", text: ""};
+  const t = new Date(it.t).getTime(), now = Date.now(), mins = Math.round((t - now) / 60000);
+  if (it.result) return {cls: "done", text: "Done"};
+  if (mins > 0) return {cls: "next", text: mins < 60 ? `in ${mins} min` : `in ${Math.floor(mins / 60)}h ${String(mins % 60).padStart(2, "0")}m`};
+  if (it.kind !== "meeting" || it.unscheduled) return {cls: "done", text: mins > -30 && it.kind !== "data" ? "Now" : "Done"};
+  if (mins > -150) return {cls: "now", text: mins > -45 ? "In session" : "Running late"};
+  return {cls: "missed", text: "Didn't run"};
+}
+function miniFaces(seats, people) {
+  const ps = seats.map(s => people[s]).filter(p => p && !p.locked);
+  return `<span class="minis" aria-hidden="true">${ps.slice(0, 7).map(p => `<span class="mini">${avatarInner(p.name)}</span>`).join("")}${ps.length > 7 ? `<span class="mini more">+${ps.length - 7}</span>` : ""}</span>`;
+}
+function calItem(it, people, isToday, open) {
+  const st = calStatus(it, isToday), key = it.t + it.title;
+  const names = it.who.map(s => people[s]).filter(p => p && !p.locked);
+  return `<details class="cal-item ${st.cls} kind-${esc(it.kind)}" data-calkey="${esc(key)}" ${(open && !calClosed.has(key)) || calOpen.has(key) ? "open" : ""}>
+    <summary><span class="cal-time">${it.t ? clock(it.t) : "All day"}</span>
+      <span class="cal-main"><span class="cal-title">${esc(it.title)}</span>${miniFaces(it.who, people)}</span>
+      <span class="cal-state">${esc(st.text)}</span></summary>
+    <div class="cal-body">
+      ${names.length ? `<p class="small"><b>In the room:</b> ${names.map(p => `<button class="link" data-person="${esc(p.id)}">${esc(p.name)}</button>`).join(", ")}</p>` : ""}
+      <p class="small"><b>${it.result ? "Agenda was" : "Agenda"}:</b></p><ul class="small">${it.agenda.map(a => `<li>${esc(a)}</li>`).join("")}</ul>
+      ${it.result ? `<p class="small"><b>What happened:</b> ${esc(it.result)}</p>` : ""}
+      ${(it.quotes || []).map(q => `<div class="quote"><span class="mini">${avatarInner(people[q.seat]?.name || q.seat)}</span><span class="small"><b>${esc(people[q.seat]?.name || q.seat)}:</b> “${esc(q.text)}”</span></div>`).join("")}
+    </div></details>`;
+}
+function calendarBlock(people) {
+  const C = DATA.calendar;
+  if (!C || !C.days) return `<div class="cal"><h3>Daily schedule</h3><p class="empty">The schedule appears after the next 15-minute check.</p></div>`;
+  const day = C.days[Math.min(CALDAY, C.days.length - 1)], isToday = day.label === "Today";
+  let nextShown = false, html = "";
+  for (const it of day.items) {
+    const st = calStatus(it, isToday);
+    if (isToday && !nextShown && (st.cls === "next" || st.cls === "now")) {
+      html += `<div class="cal-now"><span>Now, ${new Date().toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"})}</span></div>`;
+      nextShown = true;
+      html += calItem(it, people, isToday, true);
+      continue;
+    }
+    html += calItem(it, people, isToday, false);
+  }
+  const fmtD = new Date(day.date + "T12:00:00").toLocaleDateString("en-US", {weekday: "long", month: "long", day: "numeric"});
+  return `<div class="cal"><div class="cal-head"><h3>Daily schedule</h3>
+      <span class="heat-toggle" role="group" aria-label="Day">${C.days.map((d, i) => `<button data-calday="${i}" aria-pressed="${i === CALDAY}">${esc(d.label)}</button>`).join("")}</span></div>
+    <p class="small muted">${esc(fmtD)}, New York time (the same as Indiana). Tap any meeting for who's in the room, the agenda, and what they decided.</p>
+    ${day.allday.map(a => calItem({...a, t: null}, people, false, false)).join("")}
+    ${html || `<p class="empty">Nothing scheduled.</p>`}</div>`;
+}
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-calday]"); if (!b || !DATA) return; CALDAY = +b.dataset.calday; renderFloor(); });
+document.addEventListener("toggle", (e) => { const d = e.target; if (d.matches && d.matches(".cal-item")) { if (d.open) { calOpen.add(d.dataset.calkey); calClosed.delete(d.dataset.calkey); } else { calOpen.delete(d.dataset.calkey); calClosed.add(d.dataset.calkey); } } }, true);
 
 function feedRow(e, people) {
   const p = people[e.agent] || {name: e.name || e.agent};

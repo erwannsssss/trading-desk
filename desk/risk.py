@@ -27,6 +27,7 @@ class Book:
     borrowed: float = 0.0               # outstanding bank loans
     opex: float = 0.0                   # payroll and bonuses paid to staff (firm.py)
     forex_margin: float = 0.0           # cash OANDA holds as margin against forex positions
+    corrections: float = 0.0            # refunds for operational errors (data/corrections.json)
 
     @property
     def cash_used(self) -> float:
@@ -35,9 +36,10 @@ class Book:
 
     @property
     def equity(self) -> float:
-        """Firm equity = $10k plus profit/loss in both accounts, minus bank interest, payroll and bonuses."""
+        """Firm equity = $10k plus profit/loss in both accounts, minus bank interest, payroll and bonuses,
+        plus any refunds for operational errors."""
         pnl = (self.alpaca_equity - self.baseline_alpaca) + (self.oanda_nav - self.baseline_oanda)
-        return config.STARTING_CAPITAL + pnl - self.financing_cost - self.opex
+        return config.STARTING_CAPITAL + pnl - self.financing_cost - self.opex + self.corrections
 
     @property
     def gross_exposure(self) -> float:

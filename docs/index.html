@@ -545,7 +545,8 @@ function breakdownBlock(b) {
       ${row("Open positions, at the brokers' prices", b.open_positions)}
       ${row("Bank interest", b.bank_interest)}
       ${row("Staff payroll and bonuses", b.payroll_and_bonuses)}
-      ${Math.abs(b.other_account_activity) >= 0.01 ? row("Other account activity", b.other_account_activity, "Money that moved at the brokers outside the desk's trades: fees, rounding, or a manual order (on Oct 15, a test order of mine that cost about $41).") : ""}
+      ${Math.abs(b.other_account_activity) >= 0.01 ? row("Other account activity", b.other_account_activity, "Money that moved at the brokers outside the desk's trades: fees, rounding, or a manual order.") : ""}
+      ${b.corrections ? row("Refund for an operational error", b.corrections, (b.correction_notes || []).map(esc).join("<br>")) : ""}
       <tr class="total"><td>Firm equity now</td><td class="num">${money(b.equity)}</td></tr>
     </tbody></table></div>`;
 }
@@ -815,6 +816,7 @@ function renderFirm(d) {
       <tr><td>Bank interest (${esc(d.bank?.bank || "the bank")})</td><td class="num">${signed(-x.interest)}</td></tr>
       <tr><td>Base payroll</td><td class="num">${signed(-x.payroll)}</td></tr>
       <tr><td>Bonuses</td><td class="num">${signed(-x.bonuses)}</td></tr>
+      ${x.corrections ? `<tr><td>Refunds for errors (not trading)</td><td class="num ${cls(x.corrections)}">${signed(x.corrections)}</td></tr>` : ""}
       <tr class="total"><td>Net income</td><td class="num ${cls(x.net)}">${signed(x.net)}</td></tr></tbody></table></div>`;
   const staffRows = Object.keys(F.levels).map(id => {
     const bonus = (F.bonuses || []).reduce((t, b) => t + ((b.by_seat || {})[id]?.amount || 0), 0);

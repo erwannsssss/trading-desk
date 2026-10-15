@@ -149,6 +149,19 @@ class FirmTests(unittest.TestCase):
         self.assertAlmostEqual(s["total"]["net"], 20.0)
         self.assertTrue(s["total"]["profitable"])
 
+    def test_refunds_are_not_counted_as_trading_profit(self):
+        rows = [{"t": "2026-10-15T15:00-04:00", "equity": 9958.8, "spy": 1, "fin": 0.0, "opex": 0.0, "corr": 0.0},
+                {"t": "2026-10-16T16:00-04:00", "equity": 10000.0, "spy": 1, "fin": 0.0, "opex": 0.0, "corr": 41.2}]
+        (config.DATA_DIR / "equity.jsonl").write_text("\n".join(json.dumps(r) for r in rows))
+        d2 = pnl.statement([], {"payroll": {}, "bonuses": {"paid": []}})["days"][1]
+        self.assertAlmostEqual(d2["corrections"], 41.2)
+        self.assertAlmostEqual(d2["trading"], 0.0)
+        self.assertAlmostEqual(d2["net"], 41.2)
+
+    def test_refund_adds_to_equity(self):
+        b = Book(alpaca_equity=9958.8, oanda_nav=10_000, baseline_alpaca=10_000, baseline_oanda=10_000, corrections=41.2)
+        self.assertAlmostEqual(b.equity, 10_000.0)
+
 
 if __name__ == "__main__":
     unittest.main()

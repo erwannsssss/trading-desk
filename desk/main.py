@@ -335,7 +335,8 @@ def record_equity(state: dict) -> None:
     path = config.DATA_DIR / "equity.jsonl"
     with path.open("a") as f:
         f.write(json.dumps({"t": now().isoformat(timespec="minutes"), "equity": round(book.equity, 2), "spy": spy,
-                            "fin": round(book.financing_cost, 4), "opex": round(book.opex, 4)}) + "\n")
+                            "fin": round(book.financing_cost, 4), "opex": round(book.opex, 4),
+                            "corr": round(book.corrections, 2)}) + "\n")
 
 
 def research() -> int:

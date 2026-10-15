@@ -57,7 +57,7 @@ def statement(trades: list[dict], firm_data: dict) -> dict:
         bonus_by_day[b["date"]] = bonus_by_day.get(b["date"], 0.0) + b.get("pool", 0.0)
 
     days = []
-    prev = {"equity": config.STARTING_CAPITAL, "fin": 0.0, "opex": 0.0}
+    prev = {"equity": config.STARTING_CAPITAL, "fin": 0.0, "opex": 0.0, "corr": 0.0}
     for d, r in ends.items():
         net = r["equity"] - prev["equity"]
         fin = r.get("fin", prev.get("fin", 0.0)) or 0.0
@@ -66,33 +66,35 @@ def statement(trades: list[dict], firm_data: dict) -> dict:
         staff_cost = max(0.0, opex - (prev.get("opex") or 0.0))
         bonus = min(staff_cost, bonus_by_day.get(d, 0.0))
         payroll = staff_cost - bonus
-        gross = net + interest + staff_cost
+        corr = r.get("corr", prev.get("corr", 0.0)) or 0.0
+        correction = corr - (prev.get("corr") or 0.0)      # refunds for operational errors aren't trading profit
+        gross = net + interest + staff_cost - correction
         real = {a: round(v, 2) for a, v in (realized.get(d) or {}).items()}
         real_total = sum(real.values())
         days.append({"date": d, "equity": round(r["equity"], 2), "realized": real, "realized_total": round(real_total, 2),
                      "unrealized_change": round(gross - real_total, 2), "trading": round(gross, 2),
                      "interest": round(interest, 2), "payroll": round(payroll, 4), "bonuses": round(bonus, 2),
-                     "net": round(net, 2), "closed_trades": count.get(d, 0)})
-        prev = {"equity": r["equity"], "fin": fin, "opex": opex}
+                     "net": round(net, 2), "corrections": round(correction, 2), "closed_trades": count.get(d, 0)})
+        prev = {"equity": r["equity"], "fin": fin, "opex": opex, "corr": corr}
 
     months: "OrderedDict[str, dict]" = OrderedDict()
     for row in days:
         m = months.setdefault(row["date"][:7], {"month": row["date"][:7], "trading": 0.0, "realized_total": 0.0,
-                                                 "unrealized_change": 0.0, "interest": 0.0, "payroll": 0.0, "bonuses": 0.0,
+                                                 "unrealized_change": 0.0, "interest": 0.0, "payroll": 0.0, "bonuses": 0.0, "corrections": 0.0,
                                                  "net": 0.0, "closed_trades": 0, "realized": {}, "days": 0})
-        for k in ("trading", "realized_total", "unrealized_change", "interest", "payroll", "bonuses", "net"):
+        for k in ("trading", "realized_total", "unrealized_change", "interest", "payroll", "bonuses", "corrections", "net"):
             m[k] += row[k]
         for a, v in row["realized"].items():
             m["realized"][a] = m["realized"].get(a, 0.0) + v
         m["closed_trades"] += row["closed_trades"]
         m["days"] += 1
     for m in months.values():
-        for k in ("trading", "realized_total", "unrealized_change", "interest", "payroll", "bonuses", "net"):
+        for k in ("trading", "realized_total", "unrealized_change", "interest", "payroll", "bonuses", "corrections", "net"):
             m[k] = round(m[k], 2)
         m["realized"] = {a: round(v, 2) for a, v in m["realized"].items()}
         m["profitable"] = m["net"] > 0
 
-    tot = {k: round(sum(r[k] for r in days), 2) for k in ("trading", "realized_total", "unrealized_change", "interest", "payroll", "bonuses", "net")}
+    tot = {k: round(sum(r[k] for r in days), 2) for k in ("trading", "realized_total", "unrealized_change", "interest", "payroll", "bonuses", "corrections", "net")}
     costs = tot["interest"] + tot["payroll"] + tot["bonuses"]
     tot["costs"] = round(costs, 2)
     tot["cost_share_pct"] = round(costs / tot["trading"] * 100, 1) if tot["trading"] > 0 else None

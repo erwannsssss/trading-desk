@@ -52,6 +52,11 @@ def snapshot(state: dict) -> tuple[Book, dict]:
     except Exception as exc:
         print(f"bank totals failed: {exc}")
     try:
+        from desk import corrections
+        book.corrections = corrections.total()
+    except Exception as exc:
+        print(f"corrections failed: {exc}")
+    try:
         from desk import firm
         book.opex = firm.opex_total()
     except Exception as exc:

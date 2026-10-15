@@ -59,7 +59,7 @@ def build(state: dict) -> None:
             "since": state.get("created_at"),
             "breakdown": _safe(lambda: liveaccount.breakdown(book.equity, book.alpaca_equity - book.baseline_alpaca,
                                                              book.oanda_nav - book.baseline_oanda, trades, live,
-                                                             book.financing_cost, book.opex), None),
+                                                             book.financing_cost, book.opex, book.corrections), None),
         },
         "bank": _safe(lambda: bank.totals(trades, now()), None),
         "limits": {"daily_loss_pct": config.MAX_DAILY_LOSS_PCT, "max_position_pct": config.MAX_POSITION_PCT,

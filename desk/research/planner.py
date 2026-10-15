@@ -80,8 +80,10 @@ def latest_macro(max_age_hours: float = 14) -> dict | None:
 
 def extra_context(session: str) -> dict:
     from desk import learning
+    t = learning._load(learning.TOURNAMENT, None) or {}
     return {"session_note": SESSION_NOTES[session], "tournament": learning.tournament_summary(),
-            "backtest": learning.backtest_summary(), "team": team_record()}
+            "backtest": learning.backtest_summary(), "team": team_record(),
+            "shadow_lessons": t.get("shadow_lessons") or [], "edge_tilt": (t.get("edge_tilt") or {}).get("reason")}
 
 
 def team_record() -> list[dict] | None:

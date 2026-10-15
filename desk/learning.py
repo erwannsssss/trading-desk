@@ -66,8 +66,55 @@ def compute_tournament(trades: list[dict], days: int = 45) -> dict:
     return {"updated": now().isoformat(timespec="minutes"), "window_days": days, "board": board, "calibration": calibration}
 
 
+EDGE_MIN_TRADES = 30
+
+
+def edge_tilt(trades: list[dict]) -> dict:
+    """Once there are 30+ closed trades, scale every bet by how much real edge the results show.
+    Proven edge -> bigger bets (up to 1.2x); losing record -> smaller bets (down to 0.7x)."""
+    from desk import edge
+    closed = sorted([t for t in trades if t.get("status") == "closed" and t.get("r_result") is not None],
+                    key=lambda t: t.get("closed_at") or "")[-60:]
+    rs = [t["r_result"] for t in closed]
+    if len(rs) < EDGE_MIN_TRADES:
+        return {"factor": 1.0, "reason": f"{len(rs)} of {EDGE_MIN_TRADES} closed trades needed before results change bet sizes"}
+    s = edge.trade_tests(rs)
+    avg, p, tstat = s.get("avg_r", 0), s.get("p_value", 1), s.get("t_stat", 0)
+    if avg > 0 and p < 0.10:
+        f, why = 1.2, f"proven edge: {avg:+.2f}R a trade over the last {len(rs)} (only a {p:.0%} chance that's luck)"
+    elif avg > 0 and p < 0.25:
+        f, why = 1.1, f"probably an edge: {avg:+.2f}R a trade over the last {len(rs)}"
+    elif avg < 0 and (tstat or 0) < -1:
+        f, why = 0.7, f"losing record: {avg:+.2f}R a trade over the last {len(rs)}; betting smaller until it turns"
+    elif avg < 0:
+        f, why = 0.85, f"slightly negative: {avg:+.2f}R a trade over the last {len(rs)}"
+    else:
+        f, why = 1.0, f"no clear edge either way yet ({avg:+.2f}R a trade over the last {len(rs)})"
+    return {"factor": f, "reason": why, "n": len(rs), "avg_r": avg, "p_value": p}
+
+
+def shadow_lessons() -> list[str]:
+    """Simple rules that are clearly beating the desk's own picks (shown to the PM before every decision)."""
+    try:
+        from desk import shadow
+        sm = shadow.summary()
+    except Exception:
+        return []
+    out = []
+    for k, e in (sm.get("strategies") or {}).items():
+        vs = e.get("desk_vs")
+        if k in ("desk", "coin_flip") or not vs or (e.get("stats") or {}).get("n", 0) < 20:
+            continue
+        if vs.get("diff_r", 0) < 0 and (vs.get("p_value") or 0) > 0.9:
+            out.append(f"The simple rule \"{e['label']}\" has beaten the desk's own picks by {-vs['diff_r']:.2f}R a trade "
+                       f"over {e['stats']['n']} ideas. Ask why before overruling what it would do.")
+    return out
+
+
 def update_tournament(trades: list[dict]) -> dict:
     t = compute_tournament(trades)
+    t["edge_tilt"] = edge_tilt(trades)
+    t["shadow_lessons"] = shadow_lessons()
     _save(TOURNAMENT, t)
     return t
 
@@ -82,7 +129,8 @@ def risk_multiplier(style: str | None) -> float:
     if not t:
         return 1.0
     w = next((b["weight"] for b in t.get("board", []) if b["style"] == (style or "").lower()), 1.0)
-    return round(w * t.get("calibration", {}).get("factor", 1.0), 3)
+    tilt = (t.get("edge_tilt") or {}).get("factor", 1.0)
+    return round(max(0.4, min(1.8, w * t.get("calibration", {}).get("factor", 1.0) * tilt)), 3)
 
 
 def backtest_summary() -> list | None:

@@ -66,3 +66,19 @@ class BacktestTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EdgeTiltTests(unittest.TestCase):
+    def _trades(self, rs):
+        return [{"status": "closed", "r_result": r, "closed_at": f"2026-10-{1 + i % 28:02d}T12:00:00"} for i, r in enumerate(rs)]
+
+    def test_no_tilt_before_30_trades(self):
+        from desk import learning
+        self.assertEqual(learning.edge_tilt(self._trades([1.0] * 29))["factor"], 1.0)
+
+    def test_tilt_up_with_proven_edge_and_down_when_losing(self):
+        from desk import learning
+        winning = [1.5, -1, 2, 1.2, -1, 1.8] * 6
+        losing = [-1, -1, 0.5, -1, 1, -1] * 6
+        self.assertEqual(learning.edge_tilt(self._trades(winning))["factor"], 1.2)
+        self.assertLess(learning.edge_tilt(self._trades(losing))["factor"], 1.0)

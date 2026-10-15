@@ -19,7 +19,7 @@ from desk.state import now
 from desk.trading import ledger
 
 _last = 0.0
-EVERY = 45
+EVERY = 30
 
 
 def _f(x) -> float:

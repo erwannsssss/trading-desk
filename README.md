@@ -37,9 +37,9 @@ It starts in **dry-run** (analyze and log only). Send `/golive` to let it place 
 
 1. **Foundation** (done): broker connections, budget, risk limits, kill switch, Telegram, AI and data clients
 2. **Research team** (done): see below
-3. Trading engine: bracket orders, hourly loop, trailing stops, scaling in/out, options, forex
-4. Telegram: trade alerts, morning brief, evening recap, chat with the bot
-5. Dashboard
+3. **Trading engine** (done): see below
+4. Telegram: trade alerts and morning/evening briefs (done); evening recap, chat with the bot
+5. **Dashboard** (done): https://erwannsssss.github.io/trading-desk/
 6. Learning: strategy tournament, weekly review, rulebook, confidence calibration, ghost portfolio
 7. Backtesting
 
@@ -65,6 +65,29 @@ Morning session: ~18 stocks/ETFs + 3 cryptos + 4 currency pairs. Evening session
 
 Plans are saved in `data/plans/`. Congressional trades and earnings-call transcripts aren't available for
 free, so the desk uses insider filings and earnings press releases instead.
+
+## The trading engine
+
+Runs on every tick (about every 15 minutes), in `desk/trading/engine.py`:
+
+- **Entries:** takes each approved idea from today's plans, re-checks the live price (skips it if the stop or
+  target already hit, waits if the price ran away from the entry), re-sizes with current equity, runs the
+  risk manager, then places the order. Stock/ETF ideas (long or short) wait for the market to open.
+- **Stocks and ETFs** go in as bracket orders: the broker holds the stop-loss and take-profit and fills them
+  the instant price gets there, even between runs. **Forex** gets its stop and target attached on fill.
+  **Crypto** gets a protective stop order; the engine takes profit at the target (crypto is long-only on Alpaca).
+- **Managing trades:** stop to breakeven once a trade is up 1R, then trails 1R behind price once it's up 2R.
+  Forex and crypto take half off at +1.5R. Trades are closed when they outlast their horizon
+  (intraday by 3:50pm, "1-5 days" after a week, "1-4 weeks" after a month). Unfilled entries expire.
+- Every fill, stop move, partial profit and exit goes to Telegram and the trade journal (`data/trades.json`).
+
+## The dashboard
+
+`docs/` is a static site on GitHub Pages. The bot rewrites `docs/data.json` after every run. Tabs:
+overview with the equity curve against the S&P 500, open positions, the full trade log (tap a trade
+to read its research memo: bull, bear, specialists, pre-mortem, fact-check), today's game plan,
+performance stats (win rate, profit factor, drawdown, Sharpe, results by bucket/style/market,
+confidence calibration), passed ideas and how they did, and the rulebook/fund letters.
 
 ## Secrets
 

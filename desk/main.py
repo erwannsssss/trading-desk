@@ -94,7 +94,21 @@ def tick() -> int:
         telegram.send(f"<b>Daily loss limit hit</b> (-{loss:.1f}%). No new trades until tomorrow. "
                       f"Open positions keep their stops and targets.")
 
-    # Phase 3 plugs the research team and trading engine in here.
+    # The trading engine: manage open trades, then enter new ones from the game plan.
+    try:
+        from desk.trading.engine import Engine
+        summary = Engine(state, book).run()
+        print("engine:", summary)
+    except Exception as exc:
+        traceback.print_exc()
+        telegram.send(f"<b>Trading engine error</b>: <code>{telegram.esc(str(exc)[:400])}</code>")
+
+    record_equity(state)
+    try:
+        from desk import dashboard
+        dashboard.build(state)
+    except Exception:
+        traceback.print_exc()
 
     state["last_tick"] = now().isoformat(timespec="seconds")
     save(state)
@@ -116,10 +130,28 @@ def listen(state: dict, seconds: int) -> None:
             time.sleep(10)
 
 
+def record_equity(state: dict) -> None:
+    """One row per run for the equity curve: bot equity vs. the S&P 500 (SPY)."""
+    import json
+    try:
+        book, _ = snapshot(state)
+        spy = alpaca.last_price("SPY")
+    except Exception:
+        return
+    path = config.DATA_DIR / "equity.jsonl"
+    with path.open("a") as f:
+        f.write(json.dumps({"t": now().isoformat(timespec="minutes"), "equity": round(book.equity, 2), "spy": spy}) + "\n")
+
+
 def research() -> int:
     from desk.research import planner
     session = sys.argv[2] if len(sys.argv) > 2 else "morning"
     planner.run(session)
+    try:
+        from desk import dashboard
+        dashboard.build(load())
+    except Exception:
+        traceback.print_exc()
     return 0
 
 

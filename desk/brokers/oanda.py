@@ -96,6 +96,7 @@ def submit_order(
         order["stopLossOnFill"] = {"price": f"{stop_loss:.{p}f}"}
     if client_tag:
         order["clientExtensions"] = {"id": client_tag[:100], "tag": "trading-desk"}
+        order["tradeClientExtensions"] = {"id": client_tag[:100], "tag": "trading-desk"}
     return _call("POST", "/orders", json={"order": order})
 
 
@@ -120,3 +121,29 @@ def close_all() -> None:
         cancel_order(o["id"])
     for p in open_positions():
         close_position(p["instrument"])
+
+
+# ---- Order/trade tracking (used by the trading engine) -----------------------
+def get_order(order_id: str) -> dict:
+    return _call("GET", f"/orders/{order_id}")["order"]
+
+
+def get_trade(trade_id: str) -> dict:
+    return _call("GET", f"/trades/{trade_id}")["trade"]
+
+
+def set_stop(trade_id: str, price: float, instrument: str) -> dict:
+    p = precision(instrument)
+    return _call("PUT", f"/trades/{trade_id}/orders", json={"stopLoss": {"price": f"{price:.{p}f}", "timeInForce": "GTC"}})
+
+
+def close_trade(trade_id: str, units: int | None = None) -> dict:
+    body = {"units": str(int(units))} if units else {"units": "ALL"}
+    return _call("PUT", f"/trades/{trade_id}/close", json=body)
+
+
+def is_open_now() -> bool:
+    try:
+        return bool(price("EUR_USD")["tradeable"])
+    except Exception:
+        return False

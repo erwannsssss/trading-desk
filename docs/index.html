@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Erwann's Trading Desk</title>
+<meta name="description" content="Live view of an autonomous AI paper-trading desk: account value, positions, trades and the research behind them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --paper: #EEF2F5;
+  --sheet: #F8FAFB;
+  --ink: #16233F;
+  --ink-2: #4A5772;
+  --ink-3: #7D889E;
+  --rule: #D5DCE4;
+  --gain: #0E7A5C;
+  --loss: #B3263E;
+  --signal: #E8B425;
+  --spy: #9AA6B8;
+  --font-data: "Archivo", system-ui, sans-serif;
+  --font-note: "Source Serif 4", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #101A2E; --sheet: #16223A; --ink: #E7ECF3; --ink-2: #B4BFD0; --ink-3: #7F8BA1;
+    --rule: #26334D; --gain: #3CC498; --loss: #F0657C; --spy: #5D6B84;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #101A2E; --sheet: #16223A; --ink: #E7ECF3; --ink-2: #B4BFD0; --ink-3: #7F8BA1;
+  --rule: #26334D; --gain: #3CC498; --loss: #F0657C; --spy: #5D6B84;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--font-data); font-size: 15px; line-height: 1.45;
+  font-variant-numeric: tabular-nums; font-variation-settings: "wdth" 100;
+}
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+/* top bar */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0 8px; }
+.desk { font-weight: 700; font-variation-settings: "wdth" 112; letter-spacing: -0.01em; font-size: 16px; }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+@media (max-width: 560px) {
+  .desk { font-size: 14px; }
+  .theme { display: none; }
+  .hide-sm { display: none; }
+  td, th { padding-right: 8px; }
+}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-3); }
+.status.live .dot { background: var(--gain); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gain) 18%, transparent); }
+.status.dry_run .dot, .status.paused .dot { background: var(--signal); }
+.theme { background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 4px 9px; cursor: pointer; font-size: 13px; color: var(--ink-2); }
+
+/* hero: the one loud thing */
+.hero { padding: 20px 0 0; }
+.equity { font-size: clamp(52px, 13vw, 128px); line-height: 0.92; font-weight: 800; letter-spacing: -0.035em;
+  font-variation-settings: "wdth" 125; margin: 0; }
+.equity .cents { font-size: 0.42em; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-2); }
+.hero-sub { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 12px; font-size: 15px; color: var(--ink-2); }
+.hero-sub b { font-weight: 700; color: var(--ink); }
+.tape { position: relative; height: 210px; margin: 18px 0 4px; }
+.legend { display: flex; gap: 18px; font-size: 12.5px; color: var(--ink-3); }
+.legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.up { color: var(--gain); } .down { color: var(--loss); }
+
+/* tabs */
+.tabs { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule);
+  display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; margin-top: 18px; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { background: none; border: 0; padding: 12px 12px 11px; cursor: pointer; white-space: nowrap; color: var(--ink-3);
+  font-weight: 600; border-bottom: 2.5px solid transparent; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.panel { padding: 22px 0 60px; }
+.panel[hidden] { display: none; }
+
+h2 { font-size: 21px; font-weight: 700; font-variation-settings: "wdth" 108; letter-spacing: -0.015em; margin: 0 0 4px; }
+h3 { font-size: 15px; font-weight: 700; margin: 26px 0 8px; }
+.lede { color: var(--ink-2); margin: 0 0 16px; max-width: 70ch; }
+.note { font-family: var(--font-note); font-size: 16px; line-height: 1.6; max-width: 68ch; }
+.muted { color: var(--ink-3); }
+.small { font-size: 13px; }
+
+/* key figures row: deliberately plain, not cards */
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid var(--rule); }
+.fig { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--rule); }
+.fig .v { font-size: 22px; font-weight: 700; font-variation-settings: "wdth" 110; }
+.fig .k { font-size: 12.5px; color: var(--ink-3); }
+
+/* tables */
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-weight: 600; color: var(--ink-3); font-size: 12.5px; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+td { padding: 11px 10px 11px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.num, th.num { text-align: right; }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.sym { font-weight: 700; font-variation-settings: "wdth" 110; }
+.side { font-size: 12px; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid currentColor; }
+.side.long { color: var(--gain); } .side.short { color: var(--loss); }
+.tag { font-size: 12.5px; color: var(--ink-2); }
+
+/* progress from stop to target */
+.track { position: relative; height: 6px; background: var(--rule); border-radius: 3px; min-width: 110px; margin-top: 7px; }
+.track span { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+.track .mid { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1.5px; background: var(--ink-3); }
+
+/* plan ideas: a list, not cards */
+.idea { padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.idea-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.idea-levels { margin-top: 6px; font-size: 14px; color: var(--ink-2); }
+.link { background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-weight: 600; font-size: 14px; }
+.pill { font-size: 12.5px; padding: 2px 8px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink-2); }
+
+.empty { padding: 28px 0; color: var(--ink-2); max-width: 60ch; }
+.two { display: grid; gap: 28px; grid-template-columns: 1fr; }
+@media (min-width: 860px) { .two { grid-template-columns: 1fr 1fr; } }
+.box-chart { position: relative; height: 230px; }
+
+/* memo drawer */
+dialog { border: 0; padding: 0; width: min(760px, 100vw); max-height: 100vh; height: 100vh; margin: 0 0 0 auto;
+  background: var(--sheet); color: var(--ink); box-shadow: -12px 0 40px rgba(16,26,46,.25); }
+dialog::backdrop { background: rgba(16,26,46,.45); }
+.memo { padding: 22px 22px 60px; }
+.memo-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; position: sticky; top: 0; background: var(--sheet); padding: 6px 0 12px; border-bottom: 1px solid var(--rule); }
+.close { background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+.memo h3 { margin-top: 24px; }
+.memo ul { margin: 6px 0 0; padding-left: 20px; }
+.memo li { margin: 4px 0; }
+.score { font-weight: 700; }
+.check-ok { color: var(--gain); font-weight: 600; } .check-bad { color: var(--loss); font-weight: 600; }
+footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <div class="desk">Erwann's Trading Desk</div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <span class="status" id="status"><span class="dot"></span><span id="status-text">Loading</span></span>
+      <button class="theme" id="theme" aria-label="Switch light or dark theme">Theme</button>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Account value">
+    <p class="equity" id="equity">$—</p>
+    <div class="hero-sub" id="hero-sub"></div>
+    <div class="tape"><canvas id="curve" aria-label="Account value compared with the S&P 500"></canvas></div>
+    <div class="legend"><span><i style="background:var(--ink)"></i>The desk</span><span><i style="background:var(--spy)"></i>S&amp;P 500, same $10,000</span></div>
+  </section>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button class="tab" role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button class="tab" role="tab" data-tab="positions">Positions</button>
+    <button class="tab" role="tab" data-tab="trades">Trade log</button>
+    <button class="tab" role="tab" data-tab="plan">Today's game plan</button>
+    <button class="tab" role="tab" data-tab="stats">Performance</button>
+    <button class="tab" role="tab" data-tab="ghost">Passed ideas</button>
+    <button class="tab" role="tab" data-tab="learning">Lessons</button>
+  </nav>
+
+  <main>
+    <section class="panel" id="p-overview"></section>
+    <section class="panel" id="p-positions" hidden></section>
+    <section class="panel" id="p-trades" hidden></section>
+    <section class="panel" id="p-plan" hidden></section>
+    <section class="panel" id="p-stats" hidden></section>
+    <section class="panel" id="p-ghost" hidden></section>
+    <section class="panel" id="p-learning" hidden></section>
+  </main>
+  <footer id="foot"></footer>
+</div>
+
+<dialog id="memo" aria-label="Research memo"><div class="memo" id="memo-body"></div></dialog>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = (x, d = 2) => x == null ? "—" : (x < 0 ? "-$" : "$") + Math.abs(x).toLocaleString("en-US", {minimumFractionDigits: d, maximumFractionDigits: d});
+const signed = (x, d = 2) => x == null ? "—" : (x > 0 ? "+" : x < 0 ? "-" : "") + money(Math.abs(x), d).replace("-", "");
+const pct = (x, d = 2) => x == null ? "—" : (x > 0 ? "+" : "") + x.toFixed(d) + "%";
+const cls = (x) => x > 0 ? "up" : x < 0 ? "down" : "";
+const px = (x) => x == null ? "—" : (Math.abs(x) >= 10 ? x.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}) : Math.abs(x) >= 0.01 ? (+x).toFixed(4) : (+x).toPrecision(4));
+const when = (iso) => iso ? new Date(iso).toLocaleString("en-US", {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"}) : "—";
+const assetName = {stock: "Stock", etf: "ETF", crypto: "Crypto", forex: "Forex"};
+const statusName = {open: "Open", pending: "Order working", closing: "Closing", closed: "Closed", cancelled: "Never filled",
+  skipped: "Skipped", would_trade: "Dry run", approved: "Planned", pass: "Passed", blocked_by_fact_check: "Blocked by fact-check", error: "Research error"};
+let DATA = null, chart = null, charts = {};
+
+/* theme */
+(function () {
+  let saved = null; try { saved = localStorage.getItem("desk-theme"); } catch (e) {}
+  if (saved) document.documentElement.dataset.theme = saved;
+  $("#theme").onclick = () => {
+    const cur = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("desk-theme", next); } catch (e) {}
+    if (DATA) render(DATA);
+  };
+})();
+
+/* tabs */
+$("#tabs").addEventListener("click", (e) => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t === b));
+  document.querySelectorAll(".panel").forEach(p => p.hidden = p.id !== "p-" + b.dataset.tab);
+  try { history.replaceState(null, "", "#" + b.dataset.tab); } catch (e) {}
+});
+function openTab(name) { const b = document.querySelector(`.tab[data-tab="${name}"]`); if (b) b.click(); }
+
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+async function load() {
+  try {
+    const r = await fetch("data.json?ts=" + Date.now(), {cache: "no-store"});
+    if (!r.ok) throw new Error(r.status);
+    DATA = await r.json();
+    render(DATA);
+  } catch (e) {
+    $("#status-text").textContent = "Waiting for the bot's first update";
+    $("#p-overview").innerHTML = `<p class="empty">The dashboard fills in after the bot's next run (about every 15 minutes). If this stays empty, check that GitHub Actions is turned on for the repo.</p>`;
+  }
+}
+
+function render(d) {
+  const modeText = {live: "Live paper trading", dry_run: "Dry run", paused: "Paused"}[d.mode] || d.mode;
+  $("#status").className = "status " + d.mode;
+  $("#status-text").textContent = modeText + (d.halted_for_day ? ", daily loss limit hit" : "");
+
+  const a = d.account, dollars = Math.floor(a.equity), cents = Math.round((a.equity - dollars) * 100).toString().padStart(2, "0");
+  $("#equity").innerHTML = "$" + dollars.toLocaleString("en-US") + `<span class="cents">.${cents}</span>`;
+  const last = d.curve.at(-1), spyRet = last ? (last.spy / a.start - 1) * 100 : null;
+  $("#hero-sub").innerHTML = `
+    <span><b class="${cls(a.total_return_pct)}">${pct(a.total_return_pct)}</b> since starting with ${money(a.start, 0)}</span>
+    <span><b class="${cls(a.today_pct)}">${pct(a.today_pct)}</b> today</span>
+    ${spyRet != null ? `<span>S&amp;P 500 over the same time: <b>${pct(spyRet)}</b></span>` : ""}`;
+  drawCurve(d.curve);
+
+  renderOverview(d); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderGhost(d); renderLearning(d);
+  $("#foot").textContent = `Updated ${when(d.generated_at)} New York time. Paper money only. Refreshes every minute.`;
+}
+
+function drawCurve(curve) {
+  const ctx = $("#curve");
+  if (chart) chart.destroy();
+  if (!curve.length) return;
+  chart = new Chart(ctx, {
+    type: "line",
+    data: { labels: curve.map(p => p.t), datasets: [
+      { data: curve.map(p => p.equity), borderColor: css("--ink"), borderWidth: 2.2, pointRadius: 0, tension: 0.2, fill: false },
+      { data: curve.map(p => p.spy), borderColor: css("--spy"), borderWidth: 1.5, pointRadius: 0, tension: 0.2, borderDash: [4, 4] } ] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: {mode: "index", intersect: false},
+      plugins: { legend: {display: false}, tooltip: { callbacks: {
+        title: (i) => when(i[0].label), label: (i) => (i.datasetIndex ? "S&P 500: " : "Desk: ") + money(i.parsed.y) } } },
+      scales: { x: {display: false},
+        y: { position: "right", grid: {color: css("--rule")}, border: {display: false},
+             ticks: {color: css("--ink-3"), callback: (v) => "$" + (v / 1000).toFixed(1) + "k", maxTicksLimit: 5} } } }
+  });
+}
+
+function sideTag(t) { return `<span class="side ${t.direction}">${t.direction === "short" ? "Short" : "Long"}</span>`; }
+
+function renderOverview(d) {
+  const a = d.account, s = d.stats, plan = d.plan;
+  const recent = d.trades.filter(t => ["open","closed","pending","would_trade"].includes(t.status)).slice(0, 6);
+  $("#p-overview").innerHTML = `
+    <div class="figures">
+      <div class="fig"><div class="v">${a.open_positions}</div><div class="k">Open positions</div></div>
+      <div class="fig"><div class="v">${a.trades_today} / ${a.max_trades}</div><div class="k">Trades today</div></div>
+      <div class="fig"><div class="v">${money(a.stock_exposure, 0)}</div><div class="k">In stocks, ETFs, crypto</div></div>
+      <div class="fig"><div class="v">${money(a.forex_exposure, 0)}</div><div class="k">In forex</div></div>
+      <div class="fig"><div class="v ${cls(s.realized_pnl)}">${signed(s.realized_pnl)}</div><div class="k">Realized profit</div></div>
+      <div class="fig"><div class="v">${s.win_rate == null ? "—" : s.win_rate + "%"}</div><div class="k">Win rate (${s.closed} closed)</div></div>
+    </div>
+    ${plan && plan.macro ? `
+      <h3>The desk's read on the market</h3>
+      <p class="note">${esc(plan.macro.summary)}</p>
+      <p class="small muted">${esc(plan.macro.regime)}, aggression ${plan.macro.risk_appetite}/100, from the ${esc(plan.session)} research on ${esc(plan.date)}.
+        <button class="link" onclick="openTab('plan')">See the game plan</button></p>` : `<p class="empty">No research yet. The first game plan arrives with the next morning or evening session.</p>`}
+    <h3>Latest activity</h3>
+    ${recent.length ? tradeTable(recent, false) : `<p class="empty">No trades yet. ${d.mode === "dry_run" ? "The desk is in dry-run mode: it researches and logs what it would trade. Send /golive on Telegram to place paper trades." : "Trades appear here as soon as orders go in."}</p>`}`;
+}
+
+function renderPositions(d) {
+  const rows = d.positions;
+  if (!rows.length) { $("#p-positions").innerHTML = `<h2>Positions</h2><p class="empty">Nothing open right now. New positions appear here the moment an order fills.</p>`; return; }
+  $("#p-positions").innerHTML = `<h2>Positions</h2><p class="lede">The bar runs from the stop (left) through the entry (middle) to the target (right).</p>
+  <div class="scroll"><table><thead><tr><th>Symbol</th><th>Status</th><th class="num">Entry</th><th class="num">Now</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized</th><th>Progress</th></tr></thead><tbody>
+  ${rows.map(t => {
+    const p = t.progress ?? 0, w = Math.abs(p) * 50;
+    const bar = p >= 0 ? `<span style="left:50%;width:${w}%;background:var(--gain)"></span>` : `<span style="left:${50 - w}%;width:${w}%;background:var(--loss)"></span>`;
+    return `<tr class="click" data-memo="${esc(t.plan_file)}|${esc(t.symbol)}">
+      <td><span class="sym">${esc(t.symbol)}</span> ${sideTag(t)}<div class="tag">${esc(assetName[t.asset])}, ${esc(t.style || "")}</div></td>
+      <td>${esc(statusName[t.status])}</td>
+      <td class="num">${px(t.entry_price ?? t.entry_plan)}</td><td class="num">${px(t.last_price)}</td>
+      <td class="num">${px(t.stop)}</td><td class="num">${px(t.target)}</td>
+      <td class="num ${cls(t.unrealized_usd)}">${signed(t.unrealized_usd)}</td>
+      <td><div class="track"><div class="mid"></div>${bar}</div></td></tr>`; }).join("")}
+  </tbody></table></div>`;
+}
+
+function tradeTable(rows, full = true) {
+  return `<div class="scroll"><table><thead><tr><th>Symbol</th><th>Status</th><th class="hide-sm">Opened</th><th class="num">Entry</th><th class="num hide-sm">Exit</th><th class="num">Profit</th>${full ? '<th class="hide-sm">Why it ended</th>' : ""}</tr></thead><tbody>
+  ${rows.map(t => `<tr class="click" data-memo="${esc(t.plan_file)}|${esc(t.symbol)}">
+    <td><span class="sym">${esc(t.symbol)}</span> ${t.direction === "pass" ? "" : sideTag(t)}<div class="tag">${esc(assetName[t.asset] || "")}${t.bucket ? ", " + esc(t.bucket) : ""}${t.conviction ? ", conviction " + t.conviction + "/10" : ""}</div></td>
+    <td>${esc(statusName[t.status] || t.status)}</td>
+    <td class="small hide-sm">${when(t.opened_at || t.created_at)}</td>
+    <td class="num">${px(t.entry_price ?? t.entry_plan)}</td><td class="num hide-sm">${px(t.exit_price)}</td>
+    <td class="num ${cls(t.pnl_usd)}">${t.pnl_usd == null ? "—" : signed(t.pnl_usd) + (t.r_result != null ? `<div class="tag">${t.r_result}R</div>` : "")}</td>
+    ${full ? `<td class="small hide-sm">${esc(t.exit_reason || t.skip_reason || "")}</td>` : ""}</tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+function renderTrades(d) {
+  const rows = d.trades;
+  $("#p-trades").innerHTML = `<h2>Trade log</h2><p class="lede">Every trade the desk planned, placed, skipped or closed. Tap any row to read the full research behind it.</p>
+    ${rows.length ? tradeTable(rows) : `<p class="empty">The log starts with the first trade the desk takes.</p>`}`;
+}
+
+function renderPlan(d) {
+  const p = d.plan;
+  if (!p) { $("#p-plan").innerHTML = `<h2>Today's game plan</h2><p class="empty">The research team runs at 7:40am New York time on weekdays and at 6:10pm every day. Its plan shows up here.</p>`; return; }
+  const m = p.macro || {}, w = m.bucket_weights || {};
+  const approved = p.ideas.filter(i => i.status === "approved").sort((a, b) => (b.conviction || 0) - (a.conviction || 0));
+  const others = p.ideas.filter(i => i.status !== "approved");
+  $("#p-plan").innerHTML = `
+    <h2>${p.session === "morning" ? "Morning" : "Evening"} game plan for ${esc(p.date)}</h2>
+    <p class="lede">${esc(m.regime)}. Aggression ${m.risk_appetite}/100. Money split: core ${w.core}%, tactical ${w.tactical}%, high-risk ${w.high_risk}%.</p>
+    <p class="note">${esc(m.summary)}</p>
+    ${m.overnight_read ? `<p class="note"><b>Overnight:</b> ${esc(m.overnight_read)}</p>` : ""}
+    <div class="two">
+      <div><h3>Plays that should work</h3><ul class="small">${(m.playbook?.use || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+           <h3>Plays to avoid</h3><ul class="small">${(m.playbook?.avoid || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div><h3>Coming up</h3><ul class="small">${(p.calendar || []).slice(0, 8).map(e => `<li>${esc(e.date)}: ${esc(e.event)}</li>`).join("") || "<li>Nothing scheduled</li>"}</ul>
+           <h3>Watching</h3><ul class="small">${(m.key_events || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
+    </div>
+    <h3>Trades in the plan (${approved.length})</h3>
+    ${approved.map(i => `<div class="idea">
+      <div class="idea-head"><span class="sym" style="font-size:18px">${esc(i.symbol)}</span> ${sideTag({direction: i.decision})}
+        <span class="pill">${esc(i.bucket)}</span><span class="pill">${esc(i.style)}</span><span class="tag">conviction ${i.conviction}/10</span></div>
+      <div class="idea-levels">Entry ${px(i.entry)}, stop ${px(i.stop)}, target ${px(i.target)}. Reward is ${i.reward_to_risk}x the risk.
+        ${i.sizing ? ` Size ${money(i.sizing.notional_usd, 0)}, risking ${money(i.sizing.risk_usd, 0)}.` : ""}</div>
+      <p class="note" style="margin:8px 0 6px">${esc(i.thesis)}</p>
+      <button class="link" data-memo="${esc(i.memo_key)}">Read the research</button></div>`).join("") || `<p class="empty">The desk found no trade worth taking in this session.</p>`}
+    <h3>Researched but not traded (${others.length})</h3>
+    <div class="scroll"><table><thead><tr><th>Symbol</th><th>Outcome</th><th>Reason</th></tr></thead><tbody>
+    ${others.map(i => `<tr class="click" data-memo="${esc(i.memo_key)}"><td class="sym">${esc(i.symbol)}</td><td>${esc(statusName[i.status] || i.status)}</td>
+      <td class="small">${esc(i.reason || (i.problems || [])[0] || i.error || "")}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="small muted">Researched ${p.ideas.length} finalists with ${p.ai_calls} AI calls in ${p.minutes} minutes.</p>`;
+}
+
+function renderStats(d) {
+  const s = d.stats;
+  const group = (rows, title) => rows.length ? `<h3>${title}</h3><div class="scroll"><table><thead><tr><th>Group</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Profit</th></tr></thead><tbody>
+    ${rows.map(g => `<tr><td>${esc(g.name)}</td><td class="num">${g.trades}</td><td class="num">${g.win_rate}%</td><td class="num ${cls(g.pnl)}">${signed(g.pnl)}</td></tr>`).join("")}</tbody></table></div>` : "";
+  $("#p-stats").innerHTML = `<h2>Performance</h2>
+    <p class="lede">The numbers a fund manager would look at. Most need a few weeks of trades to mean much.</p>
+    <div class="figures">
+      <div class="fig"><div class="v">${s.win_rate == null ? "—" : s.win_rate + "%"}</div><div class="k">Win rate</div></div>
+      <div class="fig"><div class="v up">${money(s.avg_win)}</div><div class="k">Average win</div></div>
+      <div class="fig"><div class="v down">${money(s.avg_loss)}</div><div class="k">Average loss</div></div>
+      <div class="fig"><div class="v">${s.profit_factor ?? "—"}</div><div class="k">Profit factor (gross wins ÷ gross losses)</div></div>
+      <div class="fig"><div class="v">${s.avg_r == null ? "—" : s.avg_r + "R"}</div><div class="k">Average result, in units of risk</div></div>
+      <div class="fig"><div class="v down">${s.max_drawdown_pct == null ? "—" : s.max_drawdown_pct + "%"}</div><div class="k">Worst drop from a peak</div></div>
+      <div class="fig"><div class="v">${s.sharpe ?? "—"}</div><div class="k">Sharpe ratio (needs 10+ days)</div></div>
+      <div class="fig"><div class="v">${s.closed}</div><div class="k">Closed trades</div></div>
+    </div>
+    <div class="two">${group(s.by_bucket, "By bucket")}${group(s.by_asset, "By market")}</div>
+    ${group(s.by_style, "By trading style")}
+    <h3>Is its confidence honest?</h3>
+    <p class="lede small">Each trade comes with the desk's own odds of hitting the target. Well-calibrated means its 70% calls win about 70% of the time.</p>
+    ${s.calibration.length ? `<div class="box-chart"><canvas id="calib"></canvas></div>` : `<p class="empty">Shows up after the first closed trades.</p>`}`;
+  if (s.calibration.length) {
+    if (charts.calib) charts.calib.destroy();
+    charts.calib = new Chart($("#calib"), { type: "bar",
+      data: { labels: s.calibration.map(c => c.confidence + "% calls"), datasets: [
+        { label: "What it predicted", data: s.calibration.map(c => c.confidence + 5), backgroundColor: css("--spy") },
+        { label: "What actually happened", data: s.calibration.map(c => c.actual_win_rate), backgroundColor: css("--ink") } ] },
+      options: { responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { labels: { color: css("--ink-2") } } },
+        scales: { y: { max: 100, ticks: { color: css("--ink-3"), callback: v => v + "%" }, grid: { color: css("--rule") } }, x: { ticks: { color: css("--ink-3") }, grid: { display: false } } } } });
+  }
+}
+
+function renderGhost(d) {
+  const rows = d.ghost.filter(g => g.price_now);
+  $("#p-ghost").innerHTML = `<h2>Passed ideas</h2>
+    <p class="lede">Ideas the desk researched but didn't trade, and how they moved since. If the skipped ideas keep winning, the desk is being too cautious.</p>
+    ${rows.length ? `<div class="scroll"><table><thead><tr><th>Symbol</th><th>Researched</th><th>Outcome</th><th class="num">Then</th><th class="num">Now</th><th class="num">Move in the bull's direction</th></tr></thead><tbody>
+      ${rows.map(g => `<tr class="click" data-memo="${esc(g.memo_key)}"><td><span class="sym">${esc(g.symbol)}</span><div class="tag">bull leaned ${esc(g.lean)}</div></td>
+        <td class="small">${esc(g.date)} ${esc(g.session)}</td><td class="small">${esc(statusName[g.status])}</td>
+        <td class="num">${px(g.price_then)}</td><td class="num">${px(g.price_now)}</td>
+        <td class="num ${cls(g.lean_result_pct)}">${pct(g.lean_result_pct)}</td></tr>`).join("")}</tbody></table></div>`
+      : `<p class="empty">Fills in after the first research session.</p>`}`;
+}
+
+function renderLearning(d) {
+  $("#p-learning").innerHTML = `<h2>Lessons</h2>
+    <p class="lede">The desk's rulebook and weekly fund letters. These come from the learning system, which reviews every closed trade.</p>
+    <h3>Rulebook</h3>
+    ${d.rulebook.length ? `<ul>${d.rulebook.map(r => `<li class="note">${esc(r.rule)} <span class="small muted">(${esc(r.date || "")})</span></li>`).join("")}</ul>`
+      : `<p class="empty">No rules yet. Once the learning system is switched on, every hard lesson from a losing trade becomes a rule the desk reads before trading.</p>`}
+    <h3>Fund letters</h3>
+    ${d.letters.length ? d.letters.slice().reverse().map(l => `<article><h3>${esc(l.title)}</h3><div class="note">${esc(l.body).replace(/\n/g, "<br>")}</div></article>`).join("")
+      : `<p class="empty">The first weekly letter arrives after the learning system is switched on.</p>`}`;
+}
+
+/* research memo drawer */
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-memo]"); if (!el || !DATA) return;
+  const memo = DATA.memos[el.dataset.memo];
+  if (!memo) return;
+  showMemo(memo, DATA.trades.find(t => `${t.plan_file}|${t.symbol}` === el.dataset.memo));
+});
+$("#memo").addEventListener("click", (e) => { if (e.target.id === "memo") e.target.close(); });
+
+function showMemo(m, trade) {
+  const d = m.decision || {}, sp = m.specialists || {}, fc = m.fact_check || {};
+  const spec = (k, name) => sp[k] ? `<h3>${name}: <span class="score ${cls(sp[k].score)}">${sp[k].score > 0 ? "+" : ""}${sp[k].score}</span></h3><ul class="note">${(sp[k].points || []).map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : "";
+  $("#memo-body").innerHTML = `
+    <div class="memo-top"><div><h2>${esc(m.symbol)} research memo</h2>
+      <div class="small muted">${esc(assetName[m.asset])}, price at research ${px(m.price_at_research)}. ${esc((m.why_scanned || []).join("; "))}</div></div>
+      <button class="close" onclick="this.closest('dialog').close()">Close</button></div>
+    <h3>Decision: ${esc((d.decision || "").toUpperCase())}${d.conviction ? `, conviction ${d.conviction}/10, ${d.confidence_pct}% confident` : ""}</h3>
+    <p class="note">${esc(d.thesis || d.reason || "")}</p>
+    ${d.entry ? `<p class="small">Entry ${px(d.entry)}, stop ${px(d.stop)}, target ${px(d.target)}, ${esc(d.horizon || "")}. Wrong if: ${esc(d.invalidation || "")}</p>` : ""}
+    ${d.options_idea ? `<p class="small"><b>Options idea:</b> ${esc(d.options_idea)}</p>` : ""}
+    ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
+    <h3>Pre-mortem</h3><p class="note">${esc(d.premortem?.failure_story || "")}</p>
+    <p class="small">${d.premortem?.failure_more_likely ? "It judged failure more likely, so the trade was vetoed." : "It judged success more likely than this failure story."}</p>
+    <h3>Bull case (${esc(m.bull?.direction || "")})</h3><p class="note">${esc(m.bull?.case || "")}</p>
+    ${(m.bull?.catalysts || []).length ? `<ul class="note">${m.bull.catalysts.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+    <h3>Bear case</h3><p class="note">${esc(m.bear?.case || "")}</p>
+    ${(m.bear?.risks || []).length ? `<ul class="note">${m.bear.risks.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+    ${spec("technical", "Technical analyst")}${spec("fundamental", "Fundamental analyst")}${spec("news_sentiment", "News and sentiment")}${spec("smart_money", "Smart money")}
+    <h3>Fact-check</h3>
+    <p class="small">${fc.passed ? `<span class="check-ok">Passed.</span> ${fc.verified_facts} cited numbers matched the data.` : `<span class="check-bad">Failed.</span>`}</p>
+    ${(fc.problems || []).length ? `<ul class="small">${fc.problems.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+    ${(d.evidence || []).length ? `<ul class="small muted">${d.evidence.map(e => `<li>${esc(e.fact)} = ${esc(e.value)}</li>`).join("")}</ul>` : ""}`;
+  $("#memo").showModal();
+}
+
+openTab((location.hash || "#overview").slice(1));
+load();
+setInterval(load, 60000);
+</script>
+</body>
+</html>

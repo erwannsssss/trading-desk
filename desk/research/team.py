@@ -120,7 +120,7 @@ BEAR: {_j(bear_case)}
 Steps:
 1. PRE-MORTEM: imagine it is two weeks from now and this trade lost money. Write the most likely story of how it failed.
    Then judge honestly: is that failure story more likely than the success story?
-2. DECIDE: "long", "short" or "pass". Pass if there is no edge, the failure story is more likely, or it duplicates a planned bet.
+2. DECIDE: "long", "short" or "pass". Crypto can only be traded long (no shorting). Pass if there is no edge, the failure story is more likely, or it duplicates a planned bet.
 3. If trading, build the plan:
    - bucket: "core", "tactical" or "high_risk"; style: the trading style
    - entry: a limit price near the current price where you want in (within about 1 ATR), or the current price for a market order

@@ -132,3 +132,32 @@ def _px(price: float | None) -> str | None:
         return None
     # Alpaca accepts 2 decimals for prices >= $1 and 4 below $1.
     return f"{price:.2f}" if price >= 1 else f"{price:.4f}"
+
+
+# ---- Order tracking (used by the trading engine) -----------------------------
+def get_order(order_id: str) -> dict:
+    return _trade("GET", f"/orders/{order_id}", params={"nested": "true"})
+
+
+def replace_order(order_id: str, **fields) -> dict:
+    """Change a working order, e.g. move a stop: replace_order(id, stop_price="101.50")."""
+    return _trade("PATCH", f"/orders/{order_id}", json={k: v for k, v in fields.items() if v is not None})
+
+
+def asset(symbol: str) -> dict:
+    return _trade("GET", f"/assets/{symbol.replace('/', '%2F')}")
+
+
+def submit_raw(body: dict) -> dict:
+    return _trade("POST", "/orders", json=body)
+
+
+def position(symbol: str) -> dict | None:
+    try:
+        return _trade("GET", f"/positions/{symbol.replace('/', '')}")
+    except Exception:
+        return None
+
+
+def px(price: float) -> str:
+    return _px(price)

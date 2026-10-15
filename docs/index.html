@@ -513,7 +513,17 @@ function showMemo(m, trade) {
 
 /* ---------- trading floor ---------- */
 const LIVE_JOBS = ["research", "desk", "client", "learning"];
-const RAW = "https://raw.githubusercontent.com/erwannsssss/trading-desk/live/live/";
+const REPO = "erwannsssss/trading-desk";
+const RAW = `https://raw.githubusercontent.com/${REPO}/`;
+let liveSha = null;
+async function latestLiveSha() {
+  // One tiny API call; the browser revalidates with ETag so unchanged checks are free.
+  try {
+    const r = await fetch(`https://api.github.com/repos/${REPO}/commits/live`, {headers: {Accept: "application/vnd.github.sha"}, cache: "no-cache"});
+    if (r.ok) { liveSha = (await r.text()).trim(); }
+  } catch (e) {}
+  return liveSha;
+}
 let LIVE = {}, liveTimer = null, floorOpen = null;
 const deskInfo = {
   research: ["Research desk", "Finds trades: scans the market, reads the macro picture, debates every idea"],
@@ -526,8 +536,11 @@ const clock = (iso) => new Date(iso).toLocaleTimeString("en-US", {hour: "numeric
 const initials = (n) => n.split(" ").map(w => w[0]).join("").slice(0, 2);
 
 async function loadLive() {
+  if (document.visibilityState === "hidden") return;
+  const sha = await latestLiveSha();
   const got = await Promise.all(LIVE_JOBS.map(async j => {
-    for (const url of [`${RAW}${j}.json?t=${Date.now()}`, `live/${j}.json?t=${Date.now()}`]) {
+    const urls = [sha ? `${RAW}${sha}/live/${j}.json` : null, `${RAW}live/live/${j}.json`, `live/${j}.json?t=${Date.now()}`].filter(Boolean);
+    for (const url of urls) {
       try { const r = await fetch(url, {cache: "no-store"}); if (r.ok) return [j, await r.json()]; } catch (e) {}
     }
     return [j, null];
@@ -636,7 +649,10 @@ function showPerson(id, refresh = false) {
 $("#memo").addEventListener("close", () => { floorOpen = null; });
 document.addEventListener("click", (e) => { const s = e.target.closest("[data-person]"); if (s) showPerson(s.dataset.person); });
 
-function startLive() { if (!liveTimer) { loadLive(); liveTimer = setInterval(loadLive, 20000); } }
+function startLive() {
+  if (!liveTimer) { loadLive(); liveTimer = setInterval(loadLive, 45000); }
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadLive(); });
+}
 
 openTab((location.hash || "#overview").slice(1));
 load().then(startLive);

@@ -453,10 +453,19 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "2cdf2f55-ae81-493c-8438-f881d6a59dde",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-15T18:51 entry order placed"
-  ]
+   "2026-10-15T18:51 entry order placed",
+   "2026-10-15T19:12 filled 36699.3 @ 0.0814"
+  ],
+  "entry_price": 0.0814,
+  "filled_qty": 36699.288410938,
+  "filled_qty_initial": 36699.288410938,
+  "opened_at": "2026-10-15T19:12:20-04:00",
+  "stop_order_id": "d21093e3-c8c1-4e97-b99c-174a22c3d3c3",
+  "last_price": 0.080999,
+  "max_r": 0,
+  "min_r": -0.17
  },
  {
   "id": "2026-10-15-evening-EUR_AUD",
@@ -489,10 +498,30 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "20",
-  "status": "pending",
+  "status": "closed",
   "notes": [
-   "2026-10-15T18:51 entry order placed"
-  ]
+   "2026-10-15T18:51 entry order placed",
+   "2026-10-15T19:12 filled 12508 @ 1.61983",
+   "2026-10-15T19:12 closed at 1.62062: time stop (intraday), P&L $-6.91"
+  ],
+  "oanda_trade_id": "21",
+  "entry_price": 1.61983,
+  "filled_qty": 12508.0,
+  "filled_qty_initial": 12508.0,
+  "opened_at": "2026-10-15T19:12:20-04:00",
+  "last_price": 1.6204450000000001,
+  "max_r": 0,
+  "min_r": -0.07,
+  "exit_price": 1.62062,
+  "exit_reason": "time stop (intraday)",
+  "closed_at": "2026-10-15T19:12:20-04:00",
+  "pnl_usd": -6.91,
+  "r_result": -0.09,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The pair rose from the entry 1.61983 to 1.62062 and never moved toward the 20\u2011day low; the trade was closed by the intraday time stop, resulting in a $6.91 loss (\u20110.09\u202fR).",
+   "lesson": "Mean\u2011reversion shorts require clear evidence of a pullback; entering above a strong support (e.g., 50\u2011day SMA) without confirming downside momentum can cause the trade to fail even with a tight stop."
+  }
  },
  {
   "id": "2026-10-15-evening-EUR_GBP",

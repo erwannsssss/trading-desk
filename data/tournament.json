@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T15:54-04:00",
+ "updated": "2026-10-15T19:12-04:00",
  "window_days": 45,
  "board": [
   {
@@ -9,13 +9,21 @@
    "avg_r": 0.15,
    "pnl": 10.35,
    "weight": 1.0
+  },
+  {
+   "style": "mean reversion",
+   "trades": 1,
+   "win_rate": 0,
+   "avg_r": -0.09,
+   "pnl": -6.91,
+   "weight": 1.0
   }
  ],
  "calibration": {
-  "trades": 1,
+  "trades": 2,
   "factor": 1.0,
-  "predicted": 52,
-  "actual": 100
+  "predicted": 54,
+  "actual": 50
  },
  "exit_tuning": {},
  "session_budget": {
@@ -24,13 +32,18 @@
     "trades": 1,
     "avg_r": 0.15,
     "win_rate": 100
+   },
+   "evening": {
+    "trades": 1,
+    "avg_r": -0.09,
+    "win_rate": 0
    }
   },
   "multipliers": {}
  },
  "edge_tilt": {
   "factor": 1.0,
-  "reason": "1 of 30 closed trades needed before results change bet sizes"
+  "reason": "2 of 30 closed trades needed before results change bet sizes"
  },
  "shadow_lessons": []
 }

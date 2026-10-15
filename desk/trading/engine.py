@@ -120,6 +120,15 @@ class Engine:
             self._clock = alpaca.clock()
         return self._clock
 
+    def can_short_stocks(self) -> bool:
+        """Alpaca turns shorting off for some paper accounts; bearish stock ideas then go through put options."""
+        if not hasattr(self, "_can_short"):
+            try:
+                self._can_short = bool(alpaca.account().get("shorting_enabled"))
+            except Exception:
+                self._can_short = False
+        return self._can_short
+
     def stock_market_open(self) -> bool:
         return bool(self.clock().get("is_open"))
 
@@ -206,10 +215,15 @@ class Engine:
         if (long and price > entry + 0.25 * risk) or (not long and price < entry - 0.25 * risk):
             return "price moved away from the entry; waiting for a pullback"
 
-        if asset in ("stock", "etf") and d.get("expression") in ("call_options", "put_options"):
+        short_blocked = asset in ("stock", "etf") and not long and not self.can_short_stocks()
+        if asset in ("stock", "etf") and (d.get("expression") in ("call_options", "put_options") or short_blocked):
             result = self._enter_option(trade_id, plan_file, plan, idea, price, entry, stop, target, long)
             if result is not None:
+                if short_blocked and d.get("expression") != "put_options":
+                    floor.event("options", f"{idea['symbol']}: the account can't short stocks, so the bearish view goes on as puts", idea["symbol"])
                 return result  # otherwise no affordable contract: trade the shares instead
+            if short_blocked:
+                return self._record_skip(trade_id, plan_file, idea, "this Alpaca account can't short stocks, and no affordable put contract was found")
 
         from desk import learning
         kw = {"multiplier": learning.risk_multiplier(d.get("style"))}

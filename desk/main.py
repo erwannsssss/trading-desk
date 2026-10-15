@@ -130,6 +130,14 @@ def listen(state: dict, seconds: int) -> None:
             time.sleep(10)
 
 
+def listen_only() -> int:
+    """Answer Telegram commands for LISTEN_SECONDS, then exit (runs after the tick's work is saved)."""
+    state = load()
+    listen(state, int(os.environ.get("LISTEN_SECONDS", "780")))
+    save(state)
+    return 0
+
+
 def record_equity(state: dict) -> None:
     """One row per run for the equity curve: bot equity vs. the S&P 500 (SPY)."""
     import json
@@ -158,7 +166,7 @@ def research() -> int:
 def main() -> int:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "tick"
     try:
-        return {"healthcheck": healthcheck, "tick": tick, "research": research}[cmd]()
+        return {"healthcheck": healthcheck, "tick": tick, "research": research, "listen": listen_only}[cmd]()
     except Exception as exc:
         traceback.print_exc()
         try:

@@ -1,7 +1,8 @@
 name: Trading desk tick
 
-# Runs every 15 minutes, 24/7 (crypto and forex never sleep).
-# Free on public repos. GitHub sometimes starts scheduled runs a few minutes late.
+# Every 15 minutes, 24/7 (crypto and forex never sleep). Free on public repos.
+# 1) trade: manage positions, enter new trades, update the dashboard, save
+# 2) listen: answer Telegram commands within seconds until the next run takes over, save again
 on:
   schedule:
     - cron: "*/15 * * * *"
@@ -17,7 +18,7 @@ concurrency:
 jobs:
   tick:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,10 +26,9 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Run
+      - name: Trade
         run: python -m desk.main tick
         env:
-          LISTEN_SECONDS: "780"   # stay online ~13 min answering Telegram, then hand off to the next run
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           OANDA_ACCOUNT_ID: ${{ secrets.OANDA_ACCOUNT_ID }}
@@ -38,7 +38,29 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-      - name: Save the bot's memory
+      - name: Save trades and dashboard
+        if: always()
+        run: |
+          git config user.name "trading-desk-bot"
+          git config user.email "trading-desk-bot@users.noreply.github.com"
+          git add data docs
+          git diff --cached --quiet && exit 0
+          git commit -m "Bot state $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push origin HEAD:main && break; sleep 5; done
+      - name: Listen for Telegram commands
+        run: python -m desk.main listen
+        env:
+          LISTEN_SECONDS: "720"
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          OANDA_ACCOUNT_ID: ${{ secrets.OANDA_ACCOUNT_ID }}
+          OANDA_API_TOKEN: ${{ secrets.OANDA_API_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      - name: Save
         if: always()
         run: |
           git config user.name "trading-desk-bot"

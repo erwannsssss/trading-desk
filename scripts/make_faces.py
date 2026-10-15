@@ -89,9 +89,9 @@ def make(name: str, desc: str, i: int) -> bool:
     prompt = f"{desc}, " + STYLE.format(suit=SUITS[i % len(SUITS)])
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
            + f"?width=512&height=512&seed={1000 + i}&nologo=true&model=flux")
-    for attempt in range(4):
+    for attempt in range(2):
         try:
-            r = requests.get(url, timeout=120)
+            r = requests.get(url, timeout=90)
             if r.ok and r.headers.get("content-type", "").startswith("image"):
                 im = Image.open(io.BytesIO(r.content)).convert("RGB").resize((320, 320), Image.LANCZOS)
                 im.save(OUT / f"{slug(name)}.jpg", quality=86)
@@ -99,25 +99,38 @@ def make(name: str, desc: str, i: int) -> bool:
             print(f"{name}: HTTP {r.status_code} {r.text[:120]}")
         except Exception as exc:
             print(f"{name}: {exc}")
-        time.sleep(10 * (attempt + 1))
+        time.sleep(8)
     return False
 
 
 def main() -> None:
+    """--limit N: stop after N attempts (the workflow runs batches and saves between them).
+    Exits with code 3 when there is nothing left to make, 2 when the service keeps refusing."""
     OUT.mkdir(parents=True, exist_ok=True)
-    force = set(sys.argv[2:]) if len(sys.argv) > 1 and sys.argv[1] == "--force" else set()
-    made = failed = 0
+    args = sys.argv[1:]
+    limit = int(args[args.index("--limit") + 1]) if "--limit" in args else 999
+    force = set(args[args.index("--force") + 1:]) if "--force" in args else set()
+    made = failed = streak = tried = 0
     for i, (name, desc) in enumerate(PEOPLE.items()):
         path = OUT / f"{slug(name)}.jpg"
         if path.exists() and slug(name) not in force:
             continue
+        if tried >= limit:
+            break
+        tried += 1
+        force.discard(slug(name))
         if make(name, desc, i):
-            made += 1
-            print(f"made {name}")
+            made += 1; streak = 0
+            print(f"made {name}", flush=True)
         else:
-            failed += 1
-        time.sleep(4)
-    print(f"done: {made} made, {failed} failed")
+            failed += 1; streak += 1
+            if streak >= 3:
+                print("image service keeps refusing; stopping", flush=True)
+                sys.exit(2)
+        time.sleep(3)
+    print(f"batch: {made} made, {failed} failed", flush=True)
+    if tried == 0:
+        sys.exit(3)
 
 
 if __name__ == "__main__":

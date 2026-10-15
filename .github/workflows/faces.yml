@@ -21,14 +21,20 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install requests pillow
-      - run: |
-          if [ -n "${{ inputs.force }}" ]; then python scripts/make_faces.py --force ${{ inputs.force }}; else python scripts/make_faces.py; fi
-      - name: Save
-        if: always()
+      - name: Make photos in batches, saving after each batch
+        env:
+          PYTHONUNBUFFERED: "1"
         run: |
           git config user.name "trading-desk-bot"
           git config user.email "trading-desk-bot@users.noreply.github.com"
-          git add docs/faces
-          git diff --cached --quiet && exit 0
-          git commit -m "Staff photos $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push origin HEAD:main && break; sleep 5; done
+          FORCE="${{ inputs.force }}"
+          for batch in $(seq 1 15); do
+            if [ -n "$FORCE" ] && [ "$batch" = 1 ]; then python scripts/make_faces.py --limit 5 --force $FORCE; else python scripts/make_faces.py --limit 5; fi && code=0 || code=$?
+            git add docs/faces
+            if ! git diff --cached --quiet; then
+              git commit -qm "Staff photos (batch $batch)"
+              for i in 1 2 3; do git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && break; sleep 5; done
+            fi
+            [ "$code" = 3 ] && echo "all photos made" && exit 0
+            [ "$code" = 2 ] && exit 1
+          done

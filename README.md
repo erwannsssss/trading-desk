@@ -132,6 +132,23 @@ the page stays within a minute or two of live without waiting for GitHub Pages t
 - Dashboard: org chart floor with live status and hit rates, "Explain like I'm new" on every idea, and a
   tap-to-define glossary.
 
+## Luck or skill?
+
+`desk/edge.py` tests whether results are a real edge or a lucky streak, and the dashboard's **Luck or skill?**
+tab charts it:
+
+- **Expectancy** (average R per trade) with a t-test, a 90% confidence interval and a 4,000-sample bootstrap
+- **Coin-flip permutation test:** same trade sizes, random direction; how often does luck do as well? Charted as
+  a "luck zone" band around the desk's running total
+- **Win rate** with a Wilson interval vs. the break-even win rate; rolling 20-trade win rate
+- **Trades needed** before the current edge would be statistically significant
+- **Versus the market:** beta, annualized alpha with its t-test, Sharpe, the probabilistic Sharpe ratio and the
+  track record still needed; daily scatter vs. the S&P 500; drawdown chart
+- **Edge by style** with confidence intervals, **conviction vs. result** correlation, **each analyst vs. a coin
+  flip** (binomial test with Wilson intervals), and a **Monte Carlo** fan of the next 100 trades
+- A verdict: too early (under 20 trades), no edge, promising, or evidence of a real edge (coin-flip p < 0.05
+  and bootstrap P(edge > 0) >= 95%)
+
 ## Secrets
 
 Add these in **Settings → Secrets and variables → Actions**:

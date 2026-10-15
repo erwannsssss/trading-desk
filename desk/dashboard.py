@@ -6,7 +6,7 @@ import math
 from datetime import datetime, timedelta
 from statistics import mean, pstdev
 
-from desk import activity, config, marketdata, scorecard, staff
+from desk import activity, config, edge, marketdata, scorecard, staff
 from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research.planner import PLANS_DIR
@@ -34,6 +34,7 @@ def build(state: dict) -> None:
     book, details = snapshot(state)
     trades = ledger.load()
     curve = _curve()
+    scores = _safe(lambda: scorecard.seat_scores(trades, curve), {})
     plans = _recent_plans(days=10)
 
     data = {
@@ -64,7 +65,8 @@ def build(state: dict) -> None:
         "rulebook": _json(config.DATA_DIR / "rulebook.json", []),
         "tournament": _json(config.DATA_DIR / "tournament.json", None),
         "roster": activity.roster(),
-        "scores": _safe(lambda: scorecard.seat_scores(trades, curve), {}),
+        "scores": scores,
+        "edge": _safe(lambda: edge.analyze(trades, curve, scores, config.STARTING_CAPITAL), None),
         "interns": _safe(_interns, []),
         "grading_starts": _grading_starts(),
         "reviews": (_json(config.DATA_DIR / "reviews.json", []) or [None])[-1],

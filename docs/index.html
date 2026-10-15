@@ -219,6 +219,17 @@ abbr.g { text-decoration: underline dotted var(--ink-3); text-underline-offset: 
 .eli { margin: 10px 0; padding: 12px 14px; border-left: 3px solid var(--signal); background: color-mix(in srgb, var(--signal) 10%, transparent); }
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
 .cards-grid img { width: 100%; border-radius: 8px; border: 1px solid var(--rule); }
+
+/* luck or skill */
+.verdict { padding: 18px 0 6px; }
+.verdict .big { font-size: clamp(30px, 6vw, 52px); font-weight: 800; font-variation-settings: "wdth" 118; letter-spacing: -0.02em; line-height: 1; }
+.verdict.edge .big { color: var(--gain); }
+.verdict.no_edge .big { color: var(--loss); }
+.meter { position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--rule), var(--rule)); margin: 16px 0 6px; max-width: 560px; }
+.meter i { position: absolute; top: -5px; width: 4px; height: 20px; border-radius: 2px; background: var(--ink); }
+.meter-labels { display: flex; justify-content: space-between; max-width: 560px; font-size: 12.5px; color: var(--ink-3); }
+.chart-box { position: relative; height: 260px; margin-top: 6px; }
+.chart-note { font-size: 13px; color: var(--ink-2); max-width: 70ch; margin: 4px 0 0; }
 footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -247,6 +258,7 @@ footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
     <button class="tab" role="tab" data-tab="trades">Trade log</button>
     <button class="tab" role="tab" data-tab="plan">Today's game plan</button>
     <button class="tab" role="tab" data-tab="stats">Performance</button>
+    <button class="tab" role="tab" data-tab="edge">Luck or skill?</button>
     <button class="tab" role="tab" data-tab="ghost">Passed ideas</button>
     <button class="tab" role="tab" data-tab="learning">Lessons</button>
   </nav>
@@ -258,6 +270,7 @@ footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
     <section class="panel" id="p-trades" hidden></section>
     <section class="panel" id="p-plan" hidden></section>
     <section class="panel" id="p-stats" hidden></section>
+    <section class="panel" id="p-edge" hidden></section>
     <section class="panel" id="p-ghost" hidden></section>
     <section class="panel" id="p-learning" hidden></section>
   </main>
@@ -330,7 +343,7 @@ function render(d) {
     ${spyRet != null ? `<span>S&amp;P 500 over the same time: <b>${pct(spyRet)}</b></span>` : ""}`;
   drawCurve(d.curve);
 
-  renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderGhost(d); renderLearning(d);
+  renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderEdge(d); renderGhost(d); renderLearning(d);
   $("#foot").textContent = `Updated ${when(d.generated_at)} New York time. Paper money only. Refreshes every minute.`;
   document.querySelectorAll("main .panel").forEach(gloss);
 }
@@ -488,9 +501,20 @@ function renderStats(d) {
       <div class="scroll"><table><thead><tr><th>Setup</th><th>Side</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Avg result</th></tr></thead><tbody>
       ${d.backtest.results.map(r => `<tr><td>${esc(r.setup)}</td><td>${r.direction === "short" ? "Short" : "Long"}</td><td class="num">${r.trades.toLocaleString()}</td><td class="num">${r.win_rate}%</td><td class="num ${cls(r.avg_r)}">${r.avg_r > 0 ? "+" : ""}${r.avg_r}R</td></tr>`).join("")}
       </tbody></table></div>` : `<p class="empty">The first backtest runs with the weekly review on Sunday.</p>`}
+    <h3>Daily returns vs. the S&amp;P 500</h3>
+    <p class="lede small">Each day's gain or loss, in percent. Bars above the line are up days, below are down days.</p>
+    ${d.edge && (d.edge.daily || []).length ? `<div class="chart-box"><canvas id="c-daily"></canvas></div>` : `<p class="empty">Shows up after the first full trading day.</p>`}
     <h3>Is its confidence honest?</h3>
     <p class="lede small">Each trade comes with the desk's own odds of hitting the target. Well-calibrated means its 70% calls win about 70% of the time.</p>
     ${s.calibration.length ? `<div class="box-chart"><canvas id="calib"></canvas></div>` : `<p class="empty">Shows up after the first closed trades.</p>`}`;
+  if (document.getElementById("c-daily")) {
+    const dd = d.edge.daily;
+    mkChart("c-daily", {type: "bar", data: {labels: dd.map(x => x.date), datasets: [
+      {label: "The desk", data: dd.map(x => x.desk_pct), backgroundColor: dd.map(x => x.desk_pct >= 0 ? css("--gain") : css("--loss")), borderRadius: 3, borderSkipped: "start"},
+      {label: "S&P 500", data: dd.map(x => x.spy_pct), backgroundColor: css("--spy"), borderRadius: 3, borderSkipped: "start"}]},
+      options: {plugins: {tooltip: {callbacks: {label: (i) => `${i.dataset.label}: ${i.parsed.y > 0 ? "+" : ""}${i.parsed.y.toFixed(2)}%`}}},
+        scales: {x: axis("", {grid: {display: false}, ticks: {color: css("--ink-3"), maxTicksLimit: 10}}), y: axis("Daily return (%)")}}});
+  }
   if (s.calibration.length) {
     if (charts.calib) charts.calib.destroy();
     charts.calib = new Chart($("#calib"), { type: "bar",
@@ -615,6 +639,15 @@ const GLOSSARY = {
   "leverage": "Controlling more money than you have, which magnifies gains and losses.",
   "backtest": "Testing a strategy on past data to see how it would have done.",
   "calibration": "Whether the desk's stated odds match reality: 70% calls should win about 70% of the time.",
+  "p-value": "The chance of seeing results this good from pure luck. Under 0.05 (5%) is the usual bar for 'probably not luck'.",
+  "confidence interval": "The range the true value most likely sits in. Narrow means we know it well; wide means we need more data.",
+  "expectancy": "The average result per trade, in R. Positive expectancy means the strategy makes money over many trades.",
+  "alpha": "Return beyond what the market's moves explain. Positive alpha is the skill part.",
+  "beta": "How much the account moves with the market. 1 means it moves like the S&P 500; 0 means unrelated.",
+  "bootstrap": "Re-sampling the real trades thousands of times to see how much the results could vary by chance.",
+  "Monte Carlo": "Simulating thousands of possible futures by drawing from the desk's real trade results.",
+  "coin-flip": "A trader with the same trade sizes but random direction. The baseline that pure luck would produce.",
+  "statistically significant": "Unlikely to be luck, usually meaning a p-value under 0.05.",
 };
 const GKEYS = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
 const GRE = new RegExp(`(?<![\\w/])(${GKEYS.map(k => k.replace(/[.*+?^${}()|[\]\\\/&]/g, "\\$&")).join("|")})(?![\\w/])`, "i");
@@ -655,6 +688,170 @@ document.addEventListener("click", (e) => {
 }, true);
 document.addEventListener("click", (e) => { const b = e.target.closest("[data-eli]"); if (!b) return;
   const box = document.getElementById(b.dataset.eli); if (box) { box.hidden = !box.hidden; b.textContent = box.hidden ? "Explain like I'm new" : "Hide the simple version"; } });
+
+
+/* ---------- luck or skill ---------- */
+const CH = {};
+function mkChart(id, config) {
+  const el = document.getElementById(id); if (!el) return;
+  if (CH[id]) CH[id].destroy();
+  config.options = Object.assign({responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: {legend: {labels: {color: css("--ink-2"), boxWidth: 14, boxHeight: 3}}}}, config.options || {});
+  CH[id] = new Chart(el, config);
+}
+const axis = (title, extra = {}) => Object.assign({grid: {color: css("--rule")}, border: {display: false},
+  ticks: {color: css("--ink-3")}, title: title ? {display: true, text: title, color: css("--ink-3")} : undefined}, extra);
+const fmtP = (p) => p == null ? "n/a" : p < 0.001 ? "under 0.1%" : (p * 100).toFixed(p < 0.1 ? 1 : 0) + "%";
+const need = (n, what) => `<p class="empty">Shows up after ${n} ${what}.</p>`;
+
+function renderEdge(d) {
+  const e = d.edge;
+  const el = $("#p-edge");
+  if (!e) { el.innerHTML = `<h2>Luck or skill?</h2><p class="empty">The analysis runs once the desk has results.</p>`; return; }
+  const t = e.trades || {}, v = e.verdict, mk = e.market || {};
+  const pos = v.level === "too_early" ? 8 : v.level === "no_edge" ? 15 : v.level === "promising" ? 55 : 90;
+  el.innerHTML = `
+    <h2>Luck or skill?</h2>
+    <p class="lede">Any trader can get lucky for a while. These tests compare the desk's real results against what pure chance would produce, so you can tell a hot streak from a real edge.</p>
+    <div class="verdict ${v.level}"><div class="big">${esc(v.headline)}</div>
+      <div class="meter"><i style="left:calc(${pos}% - 2px)"></i></div>
+      <div class="meter-labels"><span>Too early</span><span>Looks like luck</span><span>Promising</span><span>Real edge</span></div>
+      <p class="note" style="margin-top:14px">${esc(v.detail)}</p></div>
+    <div class="figures">
+      <div class="fig"><div class="v">${t.n || 0}</div><div class="k">Closed trades</div></div>
+      <div class="fig"><div class="v ${cls(t.avg_r)}">${t.avg_r == null ? "—" : (t.avg_r > 0 ? "+" : "") + t.avg_r + "R"}</div><div class="k">Expectancy per trade${t.ci90 ? ` (90% range ${t.ci90[0]} to ${t.ci90[1]})` : ""}</div></div>
+      <div class="fig"><div class="v">${t.luck_p_value == null ? "—" : fmtP(t.luck_p_value)}</div><div class="k">Coin-flip traders who did as well</div></div>
+      <div class="fig"><div class="v">${t.prob_positive == null ? "—" : Math.round(t.prob_positive * 100) + "%"}</div><div class="k">Chance the true edge is above zero (bootstrap)</div></div>
+      <div class="fig"><div class="v">${t.win_rate == null ? "—" : t.win_rate + "%"}</div><div class="k">Win rate${t.breakeven_win_rate ? `, needs ${t.breakeven_win_rate}% to break even` : ""}</div></div>
+      <div class="fig"><div class="v">${t.trades_needed ? t.trades_needed : "—"}</div><div class="k">Trades needed to prove the current edge</div></div>
+    </div>
+
+    <h3>Desk vs. the luck zone</h3>
+    <p class="chart-note">The dark line is the desk's running total in R. The shaded band is where 90% of coin-flip traders with the exact same trade sizes ended up. A line that climbs above the band is the signature of skill.</p>
+    ${(e.cum_r || []).length >= 3 ? `<div class="chart-box"><canvas id="c-luck"></canvas></div>` : need(3, "closed trades")}
+
+    <div class="two">
+      <div><h3>Every trade's result</h3><p class="chart-note">How many trades landed at each result, in R. A healthy desk has small losses near -1R and a right side that stretches further.</p>
+        ${(e.r_histogram || []).length ? `<div class="chart-box"><canvas id="c-hist"></canvas></div>` : need(1, "closed trade")}</div>
+      <div><h3>Rolling win rate (last 20 trades)</h3><p class="chart-note">The dashed line is the win rate the desk needs to break even given its average win and loss.</p>
+        ${(e.rolling_win_rate || []).length >= 3 ? `<div class="chart-box"><canvas id="c-roll"></canvas></div>` : need(3, "closed trades")}</div>
+    </div>
+
+    <h3>Versus the market</h3>
+    <p class="chart-note">Each dot is one day: the S&P 500's return across, the desk's up. Beta is how much the desk follows the market; alpha is what's left over, the part the market can't explain.</p>
+    <div class="figures">
+      <div class="fig"><div class="v">${mk.beta ?? "—"}</div><div class="k">Beta</div></div>
+      <div class="fig"><div class="v ${cls(mk.alpha_annual_pct)}">${mk.alpha_annual_pct == null ? "—" : (mk.alpha_annual_pct > 0 ? "+" : "") + mk.alpha_annual_pct + "%"}</div><div class="k">Alpha per year${mk.alpha_p != null ? `, luck odds ${fmtP(mk.alpha_p)}` : ""}</div></div>
+      <div class="fig"><div class="v">${mk.sharpe_annual ?? "—"}</div><div class="k">Sharpe ratio</div></div>
+      <div class="fig"><div class="v">${mk.psr == null ? "—" : Math.round(mk.psr * 100) + "%"}</div><div class="k">Chance the true Sharpe is above zero</div></div>
+      <div class="fig"><div class="v">${mk.min_track_record_days ?? "—"}</div><div class="k">Trading days of history needed to be 95% sure</div></div>
+      <div class="fig"><div class="v">${mk.beat_market_days_pct == null ? "—" : mk.beat_market_days_pct + "%"}</div><div class="k">Days it beat the S&P 500 (${mk.days || 0} days)</div></div>
+    </div>
+    <div class="two">
+      <div>${(e.daily || []).length >= 5 ? `<div class="chart-box"><canvas id="c-beta"></canvas></div>` : need(5, "trading days of history")}</div>
+      <div>${(e.drawdown || []).length >= 2 ? `<div class="chart-box"><canvas id="c-dd"></canvas></div>` : ""}</div>
+    </div>
+
+    <h3>Which styles actually have an edge?</h3>
+    <p class="chart-note">Average result per trade by style, with the range the true value probably sits in. A style whose whole range sits above zero is the real thing; one that crosses zero could still be luck.</p>
+    ${(e.by_style || []).length ? `<div class="chart-box"><canvas id="c-style"></canvas></div>
+      <div class="scroll"><table><thead><tr><th>Style</th><th class="num">Trades</th><th class="num">Avg result</th><th class="num">90% range</th><th class="num">Luck odds</th></tr></thead><tbody>
+      ${e.by_style.map(g => `<tr><td>${esc(g.name)}</td><td class="num">${g.n}</td><td class="num ${cls(g.avg_r)}">${g.avg_r > 0 ? "+" : ""}${g.avg_r}R</td>
+        <td class="num">${g.ci90 ? `${g.ci90[0]} to ${g.ci90[1]}` : "needs 3"}</td><td class="num">${g.p_value == null ? "—" : fmtP(g.p_value)}</td></tr>`).join("")}</tbody></table></div>`
+      : need(1, "closed trade")}
+
+    <div class="two">
+      <div><h3>Does conviction predict results?</h3><p class="chart-note">If Elena's conviction means anything, higher-conviction trades should score higher.
+        ${e.conviction_vs_r?.stats ? `Correlation ${e.conviction_vs_r.stats.r} (luck odds ${fmtP(e.conviction_vs_r.stats.p_value)}).` : ""}</p>
+        ${(e.conviction_vs_r?.points || []).length >= 3 ? `<div class="chart-box"><canvas id="c-conv"></canvas></div>` : need(3, "closed trades")}</div>
+      <div><h3>Analysts vs. a coin flip</h3><p class="chart-note">Each bar is the range a person's true hit rate probably sits in. Entirely right of 50% means real skill, not luck.</p>
+        ${(e.analysts || []).length ? `<div class="chart-box" style="height:${Math.max(220, e.analysts.length * 30)}px"><canvas id="c-analysts"></canvas></div>` : need(3, "graded calls per person (from about " + (d.grading_starts ? new Date(d.grading_starts + "T12:00").toLocaleDateString("en-US", {month: "short", day: "numeric"}) : "a few days in") + ")")}</div>
+    </div>
+
+    <h3>The next 100 trades</h3>
+    <p class="chart-note">A Monte Carlo simulation: 2,000 possible futures built by re-drawing the desk's real trade results. The shaded bands show the middle 50% and 90% of outcomes.
+      ${e.monte_carlo ? `Chance of being up after 100 trades: <b>${Math.round(e.monte_carlo.prob_profit * 100)}%</b>. Chance of a 20% drop along the way: <b>${Math.round(e.monte_carlo.prob_20pct_drawdown * 100)}%</b>.` : ""}</p>
+    ${e.monte_carlo ? `<div class="chart-box" style="height:300px"><canvas id="c-mc"></canvas></div>` : need(5, "closed trades")}
+    <p class="small muted" style="margin-top:22px">Methods: one-sided t-test and 4,000-sample bootstrap on per-trade R; a coin-flip permutation test that keeps each trade's size and randomizes its direction; Wilson intervals for win and hit rates; binomial tests against 50%; OLS alpha/beta on daily returns; the probabilistic Sharpe ratio (Bailey and López de Prado). Testing many styles and analysts at once means a few will look good by chance, so treat single wins with suspicion until they repeat.</p>`;
+  drawEdge(e);
+}
+
+function drawEdge(e) {
+  const ink = css("--ink"), spy = css("--spy"), gain = css("--gain"), loss = css("--loss"), rule = css("--rule");
+  if (document.getElementById("c-luck")) {
+    const labels = e.cum_r.map((_, i) => i + 1);
+    mkChart("c-luck", {type: "line", data: {labels, datasets: [
+      {label: "Coin-flip 5th percentile", data: e.trades.luck_band.map(b => b[0]), borderColor: "transparent", pointRadius: 0, fill: false},
+      {label: "Luck zone (90% of coin-flip traders)", data: e.trades.luck_band.map(b => b[1]), borderColor: "transparent", backgroundColor: "color-mix(in srgb, " + spy + " 35%, transparent)", pointRadius: 0, fill: "-1"},
+      {label: "The desk", data: e.cum_r, borderColor: ink, borderWidth: 2.2, pointRadius: 0, tension: 0.15}]},
+      options: {plugins: {legend: {labels: {color: css("--ink-2"), filter: (i) => i.datasetIndex > 0}},
+        tooltip: {callbacks: {title: (i) => e.trade_labels[i[0].dataIndex], label: (i) => i.datasetIndex === 2 ? `Desk: ${i.parsed.y}R` : null}}},
+        scales: {x: axis("Trade number", {grid: {display: false}}), y: axis("Running total (R)")}}});
+  }
+  if (document.getElementById("c-hist")) {
+    mkChart("c-hist", {type: "bar", data: {labels: e.r_histogram.map(h => (h.bin > 0 ? "+" : "") + h.bin + "R"), datasets: [
+      {label: "Trades", data: e.r_histogram.map(h => h.count), backgroundColor: e.r_histogram.map(h => h.bin >= 0 ? gain : loss), borderRadius: 4, borderSkipped: "start"}]},
+      options: {plugins: {legend: {display: false}}, scales: {x: axis("Result", {grid: {display: false}}), y: axis("Trades", {ticks: {color: css("--ink-3"), precision: 0}})}}});
+  }
+  if (document.getElementById("c-roll")) {
+    const be = e.trades.breakeven_win_rate;
+    mkChart("c-roll", {type: "line", data: {labels: e.rolling_win_rate.map((_, i) => i + 1), datasets: [
+      {label: "Win rate, last 20 trades", data: e.rolling_win_rate, borderColor: ink, borderWidth: 2, pointRadius: 0, tension: 0.2},
+      ...(be ? [{label: "Break-even win rate", data: e.rolling_win_rate.map(() => be), borderColor: spy, borderDash: [5, 5], borderWidth: 1.5, pointRadius: 0}] : [])]},
+      options: {scales: {x: axis("Trade number", {grid: {display: false}}), y: axis("%", {min: 0, max: 100})}}});
+  }
+  if (document.getElementById("c-beta")) {
+    const pts = e.daily.map(x => ({x: x.spy_pct, y: x.desk_pct}));
+    const mk = e.market, xs = pts.map(p => p.x), lo = Math.min(...xs), hi = Math.max(...xs);
+    const a = (mk.alpha_annual_pct || 0) / 252;
+    mkChart("c-beta", {type: "scatter", data: {datasets: [
+      {label: "Days", data: pts, backgroundColor: ink, pointRadius: 4, pointHoverRadius: 6},
+      ...(mk.beta != null ? [{type: "line", label: `Fit: beta ${mk.beta}`, data: [{x: lo, y: a + mk.beta * lo}, {x: hi, y: a + mk.beta * hi}], borderColor: spy, borderWidth: 1.5, pointRadius: 0}] : [])]},
+      options: {plugins: {tooltip: {callbacks: {label: (i) => `S&P ${i.parsed.x.toFixed(2)}%, desk ${i.parsed.y.toFixed(2)}%`}}},
+        scales: {x: axis("S&P 500 daily return (%)"), y: axis("Desk daily return (%)")}}});
+  }
+  if (document.getElementById("c-dd")) {
+    mkChart("c-dd", {type: "line", data: {labels: e.drawdown.map(p => p.t), datasets: [
+      {label: "Drop from the high (%)", data: e.drawdown.map(p => p.dd_pct), borderColor: loss, backgroundColor: "color-mix(in srgb, " + loss + " 18%, transparent)", fill: "origin", borderWidth: 1.5, pointRadius: 0}]},
+      options: {plugins: {tooltip: {callbacks: {title: (i) => when(i[0].label), label: (i) => `${i.parsed.y}% below the high`}}},
+        scales: {x: {display: false}, y: axis("% below the high", {max: 0})}}});
+  }
+  if (document.getElementById("c-style")) {
+    const rows = e.by_style;
+    mkChart("c-style", {type: "bar", data: {labels: rows.map(r => r.name), datasets: [
+      {label: "90% range", data: rows.map(r => r.ci90 || [r.avg_r, r.avg_r]), backgroundColor: "color-mix(in srgb, " + spy + " 45%, transparent)", borderRadius: 4, barPercentage: 0.5, borderSkipped: false},
+      {type: "scatter", label: "Average result (R)", data: rows.map((r, i) => ({x: r.avg_r, y: i})), backgroundColor: rows.map(r => r.avg_r >= 0 ? gain : loss), pointRadius: 6, pointStyle: "rectRot"}]},
+      options: {indexAxis: "y", plugins: {tooltip: {callbacks: {label: (i) => i.datasetIndex ? `Average ${rows[i.dataIndex].avg_r}R over ${rows[i.dataIndex].n} trades` : `Range ${i.raw[0]} to ${i.raw[1]}R`}}},
+        scales: {x: axis("Result per trade (R)"), y: axis("", {grid: {display: false}, type: "category", labels: rows.map(r => r.name)})}}});
+  }
+  if (document.getElementById("c-conv")) {
+    mkChart("c-conv", {type: "scatter", data: {datasets: [{label: "Trades", data: e.conviction_vs_r.points, backgroundColor: e.conviction_vs_r.points.map(p => p.y >= 0 ? gain : loss), pointRadius: 5}]},
+      options: {plugins: {legend: {display: false}, tooltip: {callbacks: {label: (i) => `Conviction ${i.parsed.x}: ${i.parsed.y}R`}}},
+        scales: {x: axis("Conviction (1-10)", {min: 0, max: 10}), y: axis("Result (R)")}}});
+  }
+  if (document.getElementById("c-analysts")) {
+    const people = personMap(), rows = e.analysts;
+    mkChart("c-analysts", {type: "bar", data: {labels: rows.map(r => people[r.seat]?.name || r.seat), datasets: [
+      {label: "95% range of true hit rate", data: rows.map(r => r.ci95), backgroundColor: rows.map(r => r.ci95[0] > 50 ? "color-mix(in srgb, " + gain + " 45%, transparent)" : "color-mix(in srgb, " + spy + " 45%, transparent)"), borderRadius: 4, borderSkipped: false, barPercentage: 0.6},
+      {type: "scatter", label: "Hit rate so far", data: rows.map((r, i) => ({x: r.pct, y: i})), backgroundColor: ink, pointRadius: 5},
+      {type: "scatter", label: "Coin flip (50%)", data: rows.map((r, i) => ({x: 50, y: i})), showLine: true, borderColor: loss, borderDash: [4, 4], borderWidth: 1.5, pointRadius: 0}]},
+      options: {indexAxis: "y", plugins: {tooltip: {callbacks: {label: (i) => i.datasetIndex === 1 ? `${rows[i.dataIndex].pct}% of ${rows[i.dataIndex].total}, luck odds ${fmtP(rows[i.dataIndex].p_value)}` : i.datasetIndex === 0 ? `Range ${i.raw[0]}% to ${i.raw[1]}%` : "Coin flip"}}},
+        scales: {x: axis("Hit rate (%)", {min: 0, max: 100}), y: axis("", {grid: {display: false}, type: "category", labels: rows.map(r => people[r.seat]?.name || r.seat)})}}});
+  }
+  if (document.getElementById("c-mc")) {
+    const b = e.monte_carlo.bands, lab = b.map(x => x.trade);
+    const band = (k) => b.map(x => x[k]);
+    mkChart("c-mc", {type: "line", data: {labels: lab, datasets: [
+      {label: "5th percentile", data: band("p5"), borderColor: "transparent", pointRadius: 0},
+      {label: "90% of futures", data: band("p95"), borderColor: "transparent", backgroundColor: "color-mix(in srgb, " + spy + " 25%, transparent)", fill: 0, pointRadius: 0},
+      {label: "25th percentile", data: band("p25"), borderColor: "transparent", pointRadius: 0},
+      {label: "Middle 50% of futures", data: band("p75"), borderColor: "transparent", backgroundColor: "color-mix(in srgb, " + spy + " 45%, transparent)", fill: 2, pointRadius: 0},
+      {label: "Median future", data: band("p50"), borderColor: ink, borderWidth: 2.2, pointRadius: 0}]},
+      options: {plugins: {legend: {labels: {color: css("--ink-2"), filter: (i) => [1, 3, 4].includes(i.datasetIndex)}},
+        tooltip: {callbacks: {label: (i) => [1, 3, 4].includes(i.datasetIndex) || i.datasetIndex === 0 || i.datasetIndex === 2 ? `${i.dataset.label}: ${money(i.parsed.y, 0)}` : null}}},
+        scales: {x: axis("Trades from now", {grid: {display: false}}), y: axis("Account value", {ticks: {color: css("--ink-3"), callback: (v) => "$" + (v / 1000).toFixed(1) + "k"}})}}});
+  }
+}
 
 /* ---------- trading floor ---------- */
 const LIVE_JOBS = ["research", "desk", "client", "learning"];

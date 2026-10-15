@@ -174,3 +174,24 @@ Alpaca paper balance: with nothing open, the bot treats the change as a deposit,
 Add these in **Settings → Secrets and variables → Actions**:
 `ALPACA_API_KEY`, `ALPACA_SECRET_KEY`, `OANDA_ACCOUNT_ID`, `OANDA_API_TOKEN`,
 `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GEMINI_API_KEY`, `FINNHUB_API_KEY`, `FRED_API_KEY`
+
+## Running the firm like a business
+
+- **Levels, promotions and demotions.** Everyone has a level: Junior, Associate, Senior or Principal. In Ashley's Sunday review, people are promoted at 60%+ right over 15+ graded calls and demoted under 45%, at most once every 4 weeks. A Junior who stays under 45% is let go. The portfolio manager sees each analyst's level and hit rate and weighs proven people more.
+- **Payroll and bonuses.** Staff are paid from fees, like a real hedge fund: base pay is 2% a year of firm equity, split by level, and bonuses are 20% of new profits above the high-water mark, split by level and hit rate and paid monthly. Erwann takes no salary, and interns are unpaid. Payroll, bonuses and bank interest all come out of firm equity.
+- **Firm P&L tab.** The income statement since opening, by month and by day: trading gains minus interest, payroll and bonuses, which answers whether the firm is profitable.
+- **Unlockable desks.** The first time equity reaches each milestone, a desk opens and stays open:
+
+  | Equity | Unlock |
+  |---|---|
+  | $10,500 | Crypto desk |
+  | $11,000 | Event desk |
+  | $11,750 | FX desk |
+  | $12,500 | Bank rate cut to 6.5% |
+  | $13,500 | Quant desk |
+  | $15,000 | 5 intern seats |
+
+  The new desks give their own expert reads and add more ideas per session.
+- **Compliance.** Diane Foster audits every trade after the fact: stops, risk at the actual fill, slippage, blackout windows, stops that were widened, oversized losses, holding periods, and firm-wide limits. Major findings go to Telegram, and every finding feeds the HR reviews.
+- **Date pickers.** The trade log, game plan, passed ideas, compliance log, reviews, letters, cards and recaps show one day (or week, or month) at a time. Past days' plans are archived in `docs/days/`.
+- **Staff photos.** AI headshots in suits live in `docs/faces/`. The photo job runs hourly within the free image service's limit until everyone has one.

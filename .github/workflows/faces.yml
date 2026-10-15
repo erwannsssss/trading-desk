@@ -43,5 +43,5 @@ jobs:
               for i in 1 2 3; do git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && break; sleep 5; done
             fi
             [ "$code" = 3 ] && echo "all photos made" && exit 0
-            [ "$code" = 2 ] && exit 1
+            [ "$code" = 2 ] && echo "rate-limited; the next hourly run continues" && exit 0
           done

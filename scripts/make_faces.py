@@ -104,6 +104,8 @@ def make(name: str, desc: str, i: int) -> bool:
                 im.save(OUT / f"{slug(name)}.jpg", quality=86)
                 return True
             print(f"{name}: HTTP {r.status_code} {r.text[:120]}")
+            if r.status_code in (402, 429):
+                return False      # rate-limited: don't hammer it; the hourly run tries again
         except Exception as exc:
             print(f"{name}: {exc}")
         time.sleep(8)

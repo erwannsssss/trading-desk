@@ -66,6 +66,7 @@ def build(state: dict) -> None:
         "roster": activity.roster(),
         "scores": _safe(lambda: scorecard.seat_scores(trades, curve), {}),
         "interns": _safe(_interns, []),
+        "grading_starts": _grading_starts(),
         "reviews": (_json(config.DATA_DIR / "reviews.json", []) or [None])[-1],
         "alumni": _safe(lambda: staff.load()["alumni"], []),
         "graduates": _safe(lambda: _json(config.DATA_DIR / "interns.json", {}).get("graduates", []), []),
@@ -89,6 +90,22 @@ def _safe(fn, default):
     except Exception as exc:
         print(f"dashboard piece failed: {exc}")
         return default
+
+
+def _grading_starts() -> str | None:
+    """Roughly when the first ideas will be old enough to grade (3 trading days after the first plan)."""
+    if not PLANS_DIR.exists():
+        return None
+    first = min((p.name[:10] for p in PLANS_DIR.glob("*.json")), default=None)
+    if not first:
+        return None
+    d = datetime.fromisoformat(first).date()
+    added = 0
+    while added < 4:
+        d += timedelta(days=1)
+        if d.weekday() < 5:
+            added += 1
+    return d.isoformat()
 
 
 def _interns() -> list[dict]:

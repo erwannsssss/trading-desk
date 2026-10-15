@@ -5,6 +5,12 @@ on:
   schedule:
     - cron: "30 23 * * 0"
   workflow_dispatch:
+    inputs:
+      job:
+        description: "weekly = full review; reviews = just Ashley's HR reviews"
+        default: weekly
+        type: choice
+        options: [weekly, reviews]
 
 permissions:
   contents: write
@@ -25,7 +31,7 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - name: Weekly review
-        run: python -m desk.main weekly
+        run: python -m desk.main ${{ inputs.job || 'weekly' }}
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}

@@ -735,7 +735,9 @@ function personMap() {
 
 function hitBadge(id) {
   const sc = (DATA.scores || {})[id];
-  if (!sc) return "";
+  const graded = ["pm", "macro", "scanner", "technical", "fundamental", "sentiment", "smartmoney", "bull", "bear", "factcheck", "sizer", "execution", "positions", "options", "risk"];
+  if (!sc) return graded.includes(id) && DATA.grading_starts
+    ? `<span class="hit">Hit rate starts ${new Date(DATA.grading_starts + "T12:00").toLocaleDateString("en-US", {month: "short", day: "numeric"})}</span>` : "";
   if (sc.pct == null) return `<span class="hit">${sc.total ? `${sc.total} graded, needs ${3 - sc.total} more` : "not graded yet"}</span>`;
   return `<span class="hit ${sc.pct >= 55 ? "good" : sc.pct < 45 ? "bad" : ""}">${sc.pct}% ${esc(sc.label)} (${sc.total})</span>`;
 }

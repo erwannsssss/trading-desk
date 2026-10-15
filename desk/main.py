@@ -179,6 +179,18 @@ def weekly() -> int:
     return 0
 
 
+def reviews() -> int:
+    from desk import activity as floor
+    from desk import dashboard, hr
+    floor.start_job("learning", "HR reviews")
+    try:
+        hr.weekly_reviews()
+    finally:
+        floor.finish()
+    dashboard.build(load())
+    return 0
+
+
 def run_backtest() -> int:
     from desk import backtest
     out = backtest.run()
@@ -233,7 +245,7 @@ def main() -> int:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "tick"
     try:
         return {"healthcheck": healthcheck, "tick": tick, "research": research, "listen": listen_only,
-                "weekly": weekly, "backtest": run_backtest}[cmd]()
+                "weekly": weekly, "backtest": run_backtest, "reviews": reviews}[cmd]()
     except Exception as exc:
         traceback.print_exc()
         try:

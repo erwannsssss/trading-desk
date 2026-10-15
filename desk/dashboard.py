@@ -93,12 +93,18 @@ def build(state: dict) -> None:
                             "researched": len(p.get("ideas", []))} for p in plans if p.get("date") == now().date().isoformat()],
         "letters": _json(config.DATA_DIR / "letters.json", []),
         "calendar": _safe(lambda: _calendar(plans, trades), None),
+        "awards": _safe(lambda: _awards(scores), None),
     }
     DOCS.mkdir(exist_ok=True)
     (DOCS / "data.json").write_text(json.dumps(data, default=str, separators=(",", ":")))
 
 
 # ---- pieces ------------------------------------------------------------------
+def _awards(scores: dict) -> dict:
+    from desk import awards
+    return {"standings": awards.standings(), "eotm": awards.load()["eotm"][-12:], "race": awards.race(scores)}
+
+
 def _calendar(plans: list[dict], trades: list[dict]) -> dict:
     from desk import schedule
     from desk.trading import guards

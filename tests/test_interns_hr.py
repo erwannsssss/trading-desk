@@ -62,3 +62,36 @@ class StaffTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AwardsTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        from desk import awards
+        self.p = mock.patch.object(awards, "FILE", Path(self.tmp.name) / "awards.json")
+        self.p.start()
+
+    def tearDown(self):
+        self.p.stop()
+        self.tmp.cleanup()
+
+    def test_rounds_go_to_whoever_the_price_proved_right(self):
+        from desk import awards
+        graded = {"graded": {"a": {"date": "2026-10-13", "symbol": "A", "bull": "long", "move_pct": 2.0},
+                             "b": {"date": "2026-10-13", "symbol": "B", "bull": "long", "move_pct": -1.0},
+                             "c": {"date": "2026-10-14", "symbol": "C", "bull": "short", "move_pct": -3.0},
+                             "d": {"date": "2026-10-14", "symbol": "D", "bull": None, "move_pct": 5.0}}, "macro": {}}
+        with mock.patch("desk.scorecard._load", return_value=graded):
+            rs = awards.rounds()
+            t = awards.season_trophy("2026-10")
+        self.assertEqual([r["winner"] for r in rs], ["bull", "bear", "bull"])
+        self.assertEqual((t["bull"], t["bear"], t["winner"]), (2, 1, "bull"))
+        self.assertEqual(awards.load()["trophies"]["bull"], 1)
+
+    def test_employee_of_the_month_needs_10_calls(self):
+        from desk import awards
+        scores = {"technical": {"right": 9, "total": 9}, "bear": {"right": 8, "total": 12}, "bull": {"right": 5, "total": 12}}
+        with mock.patch("desk.ai.ask", return_value={"speech": "Great month.", "thanks": "Thanks!"}):
+            rec = awards.employee_of_the_month("2026-10", "October 2026", scores)
+        self.assertEqual(rec["seat"], "bear")        # 9/9 is better but under 10 calls
+        self.assertEqual(rec["pct"], 67)

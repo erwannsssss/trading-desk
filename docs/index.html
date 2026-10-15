@@ -175,6 +175,18 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 
 /* org chart */
 .org { margin-top: 18px; }
+.awards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-top: 28px; }
+@media (max-width: 860px) { .awards { grid-template-columns: minmax(0, 1fr); } }
+.award { border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.award p { margin: 0; }
+.award-hero { display: flex; gap: 14px; align-items: center; }
+button.plain { background: none; border: 0; padding: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.race-row { display: grid; grid-template-columns: 16px 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--rule); width: 100%; }
+.race-n { font-weight: 800; color: var(--ink-3); }
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.vs-side { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.vs-score { text-align: center; }
+.vs-big { font-size: 36px; font-weight: 800; font-variation-settings: "wdth" 112; font-variant-numeric: tabular-nums; line-height: 1; }
 .floor-bottom { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 30px; }
 .floor-bottom .feed { margin-top: 0; }
 @media (min-width: 861px) { .floor-bottom .feed { max-height: 1100px; overflow-y: auto; padding-right: 6px; } }
@@ -1398,6 +1410,7 @@ function renderFloor() {
         ${(DATA.interns || []).filter(i => i.status === "let_go").map(i => `<li>${esc(i.name)}, intern, let go ${esc(i.left || "")} at $${(+i.equity).toFixed(2)}</li>`).join("")}
         </ul>` : ""}
     </div>
+    ${awardsBlock(people)}
     <div class="floor-bottom">
     ${calendarBlock(people)}
     <div class="feed"><h3>Floor feed, last hour</h3>
@@ -1405,6 +1418,40 @@ function renderFloor() {
     </div></div>`;
   if (floorOpen) showPerson(floorOpen, true);
   gloss(el);
+}
+
+/* employee of the month and the bull vs bear rivalry */
+function bigFace(p, size = 64) { return p ? `<span class="avatar ${esc(p.desk || "")}" style="width:${size}px;height:${size}px">${avatarInner(p.name)}</span>` : ""; }
+function awardsBlock(people) {
+  const A = DATA.awards; if (!A) return "";
+  const e = (A.eotm || []).at(-1), race = A.race || [], S = A.standings || {};
+  const month = new Date().toLocaleDateString("en-US", {month: "long"});
+  const eotm = e ? `<div class="award"><span class="desk-name">Employee of the month, ${esc(e.label)}</span>
+      <div class="award-hero"><button class="plain" data-person="${esc(e.seat)}">${bigFace(people[e.seat], 72)}</button>
+        <div><div class="seat-name" style="font-size:18px">${esc(e.name)}</div><div class="seat-role">${esc(e.role)}</div>
+          <div class="small"><b>${e.pct}%</b> right on ${e.total} graded calls</div></div></div>
+      <p class="note small">“${esc(e.speech)}” <span class="muted">Victor</span></p>
+      <p class="small"><b>${esc(e.name.split(" ")[0])}:</b> “${esc(e.thanks)}”</p>
+      ${A.eotm.length > 1 ? `<div class="small muted">Past winners: ${A.eotm.slice(0, -1).reverse().map(x => `${esc(x.name)} (${esc(x.label)})`).join(", ")}</div>` : ""}</div>`
+    : `<div class="award"><span class="desk-name">Employee of the month: the race for ${esc(month)}</span>
+      ${race.length ? race.slice(0, 4).map((r, i) => `<button class="plain race-row" data-person="${esc(r.seat)}"><span class="race-n">${i + 1}</span>${bigFace(people[r.seat], 30)}
+          <span><b>${esc(r.name)}</b> <span class="muted small">${esc(r.role)}</span></span><span class="num"><b>${r.pct}%</b> <span class="small muted">of ${r.total}${r.qualified ? "" : ", needs 10"}</span></span></button>`).join("")
+        : `<p class="empty">Hit rates start once ideas are graded (around ${esc(DATA.grading_starts || "next week")}).</p>`}
+      <p class="small muted">The winner is named on the 1st: best hit rate over the month with at least 10 graded calls.</p></div>`;
+  const ss = S.this_season || {bull: 0, bear: 0}, wk = S.this_week || {bull: 0, bear: 0}, tr = S.trophies || {bull: 0, bear: 0};
+  const lead = ss.bull === ss.bear ? "All square" : ss.bull > ss.bear ? `${esc(people.bull?.name.split(" ")[0] || "Jake")} leads` : `${esc(people.bear?.name.split(" ")[0] || "Nadia")} leads`;
+  const lastLine = (S.weekly || []).at(-1);
+  const rivalry = `<div class="award"><span class="desk-name">Bull vs. bear, ${esc(new Date().toLocaleDateString("en-US", {month: "long"}))} season</span>
+      <div class="vs"><button class="plain vs-side" data-person="bull">${bigFace(people.bull, 56)}<span class="seat-name">${esc(people.bull?.name || "Jake")}</span><span class="small muted">the bull</span></button>
+        <div class="vs-score"><div class="vs-big">${ss.bull}<span class="muted"> – </span>${ss.bear}</div><div class="small">${lead}</div>
+          <div class="small muted">This week ${wk.bull}–${wk.bear}</div></div>
+        <button class="plain vs-side" data-person="bear">${bigFace(people.bear, 56)}<span class="seat-name">${esc(people.bear?.name || "Nadia")}</span><span class="small muted">the bear</span></button></div>
+      <p class="small">Season trophies: ${esc(people.bull?.name.split(" ")[0] || "Jake")} ${tr.bull || 0}, ${esc(people.bear?.name.split(" ")[0] || "Nadia")} ${tr.bear || 0}.
+        A round goes to Jake if the price moved the way he argued over 3 trading days, otherwise to Nadia.</p>
+      ${lastLine && lastLine.line ? `<p class="note small">“${esc(lastLine.line)}”</p>` : ""}
+      ${(S.last_rounds || []).length ? `<div class="small muted">Latest rounds: ${S.last_rounds.slice().reverse().map(r => `${esc(r.symbol)} to ${r.winner === "bull" ? "Jake" : "Nadia"}`).join(", ")}</div>`
+        : `<p class="small muted">First rounds are graded around ${esc(DATA.grading_starts || "next week")}.</p>`}</div>`;
+  return `<div class="awards">${eotm}${rivalry}</div>`;
 }
 
 /* daily calendar: who meets when, what's on the agenda, and what they decided */

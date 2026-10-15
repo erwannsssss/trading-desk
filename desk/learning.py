@@ -399,12 +399,20 @@ Return JSON: {{"title": str, "letter": str, "new_rules": [str], "retire_rules": 
     if out.get("retire_rules"):
         msg += ["", "<b>Retired rules</b>"] + [f"- {esc(r)}" for r in out["retire_rules"]]
     telegram.send("\n".join(msg))
-    from desk import hr
+    from desk import awards, hr
     for step in (hr.trade_of_the_week, hr.weekly_reviews):
         try:
             step()
         except Exception as exc:
             print(f"{step.__name__} failed: {exc}")
+    try:
+        r = awards.weekly_trash_talk()
+        if r:
+            who = "Jake" if r["winner"] == "bull" else "Nadia" if r["winner"] == "bear" else "Nobody"
+            telegram.send(f"<b>Bull vs. bear this week:</b> Jake {r['bull']}, Nadia {r['bear']}. {who} takes the week.\n<i>{esc(r['line'])}</i>")
+            floor.event(r["winner"] or "bull", f"Rivalry: Jake {r['bull']}, Nadia {r['bear']} this week. {r['line']}", kind="award")
+    except Exception as exc:
+        print(f"rivalry failed: {exc}")
     floor.done("cio", f"Sent the weekly letter \"{out.get('title', '')}\"; {len(out.get('new_rules') or [])} new rules, "
                f"{len(out.get('retire_rules') or [])} retired")
     return out

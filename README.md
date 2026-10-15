@@ -222,3 +222,14 @@ Add these in **Settings → Secrets and variables → Actions**:
 | FinanceDatabase | Sector and industry for about 19,000 US stocks | Risk: at most 2 same-direction positions per industry |
 
 Every source is cached and fails quietly. The health check tests all of them.
+
+## Smarter trading, round 3
+
+- **Second opinion.** Raj Iyer, an independent reviewer on a different AI model (Groq), checks every approved trade without seeing the team's debate. If he agrees, the bet is sized up 15%; if he disagrees, it's cut to 60%; if he strongly disagrees, the trade is vetoed.
+- **Credit spreads.** When options are expensive (implied volatility 25%+ above what the stock actually moves), the desk sells a spread at the stop level instead of buying one, and keeps the premium if the stock stays on the right side.
+- **Hedge desk.** When stock exposure is 30%+ of equity in a risk-off market, Grace buys an S&P 500 put spread with up to 1.5% of equity. It comes off when the market read improves or exposure drops under 10%.
+- **Pair trades.** Each morning the desk looks for the widest 20-day split inside one industry: long the leader, puts on the laggard. Both legs open together and close together.
+- **Auto-tuned exits.** The desk now tracks how far every trade ran and dipped. After 15+ trades in a style, targets move to where trades actually reach, and stops tighten if winners rarely dip.
+- **Session budget.** Once there's enough data, research shifts toward the sessions whose ideas make money: 30% more ideas for the best session, 30% fewer for the worst.
+- **Employee of the month** (best hit rate, 10+ calls, named on the 1st) and the **bull vs. bear rivalry** (weekly trash talk and a monthly trophy) on the Trading floor tab.
+- **Bug fix.** P&L on bought puts was recorded with the wrong sign. Fixed before any put trade had closed.

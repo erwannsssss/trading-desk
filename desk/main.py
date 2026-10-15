@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import time
 import traceback
@@ -166,6 +167,10 @@ def tick() -> int:
             state["scorecard_hour"] = hour
         from desk import hr
         hr.maybe_season_recap(state)
+        from desk import awards
+        for msg in awards.maybe_monthly(state):
+            telegram.send(msg)
+            floor.event("cio", re.sub(r"<[^>]+>", "", msg).split("\n")[0], kind="award")
     except Exception:
         traceback.print_exc()
     save(state)

@@ -5,7 +5,9 @@
 """
 from __future__ import annotations
 
+import os
 import sys
+import time
 import traceback
 
 from desk import ai, commands, config, datasources, telegram
@@ -96,7 +98,21 @@ def tick() -> int:
     state["last_tick"] = now().isoformat(timespec="seconds")
     save(state)
     print(f"tick ok | equity ${book.equity:,.2f} | positions {book.open_positions}")
+
+    listen(state, int(os.environ.get("LISTEN_SECONDS", "0")))
     return 0
+
+
+def listen(state: dict, seconds: int) -> None:
+    """Stay online and answer Telegram commands within seconds until the next run takes over."""
+    deadline = time.monotonic() + seconds
+    while (left := deadline - time.monotonic()) > 5:
+        try:
+            if commands.process(state, wait=int(min(50, left - 3))):
+                save(state)
+        except Exception as exc:
+            print(f"listen error: {exc}")
+            time.sleep(10)
 
 
 def main() -> int:

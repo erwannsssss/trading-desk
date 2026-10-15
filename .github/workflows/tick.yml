@@ -28,6 +28,7 @@ jobs:
       - name: Run
         run: python -m desk.main tick
         env:
+          LISTEN_SECONDS: "780"   # stay online ~13 min answering Telegram, then hand off to the next run
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           OANDA_ACCOUNT_ID: ${{ secrets.OANDA_ACCOUNT_ID }}

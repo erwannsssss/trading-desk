@@ -17,7 +17,7 @@ HELP = (
     "/golive - leave dry-run and place paper trades\n"
     "/dryrun - back to analyze-only mode\n"
     "/flatten confirm - emergency: close everything\n"
-    "\nCommands are checked every 15 minutes."
+    "\nReplies usually take a few seconds (occasionally a few minutes between runs)."
 )
 
 
@@ -94,8 +94,8 @@ def handle(text: str, state: dict) -> str | None:
     return "Got it. Chatting with the bot about its trades is coming in a later build. For now, try /status or /help."
 
 
-def process(state: dict) -> None:
-    texts, state["telegram_offset"] = telegram.get_commands(state.get("telegram_offset", 0))
+def process(state: dict, wait: int = 0) -> int:
+    texts, state["telegram_offset"] = telegram.get_commands(state.get("telegram_offset", 0), wait)
     for text in texts:
         try:
             reply = handle(text, state)
@@ -103,3 +103,4 @@ def process(state: dict) -> None:
             reply = f"Something went wrong running that: {esc(exc)}"
         if reply:
             telegram.send(reply)
+    return len(texts)

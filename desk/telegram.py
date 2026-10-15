@@ -29,9 +29,12 @@ def esc(text) -> str:
     return html.escape(str(text))
 
 
-def get_commands(offset: int) -> tuple[list[str], int]:
-    """New messages Erwann sent the bot since the last run. Ignores anyone else."""
-    d = request("Telegram", "GET", _url("getUpdates"), params={"offset": offset, "timeout": 0})
+def get_commands(offset: int, wait: int = 0) -> tuple[list[str], int]:
+    """New messages Erwann sent the bot. Ignores anyone else.
+    `wait` > 0 holds the connection open up to that many seconds (long polling),
+    so a command is picked up the moment it arrives."""
+    d = request("Telegram", "GET", _url("getUpdates"), params={"offset": offset, "timeout": wait},
+                timeout=wait + 15)
     texts, new_offset = [], offset
     for upd in d.get("result", []):
         new_offset = max(new_offset, upd["update_id"] + 1)

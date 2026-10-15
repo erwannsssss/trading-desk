@@ -155,6 +155,8 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 .avatar.research { background: var(--ink); color: var(--paper); }
 .avatar.trading { background: var(--gain); color: var(--paper); }
 .avatar.learning { background: var(--signal); color: #16233F; }
+.avatar .face { position: absolute; inset: 0; width: 100%; height: 100%; clip-path: circle(50% at 50% 50%); }
+.avatar { overflow: visible; }
 .avatar .st { position: absolute; right: -1px; bottom: -1px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--paper); background: var(--ink-3); }
 .seat.working .avatar .st { background: var(--signal); }
 @media (prefers-reduced-motion: no-preference) { .seat.working .avatar .st { animation: pulse 1.4s ease-in-out infinite; } }
@@ -945,6 +947,78 @@ const ago = (iso) => { if (!iso) return ""; const m = Math.round((Date.now() - n
 const clock = (iso) => new Date(iso).toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"});
 const initials = (n) => n.split(" ").map(w => w[0]).join("").slice(0, 2);
 
+// Cartoon faces, drawn in SVG from each person's name (same name = same face, every time).
+const FEM = new Set(["Ashley","Riley","Elena","Maya","Priya","Sofia","Nadia","Iris","Ava","Grace","Ruth","Nina","Carmen","Hana",
+  "Imani","Amira","Mei","Freya","Bianca","Yara","Noor","Sienna","Zoe","Chloe","Mia","Lily","Ella","Emma","Aisha","Leila","Jade","Sara","Sarah","Olivia","Ines","Camila"]);
+const FACE_FIX = {  // a few hand-picked looks for the founding staff
+  "Erwann Sadki": {skin: 2, hair: "short", hc: 0, beard: true},
+  "Victor Ashford": {skin: 0, hair: "side", hc: 4, glasses: true},
+  "Ashley Brennan": {skin: 0, hair: "long", hc: 2},
+  "Kenji Watanabe": {skin: 1, hair: "spiky", hc: 0},
+  "Darius Webb": {skin: 4, hair: "buzz", hc: 0, beard: true},
+  "Priya Natarajan": {skin: 3, hair: "long", hc: 0},
+  "Ruth Klein": {skin: 0, hair: "bun", hc: 4, glasses: true},
+  "Omar Haddad": {skin: 2, hair: "curly", hc: 0, glasses: true},
+  "Nadia Volkov": {skin: 0, hair: "bob", hc: 1},
+  "Jake Morrison": {skin: 0, hair: "side", hc: 2},
+  "Theo Okafor": {skin: 5, hair: "buzz", hc: 0},
+  "Grace Adeyemi": {skin: 5, hair: "puff", hc: 0},
+};
+function face(name) {
+  let h = 2166136261;
+  for (const c of name) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const r = (n, salt) => { let x = Math.imul(h ^ Math.imul(salt, 2654435761), 2246822519) >>> 0; x ^= x >>> 15; x = Math.imul(x, 3266489917) >>> 0; x ^= x >>> 13; return (x >>> 0) % n; };
+  const fem = FEM.has(name.split(" ")[0]);
+  const fix = FACE_FIX[name] || {};
+  const SKIN = ["#F6D3B8", "#EBC09B", "#D9A47A", "#B97E55", "#8D5A3B", "#5E3B26"];
+  const HAIR = ["#1E1A18", "#4A2E1F", "#A86B3C", "#D9B26A", "#8E8E8E", "#6B2A1E"];
+  const SHIRT = ["#2F4B7C", "#3E7C6B", "#7A3E5C", "#C27C2C", "#5B5F97", "#2E2E3A", "#9C4A3A", "#4F7CA8"];
+  const skin = SKIN[fix.skin ?? r(SKIN.length, 3)];
+  const hc = HAIR[fix.hc ?? (r(10, 9) < 7 ? r(3, 11) : [0, 1, 2, 3, 5][r(5, 13)])];  // grey hair only for hand-picked staff
+  const shirt = SHIRT[r(SHIRT.length, 17)];
+  const styles = fem ? ["long", "bob", "bun", "puff", "long", "ponytail"] : ["short", "side", "buzz", "curly", "spiky", "short", "bald"];
+  const hair = fix.hair || styles[r(styles.length, 5)];
+  const glasses = fix.glasses ?? r(5, 19) === 0;
+  const beard = fix.beard ?? (!fem && r(4, 21) === 0);
+  const mouth = r(3, 23);
+  const lip = SKIN.indexOf(skin) >= 4 ? "#2A1410" : "#3B2320";
+  const behind = { long: `<path d="M27 40c0-17 9-25 23-25s23 8 23 25v30H27z" fill="${hc}"/>`,
+    ponytail: `<path d="M66 30c10 4 12 18 6 30-2-10-6-18-12-22z" fill="${hc}"/>`,
+    puff: `<circle cx="50" cy="34" r="25" fill="${hc}"/>`,
+    bun: `<circle cx="50" cy="15" r="9" fill="${hc}"/>`, curly: `<circle cx="50" cy="31" r="22" fill="${hc}"/>` }[hair] || "";
+  const top = {
+    short: `<path d="M31 40c0-15 8-21 19-21s19 6 19 21c-4-7-10-10-19-10s-15 3-19 10z" fill="${hc}"/>`,
+    side: `<path d="M31 42c-1-16 8-23 19-23 12 0 20 7 19 22-6-9-15-12-27-9-5 1-9 4-11 10z" fill="${hc}"/>`,
+    buzz: `<path d="M32 40c0-13 8-19 18-19s18 6 18 19c-4-6-10-8-18-8s-14 2-18 8z" fill="${hc}" opacity=".85"/>`,
+    curly: `<path d="M31 41c-2-6 0-12 5-15 2-5 8-8 14-8s12 3 14 8c5 3 7 9 5 15-5-6-11-9-19-9s-14 3-19 9z" fill="${hc}"/>`,
+    spiky: `<path d="M31 40l2-12 4 4 3-10 5 7 5-9 4 9 5-7 3 10 4-4 2 12c-5-6-11-8-19-8s-14 2-18 8z" fill="${hc}"/>`,
+    bald: `<path d="M32 44c-1-3-1-6 0-8M68 44c1-3 1-6 0-8" stroke="${hc}" stroke-width="3" stroke-linecap="round"/>`,
+    long: `<path d="M30 46c-1-17 8-27 20-27s21 10 20 27c-3-9-8-14-14-15-7 4-15 6-26 15z" fill="${hc}"/>`,
+    bob: `<path d="M29 54c-3-22 6-35 21-35s24 13 21 35l-4 2c1-10-2-18-6-22-8 3-17 4-28 4-1 6-1 12 0 18z" fill="${hc}"/>`,
+    bun: `<path d="M31 42c0-15 8-22 19-22s19 7 19 22c-5-8-11-11-19-11s-14 3-19 11z" fill="${hc}"/>`,
+    puff: `<path d="M31 40c2-11 9-16 19-16s17 5 19 16c-5-6-11-8-19-8s-14 2-19 8z" fill="${hc}"/>`,
+    ponytail: `<path d="M31 42c0-15 8-22 19-22s19 7 19 22c-5-8-11-11-19-11s-14 3-19 11z" fill="${hc}"/>`,
+  }[hair] || "";
+  const mouths = [`<path d="M44 55q6 5 12 0" stroke="${lip}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+    `<path d="M43 54q7 7 14 0z" fill="${lip}"/>`,
+    `<path d="M45 56h10" stroke="${lip}" stroke-width="2" stroke-linecap="round"/>`];
+  return `<svg class="face" viewBox="0 0 100 100" aria-hidden="true">
+    ${behind}
+    <path d="M18 100c2-17 15-25 32-25s30 8 32 25z" fill="${shirt}"/>
+    <path d="M44 66h12v11c-2 3-10 3-12 0z" fill="${skin}"/>
+    <path d="M42 76l8 8 8-8" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+    <ellipse cx="50" cy="46" rx="18" ry="21" fill="${skin}"/>
+    <ellipse cx="32" cy="47" rx="3" ry="5" fill="${skin}"/><ellipse cx="68" cy="47" rx="3" ry="5" fill="${skin}"/>
+    ${beard ? `<path d="M33 50c1 13 8 18 17 18s16-5 17-18c-3 5-6 6-9 5-3 2-13 2-16 0-3 1-6 0-9-5z" fill="${hc}"/>` : ""}
+    <ellipse cx="43" cy="46" rx="3.6" ry="3.2" fill="#fff"/><ellipse cx="57" cy="46" rx="3.6" ry="3.2" fill="#fff"/><circle cx="43.4" cy="46.3" r="2.1" fill="#1E1A18"/><circle cx="57.4" cy="46.3" r="2.1" fill="#1E1A18"/>
+    <path d="M39 40.5q4-2 8 0M53 40.5q4-2 8 0" stroke="${hc === "#D9B26A" ? "#A86B3C" : hc}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    ${glasses ? `<g fill="none" stroke="#1E1A18" stroke-width="1.6"><circle cx="43" cy="46" r="5.5"/><circle cx="57" cy="46" r="5.5"/><path d="M48.5 46h3"/></g>` : ""}
+    ${mouths[mouth]}
+    ${top}
+  </svg>`;
+}
+const avatarInner = (name) => face(name);
+
 async function loadLive() {
   if (document.visibilityState === "hidden") return;
   const sha = await latestLiveSha();
@@ -1021,7 +1095,7 @@ function personCard(p, agents, opts = {}) {
   }
   const avatarClass = p.id === "partner" ? "partner" : p.intern && p.intern.status !== "junior" ? "intern" : p.desk;
   return `<button class="person ${opts.head ? "head" : ""} ${p.id === "partner" ? "partner" : ""} ${working ? "working" : ""}" data-person="${esc(p.id)}">
-    <span class="avatar ${avatarClass}">${initials(p.name)}<span class="st"></span></span>
+    <span class="avatar ${avatarClass}">${avatarInner(p.name)}<span class="st"></span></span>
     <span><span class="seat-name">${esc(p.name)}</span><span class="seat-role">${esc(p.role)}</span>
       ${hitBadge(p.id)}${extra}<span class="seat-now">${now}</span></span></button>`;
 }
@@ -1100,7 +1174,7 @@ function showPerson(id, refresh = false) {
   const i = p.intern;
   $("#memo-body").innerHTML = `
     <div class="memo-top"><div style="display:flex;gap:12px;align-items:center">
-      <span class="avatar ${id === "partner" ? "partner" : i && i.status !== "junior" ? "intern" : p.desk}" style="width:48px;height:48px">${initials(p.name)}</span>
+      <span class="avatar ${id === "partner" ? "partner" : i && i.status !== "junior" ? "intern" : p.desk}" style="width:56px;height:56px">${avatarInner(p.name)}</span>
       <div><h2>${esc(p.name)}</h2><div class="small muted">${esc(p.role)}${boss ? `, reports to ${esc(boss.name)}` : ""}${p.since ? `, joined ${esc(p.since)}` : ""}</div></div></div>
       <button class="close" onclick="this.closest('dialog').close()">Close</button></div>
     ${sc ? `<p class="small" style="margin-top:14px">${hitBadge(id)} ${sc.pct == null ? "" : `<span class="muted">${sc.right} of ${sc.total} over the last 30 days</span>`}</p>` : ""}

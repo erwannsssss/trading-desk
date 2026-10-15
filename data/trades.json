@@ -34,7 +34,7 @@
   "filled_qty": 7947.0,
   "filled_qty_initial": 7947.0,
   "opened_at": "2026-10-15T02:14:32-04:00",
-  "last_price": 158.2425,
+  "last_price": 158.1495,
   "max_r": 0.24
  },
  {
@@ -74,8 +74,8 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "5c876690-1ff3-457f-9cd8-a309a11d35a4",
   "stop_order_id": "e951d290-cbe6-45d3-a605-fb7a1ab28b05",
-  "last_price": 5.545,
-  "max_r": 0.26
+  "last_price": 5.575,
+  "max_r": 0.31
  },
  {
   "id": "2026-10-15-intraday-1053-RKLX",
@@ -114,7 +114,7 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "5136b334-5a9d-4edb-bffa-3ad5418f9bfb",
   "stop_order_id": "299b52d9-cf40-46bb-8699-cbc22ee1aa63",
-  "last_price": 9.41,
+  "last_price": 9.4,
   "max_r": 0.14
  },
  {
@@ -154,8 +154,8 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "7a7e6ae0-ac6f-44c2-be29-369d85084d85",
   "stop_order_id": "e76d3cd9-3b5b-4f66-acfa-721eb0761292",
-  "last_price": 6.21,
-  "max_r": 0.2
+  "last_price": 6.23,
+  "max_r": 0.23
  },
  {
   "id": "2026-10-15-intraday-1053-USD_CAD",
@@ -186,6 +186,57 @@
   "status": "pending",
   "notes": [
    "2026-10-15T10:59 entry order placed"
+  ]
+ },
+ {
+  "id": "2026-10-15-alert-101647-IREN-IREN",
+  "plan_file": "2026-10-15-alert-101647-IREN.json",
+  "symbol": "IREN",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 26.69,
+  "initial_stop": 23.91,
+  "stop": 23.91,
+  "target": 30.38,
+  "bucket": "tactical",
+  "style": "mean reversion",
+  "conviction": 5,
+  "thesis": "IREN has plummeted -38.62% in 20 days, pushing RSI14 down to 22.21 right at its 52-week low. The playbook permits mean reversion trades, and desk backtests show deeply oversold bounces carry a 68.1% win rate. We enter via shares on a small tactical size to capture a relief snapback toward the previous 20-day low at 30.38, risking 1 ATR to 23.91.",
+  "created_at": "2026-10-15T12:38:08-04:00"
+ },
+ {
+  "id": "2026-10-15-intraday-1215-WULF",
+  "plan_file": "2026-10-15-intraday-1215.json",
+  "symbol": "WULF",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "long",
+  "bucket": "tactical",
+  "style": "mean reversion",
+  "conviction": 4,
+  "confidence_pct": 55,
+  "horizon": "1-5 days",
+  "thesis": "WULF has dropped sharply by 31.66% over the last 20 days and sits at an RSI of 26.72, making it deeply oversold. We will buy shares near the current price of 11.255, targeting a bounce toward 12.80 while risking down to 10.20. Institutional backing from Lone Pine and an Oversold statistical edge support a short-term relief bounce.",
+  "entry_plan": 11.255,
+  "initial_stop": 10.2,
+  "stop": 10.2,
+  "target": 12.8,
+  "qty": 71,
+  "notional_usd": 799.11,
+  "risk_usd": 75.38,
+  "risk_pct": 0.75,
+  "quote_to_usd": 1.0,
+  "created_at": "2026-10-15T12:38:08-04:00",
+  "expires_at": "2026-10-15T14:15:56-04:00",
+  "loan_usd": 799.11,
+  "loan_apr": 0.08,
+  "entry_order_id": "481f0c82-895f-4f6b-997e-c64b8f51bcfb",
+  "status": "pending",
+  "notes": [
+   "2026-10-15T12:38 entry order placed"
   ]
  }
 ]

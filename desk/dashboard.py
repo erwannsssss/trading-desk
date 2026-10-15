@@ -33,6 +33,8 @@ SCHEDULE = [
 def build(state: dict) -> None:
     book, details = snapshot(state)
     trades = ledger.load()
+    from desk import liveaccount
+    live = _safe(lambda: liveaccount.positions_from_brokers(trades, details["alpaca_positions"], details["oanda_trades"]), {})
     curve = _curve()
     scores = _safe(lambda: scorecard.seat_scores(trades, curve), {})
     plans = _recent_plans(days=10)
@@ -55,12 +57,15 @@ def build(state: dict) -> None:
             "trades_today": state.get("trades_today", 0),
             "max_trades": config.MAX_TRADES_PER_DAY,
             "since": state.get("created_at"),
+            "breakdown": _safe(lambda: liveaccount.breakdown(book.equity, book.alpaca_equity - book.baseline_alpaca,
+                                                             book.oanda_nav - book.baseline_oanda, trades, live,
+                                                             book.financing_cost, book.opex), None),
         },
         "bank": _safe(lambda: bank.totals(trades, now()), None),
         "limits": {"daily_loss_pct": config.MAX_DAILY_LOSS_PCT, "max_position_pct": config.MAX_POSITION_PCT,
                    "max_risk_per_trade_pct": config.MAX_RISK_PER_TRADE_PCT, "max_open_positions": config.MAX_OPEN_POSITIONS},
         "curve": curve,
-        "positions": _positions(trades, details),
+        "positions": _positions(trades, details, live),
         "trades": [_slim(t) for t in sorted(trades, key=lambda t: t.get("created_at", ""), reverse=True)],
         "memos": _memos(trades, plans),
         "plan": _day_plan(plans, days[-1]) if days else None,
@@ -209,7 +214,7 @@ def _recent_plans(days: int) -> list[dict]:
     return sorted(out, key=lambda p: p.get("created_at", ""))
 
 
-def _positions(trades: list[dict], details: dict) -> list[dict]:
+def _positions(trades: list[dict], details: dict, live: dict | None = None) -> list[dict]:
     out = []
     for t in trades:
         if t["status"] not in ("open", "pending", "closing"):
@@ -229,7 +234,15 @@ def _positions(trades: list[dict], details: dict) -> list[dict]:
         if last:
             span = t["target"] - entry
             progress = round(max(-1.0, min(1.0, (last - entry) / span)), 3) if span else None
-        out.append({**_slim(t), "last_price": last, "unrealized_usd": unreal, "progress": progress})
+        broker = (live or {}).get(t["id"])
+        if broker:   # the broker's own valuation, so positions add up to the account balance
+            unreal = broker["unrealized_usd"]
+            if broker.get("price") and t.get("asset") != "option":
+                last = broker["price"]
+                span = t["target"] - entry
+                progress = round(max(-1.0, min(1.0, (last - entry) / span)), 3) if span else progress
+        out.append({**_slim(t), "last_price": last, "unrealized_usd": unreal, "progress": progress,
+                    "market_value": (broker or {}).get("market_value")})
     return out
 
 

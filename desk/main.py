@@ -207,6 +207,11 @@ def tick() -> int:
 
     state["last_tick"] = now().isoformat(timespec="seconds")
     save(state)
+    try:
+        from desk import liveaccount
+        liveaccount.publish(state, force=True)
+    except Exception:
+        traceback.print_exc()
     print(f"tick ok | equity ${book.equity:,.2f} | positions {book.open_positions}")
     floor.event("risk", f"Account ${book.equity:,.2f}; today {-daily_loss_pct(book, state['day_start_equity']):+.2f}%; "
                 f"{book.open_positions} positions; {state.get('trades_today', 0)}/{config.MAX_TRADES_PER_DAY} trades used", kind="check")
@@ -262,10 +267,12 @@ def run_firm(state: dict, book) -> None:
 
 def listen(state: dict, seconds: int) -> None:
     """Stay online and answer Telegram commands within seconds until the next run takes over."""
+    from desk import liveaccount
     deadline = time.monotonic() + seconds
     while (left := deadline - time.monotonic()) > 5:
+        liveaccount.publish(state)   # account value and positions for the dashboard, about once a minute
         try:
-            if commands.process(state, wait=int(min(50, left - 3))):
+            if commands.process(state, wait=int(min(40, left - 3))):
                 save(state)
         except Exception as exc:
             print(f"listen error: {exc}")

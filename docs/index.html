@@ -468,18 +468,37 @@ async function load() {
   }
 }
 
+/* live account: the brokers' numbers about once a minute (live/account.json), layered over the 15-minute data */
+let LIVE_ACCOUNT = null;
+function applyLiveAccount(d) {
+  const L = LIVE_ACCOUNT;
+  if (!d || !L || !L.t || new Date(L.t) <= new Date(d.generated_at)) return false;
+  Object.assign(d.account, {equity: L.equity, total_return_pct: L.total_pct, today_pct: L.today_pct, breakdown: L.breakdown, live_at: L.t});
+  for (const p of d.positions) {
+    const v = (L.positions || {})[p.id];
+    if (v) { p.unrealized_usd = v.unrealized_usd; p.market_value = v.market_value; if (v.price) p.last_price = v.price; }
+  }
+  const last = d.curve.at(-1);
+  if (last && last.t < L.t.slice(0, 16)) d.curve = d.curve.filter(c => !c.live).concat([{t: L.t.slice(0, 16), equity: L.equity, spy: last.spy, live: true}]);
+  return true;
+}
+function renderHero(d) {
+  const a = d.account, dollars = Math.floor(a.equity), cents = Math.round((a.equity - dollars) * 100).toString().padStart(2, "0");
+  $("#equity").innerHTML = "$" + dollars.toLocaleString("en-US") + `<span class="cents">.${cents}</span>`;
+  const last = d.curve.filter(c => !c.live).at(-1), spyRet = last ? (last.spy / a.start - 1) * 100 : null;
+  const asOf = a.live_at || d.generated_at;
+  $("#hero-sub").innerHTML = `
+    <span><b class="${cls(a.total_return_pct)}">${pct(a.total_return_pct)}</b> since starting with ${money(a.start, 0)}</span>
+    <span><b class="${cls(a.today_pct)}">${pct(a.today_pct)}</b> today</span>
+    ${spyRet != null ? `<span>S&amp;P 500 over the same time: <b>${pct(spyRet)}</b></span>` : ""}
+    <span class="muted"><span class="livedot ${a.live_at && Date.now() - new Date(asOf) < 180000 ? "on" : ""}"></span>Value as of ${clock(asOf)}${a.live_at ? ", live from the brokers" : ""}</span>`;
+}
 function render(d) {
   const modeText = {live: "Live paper trading", dry_run: "Dry run", paused: "Paused"}[d.mode] || d.mode;
   $("#status").className = "status " + d.mode;
   $("#status-text").textContent = modeText + (d.halted_for_day ? ", daily loss limit hit" : "");
-
-  const a = d.account, dollars = Math.floor(a.equity), cents = Math.round((a.equity - dollars) * 100).toString().padStart(2, "0");
-  $("#equity").innerHTML = "$" + dollars.toLocaleString("en-US") + `<span class="cents">.${cents}</span>`;
-  const last = d.curve.at(-1), spyRet = last ? (last.spy / a.start - 1) * 100 : null;
-  $("#hero-sub").innerHTML = `
-    <span><b class="${cls(a.total_return_pct)}">${pct(a.total_return_pct)}</b> since starting with ${money(a.start, 0)}</span>
-    <span><b class="${cls(a.today_pct)}">${pct(a.today_pct)}</b> today</span>
-    ${spyRet != null ? `<span>S&amp;P 500 over the same time: <b>${pct(spyRet)}</b></span>` : ""}`;
+  applyLiveAccount(d);
+  renderHero(d);
   drawCurve(d.curve);
 
   renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderEdge(d); renderGhost(d); renderLearning(d); renderFirm(d); renderCompliance(d);
@@ -516,6 +535,21 @@ function sideTag(t) {
 function optLine(t) { return t.option_symbol ? `<div class="tag">${t.credit ? `sold $${t.strike}/$${t.hedge_strike} ${esc(t.option_type === "call" ? "call" : "put")} credit spread` : t.short_strike ? `$${t.strike}/$${t.short_strike} ${esc(t.option_type)} spread` : `$${t.strike} ${esc(t.option_type)}s`}, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
 const sessionName = {morning: "Morning", intraday: "Intraday", evening: "Evening", overnight: "Overnight"};
 
+function breakdownBlock(b) {
+  const row = (label, v, note = "") => `<tr><td>${label}${note ? `<div class="tag">${note}</div>` : ""}</td><td class="num ${cls(v)}">${signed(v)}</td></tr>`;
+  return `<h3>Where the ${money(b.equity)} comes from</h3>
+    <div class="scroll"><table class="stmt"><tbody>
+      <tr><td>Starting money</td><td class="num">${money(b.start)}</td></tr>
+      ${row("Closed trades", b.closed_trades)}
+      ${b.partial_profits_taken ? row("Partial profits already taken", b.partial_profits_taken) : ""}
+      ${row("Open positions, at the brokers' prices", b.open_positions)}
+      ${row("Bank interest", b.bank_interest)}
+      ${row("Staff payroll and bonuses", b.payroll_and_bonuses)}
+      ${Math.abs(b.other_account_activity) >= 0.01 ? row("Other account activity", b.other_account_activity, "Money that moved at the brokers outside the desk's trades: fees, rounding, or a manual order (on Oct 15, a test order of mine that cost about $41).") : ""}
+      <tr class="total"><td>Firm equity now</td><td class="num">${money(b.equity)}</td></tr>
+    </tbody></table></div>`;
+}
+
 function renderOverview(d) {
   const a = d.account, s = d.stats, plan = d.plan;
   const recent = d.trades.filter(t => ["open","closed","pending","would_trade"].includes(t.status)).slice(0, 6);
@@ -528,6 +562,7 @@ function renderOverview(d) {
       <div class="fig"><div class="v ${cls(s.realized_pnl)}">${signed(s.realized_pnl)}</div><div class="k">Realized profit</div></div>
       <div class="fig"><div class="v">${s.win_rate == null ? "—" : s.win_rate + "%"}</div><div class="k">Win rate (${s.closed} closed)</div></div>
     </div>
+    ${a.breakdown ? breakdownBlock(a.breakdown) : ""}
     ${d.bank ? `<h3>Bank credit line</h3>
       <p class="small">Borrowed <b>${money(d.bank.borrowed, 0)}</b> of ${money(d.bank.credit_line, 0)} from ${esc(d.bank.bank)} at ${d.bank.apr_pct}% a year.
         Interest so far: <b>${money(d.bank.financing_cost)}</b> (${money(d.bank.interest_paid)} repaid with closed trades, ${money(d.bank.interest_accruing)} building on open ones).</p>
@@ -563,7 +598,8 @@ function renderPositions(d) {
   const rows = d.positions;
   if (!rows.length) { $("#p-positions").innerHTML = `<h2>Positions</h2><p class="empty">Nothing open right now. New positions appear here the moment an order fills.</p>`; return; }
   $("#p-positions").innerHTML = `<h2>Positions</h2><p class="lede">The bar runs from the stop (left) through the entry (middle) to the target (right). For options, prices are the underlying stock's.</p>
-  <div class="scroll"><table><thead><tr><th>Symbol</th><th>Status</th><th class="num">Entry</th><th class="num">Now</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized</th><th>Progress</th></tr></thead><tbody>
+  <p class="small muted">Prices and profit from Alpaca and OANDA, ${DATA.account.live_at ? `live as of ${clock(DATA.account.live_at)}` : `as of ${clock(DATA.generated_at)}`}. Open profit right now: <b class="${cls(rows.reduce((s, t) => s + (t.unrealized_usd || 0), 0))}">${signed(rows.reduce((s, t) => s + (t.unrealized_usd || 0), 0))}</b>.</p>
+  <div class="scroll"><table><thead><tr><th>Symbol</th><th>Status</th><th class="num">Entry</th><th class="num">Now</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Value</th><th class="num">Unrealized</th><th>Progress</th></tr></thead><tbody>
   ${rows.map(t => {
     const p = t.progress ?? 0, w = Math.abs(p) * 50;
     const bar = p >= 0 ? `<span style="left:50%;width:${w}%;background:var(--gain)"></span>` : `<span style="left:${50 - w}%;width:${w}%;background:var(--loss)"></span>`;
@@ -572,6 +608,7 @@ function renderPositions(d) {
       <td>${esc(statusName[t.status])}</td>
       <td class="num">${px(t.asset === "option" ? (t.underlying_entry ?? t.entry_plan) : (t.entry_price ?? t.entry_plan))}</td><td class="num">${px(t.last_price)}</td>
       <td class="num">${px(t.stop)}</td><td class="num">${px(t.target)}</td>
+      <td class="num">${t.market_value != null ? money(Math.abs(t.market_value), 0) : "—"}</td>
       <td class="num ${cls(t.unrealized_usd)}">${signed(t.unrealized_usd)}</td>
       <td><div class="track"><div class="mid"></div>${bar}</div></td></tr>`; }).join("")}
   </tbody></table></div>`;
@@ -1292,6 +1329,18 @@ async function loadLive() {
   }));
   LIVE = Object.fromEntries(got.filter(([, v]) => v));
   renderFloor();
+  for (const url of [sha ? `${RAW}${sha}/live/account.json` : null, `live/account.json?t=${Date.now()}`].filter(Boolean)) {
+    try {
+      const r = await fetch(url, {cache: "no-store"});
+      if (!r.ok) continue;
+      const acct = await r.json();
+      if (!LIVE_ACCOUNT || acct.t > LIVE_ACCOUNT.t) {
+        LIVE_ACCOUNT = acct;
+        if (DATA && applyLiveAccount(DATA)) { renderHero(DATA); drawCurve(DATA.curve); renderPositions(DATA); renderOverview(DATA); gloss($("#p-overview")); gloss($("#p-positions")); }
+      }
+      break;
+    } catch (e) {}
+  }
 }
 
 function floorState() {

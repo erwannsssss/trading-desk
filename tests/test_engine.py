@@ -64,3 +64,45 @@ class OptionPnlTests(unittest.TestCase):
         t = self._close(self._opt(direction="long", credit=True, entry_price=1.20, spread_width=5.0), 0.40)
         self.assertAlmostEqual(t["pnl_usd"], 160.0)                  # kept $0.80 of the $1.20 credit, x2 x100
         self.assertAlmostEqual(t["r_result"], round(160 / (3.8 * 200), 2))
+
+
+class HedgeTests(unittest.TestCase):
+    def _engine(self, trades, equity=10_000):
+        from desk.trading import engine
+        e = engine.Engine.__new__(engine.Engine)
+        e.trades, e.iso, e.alerts = trades, "2026-10-15T11:00:00-04:00", []
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+        e.at = datetime(2026, 10, 15, 11, 0, tzinfo=ZoneInfo("America/New_York"))
+        e.book = mock.Mock(equity=equity)
+        e.stock_market_open = lambda: True
+        e.blackout = lambda: False
+        return e
+
+    def test_exposure_counts_shares_and_option_deltas(self):
+        trades = [{"status": "open", "asset": "stock", "direction": "long", "notional_usd": 3000},
+                  {"status": "open", "asset": "option", "direction": "short", "underlying_entry": 30, "filled_qty": 2},
+                  {"status": "open", "asset": "forex", "direction": "long", "notional_usd": 25000}]
+        self.assertAlmostEqual(self._engine(trades).stock_exposure(), 3000 - 0.45 * 30 * 200)
+
+    def test_hedges_when_long_heavy_in_risk_off_and_removes_later(self):
+        trades = [{"status": "open", "asset": "stock", "direction": "long", "notional_usd": 4000}]
+        e = self._engine(trades)
+        with mock.patch("desk.research.planner.latest_macro", return_value={"regime": "risk-off/defensive"}), \
+             mock.patch("desk.trading.engine.current_price", return_value=600.0), \
+             mock.patch("desk.trading.engine.floor"), mock.patch.object(e, "_enter_option", return_value="entered") as enter:
+            e._hedge_check()
+        self.assertTrue(enter.called)
+        self.assertLessEqual(enter.call_args.kwargs["budget_override"], 150.0)
+        trades.append({"status": "open", "style": "hedge", "asset": "option", "direction": "short", "symbol": "SPY"})
+        with mock.patch("desk.research.planner.latest_macro", return_value={"regime": "strong uptrend"}), \
+             mock.patch("desk.trading.engine.floor"), mock.patch.object(e, "_exit_now") as ex:
+            e._hedge_check()
+        self.assertTrue(ex.called)
+
+    def test_no_hedge_when_market_read_is_fine(self):
+        e = self._engine([{"status": "open", "asset": "stock", "direction": "long", "notional_usd": 9000}])
+        with mock.patch("desk.research.planner.latest_macro", return_value={"regime": "strong uptrend"}), \
+             mock.patch.object(e, "_enter_option") as enter:
+            e._hedge_check()
+        self.assertFalse(enter.called)

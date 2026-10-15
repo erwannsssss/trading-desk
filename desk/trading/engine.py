@@ -161,6 +161,10 @@ class Engine:
             except Exception as exc:
                 ledger.note(t, f"manage error: {str(exc)[:150]}", self.iso)
         self._earnings_exits()
+        try:
+            self._hedge_check()
+        except Exception as exc:
+            print(f"hedge check failed: {exc}")
         for plan_file, plan, idea in plan_ideas(self.at):
             try:
                 result = self.enter(plan_file, plan, idea)
@@ -330,18 +334,20 @@ class Engine:
                    f"Size ${notional:,.0f}, risking ${t['risk_usd']:,.0f} ({t['risk_pct']}%)\n<i>{esc(t['thesis'])}</i>", symbol=t["symbol"])
         return "entered"
 
-    def _enter_option(self, trade_id, plan_file, plan, idea, price, entry, stop, target, long) -> str | None:
+    def _enter_option(self, trade_id, plan_file, plan, idea, price, entry, stop, target, long,
+                      budget_override: float | None = None, allow_credit: bool = True) -> str | None:
         d = idea["decision"]
         kind = "call" if long else "put"
         conv = int(d.get("conviction") or 5)
         budget_pct = min(config.MAX_OPTIONS_PREMIUM_PCT, 6.0 if conv >= 8 else 4.0 if conv >= 6 else 2.5)
-        budget = self.book.equity * budget_pct / 100
+        budget = budget_override or self.book.equity * budget_pct / 100
         open_premium = sum(t.get("notional_usd", 0) for t in self.trades if t.get("asset") == "option" and t["status"] in ledger.ACTIVE)
         if open_premium + budget > self.book.equity * config.MAX_OPTIONS_TOTAL_PCT / 100:
             return None
         c = None
         try:   # options expensive? sell a spread (collect the premium) instead of buying one
-            c = options.pick_credit_spread(idea["symbol"], long, price, stop, idea.get("atr_pct"), max_loss=budget)
+            if allow_credit:
+                c = options.pick_credit_spread(idea["symbol"], long, price, stop, idea.get("atr_pct"), max_loss=budget)
         except Exception as exc:
             print(f"credit spread pick failed for {idea['symbol']}: {exc}")
         if not c:
@@ -712,6 +718,62 @@ class Engine:
         t["partial_taken"] = True
         ledger.note(t, f"took half off at {price} (+${pnl:,.2f})", self.iso)
         self.alert(f"Took partial profit on {esc(t['symbol'])}: closed half at {_p(price)} for ${pnl:+,.2f}.", agent="positions", symbol=t["symbol"])
+
+    # ---------------------------------------------------------------- HEDGE DESK
+    HEDGE_ON_PCT = 30      # hedge when stock-market exposure is 30%+ of equity in a risk-off market
+    HEDGE_OFF_PCT = 10     # remove it when exposure falls under 10% or the market read improves
+    HEDGE_BUDGET_PCT = 1.5 # spend at most 1.5% of equity on the insurance
+
+    def stock_exposure(self) -> float:
+        """Rough net dollars riding on the stock market: long shares minus short, options at about half their
+        underlying value (their delta), crypto and forex left out."""
+        net = 0.0
+        for t in self.trades:
+            if t.get("status") not in ledger.ACTIVE or t.get("style") == "hedge":
+                continue
+            sign = 1 if t.get("direction") == "long" else -1
+            if t.get("asset") in ("stock", "etf"):
+                net += sign * (t.get("notional_usd") or 0)
+            elif t.get("asset") == "option":
+                net += sign * 0.45 * (t.get("underlying_entry") or t.get("entry_plan") or 0) * (t.get("filled_qty") or t.get("qty") or 0) * 100
+        return net
+
+    def _hedge_check(self) -> None:
+        if not self.stock_market_open() or self.blackout():
+            return
+        from desk.research import planner
+        regime = (planner.latest_macro(26) or {}).get("regime")
+        risk_off = regime in guards.RISK_OFF
+        exposure = self.stock_exposure()
+        eq = self.book.equity
+        hedges = [t for t in self.trades if t.get("style") == "hedge" and t["status"] in ledger.ACTIVE]
+        if hedges:
+            reason = None
+            if not risk_off:
+                reason = f"the market read improved to {regime}"
+            elif exposure < eq * self.HEDGE_OFF_PCT / 100:
+                reason = "the desk is no longer heavily long"
+            if reason:
+                for h in hedges:
+                    if h["status"] == "open":
+                        self._exit_now(h, f"hedge no longer needed: {reason}")
+                        floor.event("risk", f"Removed the S&P 500 hedge: {reason}", "SPY", kind="trade")
+            return
+        if not risk_off or exposure < eq * self.HEDGE_ON_PCT / 100:
+            return
+        price = current_price({"venue": "alpaca", "symbol": "SPY"})
+        budget = min(eq * self.HEDGE_BUDGET_PCT / 100, exposure * 0.05)
+        stamp = self.at.strftime("%Y%m%d-%H%M")
+        plan = {"session": "hedge", "created_at": self.iso}
+        idea = {"symbol": "SPY", "asset": "etf", "venue": "alpaca", "decision": {
+            "decision": "short", "conviction": 7, "horizon": "1-4 weeks", "style": "hedge", "bucket": "hedge",
+            "thesis": f"Portfolio insurance: the desk is about ${exposure:,.0f} net long stocks ({exposure / eq:.0%} of equity) "
+                      f"while the market read is {regime}. An S&P 500 put spread gains if the whole market drops."}}
+        res = self._enter_option(f"hedge-{stamp}", "hedge.json", plan, idea, price, price, price * 1.04, price * 0.95,
+                                 False, budget_override=budget, allow_credit=False)
+        if res == "entered":
+            floor.event("risk", f"Hedging the book: ${exposure:,.0f} net long stocks in a {regime} market, so Grace bought "
+                        f"S&P 500 puts (about ${budget:,.0f} of insurance)", "SPY", kind="trade")
 
     def _earnings_exits(self) -> None:
         """In the last stretch of the session, close positions that would otherwise be held through earnings."""

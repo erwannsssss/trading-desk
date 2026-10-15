@@ -1,0 +1,105 @@
+"""Telegram commands Erwann can send the bot."""
+from __future__ import annotations
+
+from desk import config, telegram
+from desk.brokers import alpaca, oanda
+from desk.portfolio import snapshot
+from desk.risk import daily_loss_pct
+from desk.state import log_event
+from desk.telegram import esc
+
+HELP = (
+    "<b>Commands</b>\n"
+    "/status - account value, P&amp;L, risk status\n"
+    "/positions - everything it's holding\n"
+    "/pause - kill switch: no new trades\n"
+    "/resume - turn trading back on\n"
+    "/golive - leave dry-run and place paper trades\n"
+    "/dryrun - back to analyze-only mode\n"
+    "/flatten confirm - emergency: close everything\n"
+    "\nCommands are checked every 15 minutes."
+)
+
+
+def status_text(state: dict) -> str:
+    book, d = snapshot(state)
+    eq = book.equity
+    total = (eq / config.STARTING_CAPITAL - 1) * 100
+    day = -daily_loss_pct(book, state.get("day_start_equity") or eq) or 0.0
+    mode = "PAUSED" if state.get("paused") else ("DRY RUN (analyze only)" if state.get("dry_run") else "LIVE paper trading")
+    if state.get("halted_for_day"):
+        mode += " | daily loss limit hit"
+    return (
+        f"<b>Trading Desk status</b>\n"
+        f"Mode: {mode}\n"
+        f"Value: <b>${eq:,.2f}</b> ({total:+.2f}% since start)\n"
+        f"Today: {day:+.2f}%\n"
+        f"Open positions: {book.open_positions}\n"
+        f"Trades today: {state.get('trades_today', 0)}/{config.MAX_TRADES_PER_DAY}\n"
+        f"Stock/crypto exposure: ${book.stock_gross_exposure:,.0f}\n"
+        f"Forex exposure: ${book.forex_gross_notional:,.0f}"
+    )
+
+
+def positions_text(state: dict) -> str:
+    _, d = snapshot(state)
+    lines = ["<b>Positions</b>"]
+    for p in d["alpaca_positions"]:
+        pl = float(p["unrealized_pl"])
+        lines.append(f"{esc(p['symbol'])} {esc(p['side'])} {float(p['qty']):g} @ ${float(p['avg_entry_price']):,.2f} | P&amp;L ${pl:+,.2f}")
+    for t in d["oanda_trades"]:
+        units = float(t["currentUnits"])
+        lines.append(f"{esc(t['instrument'])} {'long' if units > 0 else 'short'} {abs(units):,.0f} @ {t['price']} | P&amp;L ${float(t['unrealizedPL']):+,.2f}")
+    if len(lines) == 1:
+        lines.append("No open positions.")
+    return "\n".join(lines)
+
+
+def handle(text: str, state: dict) -> str | None:
+    cmd = text.split()[0].lower().split("@")[0]
+    args = text.split()[1:]
+
+    if cmd in ("/start", "/help"):
+        return HELP
+    if cmd == "/status":
+        return status_text(state)
+    if cmd == "/positions":
+        return positions_text(state)
+    if cmd == "/pause":
+        state["paused"] = True
+        log_event("kill_switch", on=True)
+        return "Paused. No new trades will be opened. Existing stops and targets stay in place. Send /resume to restart."
+    if cmd == "/resume":
+        state["paused"] = False
+        log_event("kill_switch", on=False)
+        return "Resumed. The bot can open new trades again."
+    if cmd == "/golive":
+        state["dry_run"] = False
+        log_event("mode", dry_run=False)
+        return "Live paper trading is ON. The bot will now place real orders in your paper accounts (fake money)."
+    if cmd == "/dryrun":
+        state["dry_run"] = True
+        log_event("mode", dry_run=True)
+        return "Dry-run mode ON. The bot will analyze and log trades but not place orders."
+    if cmd == "/flatten":
+        if args[:1] != ["confirm"]:
+            return "This closes EVERY position and cancels every order. To do it, send: /flatten confirm"
+        alpaca.close_all_positions()
+        oanda.close_all()
+        state["paused"] = True
+        log_event("flatten")
+        return "Closed all positions, cancelled all orders, and paused trading. Send /resume when you're ready."
+    if text.startswith("/"):
+        return f"Unknown command {esc(cmd)}.\n\n{HELP}"
+    return "Got it. Chatting with the bot about its trades is coming in a later build. For now, try /status or /help."
+
+
+def process(state: dict) -> None:
+    texts, state["telegram_offset"] = telegram.get_commands(state.get("telegram_offset", 0))
+    for text in texts:
+        try:
+            reply = handle(text, state)
+        except Exception as exc:
+            reply = f"Something went wrong running that: {esc(exc)}"
+        if reply:
+            telegram.send(reply)

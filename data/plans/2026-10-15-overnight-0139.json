@@ -1,0 +1,642 @@
+{
+ "date": "2026-10-15",
+ "session": "overnight",
+ "created_at": "2026-10-15T01:39:05-04:00",
+ "dry_run": false,
+ "equity": 10000.0,
+ "macro": {
+  "regime": "risk-off/defensive",
+  "risk_appetite": 35,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 45,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "defensive rotation longs (energy, healthcare, consumer staples)",
+    "momentum shorting in high-multiple tech and semiconductors",
+    "macro dollar longs",
+    "fast mean-reversion scalp trades"
+   ],
+   "avoid": [
+    "dip-buying high-beta tech or crypto breakouts",
+    "long-duration fixed income swing longs",
+    "holding unhedged cyclical longs through economic prints"
+   ]
+  },
+  "favored": [
+   "Energy (XLE, USO) driven by Hormuz shipping disruption headlines and relative strength (XLE 5d return +6.74%, USO 5d return +6.71%)",
+   "Defensive equities (XLP, XLV) acting as capital shelters (XLP 1d return +2.22%, XLV 1d return +2.53%)",
+   "US Dollar (UUP) supported by the 10-year Treasury yield at 5.21% and rate hike bets (UUP RSI 68.82)"
+  ],
+  "avoid": [
+   "Semiconductors and Tech (SMH, XLK) amid Seoul chip weakness and rate pressure (SMH 1d return -3.98%, 5d return -9.65%)",
+   "Crypto majors and altcoins (ETH/USD, SOL/USD, AVAX/USD) experiencing steady selling post-CPI (ETH/USD 20d return -12.29%)",
+   "Silver and materials (SLV, URA) suffering aggressive liquidations (SLV 1d return -6.11%, URA 5d return -10.99%)"
+  ],
+  "key_events": [
+   "2026-10-15 08:30 ET: Retail sales, PPI producer inflation, and Weekly jobless claims - stand aside or reduce tactical exposure ahead of the releases to gauge inflation persistence",
+   "2026-10-15 to 2026-10-16: Regional bank earnings (CFG, MTB, RF, TFC) - monitor KRE for credit and funding stress"
+  ],
+  "overnight_read": "Overnight markets reflect broad risk aversion sparked by SK Hynix plunging over 11% in Seoul and news of a vessel struck by a mine in the Strait of Hormuz. Crypto is down across major tokens with ETH/USD falling -2.41% and SOL/USD down -1.81%, while US 10-year yields hold at 5.21%, signaling tech weakness and defensive outperformance at the New York open.",
+  "summary": "Surging Treasury yields and renewed inflation concerns have triggered a decisive flight to safety across global markets. Capital is dumping high-growth tech and semiconductors to hide in energy, healthcare, and consumer staples. Crypto and high-beta assets remain vulnerable to heavy macro selling ahead of morning PPI and Retail Sales data. The desk will stay defensive, trading energy momentum and shorting weak tech rallies with tight risk controls."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.75",
+    "date": "2026-09-01"
+   },
+   "10-year Treasury yield": {
+    "value": "5.21",
+    "date": "2026-10-13"
+   },
+   "2-year Treasury yield": {
+    "value": "4.79",
+    "date": "2026-10-13"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.2",
+    "date": "2026-09-01"
+   },
+   "VIX (fear index)": {
+    "value": "15.27",
+    "date": "2026-10-13"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-10-15",
+    "event": "Retail sales"
+   },
+   {
+    "date": "2026-10-15",
+    "event": "PPI producer inflation"
+   },
+   {
+    "date": "2026-10-15",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-10-16",
+    "event": "Industrial production"
+   },
+   {
+    "date": "2026-10-22",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-10-23",
+    "event": "Consumer sentiment (UMich)"
+   }
+  ]
+ },
+ "ideas": [
+  {
+   "symbol": "XRP/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 1.3042,
+   "why_scanned": [],
+   "setups": [
+    "breakdown below 20-day low",
+    "strong 20-day move (-16.9%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": -7,
+     "points": [
+      "Price at 1.3042 has broken below the 20-day low of 1.30966, confirming a downward breakdown.",
+      "Trading well below both 20-day SMA (1.442612) and 50-day SMA (1.420974) with 20-day return at -16.87%.",
+      "Volume ratio is anemic at 0.26, showing a lack of institutional buying interest ahead of the 200-day SMA at 1.279799."
+     ]
+    },
+    "fundamental": {
+     "score": -3,
+     "points": [
+      "Macro environment of 5.21% 10-year Treasury yields and post-CPI rate hike expectations creates severe liquidity headwinds for high-beta crypto assets.",
+      "Partnership news (DriveWealth RLUSD/XRPL integration, Korean institutional agreements) is failing to attract net capital inflows."
+     ]
+    },
+    "news_sentiment": {
+     "score": -5,
+     "points": [
+      "Headlines reflect broad crypto liquidations totaling over $331.9M following hot CPI data.",
+      "Standard Chartered delayed its $2 trillion stablecoin forecast to 2030, dampening sector expansion sentiment."
+     ]
+    },
+    "smart_money": {
+     "score": -6,
+     "points": [
+      "Severe volume drought with volume ratio at 0.26 and 20-day average dollar volume at just 33841.",
+      "Broad liquidation wave across crypto majors ETH (-2.41%) and SOL (-1.81%) suggests institutional distribution rather than accumulation."
+     ]
+    },
+    "best_style": "momentum shorting"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "XRP is approaching major dynamic support at its 200-day SMA of 1.279799 with RSI14 nearing oversold levels at 35.762972, while institutional partnerships with DriveWealth and Privy offer long-term adoption tailwinds.",
+    "catalysts": [
+     "Potential mean-reversion bounce toward 20-day SMA (1.442612) if 200-day SMA holds",
+     "Deployment of 473 million XRP treasury by Evernorth"
+    ]
+   },
+   "bear": {
+    "case": "The macro regime is decisively risk-off with yields at 5.21%, the desk rulebook mandates avoiding crypto dip-buying, and XRP has just breached its 20-day low of 1.30966 on negative 20-day momentum (-16.87%). Buying here is attempting to catch a falling knife in an illiquid market.",
+    "risks": [
+     "Break of 200-day SMA (1.279799) triggering forced cascade liquidations",
+     "Hot PPI and macro rate repricing accelerating risk-asset dumping"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy XRP at 1.3042 hoping for a bounce at the 200-day SMA (1.279799). Instead, hot morning PPI figures spike yields further, triggering widespread crypto liquidations that slice through 1.279799 down toward the 52-week low of 0.9862 on zero liquidity, hitting our stop immediately.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Crypto can only be traded long on this desk, but the asset is breaking below its 20-day low (1.30966) in an aggressive risk-off regime where crypto purchases are explicitly barred by desk playbook.",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 2,
+    "confidence_pct": 25,
+    "horizon": "intraday",
+    "thesis": "XRP/USD is breaking down below its 20-day low of 1.30966 while carrying a 20-day return of -16.87%. The desk playbook explicitly classifies crypto majors and altcoins as assets to avoid amid surging 5.21% Treasury yields. Since desk mandates prohibit shorting crypto, and taking a long trade directly violates the risk-off market plan and technical breakdown structure, the only disciplined move is to pass.",
+    "invalidation": "A close back above the 20-day SMA of 1.442612 on volume ratio exceeding 1.5 would invalidate the current breakdown.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 1.3042
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 1.30966
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -16.87
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.26
+     },
+     {
+      "fact": "technicals.sma200",
+      "value": 1.279799
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 35.762972
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "SHIB/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 5e-06,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-17.5%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "RSI14 is at 34.81, approaching oversold levels",
+      "Price is at 0.000005, sitting right at the sma50 and sma200 of 0.000005",
+      "Vol ratio is extremely thin at 0.01 with an avg dollar volume of only 921"
+     ]
+    },
+    "fundamental": {
+     "score": 1,
+     "points": [
+      "No traditional fundamental metrics available for crypto tokens",
+      "Low liquidity with 20d average dollar volume of 921 limits capital deployment"
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "Cross-market crypto selloffs ongoing with Bitcoin and altcoins dropping on macro risk aversion",
+      "Persistent liquidations and ETF outflows weigh on sentiment"
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "Broad risk-off regime with capital fleeing high-beta crypto and tech",
+      "No institutional accumulation signs in low-cap meme tokens during flight-to-safety episodes"
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "SHIB/USD is hovering near its 52-week low of 0.0000040135 with an RSI of 34.81, offering a deep-value bounce opportunity if broader crypto markets stabilize.",
+    "catalysts": [
+     "RSI14 at 34.81 indicates oversold short-term conditions",
+     "Price resting near key moving averages (sma50 and sma200 at 0.000005)",
+     "Historical backtest shows deep oversold long setups have a 68.1% win rate"
+    ]
+   },
+   "bear": {
+    "case": "The macro regime is strictly risk-off with high Treasury yields and crypto selloffs; SHIB has negligible dollar volume (921 avg 20d dollar vol) and a severe 20-day return of -17.48%, making any long position highly vulnerable to illiquidity and further macro liquidation.",
+    "risks": [
+     "Regime is risk-off/defensive, explicitly avoiding crypto and high-beta assets",
+     "Extremely low dollar volume of 921 creates severe execution and slippage risk",
+     "20-day return is down -17.48% with a 52-week high drop of -61.09%"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We go long on SHIB/USD due to the oversold RSI, but the broader crypto market continues its macro liquidation under 5.21% Treasury yields. Due to the ultra-thin 921 dollar volume, we experience massive slippage on entry and cannot exit when the price breaches support at 0.0000049.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Despite oversold technicals, the macro regime is strictly risk-off, crypto is being actively avoided per our playbook, and SHIB's abysmal 20d average dollar volume of 921 makes it untradeable for our desk.",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 0,
+    "horizon": "intraday",
+    "thesis": "",
+    "invalidation": "",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 34.808687
+     },
+     {
+      "fact": "technicals.avg_dollar_vol_20d",
+      "value": 921.0
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -17.48
+     },
+     {
+      "fact": "technicals.pct_from_52w_high",
+      "value": -61.09
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 4,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "ADA/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 0.2219,
+   "why_scanned": [],
+   "setups": [
+    "breakdown below 20-day low"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "Price of 0.2219 has just broken down below the 20-day low of 0.223585",
+      "RSI at 41.90 shows weak momentum",
+      "Volume ratio is extremely thin at 0.15"
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "Network activity is currently weak",
+      "Market regime is strictly risk-off with strong preference for cash, dollars, and defensive sectors",
+      "Crypto majors and altcoins are facing steady macro selling"
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "Cardano is facing a big correction and whale selling",
+      "Broader crypto market is bleeding down alongside equity tech weakness"
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "Whale selling reported in news",
+      "Average 20-day dollar volume is very low at $7,284, showing lack of institutional backing"
+     ]
+    },
+    "best_style": "pass"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "ADA is sitting just above the 200-day moving average of 0.212391 and the 52-week low is far below at 0.138088, offering a deep value floor if a broader market bounce materializes.",
+    "catalysts": [
+     "Holding above the 200-day moving average of 0.212391",
+     "Potential mean-reversion bounce if overall crypto sell-off exhausts"
+    ]
+   },
+   "bear": {
+    "case": "Crypto can only be traded long, and going long here directly violates the desk's risk-off regime, the explicit rule to avoid crypto, and the active breakdown below the 20-day low. Furthermore, volume is dead (vol ratio 0.15), and whale selling threatens a drop to $0.21.",
+    "risks": [
+     "Active breakdown below the 20-day low of 0.223585",
+     "Macro risk-off environment explicitly forbids buying crypto",
+     "Whale distribution and weak network activity"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy ADA/USD because it is near its 200-day moving average, but ongoing macro risk-off selling, whale distribution, and thin liquidity cause it to slice straight through support toward $0.21.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Trading crypto long is completely prohibited by the current risk-off market game plan and playbook. Furthermore, technicals show a breakdown below the 20-day low with terrible volume.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 20,
+    "horizon": "intraday",
+    "thesis": "No trade. Market regime is risk-off and explicitly avoids crypto assets, and the asset is breaking down below its 20-day low.",
+    "invalidation": "N/A",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 0.2219
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 0.223585
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 41.901653
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.15
+     },
+     {
+      "fact": "technicals.avg_dollar_vol_20d",
+      "value": 7284
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "GBP_AUD",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 1.90393,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "Price is at 1.90393, right near the 200-day moving average of 1.90797.",
+      "Active setup identified as trend pullback to 20-day average (sma20 at 1.89339).",
+      "RSI14 is neutral at 57.34.",
+      "Low volume ratio of 0.47 indicates weak participation during the session."
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "Forex pair GBP_AUD reflecting cross-rate dynamics between the British Pound and Australian Dollar.",
+      "Macro environment favors the US Dollar and defensive positioning, providing mixed cross-currents for GBP and AUD."
+     ]
+    },
+    "news_sentiment": {
+     "score": 4,
+     "points": [
+      "News focus is primarily on US CPI, gold, and regional geopolitical headlines.",
+      "No specific tier-1 catalysts directly impacting GBP_AUD in the provided news snippet."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Average 20-day dollar volume is 332,754, reflecting moderate institutional flow.",
+      "Volume ratio of 0.47 shows light institutional participation."
+     ]
+    },
+    "best_style": "trend pullback"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "GBP_AUD is showing a trend pullback to the 20-day average with price sitting at 1.90393 and a 20-day return of 1.34%. Historical backtest data shows trend pullback to 20-day average has a 46.4% win rate, offering a clean setup to ride a bounce back toward the 20-day high of 1.91163.",
+    "catalysts": [
+     "Price holding above sma20 (1.89339)",
+     "Positive 20-day return of 1.34%",
+     "Backtested edge for trend pullback to 20-day average"
+    ]
+   },
+   "bear": {
+    "case": "The volume ratio is weak at 0.47 and the broader market is in a risk-off defensive regime favoring USD over cross pairs. The price is squeezed near the 200-day moving average (1.90797) with sideways/mixed trend classification, meaning momentum can easily stall and result in a choppy loss.",
+    "risks": [
+     "Low volume ratio of 0.47 indicates a lack of follow-through",
+     "Sideways/mixed trend with price pressing against the 200-day moving average (1.90797)",
+     "Broad risk-off macro environment makes non-USD crosses unpredictable"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The low volume ratio of 0.47 causes the pullback bounce to stall right at the 200-day moving average (1.90797), leading to a slow bleed back down toward the 20-day moving average as risk-off capital flees to the US Dollar.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Although a technical trend pullback setup is present, the low volume ratio (0.47), mixed/sideways trend, and broader risk-off macro regime heavily favoring USD make this cross-rate trade low conviction and high risk. The failure story is more likely given lack of participation.",
+    "bucket": "tactical",
+    "style": "trend pullback",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 3,
+    "confidence_pct": 42,
+    "horizon": "intraday",
+    "thesis": "We pass on GBP_AUD because the lack of volume (0.47 volume ratio) and mixed trend directly underneath the 200-day moving average offer an unfavorable risk-reward profile in a risk-off dollar-dominant environment.",
+    "invalidation": "Price breaks cleanly above the 200-day moving average with a surge in volume.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 1.90393
+     },
+     {
+      "fact": "technicals.sma200",
+      "value": 1.90797
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.47
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 57.339249
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 4,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "USD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 157.99,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "Price is at 157.99 sitting right near the 20-day moving average of 157.8914, triggering the backtested 'trend pullback to 20-day average' setup.",
+      "RSI is neutral at 51.892669 with a 14-day ATR of 1.024892.",
+      "Trend is sideways/mixed with a low volume ratio of 0.36 indicating limited conviction in either direction."
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "US 10-year Treasury yield is firm at 5.21%, supporting macro dollar strength and yield differentials.",
+      "Risk-off environment favors the greenback over the yen despite low volatility and thin volume."
+     ]
+    },
+    "news_sentiment": {
+     "score": 4,
+     "points": [
+      "Overnight markets reflect broad risk aversion and safe-haven flows.",
+      "Gold and other safe havens react to geopolitical tensions in the Strait of Hormuz."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Average 20-day dollar volume is 52150387, showing adequate liquidity for tactical execution.",
+      "Vol ratio is compressed at 0.36, suggesting range-bound action ahead of key data."
+     ]
+    },
+    "best_style": "trend pullback"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "USD_JPY is pulling back to its 20-day moving average at 157.8914 within a broader constructive sideways-to-up pattern, supported by strong US yields at 5.21% and macro risk-off dollar flows.",
+    "catalysts": [
+     "Price sits directly on the 20-day sma at 157.8914 matching a high-frequency backtested pullback setup.",
+     "US 10-year yields holding firm at 5.21% provide structural rate support for the dollar.",
+     "Broad risk-off regime drives capital toward the USD."
+    ]
+   },
+   "bear": {
+    "case": "The volume ratio is exceptionally low at 0.36 and the trend is rated as sideways/mixed with a 1-day return of -0.22%, meaning any long entry risks being trapped in a choppy range ahead of major US retail sales and PPI data.",
+    "risks": [
+     "Vol ratio of 0.36 indicates a lack of buying momentum.",
+     "Upcoming US data releases (PPI, Retail Sales) could trigger sudden corrective whipsaws.",
+     "20-day return is only 1.3% and 60-day return is -3.59%, showing lack of sustained upside trend."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "USD_JPY drifts lower in thin overnight liquidity due to the low volume ratio of 0.36, breaking below the 20-day sma of 157.8914 and hitting our stop-loss before US data releases.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "We see a modest tactical edge taking a long position off the 20-day moving average pullback with a clear risk-defined stop, aligning with high US yields.",
+    "bucket": "tactical",
+    "style": "trend pullback",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 157.99,
+    "stop": 156.5,
+    "target": 160.0,
+    "conviction": 4,
+    "confidence_pct": 52,
+    "horizon": "intraday",
+    "thesis": "USD_JPY is executing a technical trend pullback to its 20-day moving average at 157.8914. With US 10-year yields anchored at 5.21% and macro conditions favoring the US dollar, we buy the dip with a tight stop below recent swing lows. We target a mean-reversion bounce toward the upper end of the recent range.",
+    "invalidation": "Price breaks decisively below the 156.50 level invalidating the 20-day support thesis.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 157.99
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 157.8914
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 1.024892
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 51.892669
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.36
+     }
+    ],
+    "reward_to_risk": 1.35
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 0.75,
+    "risk_usd": 75.0,
+    "units": 7952.59,
+    "notional_usd": 7952.59
+   },
+   "status": "approved"
+  }
+ ],
+ "ai_calls": 5,
+ "ai_attempts": 14,
+ "minutes": 4.2
+}

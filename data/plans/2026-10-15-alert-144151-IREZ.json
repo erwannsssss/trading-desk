@@ -1,0 +1,116 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T14:41:51-04:00",
+ "dry_run": false,
+ "equity": 10005.29,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "IREZ",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 17.5,
+   "atr_pct": 9.77,
+   "why_scanned": [
+    "breaking move: -8.4% since research"
+   ],
+   "setups": [
+    "breakout above 20-day high",
+    "strong 20-day move (+95.5%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "technicals.rsi14 75.041993",
+      "technicals.price 17.5",
+      "technicals.high_20 16.37"
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "fundamentals.low_52w 6.815",
+      "fundamentals.high_52w 119.01"
+     ]
+    },
+    "news_sentiment": {
+     "score": 0,
+     "points": []
+    },
+    "smart_money": {
+     "score": 3,
+     "points": [
+      "short_volume.short_volume_pct_latest 51.1"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The price has broken above the 20\u2011day high and is well above the 20\u2011day and 50\u2011day moving averages, indicating strong momentum. The 20\u2011day move is +95.5% which suggests a powerful breakout. Recent volume is 1.31\u00d7 average, supporting the move.",
+    "catalysts": [
+     "breakout continuation",
+     "technical momentum"
+    ]
+   },
+   "bear": {
+    "case": "RSI at 75 is overbought and short interest is 51% indicating a crowded bearish position. Historical data shows breakout above 20\u2011day high has a negative edge (avg R -0.028). In a risk\u2011off regime defensive assets are preferred, making this stock unattractive.",
+    "risks": [
+     "price could reverse sharply",
+     "potential short squeeze if positive news appears"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If the stock reverses, the price could drop 10% to around $15.8, hitting a stop loss and resulting in a loss as the overbought condition and high short interest drive further downside.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "No clear edge; overbought RSI, high short interest, breakout historically underperforms, and the defensive risk\u2011off regime favors other assets.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "horizon": null,
+    "thesis": "",
+    "invalidation": "",
+    "plain_english": "The stock looks too risky right now. Its price is high and many traders are short, which usually means it could fall. The market is also in a defensive mood, so we skip this trade.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 75.041993
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 51.1
+     },
+     {
+      "fact": "technicals.high_20",
+      "value": 16.37
+     },
+     {
+      "fact": "technicals.price",
+      "value": 17.5
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 9.77
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ]
+}

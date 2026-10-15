@@ -1,0 +1,130 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T14:41:51-04:00",
+ "dry_run": false,
+ "equity": 10005.29,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "WULF",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 12.275,
+   "atr_pct": 8.95,
+   "why_scanned": [
+    "breaking move: +6.2% since research"
+   ],
+   "setups": [
+    "volume surge (2.39x normal)",
+    "strong 20-day move (-25.5%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 2,
+     "points": [
+      "RSI 34.06 (oversold)",
+      "Price below SMA20/50/200 (downtrend)",
+      "Volume 2.39x normal (volume surge)",
+      "Trend flagged as downtrend"
+     ]
+    },
+    "fundamental": {
+     "score": 1,
+     "points": [
+      "Net margin -1179.94% (massive loss)",
+      "ROE -853.09% (negative return)",
+      "Debt/Equity 35.4 (high leverage)",
+      "Price/Book 34.25 (very overvalued)",
+      "Negative EPS surprises"
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "Rotational headline moving money to value stocks",
+      "Whale activity alert includes WULF",
+      "AI\u2011rotation news mentions WULF"
+     ]
+    },
+    "smart_money": {
+     "score": 1,
+     "points": [
+      "Insider sells $5.32M vs buys $0.19M",
+      "Short volume 34.4% latest, 40.1% 5\u2011day avg",
+      "No hedge\u2011fund holdings listed"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "WULF is heavily oversold (RSI 34) and has a 2.39x volume surge, suggesting a possible short\u2011term bounce as defensive investors rotate into value names.",
+    "catalysts": [
+     "Oversold RSI",
+     "Volume surge",
+     "Defensive rotation from AI\u2011heavy names"
+    ]
+   },
+   "bear": {
+    "case": "The stock is in a strong downtrend, trading well below all moving averages, with terrible fundamentals (negative margins, high debt, sky\u2011high valuation) and a crowded short interest that could keep pressure on price.",
+    "risks": [
+     "Potential short\u2011squeeze if positive news appears",
+     "Unexpected earnings beat",
+     "Rapid rally from defensive rotation"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we entered a long position, the price could keep falling and hit the stop below the SMA20. If we bought puts, a sudden positive catalyst (e.g., a better\u2011than\u2011expected earnings release or a short\u2011squeeze) could push the price sharply higher, wiping out the premium.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "All signals point to a weak, down\u2011trend stock with terrible fundamentals and high short interest; historical back\u2011tests for short setups on similar conditions have a negative expectancy, so there is no clear edge.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "horizon": null,
+    "thesis": null,
+    "invalidation": null,
+    "plain_english": "We decided not to trade WULF because its price is falling, its financials are weak, and past data shows short trades on similar setups lose money. Going long would be too risky in a defensive market.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 34.056982
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 2.39
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -1179.94
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 34.4
+     },
+     {
+      "fact": "technicals.trend",
+      "value": "downtrend"
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'technicals.trend', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  }
+ ]
+}

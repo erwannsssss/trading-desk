@@ -34,7 +34,7 @@
   "filled_qty": 7947.0,
   "filled_qty_initial": 7947.0,
   "opened_at": "2026-10-15T02:14:32-04:00",
-  "last_price": 158.05849999999998,
+  "last_price": 158.098,
   "max_r": 0.24
  },
  {
@@ -76,7 +76,7 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "5c876690-1ff3-457f-9cd8-a309a11d35a4",
   "stop_order_id": "a3932e3d-ba82-4bd8-89bd-4a61cbe87883",
-  "last_price": 5.475,
+  "last_price": 5.335,
   "max_r": 0.31,
   "stop_history": [
    {
@@ -88,7 +88,8 @@
     "stop": 5.2
    }
   ],
-  "last_huddle": "2026-10-15T13:43:32-04:00"
+  "last_huddle": "2026-10-15T13:43:32-04:00",
+  "industry": "Chemicals"
  },
  {
   "id": "2026-10-15-intraday-1053-RKLX",
@@ -105,7 +106,7 @@
   "thesis": "RKLX is experiencing extreme selling pressure, down -20.92% intraday and -41.64% over 5 days, pushing RSI14 down to 27.56. Desk historical data demonstrates that deeply oversold long setups deliver a reliable 68.1% win rate. We define risk strictly just below the 52-week low at 8.155 with an exit stop at 8.10. An initial mean-reversion bounce toward broken support at 11.80 yields a 1.66 reward-to-risk ratio.",
   "entry_plan": 9.49,
   "initial_stop": 8.1,
-  "stop": 8.1,
+  "stop": 9.3,
   "target": 11.8,
   "qty": 107,
   "notional_usd": 1015.43,
@@ -119,16 +120,30 @@
   "status": "open",
   "notes": [
    "2026-10-15T10:59 entry order placed",
-   "2026-10-15T11:32 filled 107 @ 9.482337"
+   "2026-10-15T11:32 filled 107 @ 9.482337",
+   "2026-10-15T14:41 stop moved to 9.30000 (trailing)",
+   "2026-10-15T14:41 emergency huddle (+4.1%): tighten. The stock has rebounded sharply, confirming the mean\u2011reversion thesis, but tightening the stop to 9.30 protects the recent gain while keeping upside to the 11.80 target."
   ],
   "entry_price": 9.482337,
   "filled_qty": 107.0,
   "filled_qty_initial": 107.0,
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "5136b334-5a9d-4edb-bffa-3ad5418f9bfb",
-  "stop_order_id": "299b52d9-cf40-46bb-8699-cbc22ee1aa63",
-  "last_price": 9.4,
-  "max_r": 0.14
+  "stop_order_id": "a69463e8-a093-4375-897a-62d41640bce0",
+  "last_price": 9.79,
+  "max_r": 0.22,
+  "industry": null,
+  "stop_history": [
+   {
+    "t": "2026-10-15T11:32:31-04:00",
+    "stop": 8.1
+   },
+   {
+    "t": "2026-10-15T14:41:47-04:00",
+    "stop": 9.3
+   }
+  ],
+  "last_huddle": "2026-10-15T14:41:47-04:00"
  },
  {
   "id": "2026-10-15-intraday-1053-ONDS",
@@ -168,7 +183,8 @@
   "target_order_id": "7a7e6ae0-ac6f-44c2-be29-369d85084d85",
   "stop_order_id": "e76d3cd9-3b5b-4f66-acfa-721eb0761292",
   "last_price": 6.205,
-  "max_r": 0.23
+  "max_r": 0.23,
+  "industry": "Networking & Communications Equipment"
  },
  {
   "id": "2026-10-15-intraday-1053-USD_CAD",
@@ -245,13 +261,17 @@
   "quote_to_usd": 1.0,
   "created_at": "2026-10-15T12:38:08-04:00",
   "expires_at": "2026-10-15T14:15:56-04:00",
-  "loan_usd": 799.11,
+  "loan_usd": 0.0,
   "loan_apr": 0.08,
   "entry_order_id": "481f0c82-895f-4f6b-997e-c64b8f51bcfb",
-  "status": "pending",
+  "status": "cancelled",
   "notes": [
-   "2026-10-15T12:38 entry order placed"
-  ]
+   "2026-10-15T12:38 entry order placed",
+   "2026-10-15T14:41 entry never filled before the idea expired"
+  ],
+  "industry": "Capital Markets",
+  "closed_at": "2026-10-15T14:41:43-04:00",
+  "exit_reason": "entry never filled before the idea expired"
  },
  {
   "id": "2026-10-15-intraday-1349-IONQ",
@@ -288,10 +308,21 @@
   "expires_at": "2026-10-15T15:45:00-04:00",
   "loan_usd": 0.0,
   "loan_apr": 0.08,
-  "status": "pending",
+  "status": "open",
   "entry_order_id": "365d52d0-89af-431b-9023-9a2544400cf7",
   "notes": [
-   "2026-10-15T14:10 bought to open IONQ261030P00033000 limit 1.43"
-  ]
+   "2026-10-15T14:10 bought to open IONQ261030P00033000 limit 1.43",
+   "2026-10-15T14:41 filled 2 @ 1.43"
+  ],
+  "industry": "Computers & Hardware",
+  "entry_price": 1.43,
+  "filled_qty": 2.0,
+  "filled_qty_initial": 2.0,
+  "opened_at": "2026-10-15T14:41:43-04:00",
+  "premium_paid": 1.43,
+  "underlying_entry": 32.885,
+  "last_price": 32.885,
+  "option_mark": 1.19,
+  "max_r": 0
  }
 ]

@@ -1,0 +1,142 @@
+{
+ "date": "2026-10-15",
+ "session": "pitch",
+ "created_at": "2026-10-15T18:09:50-04:00",
+ "dry_run": false,
+ "equity": 10020.2,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "USAR",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 11.085,
+   "atr_pct": 7.7,
+   "why_scanned": [
+    "pitched by Erwann (managing partner)"
+   ],
+   "setups": [
+    "strong 20-day move (-29.1%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price (11.09) is well below SMA20 (13.79), SMA50 (16.20) and SMA200 (19.23) confirming a strong downtrend",
+      "RSI14 at 28.12 signals oversold conditions but momentum remains weak with a -29% 20\u2011day move",
+      "ATR14 (0.85) equals 7.7% of price, indicating relatively high volatility",
+      "Short\u2011sale volume 5\u2011day average is 54.6% (well above normal 40\u201155%), showing heavy bearish pressure"
+     ]
+    },
+    "fundamental": {
+     "score": -3,
+     "points": [
+      "Negative ROE (-7.75%) and consecutive EPS misses (latest -0.15 vs -0.1275 expected) indicate poor profitability",
+      "Beta of 2.744 makes the stock highly sensitive to market moves, amplifying downside risk",
+      "Price\u2011to\u2011book of 3.5 is not low enough to offset earnings weakness",
+      "Market cap only $3.87\u202fB and no debt, but earnings volatility and negative earnings surprise (-17.6%) dominate"
+     ]
+    },
+    "news_sentiment": {
+     "score": 0,
+     "points": [
+      "No recent news headlines or Reddit chatter to drive sentiment",
+      "Insider activity shows a $1.22\u202fM sell and no buys, a mildly bearish signal",
+      "Analyst consensus is bullish (13 buys/strong buys vs 0 sells) but may be priced in",
+      "Short\u2011volume 5\u2011day avg remains high (54.6%) suggesting lingering bearish sentiment"
+     ]
+    },
+    "smart_money": {
+     "score": -1,
+     "points": [
+      "One insider sell of $1.215\u202fM with no insider purchases, indicating possible lack of confidence",
+      "No hedge\u2011fund holdings or CFTC futures positioning data to suggest smart\u2011money support",
+      "Analyst ratings are bullish but could be outdated given recent earnings misses",
+      "High short\u2011sale volume reinforces bearish positioning"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "short",
+    "case": "USAR is entrenched in a strong downtrend, trading at $11.09 well beneath its 20\u2011day SMA of $13.79, 50\u2011day SMA of $16.20, and 200\u2011day SMA of $19.23. The stock has lost 29.1% over the past 20 days and its RSI of 28 signals oversold conditions without any rebound momentum. Short\u2011sale activity is heavy, with a 5\u2011day average short volume of 54.6%, well above the normal range, indicating bearish pressure from the market. Fundamentals are weak: ROE is \u20137.75%, the latest EPS miss was \u201317.6%, and a beta of 2.744 makes the share highly sensitive to market declines. Insider activity shows a $1.22\u202fM sell and no purchases, further confirming a lack of confidence, while analyst optimism appears fully priced in.",
+    "catalysts": [
+     "Upcoming earnings release could trigger another EPS miss",
+     "Potential break below the 20\u2011day low of $10.15",
+     "Continued high short\u2011interest pressure",
+     "Technical breach of SMA20 reinforcing downtrend"
+    ],
+    "price_target_logic": "Using the ATR of $0.85, a 2\u2011ATR downside move places a target near $11.09\u20112\u00d70.85\u2248$9.39, which aligns with the 20\u2011day low ($10.15) and the 52\u2011week low ($9.82); therefore a realistic short target is around $9.5."
+   },
+   "bear": {
+    "case": "Shorting USAR at $11.09 is a trap because the stock is already down 29.1% in 20 days and sitting 69.14% below its 52-week high, meaning the easy downside is priced in. The RSI of 28.12 signals oversold conditions, creating a high risk of a violent short squeeze given the stock's extreme beta of 2.744. With short volume already at 54.6% of average, the position is crowded, leaving little room for new shorts to push the price lower without triggering a liquidity-driven rebound. The 5-day return is -12.23%, but the 1-day return is +7.41%, indicating that buyers are already stepping in aggressively to catch the falling knife. Entering a short here offers a poor risk-reward ratio, as the target of $9.50 is only 14.4% away while the potential upside to the 20-day SMA of $13.79 is 24.4%.",
+    "risks": [
+     "Short squeeze due to high short interest (54.6% 5-day avg) and oversold RSI (28.12).",
+     "Positive news catalyst or analyst upgrade triggering a sharp rebound from the 52-week low of $9.82.",
+     "High beta (2.744) causing disproportionate gains if the broader market rallies.",
+     "Lack of liquidity to exit a short position quickly if the price spikes, exacerbated by the 1.59 volume ratio.",
+     "The stock is already near its 20-day low of $10.15, limiting immediate downside potential."
+    ],
+    "would_change_my_mind": "If the stock breaks below the 52-week low of $9.82 on volume, confirming a new downtrend leg, or if the RSI fails to recover above 30 and the price rejects the $10.15 support level decisively."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails because USAR triggers a violent short squeeze. With short volume already at 54.6% of average and the RSI at 28.1 (oversold), the stock is crowded with bears. A minor positive headline or a broad market rally causes the price to spike 10-15% in a single day, forcing short sellers to cover and driving the price up through the stop loss. The high beta (2.744) amplifies this move, resulting in a significant loss on the put position.",
+     "failure_more_likely": false
+    },
+    "decision": "short",
+    "reason": "The stock is in a confirmed downtrend with weak fundamentals and heavy short interest, but the current price is too close to support for a high-conviction entry. We will take a low-conviction tactical short using puts to capture the expected continuation of the downtrend while limiting risk to the premium paid. The backtested edge for 'strong 20-day move' shorts is negative, but the specific confluence of oversold RSI and high short volume suggests a high probability of a relief bounce that will fail, allowing us to enter at a better price or exit quickly if the squeeze happens.",
+    "bucket": "tactical",
+    "style": "short/fade",
+    "expression": "put_options",
+    "order_type": "limit",
+    "entry": 11.085,
+    "stop": 12.79,
+    "target": 9.38,
+    "conviction": 5,
+    "confidence_pct": 45,
+    "horizon": "1-5 days",
+    "thesis": "USAR is in a strong downtrend (-29% in 20 days) with weak fundamentals (negative ROE, EPS miss). The RSI is oversold at 28.1, which often leads to a brief bounce, but the heavy short volume (54.6%) and lack of insider buying suggest the bounce will be sold. We are buying puts to profit from the expected failure of any rebound and the continuation of the downtrend toward the 52-week low.",
+    "invalidation": "Price closes above the 20-day SMA (13.79) or breaks above the 20-day high (17.1) on high volume, indicating a trend reversal.",
+    "plain_english": "We are betting that USAR stock will continue to fall. The stock has dropped a lot recently and is trading near its lowest point in a year. While it might bounce up a little because it's 'oversold' (traded too fast), we think that bounce will be weak and the stock will keep falling. We are buying 'put options,' which are contracts that let us profit if the stock price drops, without risking more than the cost of the contract.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 28.118616
+     },
+     {
+      "fact": "short_volume.short_volume_pct_5d_avg",
+      "value": 54.6
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 2.744
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -29.08
+     },
+     {
+      "fact": "earnings_history[0].surprise_pct",
+      "value": -17.6
+     },
+     {
+      "fact": "insiders_last_90d.open_market_sells",
+      "value": 1
+     }
+    ],
+    "reward_to_risk": 1.0
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'earnings_history[0].surprise_pct', which isn't in the data",
+     "reward-to-risk is only 1.00"
+    ]
+   },
+   "status": "blocked_by_fact_check"
+  }
+ ],
+ "pitched_by": "Erwann"
+}

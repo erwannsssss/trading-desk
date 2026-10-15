@@ -105,7 +105,8 @@ def run(session: str = "morning") -> dict:
     pick = lambda lst, n: [c for c in lst if c["symbol"] not in skip][:n]
     finalists = pick(stock_picks, cfg["stocks"]) + pick(crypto_picks, cfg["crypto"]) + pick(fx_picks, cfg["forex"])
     print(f"{session}: scanned {stock_ctx['scanned']} stocks/ETFs; {len(finalists)} finalists; skipped {len(skip)} recent")
-    floor.done("maya", f"Scanned {stock_ctx['scanned']} stocks/ETFs plus crypto and forex. Finalists: "
+    scope = f"{stock_ctx['scanned']} stocks/ETFs plus crypto and forex" if cfg["stocks"] else f"{len(scanner.CRYPTO)} cryptos and {len(scanner.FOREX)} currency pairs"
+    floor.done("maya", f"Scanned {scope}. Finalists: "
                + (", ".join(c["symbol"] for c in finalists) or "none"))
 
     # 2. Macro strategist (fast sessions reuse the latest view to save AI calls)

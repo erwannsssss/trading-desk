@@ -230,6 +230,20 @@ abbr.g { text-decoration: underline dotted var(--ink-3); text-underline-offset: 
 .meter-labels { display: flex; justify-content: space-between; max-width: 560px; font-size: 12.5px; color: var(--ink-3); }
 .chart-box { position: relative; height: 260px; margin-top: 6px; }
 .chart-note { font-size: 13px; color: var(--ink-2); max-width: 70ch; margin: 4px 0 0; }
+
+/* heatmap + bank */
+.heat-toggle { display: inline-flex; gap: 4px; margin-left: 10px; }
+.heat-toggle button { border: 1px solid var(--rule); background: none; border-radius: 6px; padding: 3px 9px; font-size: 12.5px; cursor: pointer; color: var(--ink-2); }
+.heat-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.heat-group { margin-top: 12px; }
+.heat-group .desk-name { display: block; margin-bottom: 6px; }
+.heat { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; }
+.tile { border-radius: 8px; padding: 9px 10px; min-height: 66px; border: 1px solid var(--rule); }
+.tile .tsym { font-weight: 700; font-size: 13.5px; }
+.tile .tname { font-size: 12px; color: var(--ink-2); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile .tval { font-weight: 700; font-size: 15px; margin-top: 3px; display: block; }
+.bankbar { height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; max-width: 360px; margin-top: 6px; }
+.bankbar span { display: block; height: 100%; background: var(--ink); }
 footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -388,6 +402,14 @@ function renderOverview(d) {
       <div class="fig"><div class="v ${cls(s.realized_pnl)}">${signed(s.realized_pnl)}</div><div class="k">Realized profit</div></div>
       <div class="fig"><div class="v">${s.win_rate == null ? "—" : s.win_rate + "%"}</div><div class="k">Win rate (${s.closed} closed)</div></div>
     </div>
+    ${d.bank ? `<h3>Bank credit line</h3>
+      <p class="small">Borrowed <b>${money(d.bank.borrowed, 0)}</b> of ${money(d.bank.credit_line, 0)} from ${esc(d.bank.bank)} at ${d.bank.apr_pct}% a year.
+        Interest so far: <b>${money(d.bank.financing_cost)}</b> (${money(d.bank.interest_paid)} repaid with closed trades, ${money(d.bank.interest_accruing)} building on open ones).</p>
+      <div class="bankbar" role="img" aria-label="${Math.round(d.bank.borrowed / d.bank.credit_line * 100)}% of the credit line in use"><span style="width:${Math.min(100, d.bank.borrowed / d.bank.credit_line * 100)}%"></span></div>` : ""}
+    ${d.sectors ? `<h3>Where the money is moving <span class="heat-toggle" role="group" aria-label="Time frame">
+        ${[["ret_1d", "1 day"], ["ret_5d", "1 week"], ["ret_20d", "1 month"]].map(([k, l]) => `<button data-heat="${k}" aria-pressed="${HEAT === k}">${l}</button>`).join("")}</span></h3>
+      <p class="small muted">From the ${esc(d.sectors.session)} research, ${when(d.sectors.as_of)}. Green is up, red is down; the number and arrow say how much.</p>
+      ${d.sectors.groups.map(g => `<div class="heat-group"><span class="desk-name">${esc(g.title)}</span><div class="heat">${g.tiles.map(tile).join("")}</div></div>`).join("")}` : ""}
     ${plan && plan.macro ? `
       <h3>The desk's read on the market</h3>
       <p class="note">${esc(plan.macro.summary)}</p>
@@ -397,6 +419,19 @@ function renderOverview(d) {
     <h3>Latest activity</h3>
     ${recent.length ? tradeTable(recent, false) : `<p class="empty">No trades yet. ${d.mode === "dry_run" ? "The desk is in dry-run mode: it researches and logs what it would trade. Send /golive on Telegram to place paper trades." : "Trades appear here as soon as orders go in."}</p>`}`;
 }
+
+let HEAT = "ret_1d";
+function tile(t) {
+  const v = t[HEAT];
+  const scale = {ret_1d: 3, ret_5d: 6, ret_20d: 12}[HEAT];
+  const a = v == null ? 0 : Math.min(1, Math.abs(v) / scale);
+  const base = v == null ? "transparent" : v >= 0 ? css("--gain") : css("--loss");
+  const bg = v == null ? "transparent" : `color-mix(in srgb, ${base} ${Math.round(8 + a * 52)}%, transparent)`;
+  return `<div class="tile" style="background:${bg}" title="${esc(t.name)}: 1 day ${pct(t.ret_1d)}, 1 week ${pct(t.ret_5d)}, 1 month ${pct(t.ret_20d)}">
+    <span class="tsym">${esc(t.symbol)}</span><span class="tname">${esc(t.name)}</span>
+    <span class="tval">${v == null ? "—" : (v >= 0 ? "▲ +" : "▼ ") + v.toFixed(1) + "%"}</span></div>`;
+}
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-heat]"); if (!b || !DATA) return; HEAT = b.dataset.heat; renderOverview(DATA); gloss($("#p-overview")); });
 
 function renderPositions(d) {
   const rows = d.positions;
@@ -583,6 +618,7 @@ function showMemo(m, trade) {
     <p class="note">${esc(d.thesis || d.reason || "")}</p>
     ${d.plain_english ? `<button class="link" data-eli="eli-memo">Explain like I'm new</button><div class="eli note" id="eli-memo" hidden>${esc(d.plain_english)}</div>` : ""}
     ${d.entry ? `<p class="small">Entry ${px(d.entry)}, stop ${px(d.stop)}, target ${px(d.target)}, ${esc(d.horizon || "")}. Wrong if: ${esc(d.invalidation || "")}</p>` : ""}
+    ${trade && trade.loan_usd ? `<p class="small"><b>Financing:</b> borrowed ${money(trade.loan_usd, 0)} from the bank${trade.interest_usd != null ? `; repaid it with ${money(trade.interest_usd)} interest` : ""}.</p>` : ""}
     ${d.expression && d.expression !== "shares" ? `<p class="small"><b>Expressed with:</b> ${d.expression === "call_options" ? "call options" : "put options"}${trade && trade.option_symbol ? ` (${esc(trade.option_symbol)})` : ""}</p>` : ""}
     ${trade && trade.postmortem ? `<h3>Post-mortem: ${esc(trade.postmortem.verdict)}</h3><p class="note">${esc(trade.postmortem.what_happened)}</p>${trade.postmortem.lesson ? `<p class="small"><b>Lesson:</b> ${esc(trade.postmortem.lesson)}</p>` : ""}` : ""}
     ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
@@ -752,6 +788,10 @@ function renderEdge(d) {
       <div>${(e.drawdown || []).length >= 2 ? `<div class="chart-box"><canvas id="c-dd"></canvas></div>` : ""}</div>
     </div>
 
+    <h3>Does the AI beat simple rules?</h3>
+    <p class="chart-note">Shadow traders see the exact same research but follow dumb rules. If the desk's judgment adds anything, its line should finish above theirs. Every idea is simulated the same way for all of them.</p>
+    ${shadowBlock(d.shadow)}
+
     <h3>Which styles actually have an edge?</h3>
     <p class="chart-note">Average result per trade by style, with the range the true value probably sits in. A style whose whole range sits above zero is the real thing; one that crosses zero could still be luck.</p>
     ${(e.by_style || []).length ? `<div class="chart-box"><canvas id="c-style"></canvas></div>
@@ -776,7 +816,35 @@ function renderEdge(d) {
   drawEdge(e);
 }
 
+const SHADOW_COLORS = () => ({desk: css("--ink"), follow_bull: dark() ? "#3987e5" : "#2a78d6", high_conviction: dark() ? "#d95926" : "#eb6834",
+  scanner_top: dark() ? "#199e70" : "#1baf7a", coin_flip: dark() ? "#c98500" : "#eda100"});
+const dark = () => getComputedStyle(document.documentElement).getPropertyValue("--paper").trim().toLowerCase() === "#101a2e";
+function shadowBlock(sh) {
+  if (!sh || !Object.values(sh.strategies || {}).some(x => (x.stats || {}).n)) return `<p class="empty">Shadow results start about a day after each research session, once prices have moved.</p>`;
+  const rows = Object.entries(sh.strategies);
+  return `<div class="chart-box" style="height:300px"><canvas id="c-shadow"></canvas></div>
+    <div class="scroll"><table><thead><tr><th>Strategy</th><th class="num">Trades</th><th class="num">Avg result</th><th class="num">Win rate</th><th class="num">Total</th><th class="num">Desk better by</th><th class="num">Luck odds</th></tr></thead><tbody>
+    ${rows.map(([k, v]) => { const t = v.stats || {}, dv = v.desk_vs;
+      return `<tr><td><span style="display:inline-block;width:14px;height:3px;border-radius:2px;background:${SHADOW_COLORS()[k]};vertical-align:middle;margin-right:7px"></span>${esc(v.label)}</td>
+        <td class="num">${t.n || 0}</td><td class="num ${cls(t.avg_r)}">${t.avg_r == null ? "—" : (t.avg_r > 0 ? "+" : "") + t.avg_r + "R"}</td>
+        <td class="num">${t.win_rate == null ? "—" : t.win_rate + "%"}</td><td class="num ${cls(t.total_r)}">${t.total_r == null ? "—" : (t.total_r > 0 ? "+" : "") + t.total_r + "R"}</td>
+        <td class="num ${cls(dv && dv.diff_r)}">${k === "desk" ? "" : dv ? (dv.diff_r > 0 ? "+" : "") + dv.diff_r + "R" : "needs 5 each"}</td>
+        <td class="num">${k === "desk" ? fmtP(t.luck_p_value) : dv && dv.p_value != null ? fmtP(dv.p_value) : "—"}</td></tr>`; }).join("")}
+    </tbody></table></div>
+    <p class="small muted">"Luck odds" for a shadow row is the chance the desk's lead over that rule is just noise (one-sided Welch t-test).</p>`;
+}
+
 function drawEdge(e) {
+  const sh = DATA && DATA.shadow;
+  if (document.getElementById("c-shadow") && sh) {
+    const cols = SHADOW_COLORS();
+    const sets = Object.entries(sh.strategies).filter(([, v]) => v.running.length).map(([k, v]) => ({
+      label: v.label, data: v.running.map((r, i) => ({x: i + 1, y: r.cum_r})), borderColor: cols[k], backgroundColor: cols[k],
+      borderWidth: k === "desk" ? 2.8 : 1.8, pointRadius: 0, tension: 0.15, borderDash: k === "coin_flip" ? [5, 4] : []}));
+    mkChart("c-shadow", {type: "line", data: {datasets: sets},
+      options: {parsing: true, plugins: {tooltip: {callbacks: {title: (i) => `Trade ${i[0].parsed.x}`, label: (i) => `${i.dataset.label}: ${i.parsed.y}R`}}},
+        scales: {x: axis("Trade number", {type: "linear", grid: {display: false}}), y: axis("Running total (R)")}}});
+  }
   const ink = css("--ink"), spy = css("--spy"), gain = css("--gain"), loss = css("--loss"), rule = css("--rule");
   if (document.getElementById("c-luck")) {
     const labels = e.cum_r.map((_, i) => i + 1);
@@ -994,7 +1062,7 @@ function renderFloor() {
         ${deskCol("pm", "Research desk", true)}
         <div class="twig"><div class="desk-col"><span class="desk-name">Trading desk</span>${card("execution", {head: true})}
           <div class="members">${kids("execution").map(p => personCard(p, agents)).join("")}</div>
-          <span class="desk-name" style="margin-top:8px">Risk (reports straight to Victor)</span>${card("risk", {head: true})}</div></div>
+          <span class="desk-name" style="margin-top:8px">Risk and treasury (report straight to Victor)</span>${card("risk", {head: true})}${card("treasury", {head: true})}</div></div>
         ${deskCol("performance", "Learning desk", false)}
       </div>
       <h3>Intern program <span class="small muted">(reports to ${esc(people.hr?.name || "HR")}; $150 to start, hired at $500)</span></h3>

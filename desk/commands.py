@@ -42,7 +42,9 @@ def status_text(state: dict) -> str:
         f"Open positions: {book.open_positions}\n"
         f"Trades today: {state.get('trades_today', 0)}/{config.MAX_TRADES_PER_DAY}\n"
         f"Stock/crypto exposure: ${book.stock_gross_exposure:,.0f}\n"
-        f"Forex exposure: ${book.forex_gross_notional:,.0f}"
+        f"Forex exposure: ${book.forex_gross_notional:,.0f}\n"
+        f"Borrowed from the bank: ${book.borrowed:,.0f} of $100,000 (interest so far ${book.financing_cost:,.2f})\n"
+        f"At risk if every stop hit: ${book.open_risk:,.0f} (limit {config.MAX_TOTAL_OPEN_RISK_PCT:.0f}% of equity)"
     )
 
 

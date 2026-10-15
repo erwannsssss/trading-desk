@@ -5,6 +5,15 @@ from desk.brokers import alpaca, oanda
 from desk.risk import Book
 
 
+def _live_risk(t: dict) -> float:
+    """What an open trade can still lose: nothing once its stop is at breakeven or better."""
+    if t.get("asset") != "option" and t.get("entry_price") and t.get("stop") is not None:
+        long = t.get("direction") == "long"
+        if (long and t["stop"] >= t["entry_price"]) or (not long and t["stop"] <= t["entry_price"]):
+            return 0.0
+    return t.get("risk_usd") or 0.0
+
+
 def snapshot(state: dict) -> tuple[Book, dict]:
     acct = alpaca.account()
     pos = alpaca.positions()
@@ -30,6 +39,17 @@ def snapshot(state: dict) -> tuple[Book, dict]:
         open_positions=len(pos) + len(fx_trades),
         pending_exposure=pending,
     )
+    # Bank loans, interest and total open risk come from the trade journal.
+    try:
+        from desk import bank
+        from desk.state import now
+        from desk.trading import ledger
+        trades = ledger.load()
+        b = bank.totals(trades, now())
+        book.financing_cost, book.borrowed = b["financing_cost"], b["borrowed"]
+        book.open_risk = sum(_live_risk(t) for t in trades if t.get("status") in bank.ACTIVE)
+    except Exception as exc:
+        print(f"bank totals failed: {exc}")
     details = {"alpaca_account": acct, "alpaca_positions": pos, "alpaca_orders": orders,
                "oanda_summary": fx, "oanda_trades": fx_trades}
     return book, details

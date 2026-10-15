@@ -153,6 +153,11 @@ def run(session: str = "morning") -> dict:
         funds = {}
     rulebook = _rulebook()
     extra = extra_context(session)
+    if stock_ctx.get("earnings_season"):
+        extra["session_note"] += (" EARNINGS SEASON: " + ", ".join(stock_ctx["big_reporting"][:15]) + " report in the next few days. "
+                                  "Favor earnings plays (positioning before reports, or trading the reaction after) and size "
+                                  "them for the gap risk; read the latest press release closely.")
+        floor.event("macro", f"Earnings season mode on: {len(stock_ctx['big_reporting'])} big names report in the next 3 days")
     planned = [{"symbol": i["symbol"], "direction": (i.get("decision") or {}).get("decision"),
                 "style": (i.get("decision") or {}).get("style")} for _, i in recent_ideas(12) if i.get("status") == "approved"]
     ideas = []
@@ -219,9 +224,10 @@ def run(session: str = "morning") -> dict:
 
     stamp = now()
     plan = {
+        "earnings_season": bool(stock_ctx.get("earnings_season")),
         "date": stamp.date().isoformat(), "session": session, "created_at": stamp.isoformat(timespec="seconds"),
         "dry_run": state.get("dry_run", True), "equity": round(book.equity, 2),
-        "macro": macro, "macro_inputs": {k: macro_ctx[k] for k in ("economy", "calendar_next_10_days")},
+        "macro": macro, "macro_inputs": {**{k: macro_ctx[k] for k in ("economy", "calendar_next_10_days")}, "etfs": macro_ctx["etfs"]},
         "ideas": ideas, "ai_calls": ai.calls_made, "ai_attempts": ai.attempts,
         "minutes": round((time.monotonic() - started) / 60, 1),
     }

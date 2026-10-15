@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from desk import activity as floor
-from desk import config, telegram
+from desk import bank, config, telegram
 from desk.brokers import alpaca, oanda
 from desk.research import team
 from desk.research.planner import PLANS_DIR, quote_to_usd
@@ -88,7 +88,7 @@ def idea_expiry(plan: dict, idea: dict) -> datetime:
     created = datetime.fromisoformat(plan["created_at"])
     if idea["asset"] in ("stock", "etf"):
         last = created.replace(hour=STOCK_LAST_ENTRY[0], minute=STOCK_LAST_ENTRY[1], second=0, microsecond=0)
-        if plan.get("session") == "intraday":
+        if plan.get("session") in ("intraday", "alert"):
             return min(created + timedelta(hours=2), last)  # intraday ideas go stale fast
         if plan.get("session") == "pitch":
             return created + timedelta(hours=26)  # a pitch made after hours can still be placed the next day
@@ -251,6 +251,7 @@ class Engine:
             "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),
         }
 
+        t["loan_usd"] = bank.loan_needed(notional, self.book.equity, self.book.gross_exposure)
         if self.state.get("dry_run"):
             t["status"] = "would_trade"
             self.trades.append(t)
@@ -259,8 +260,11 @@ class Engine:
                        f"Size ${notional:,.0f}, risking ${sizing['risk_usd']:,.0f}", symbol=idea["symbol"])
             return "entered"
 
+        if asset in ("stock", "etf", "crypto") and not self._fits_broker(t, asset):
+            return "not enough broker buying power right now"
         self._submit(t, long)
         self.trades.append(t)
+        self._borrow(t)
         self.state["trades_today"] = self.state.get("trades_today", 0) + 1
         if asset in ("stock", "etf"):
             self.book.stock_gross_exposure += notional
@@ -316,9 +320,11 @@ class Engine:
             self.alert(agent="options", symbol=idea["symbol"], text=f"<b>[DRY RUN] Would buy {label}</b> at ${limit:.2f} (${premium_total:,.0f} total, the most it can lose)\n"
                        f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}")
             return "entered"
+        t["loan_usd"] = bank.loan_needed(premium_total, self.book.equity, self.book.gross_exposure)
         o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
                                "limit_price": f"{limit:.2f}", "time_in_force": "day", "client_order_id": trade_id[:48]})
         t.update(status="pending", entry_order_id=o["id"])
+        self._borrow(t)
         ledger.note(t, f"bought to open {c['symbol']} limit {limit}", self.iso)
         self.trades.append(t)
         self.state["trades_today"] = self.state.get("trades_today", 0) + 1
@@ -329,6 +335,40 @@ class Engine:
                    f"${limit:.2f} each, ${premium_total:,.0f} total (the most it can lose)\n"
                    f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}\n<i>{esc(t['thesis'])}</i>")
         return "entered"
+
+    def _borrow(self, t: dict) -> None:
+        if t.get("loan_usd"):
+            self.book.borrowed += t["loan_usd"]
+            floor.event("treasury", f"Borrowed ${t['loan_usd']:,.0f} from {bank.BANK_NAME} for {t['symbol']} at {bank.LOAN_APR * 100:.0f}% a year "
+                        f"(${self.book.borrowed:,.0f} of ${bank.CREDIT_LINE:,.0f} now drawn)", t["symbol"], kind="trade")
+
+    def _fits_broker(self, t: dict, asset: str) -> bool:
+        """Alpaca has its own limits: crypto is cash-only and stocks held overnight get 2x margin. Shrink to fit."""
+        try:
+            acct = alpaca.account()
+        except Exception:
+            return True
+        if asset == "crypto":
+            bp = float(acct.get("non_marginable_buying_power") or acct.get("cash") or 0)
+        elif (t.get("horizon") or "") == "intraday":
+            bp = float(acct.get("daytrading_buying_power") or acct.get("buying_power") or 0)
+        else:
+            bp = float(acct.get("regt_buying_power") or acct.get("buying_power") or 0)
+        need = t["qty"] * t["entry_plan"]
+        if need <= bp * 0.97:
+            return True
+        scale = bp * 0.97 / need
+        qty = math.floor(t["qty"] * scale) if asset in ("stock", "etf") else round(t["qty"] * scale, 6)
+        if qty <= 0 or qty * t["entry_plan"] < 10:
+            floor.event("execution", f"Skipped {t['symbol']}: Alpaca only has ${bp:,.0f} of buying power for it", t["symbol"], kind="skip")
+            return False
+        floor.event("execution", f"Trimmed {t['symbol']} from {t['qty']:g} to {qty:g} to fit Alpaca's ${bp:,.0f} buying power", t["symbol"])
+        ratio = qty / t["qty"]
+        t["qty"] = qty
+        for k in ("notional_usd", "risk_usd", "loan_usd"):
+            if t.get(k):
+                t[k] = round(t[k] * ratio, 2)
+        return True
 
     def _submit(self, t: dict, long: bool) -> None:
         order_type = "limit"
@@ -423,6 +463,9 @@ class Engine:
                    agent="options" if t["asset"] == "option" else "execution", symbol=t["symbol"])
 
     def _cancelled(self, t: dict, why: str) -> None:
+        if t.get("loan_usd"):
+            floor.event("treasury", f"Returned the unused ${t['loan_usd']:,.0f} loan for {t['symbol']} (order never filled)", t["symbol"])
+            t["loan_usd"] = 0.0
         floor.event("execution", f"Cancelled the {t['symbol']} entry: {why}", t["symbol"], kind="skip")
         t.update(status="cancelled", closed_at=self.iso, exit_reason=why)
         ledger.note(t, why, self.iso)
@@ -600,6 +643,11 @@ class Engine:
             initial_risk = abs(t["entry_price"] - t["initial_stop"]) * (t.get("filled_qty_initial") or t["qty"]) * t.get("quote_to_usd", 1.0)
         t.update(status="closed", exit_price=price, exit_reason=reason, closed_at=self.iso, pnl_usd=round(pnl, 2),
                  r_result=round(pnl / initial_risk, 2) if initial_risk else None)
+        if t.get("loan_usd"):
+            t["interest_usd"] = bank.interest(t["loan_usd"], t.get("opened_at"), self.at)
+            t["pnl_after_interest"] = round(pnl - t["interest_usd"], 2)
+            floor.event("treasury", f"Repaid {bank.BANK_NAME} ${t['loan_usd']:,.0f} + ${t['interest_usd']:,.2f} interest for {t['symbol']}",
+                        t["symbol"], kind="trade")
         ledger.note(t, f"closed at {price}: {reason}, P&L ${pnl:+,.2f}", self.iso)
         log_event("closed", trade=t["id"], pnl=round(pnl, 2), reason=reason)
         verdict = "WIN" if pnl > 0 else "LOSS" if pnl < 0 else "FLAT"

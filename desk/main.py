@@ -32,6 +32,25 @@ def ensure_initialized(state: dict) -> None:
         pass
 
 
+def detect_deposit(state: dict, details: dict) -> bool:
+    """If the Alpaca paper balance is raised (e.g. so the bank's loan money sits in the account), don't count
+    it as profit: move the baseline. Only when nothing is open, so it can't be confused with a trade."""
+    acct = details["alpaca_account"]
+    eq = float(acct["equity"])
+    quiet = not details["alpaca_positions"] and not details["alpaca_orders"]
+    last, was_quiet = state.get("last_alpaca_equity"), state.get("last_alpaca_quiet")
+    state["last_alpaca_equity"], state["last_alpaca_quiet"] = eq, quiet
+    if last is None or not (quiet and was_quiet) or abs(eq - last) < 500:
+        return False
+    state["baseline"]["alpaca"] = float(state["baseline"].get("alpaca", last)) + (eq - last)
+    log_event("deposit", amount=round(eq - last, 2))
+    from desk import activity as floor
+    floor.event("treasury", f"Noticed the Alpaca paper balance change by ${eq - last:+,.0f}; treated it as a deposit, not profit")
+    telegram.send(f"Treasury: the Alpaca paper balance changed by ${eq - last:+,.0f} with nothing open, so I counted it as a "
+                  f"deposit, not profit. The firm's own equity is unchanged.")
+    return True
+
+
 def roll_day(state: dict, equity: float) -> None:
     today = now().date().isoformat()
     if state.get("day") != today:
@@ -91,7 +110,9 @@ def tick() -> int:
 
     commands.process(state)
 
-    book, _ = snapshot(state)
+    book, details = snapshot(state)
+    if detect_deposit(state, details):
+        book, details = snapshot(state)
     roll_day(state, book.equity)
 
     if not state.get("halted_for_day") and daily_limit_hit(book, state["day_start_equity"]):
@@ -129,10 +150,29 @@ def tick() -> int:
         if state.get("scorecard_hour") != hour:
             from desk import scorecard
             from desk.dashboard import _recent_plans
-            scorecard.grade_ideas(_recent_plans(45))
+            plans45 = _recent_plans(45)
+            scorecard.grade_ideas(plans45)
+            from desk import shadow
+            shadow.update(plans45)
             state["scorecard_hour"] = hour
         from desk import hr
         hr.maybe_season_recap(state)
+    except Exception:
+        traceback.print_exc()
+    save(state)
+
+    # Breaking-news huddles on open positions, and re-research of today's big movers.
+    try:
+        from desk import alerts
+        from desk.trading.engine import Engine
+        from desk.trading import ledger as _ledger
+        eng = Engine(state, book)
+        notes = alerts.review_positions(state, eng)
+        _ledger.save(eng.trades)
+        for a in eng.alerts + notes:
+            telegram.send(a)
+        for note in alerts.research_movers(state):
+            telegram.send(note)
     except Exception:
         traceback.print_exc()
     save(state)

@@ -6,7 +6,7 @@ import math
 from datetime import datetime, timedelta
 from statistics import mean, pstdev
 
-from desk import activity, config, edge, marketdata, scorecard, staff
+from desk import activity, bank, config, edge, marketdata, scorecard, staff
 from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research.planner import PLANS_DIR
@@ -53,6 +53,7 @@ def build(state: dict) -> None:
             "max_trades": config.MAX_TRADES_PER_DAY,
             "since": state.get("created_at"),
         },
+        "bank": _safe(lambda: bank.totals(trades, now()), None),
         "limits": {"daily_loss_pct": config.MAX_DAILY_LOSS_PCT, "max_position_pct": config.MAX_POSITION_PCT,
                    "max_risk_per_trade_pct": config.MAX_RISK_PER_TRADE_PCT, "max_open_positions": config.MAX_OPEN_POSITIONS},
         "curve": curve,
@@ -67,6 +68,8 @@ def build(state: dict) -> None:
         "roster": activity.roster(),
         "scores": scores,
         "edge": _safe(lambda: edge.analyze(trades, curve, scores, config.STARTING_CAPITAL), None),
+        "shadow": _safe(lambda: __import__("desk.shadow", fromlist=["summary"]).summary(), None),
+        "sectors": _safe(lambda: _sectors(plans), None),
         "interns": _safe(_interns, []),
         "grading_starts": _grading_starts(),
         "reviews": (_json(config.DATA_DIR / "reviews.json", []) or [None])[-1],
@@ -92,6 +95,35 @@ def _safe(fn, default):
     except Exception as exc:
         print(f"dashboard piece failed: {exc}")
         return default
+
+
+SECTOR_GROUPS = [
+    ("Sectors", {"XLK": "Tech", "XLF": "Financials", "XLE": "Energy", "XLV": "Health care", "XLI": "Industrials",
+                 "XLY": "Consumer discretionary", "XLP": "Consumer staples", "XLU": "Utilities", "XLB": "Materials",
+                 "XLRE": "Real estate", "XLC": "Communication"}),
+    ("Themes", {"SMH": "Semiconductors", "XBI": "Biotech", "KRE": "Regional banks", "ITB": "Homebuilders",
+                "ARKK": "Innovation", "TAN": "Solar", "URA": "Uranium"}),
+    ("Markets", {"SPY": "S&P 500", "QQQ": "Nasdaq 100", "IWM": "Small caps", "DIA": "Dow", "RSP": "Equal-weight S&P"}),
+    ("World", {"EFA": "Developed markets", "EEM": "Emerging markets", "FXI": "China", "KWEB": "China internet",
+               "EWJ": "Japan", "EWZ": "Brazil", "INDA": "India", "EWG": "Germany", "EWW": "Mexico"}),
+    ("Rates, credit and commodities", {"TLT": "Long bonds", "IEF": "7-10y bonds", "HYG": "High yield", "GLD": "Gold",
+                                       "SLV": "Silver", "USO": "Oil", "UNG": "Natural gas", "CPER": "Copper", "UUP": "US dollar"}),
+]
+
+
+def _sectors(plans: list[dict]) -> dict | None:
+    """Latest ETF readings from the research sessions, grouped for the heatmap."""
+    src = next((p for p in reversed(plans) if (p.get("macro_inputs") or {}).get("etfs")), None)
+    if not src:
+        return None
+    etfs = src["macro_inputs"]["etfs"]
+    groups = []
+    for title, names in SECTOR_GROUPS:
+        tiles = [{"symbol": s, "name": n, **{k: etfs[s].get(k) for k in ("ret_1d", "ret_5d", "ret_20d", "gap_pct", "trend", "rsi14")}}
+                 for s, n in names.items() if s in etfs]
+        if tiles:
+            groups.append({"title": title, "tiles": tiles})
+    return {"as_of": src["created_at"], "session": src.get("session"), "groups": groups}
 
 
 def _grading_starts() -> str | None:

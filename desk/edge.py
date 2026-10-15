@@ -143,6 +143,18 @@ def trade_tests(rs: list[float]) -> dict:
     return out
 
 
+def welch(a: list[float], b: list[float]) -> dict:
+    """Is the average of `a` higher than `b`? One-sided Welch t-test (unequal variances)."""
+    na, nb = len(a), len(b)
+    va, vb = stdev(a) ** 2 / na, stdev(b) ** 2 / nb
+    diff = mean(a) - mean(b)
+    if va + vb == 0:
+        return {"diff_r": round(diff, 3), "t_stat": None, "p_value": None}
+    t = diff / math.sqrt(va + vb)
+    df = (va + vb) ** 2 / ((va ** 2 / (na - 1) if na > 1 else 0) + (vb ** 2 / (nb - 1) if nb > 1 else 0) or 1)
+    return {"diff_r": round(diff, 3), "t_stat": round(t, 2), "p_value": round(t_sf(t, max(1, int(df))), 4)}
+
+
 def group_edges(trades: list[dict], key: str) -> list[dict]:
     groups: dict[str, list[float]] = {}
     for t in trades:

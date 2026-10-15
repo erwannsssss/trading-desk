@@ -114,7 +114,8 @@ Return JSON: {{"case": str (4-6 sentences), "risks": [str], "would_change_my_min
 DESK_TARGET = (
     "DESK TARGET: the desk aims for roughly 20-30 trades a day across all sessions and markets, many of them small "
     "tactical or intraday trades. Pass only when you see no edge at all. A modest edge with a clear stop deserves a "
-    "small, low-conviction position (conviction 4-5) rather than a pass; save conviction 8+ for the best setups."
+    "small, low-conviction position (conviction 4-5) rather than a pass; save conviction 8+ for the best setups. "
+    "The firm has a $100,000 bank credit line (8% a year interest), so cash is not the constraint; risk per trade is."
 )
 
 
@@ -267,7 +268,7 @@ def size(decision: dict, equity: float, asset: str, quote_to_usd: float = 1.0, u
     risk_usd = equity * risk_pct / 100
     units = risk_usd / per_unit_risk
     notional = units * unit_value
-    cap = equity * (config.MAX_FOREX_POSITION_X if asset == "forex" else config.MAX_POSITION_PCT / 100)
+    cap = equity * (config.MAX_FOREX_POSITION_X if asset == "forex" else config.MAX_POSITION_PCT / 100)  # risk limits re-check totals
     if notional > cap:
         units, notional = cap / unit_value, cap
         risk_usd = units * per_unit_risk

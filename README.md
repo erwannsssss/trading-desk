@@ -149,6 +149,26 @@ tab charts it:
 - A verdict: too early (under 20 trades), no edge, promising, or evidence of a real edge (coin-flip p < 0.05
   and bootstrap P(edge > 0) >= 95%)
 
+## Bank credit line
+
+`desk/bank.py`: the firm can borrow up to $100,000 from "First Hoosier Bank" at 8% a year. A trade borrows only
+what the firm's free cash can't cover; when it closes, the loan is repaid plus interest for the days it was out,
+and interest comes out of the firm's equity. Hugo Brandt (treasurer) logs every loan and repayment. Borrowing
+lets the desk hold more positions at once; it doesn't raise per-trade risk (still 5% of the firm's own money)
+and total open risk across all trades is capped at 20%. Alpaca's own limits still apply (crypto is cash-only,
+stocks get about 2x overnight), so trades are trimmed to fit. To let stocks use more of the line, raise the
+Alpaca paper balance: with nothing open, the bot treats the change as a deposit, not profit.
+
+## Making it skill, not luck
+
+- **Shadow strategies** (`desk/shadow.py`): "always follow the bull", "only conviction 8+", "scanner's top
+  pick" and "coin flip" trade the same research ideas in simulation; the Luck or skill tab compares them with
+  the desk and tests whether the desk's lead is real (Welch t-test).
+- **Breaking-news huddles** (`desk/alerts.py`): big moves or fresh headlines on an open position trigger a
+  hold / close / tighten-the-stop decision; today's researched stocks that move 5%+ get re-researched.
+- **Earnings season mode:** when 6+ big names report within 3 days, the scanner and analysts lean into earnings plays.
+- **Sector heatmap** on the overview: sectors, themes, markets, world, rates and commodities over 1 day / week / month.
+
 ## Secrets
 
 Add these in **Settings → Secrets and variables → Actions**:

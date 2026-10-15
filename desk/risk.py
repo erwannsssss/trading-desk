@@ -22,12 +22,19 @@ class Book:
     forex_gross_notional: float = 0.0   # $ value of all forex positions
     open_positions: int = 0
     pending_exposure: float = 0.0       # $ tied up in unfilled entry orders
+    open_risk: float = 0.0              # $ all open/pending trades would lose if every stop hit
+    financing_cost: float = 0.0         # bank interest paid and building up (bank.py)
+    borrowed: float = 0.0               # outstanding bank loans
 
     @property
     def equity(self) -> float:
-        """Bot equity = $10k plus whatever profit/loss it has made in both accounts."""
+        """Firm equity = $10k plus profit/loss in both accounts, minus interest owed to the bank."""
         pnl = (self.alpaca_equity - self.baseline_alpaca) + (self.oanda_nav - self.baseline_oanda)
-        return config.STARTING_CAPITAL + pnl
+        return config.STARTING_CAPITAL + pnl - self.financing_cost
+
+    @property
+    def gross_exposure(self) -> float:
+        return self.stock_gross_exposure + self.pending_exposure + self.forex_gross_notional
 
 
 @dataclass
@@ -95,6 +102,7 @@ def check_order(idea: OrderIdea, book: Book, state: dict, *, stock_blackout: boo
         reasons.append("order size and price must be positive")
 
     max_pos = eq * (config.MAX_FOREX_POSITION_X if idea.venue == "oanda" else config.MAX_POSITION_PCT / 100)
+    loss_if_stopped = 0.0
     if idea.notional > max_pos + 0.01:
         reasons.append(f"position ${idea.notional:,.0f} is over the ${max_pos:,.0f} single-position limit")
 
@@ -113,15 +121,13 @@ def check_order(idea: OrderIdea, book: Book, state: dict, *, stock_blackout: boo
         if wrong_side:
             reasons.append("target is on the wrong side of the entry price")
 
-    if idea.venue == "alpaca":
-        after = book.stock_gross_exposure + book.pending_exposure + idea.notional
-        cap = eq * config.MAX_GROSS_LEVERAGE * (1 - config.MIN_CASH_RESERVE_PCT / 100)
-        if after > cap + 0.01:
-            reasons.append(f"total exposure would be ${after:,.0f}, over the ${cap:,.0f} limit")
-    else:
-        after = book.forex_gross_notional + idea.notional
-        cap = eq * config.MAX_FOREX_NOTIONAL_X
-        if after > cap + 0.01:
-            reasons.append(f"forex exposure would be ${after:,.0f}, over the ${cap:,.0f} limit")
+    from desk.bank import CREDIT_LINE
+    after = book.gross_exposure + idea.notional
+    cap = max(0.0, eq) + CREDIT_LINE
+    if after > cap + 0.01:
+        reasons.append(f"total exposure would be ${after:,.0f}, more than the firm's money plus the ${CREDIT_LINE:,.0f} credit line")
+    max_open = eq * config.MAX_TOTAL_OPEN_RISK_PCT / 100
+    if book.open_risk + loss_if_stopped > max_open + 0.01:
+        reasons.append(f"open trades would risk ${book.open_risk + loss_if_stopped:,.0f} in total, over the ${max_open:,.0f} limit")
 
     return Verdict(not reasons, reasons)

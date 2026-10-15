@@ -87,6 +87,9 @@ def scan_stocks(n: int, max_etfs: int = 5, core_slots: int = 5) -> tuple[list[di
     except Exception as exc:
         print(f"earnings calendar failed: {exc}")
 
+    # Earnings season: when lots of big names report in the next few days, lean into earnings plays.
+    big_reporting = [s for s in earnings if s in STOCKS]
+    season = len(big_reporting) >= 6
     universe = sorted(set(ETFS) | set(STOCKS) | set(dynamic))
     bars = marketdata.stock_daily_bars(universe)
     snaps = marketdata.stock_snapshots(universe)
@@ -118,7 +121,7 @@ def scan_stocks(n: int, max_etfs: int = 5, core_slots: int = 5) -> tuple[list[di
             continue
         reasons = list(dynamic.get(sym, []))
         if sym in earnings:
-            t["interest"] += 3
+            t["interest"] += 6 if season else 3
             reasons.append(f"earnings {earnings[sym]['date']}")
         if sym in reddit:
             t["interest"] += 1
@@ -140,7 +143,12 @@ def scan_stocks(n: int, max_etfs: int = 5, core_slots: int = 5) -> tuple[list[di
         picks.append(a)
         if len(picks) >= n:
             break
-    return picks, {"etf_readings": etf_readings, "scanned": len(analyzed), "earnings_soon": list(earnings)[:40]}
+    if season:  # make sure at least 3 earnings names get researched
+        have = sum(1 for p in picks if p.get("earnings"))
+        extra = [a for a in analyzed if a.get("earnings") and a not in picks][:max(0, 3 - have)]
+        picks = picks[:max(0, n - len(extra))] + extra
+    return picks, {"etf_readings": etf_readings, "scanned": len(analyzed), "earnings_soon": list(earnings)[:40],
+                   "earnings_season": season, "big_reporting": big_reporting}
 
 
 def scan_crypto(n: int) -> tuple[list[dict], dict]:

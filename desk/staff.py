@@ -34,6 +34,7 @@ SEATS = {
     "positions":   ("Leo Moretti", "Position manager", "trading", "execution", False),
     "options":     ("Ava Sinclair", "Options trader", "trading", "execution", False),
     "risk":        ("Grace Adeyemi", "Risk manager", "trading", "cio", False),
+    "treasury":    ("Hugo Brandt", "Treasurer (manages the bank credit line)", "trading", "cio", False),
     "performance": ("Omar Haddad", "Performance analyst, head of learning", "learning", "cio", False),
     "reviewer":    ("Ruth Klein", "Trade reviewer", "learning", "performance", False),
     "quant":       ("Nina Petrova", "Quant researcher", "learning", "performance", False),

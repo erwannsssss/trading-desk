@@ -53,8 +53,8 @@ class SizingTests(unittest.TestCase):
         self.assertEqual(high["risk_usd"], 250)
 
     def test_position_cap(self):
-        s = size(decision(conviction=10, stop=99), 10_000, "stock")  # tiny stop -> huge size, capped at 25%
-        self.assertLessEqual(s["notional_usd"], 2_500)
+        s = size(decision(conviction=10, stop=99.9), 10_000, "stock")  # tiny stop -> huge size, capped at 100% of equity
+        self.assertLessEqual(s["notional_usd"], 10_000)
 
     def test_forex_sizing_in_dollars(self):
         d = decision(entry=150.0, stop=148.0, target=154.0, conviction=7)  # USD/JPY, 2 yen stop
@@ -63,8 +63,8 @@ class SizingTests(unittest.TestCase):
         self.assertAlmostEqual(s["units"], 18_750, delta=1)
 
     def test_forex_cap(self):
-        d = decision(entry=150.0, stop=149.0, target=152.0, conviction=7)  # tight stop -> capped at 2x equity
-        self.assertLessEqual(size(d, 10_000, "forex", quote_to_usd=1 / 150, unit_usd=1.0)["notional_usd"], 20_000)
+        d = decision(entry=150.0, stop=149.8, target=152.0, conviction=7)  # tight stop -> capped at 3x equity
+        self.assertLessEqual(size(d, 10_000, "forex", quote_to_usd=1 / 150, unit_usd=1.0)["notional_usd"], 30_000)
 
 
 if __name__ == "__main__":

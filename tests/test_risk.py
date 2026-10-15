@@ -38,7 +38,8 @@ class RiskTests(unittest.TestCase):
         self.assertFalse(v.ok)
 
     def test_position_too_big(self):
-        self.assertFalse(check_order(idea(notional=3_000), book(), STATE).ok)
+        self.assertTrue(check_order(idea(notional=9_000, stop=99), book(), STATE).ok)
+        self.assertFalse(check_order(idea(notional=12_000, stop=99), book(), STATE).ok)  # over 100% of equity in one name
 
     def test_needs_stop(self):
         self.assertFalse(check_order(idea(stop=None), book(), STATE).ok)
@@ -51,14 +52,22 @@ class RiskTests(unittest.TestCase):
         # $2,500 position with a 30% stop = $750 at risk > $500 limit
         self.assertFalse(check_order(idea(notional=2_500, stop=70), book(), STATE).ok)
 
-    def test_leverage_cap(self):
-        self.assertFalse(check_order(idea(), book(stock_gross_exposure=17_500), STATE).ok)
+    def test_credit_line_cap(self):
+        self.assertTrue(check_order(idea(), book(stock_gross_exposure=60_000, forex_gross_notional=40_000), STATE).ok)
+        self.assertFalse(check_order(idea(), book(stock_gross_exposure=70_000, forex_gross_notional=40_000), STATE).ok)
+
+    def test_total_open_risk_cap(self):
+        self.assertTrue(check_order(idea(), book(open_risk=1_900), STATE).ok)    # +$50 at risk -> $1,950
+        self.assertFalse(check_order(idea(notional=3_000, stop=90), book(open_risk=1_900), STATE).ok)  # +$300 -> over $2,000
+
+    def test_interest_reduces_equity(self):
+        self.assertEqual(book(financing_cost=25).equity, 9_975)
 
     def test_forex_cap(self):
         fx = idea(symbol="EUR_USD", venue="oanda", entry=1.10, stop=1.09, target=1.12, notional=2_000)
         self.assertTrue(check_order(fx, book(), STATE).ok)
-        self.assertFalse(check_order(fx, book(forex_gross_notional=49_000), STATE).ok)
-        self.assertFalse(check_order(OrderIdea(**{**fx.__dict__, "notional": 25_000}), book(), STATE).ok)
+        self.assertTrue(check_order(OrderIdea(**{**fx.__dict__, "notional": 25_000}), book(), STATE).ok)
+        self.assertFalse(check_order(OrderIdea(**{**fx.__dict__, "notional": 35_000}), book(), STATE).ok)  # over 3x equity
 
     def test_daily_loss_limit(self):
         self.assertTrue(daily_limit_hit(book(alpaca_equity=9_400), 10_000))

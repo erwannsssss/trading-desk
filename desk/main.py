@@ -77,6 +77,13 @@ def healthcheck() -> int:
     check("Finnhub", lambda: f"SPY ${datasources.quote('SPY')['c']}")
     check("FRED", lambda: f"Fed funds {datasources.fred_latest('FEDFUNDS').get('value')}%")
     check("Gemini AI", lambda: ai.ask("Reply with exactly: ready", temperature=0)[:40])
+    try:
+        from desk.research import extra
+        for name, line in extra.health().items():
+            if not name.startswith("_"):
+                results.append(("OK  " if line != "no data" else "FAIL ") + f"{name}: {line}")
+    except Exception as exc:
+        results.append(f"FAIL Extra data sources: {str(exc)[:150]}")
     check("Groq AI (backup)", lambda: ai.ask("Reply with exactly: ready", temperature=0, models=config.GROQ_MODELS)[:40]
           if config.groq_key() else "not set up (add the GROQ_API_KEY secret)")
 

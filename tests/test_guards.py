@@ -30,6 +30,13 @@ class GuardTests(unittest.TestCase):
         closed = [tr(s, "stock", "long", status="closed") for s in ("A", "B", "C")]
         self.assertIsNone(guards.same_bet(closed, "stock", "WULF", "long", "mean reversion"))
 
+    def test_same_industry_limit(self):
+        held = [dict(tr(s, "stock", "long", style=st), industry="Semiconductors & Chip Equipment")
+                for s, st in (("NVDA", "momentum"), ("AMD", "breakout"))]
+        self.assertIn("Semiconductors", guards.same_bet(held, "stock", "AVGO", "long", "trend pullback", "Semiconductors & Chip Equipment"))
+        self.assertIsNone(guards.same_bet(held, "stock", "AVGO", "short", "trend pullback", "Semiconductors & Chip Equipment"))
+        self.assertIsNone(guards.same_bet(held, "stock", "JPM", "long", "trend pullback", "Banks"))
+
     def test_earnings_rules(self):
         today = date(2026, 10, 15)
         self.assertIsNotNone(guards.earnings_conflict("2026-10-19", "1-5 days", "momentum", today))

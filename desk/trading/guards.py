@@ -15,6 +15,7 @@ from desk.trading import ledger
 MAX_SAME_CURRENCY = 2
 MAX_CRYPTO_LONGS = 3
 MAX_SAME_STYLE = 3
+MAX_SAME_INDUSTRY = 2   # e.g. two long semiconductor stocks, not three
 EARNINGS_STYLE = "earnings play"
 HOLD_DAYS = {"intraday": 0, "1-5 days": 7, "1-4 weeks": 30}
 RISK_OFF = ("risk-off/defensive", "panic/high volatility")
@@ -31,7 +32,8 @@ def _group(asset: str) -> str:
     return "stocks" if asset in ("stock", "etf", "option") else asset
 
 
-def same_bet(trades: list[dict], asset: str, symbol: str, direction: str, style: str | None) -> str | None:
+def same_bet(trades: list[dict], asset: str, symbol: str, direction: str, style: str | None,
+             industry: str | None = None) -> str | None:
     """Why this would be one bet too many, or None if it's fine."""
     active = [t for t in trades if t.get("status") in ledger.ACTIVE]
     if asset == "forex":
@@ -47,6 +49,12 @@ def same_bet(trades: list[dict], asset: str, symbol: str, direction: str, style:
         if direction == "long" and len(longs) >= MAX_CRYPTO_LONGS:
             return f"already {len(longs)} crypto longs ({', '.join(t['symbol'] for t in longs)}); they all move with Bitcoin"
         return None
+    if industry:
+        peers = [t for t in active if _group(t.get("asset")) == "stocks" and t.get("direction") == direction
+                 and t.get("industry") == industry]
+        if len(peers) >= MAX_SAME_INDUSTRY:
+            return (f"already {len(peers)} {direction} positions in {industry} ({', '.join(t['symbol'] for t in peers)}); "
+                    f"a third would be the same industry bet")
     style = (style or "").lower()
     same = [t for t in active if _group(t.get("asset")) == "stocks" and t.get("direction") == direction
             and (t.get("style") or "").lower() == style]

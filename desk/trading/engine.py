@@ -153,6 +153,8 @@ class Engine:
         floor.working("positions", f"Watching {len(active)} open trade{'s' if len(active) != 1 else ''}") if active else None
         floor.working("execution", f"Working through {len(ideas)} idea{'s' if len(ideas) != 1 else ''} from the latest plans")
         for t in [t for t in self.trades if t["status"] in ledger.ACTIVE]:
+            if t.get("asset") in ("stock", "option") and "industry" not in t:
+                t["industry"] = _industry(t["symbol"])   # older trades, for the same-industry limit
             try:
                 self.manage(t)
                 summary["managed"] += 1
@@ -206,7 +208,8 @@ class Engine:
         why = guards.risk_off_block((plan.get("macro") or {}).get("regime"), asset, direction, d.get("conviction"))
         if why:
             return self._record_skip(trade_id, plan_file, idea, why)
-        why = guards.same_bet(self.trades, asset, idea["symbol"], direction, d.get("style"))
+        industry = _industry(idea["symbol"]) if asset == "stock" else None
+        why = guards.same_bet(self.trades, asset, idea["symbol"], direction, d.get("style"), industry)
         if why:
             floor.event("risk", f"Blocked {idea['symbol']}: {why}", idea["symbol"], kind="blocked")
             return self._record_skip(trade_id, plan_file, idea, f"same bet: {why}")
@@ -291,7 +294,7 @@ class Engine:
             "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"), "thesis": d.get("thesis"),
             "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target, "qty": units,
             "notional_usd": round(notional, 2), "risk_usd": sizing["risk_usd"], "risk_pct": sizing["risk_pct"],
-            "quote_to_usd": kw.get("quote_to_usd", 1.0), "created_at": self.iso,
+            "quote_to_usd": kw.get("quote_to_usd", 1.0), "created_at": self.iso, "industry": industry,
             "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),
         }
 
@@ -367,6 +370,7 @@ class Engine:
             **({"short_option_symbol": c["short_symbol"], "short_strike": c["short_strike"], "spread_width": c["width"],
                 "single_option_cost": c.get("single_cost")} if c.get("short_symbol") else {}),
             "direction": "long" if long else "short", "bucket": d.get("bucket") or "high_risk", "style": d.get("style"),
+            "industry": _industry(idea["symbol"]),
             "conviction": d.get("conviction"), "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"),
             "thesis": d.get("thesis"), "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target,
             "qty": qty, "premium_limit": limit, "notional_usd": premium_total, "risk_usd": premium_total,
@@ -767,6 +771,15 @@ class Engine:
         self.alert(f"<b>CLOSED {esc(t['symbol'])}: {verdict} ${pnl:+,.2f}</b> ({t['r_result']}R)\n"
                    f"{'Long' if long else 'Short'} {_p(t['entry_price'])} -> {_p(price)} | {esc(reason)}",
                    agent="options" if t["asset"] == "option" else "positions", symbol=t["symbol"])
+
+
+def _industry(symbol: str) -> str | None:
+    """The company's industry (FinanceDatabase), for the same-industry limit."""
+    try:
+        from desk.research import extra
+        return (extra.sector(symbol) or {}).get("industry")
+    except Exception:
+        return None
 
 
 def _exit_reason(t: dict, price: float) -> str:

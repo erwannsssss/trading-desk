@@ -21,6 +21,24 @@ DESK = (
 )
 
 
+DATA_GUIDE = (
+    "HOW TO READ THE EXTRA DATA (when present): "
+    "short_interest_and_analysts.short_pct_of_float = share of tradable shares sold short (under 5% normal, over 20% a "
+    "crowded short: squeeze fuel if good news hits, but also a sign pros expect a drop); days_to_cover = days of normal "
+    "volume needed to buy them back; analyst_rating_1_buy_5_sell (1 = strong buy). "
+    "short_volume = share of each day's trading that was short sales (40-55% is normal market-making; well above that "
+    "means unusual selling pressure). "
+    "sec_filings = the latest quarter and year straight from SEC filings (millions of dollars) and insider Form 4 trades: "
+    "open-market BUYS by insiders are a strong bullish signal; sales, especially on preset plans, mean little. "
+    "futures_positioning = CFTC Commitments of Traders: speculators' net position as % of open interest, its weekly "
+    "change, and three_year_percentile (0 = most bearish in 3 years, 100 = most bullish); above 85 or below 15 is a "
+    "crowded trade that tends to reverse. "
+    "crypto_sentiment = Crypto Fear & Greed (0-100; extreme fear often marks bottoms, extreme greed tops), stablecoin "
+    "supply growth (new money ready to buy crypto) and DeFi value locked. "
+    "sector = the company's sector and industry."
+)
+
+
 def _j(obj) -> str:
     return json.dumps(obj, indent=1, default=str)
 
@@ -42,6 +60,8 @@ def macro_view(context: dict) -> dict:
 {_style("macro")}
 DATA:
 {_j(context)}
+
+{DATA_GUIDE}
 
 Decide:
 - regime: one of "strong uptrend", "choppy/range-bound", "risk-off/defensive", "panic/high volatility", "recovery"
@@ -147,11 +167,13 @@ Market backdrop: {macro.get('regime')} | {macro.get('summary')}
 DOSSIER:
 {_j(dossier)}
 
+{DATA_GUIDE}
+
 Each specialist scores -5 (strongly bearish) to +5 (strongly bullish) and gives 2-4 evidence-based points:
-- technical: trend, momentum, key levels (support/resistance from the data), volatility, the setup
-- fundamental: valuation, growth, margins, earnings record, latest press release (skip for crypto/forex/ETFs: say "n/a")
-- news_sentiment: what the headlines and Reddit chatter mean, is the story already priced in
-- smart_money: insider buying/selling, which hedge funds hold it and how big, analyst rating shifts
+- technical: trend, momentum, key levels (support/resistance from the data), volatility, the setup, short-sale volume
+- fundamental: valuation, growth, margins, earnings record, the SEC-filed numbers, latest press release (skip for crypto/forex/ETFs: say "n/a")
+- news_sentiment: what the headlines and Reddit chatter mean, short interest and crowding, crypto fear & greed, is the story already priced in
+- smart_money: insider Form 4 buys/sells, which hedge funds hold it, futures positioning (CFTC), analyst targets and rating shifts
 
 Also name the best trading style for it right now (momentum, breakout, mean reversion, earnings play, trend pullback, short/fade, macro) or "no clear setup".
 
@@ -296,6 +318,8 @@ DESK RULEBOOK: {rulebook or "none yet"}
 
 DOSSIER:
 {_j(dossier)}
+
+{DATA_GUIDE}
 
 {_decision_rules(dossier, extra)}
 

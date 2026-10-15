@@ -657,6 +657,17 @@ function renderStats(d) {
       ${(d.tournament.shadow_lessons || []).map(x => `<p class="note small">${esc(x)}</p>`).join("")}
       <p class="small muted">Calibration: ${d.tournament.calibration.trades ? `predicted ${d.tournament.calibration.predicted}% wins, actual ${d.tournament.calibration.actual}%, so every bet is scaled ${d.tournament.calibration.factor}x.` : "needs closed trades."}</p>`
       : `<p class="empty">Starts once trades close. Until then every style bets at 1x.</p>`}
+    <h3>Which research sessions make money</h3>
+    <p class="lede small">Closed trades grouped by the research session that found them. Once two sessions have 10+ trades, the best one gets 30% more ideas researched and the worst 30% fewer.</p>
+    ${(() => { const sb = d.tournament?.session_budget?.sessions || {}; const rows = Object.entries(sb);
+      return rows.length ? `<div class="scroll"><table><thead><tr><th>Session</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Avg result</th><th class="num">Research budget</th></tr></thead><tbody>
+        ${rows.sort((a, b) => b[1].avg_r - a[1].avg_r).map(([k, r]) => `<tr><td>${esc(sessionName[k] || k)}</td><td class="num">${r.trades}</td><td class="num">${r.win_rate}%</td><td class="num ${cls(r.avg_r)}">${r.avg_r > 0 ? "+" : ""}${r.avg_r}R</td><td class="num">${r.budget ? r.budget + "x" : "needs 10 trades"}</td></tr>`).join("")}</tbody></table></div>`
+        : `<p class="empty">Starts once trades close.</p>`; })()}
+    <h3>Auto-tuned stops and targets</h3>
+    <p class="lede small">After 15+ closed trades in a style, the desk compares where it put stops and targets with how far trades actually ran and dipped, then adjusts new trades to match.</p>
+    ${(() => { const et = d.tournament?.exit_tuning || {}; const rows = Object.entries(et);
+      return rows.length ? rows.map(([k, r]) => `<p class="small"><b>${esc(k === "_all" ? "All trades" : k)}</b> (${r.n} trades): ${r.advice.length ? esc(r.advice.join(" ")) : `targets (${r.planned_target_r}R) and stops look right for how trades actually move.`}</p>`).join("")
+        : `<p class="empty">Needs 15 closed trades in a style.</p>`; })()}
     <h3>Backtest of the chart setups</h3>
     ${d.backtest ? `<p class="lede small">How each setup the scanner flags would have done over ~2 years on ${d.backtest.symbols} stocks and ETFs (${esc(d.backtest.rules)}). The analysts see this before every decision. Updated ${when(d.backtest.updated)}.</p>
       <div class="scroll"><table><thead><tr><th>Setup</th><th>Side</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Avg result</th></tr></thead><tbody>

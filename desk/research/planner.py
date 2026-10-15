@@ -81,7 +81,8 @@ def latest_macro(max_age_hours: float = 14) -> dict | None:
 def extra_context(session: str) -> dict:
     from desk import learning
     t = learning._load(learning.TOURNAMENT, None) or {}
-    return {"session_note": SESSION_NOTES[session], "tournament": learning.tournament_summary(),
+    tune = [f"{s if s != '_all' else 'all trades'}: " + " ".join(r.get("advice") or []) for s, r in (t.get("exit_tuning") or {}).items() if r.get("advice")]
+    return {"session_note": SESSION_NOTES[session], "tournament": learning.tournament_summary(), "exit_tuning": tune,
             "backtest": learning.backtest_summary(), "team": team_record(),
             "shadow_lessons": t.get("shadow_lessons") or [], "edge_tilt": (t.get("edge_tilt") or {}).get("reason")}
 
@@ -109,6 +110,15 @@ def team_record() -> list[dict] | None:
 def run(session: str = "morning") -> dict:
     started = time.monotonic()
     cfg = dict(SESSIONS[session])
+    try:   # research budget follows the sessions whose ideas actually make money (learning.session_budget)
+        from desk import learning
+        m = ((learning._load(learning.TOURNAMENT, None) or {}).get("session_budget") or {}).get("multipliers", {}).get(session, 1.0)
+        if m != 1.0:
+            for k in ("stocks", "crypto", "forex"):
+                if cfg[k]:
+                    cfg[k] = max(1, round(cfg[k] * m))
+    except Exception as exc:
+        print(f"session budget failed: {exc}")
     from desk import firm
     if cfg["crypto"] and firm.unlocked("crypto_desk"):
         cfg["crypto"] += 1

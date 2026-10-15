@@ -237,7 +237,7 @@ def _decision_rules(dossier: dict, extra: dict) -> str:
     return f"""Current price: {t['price']}. ATR (typical daily range): {t.get('atr14')} ({t.get('atr_pct')}%).
 {DESK_TARGET}
 {DESK_RULES}
-{_team_record(extra)}{("WHAT THE RESULTS SAY: " + " ".join(extra.get("shadow_lessons") or []) + " Bet sizing: " + str(extra.get("edge_tilt") or "") + chr(10)) if extra.get("shadow_lessons") or extra.get("edge_tilt") else ""}
+{_team_record(extra)}{("EXIT TUNING FROM REAL RESULTS (stops and targets are adjusted to this automatically): " + " ".join(extra.get("exit_tuning")) + chr(10)) if extra.get("exit_tuning") else ""}{("WHAT THE RESULTS SAY: " + " ".join(extra.get("shadow_lessons") or []) + " Bet sizing: " + str(extra.get("edge_tilt") or "") + chr(10)) if extra.get("shadow_lessons") or extra.get("edge_tilt") else ""}
 SESSION: {extra.get('session_note', '')}
 STRATEGY TOURNAMENT (how each style has actually performed for this desk; lean toward what works): {_j(extra.get('tournament') or 'no history yet')}
 BACKTESTED EDGE OF CHART SETUPS (2 years of history): {_j(extra.get('backtest') or 'not available')}

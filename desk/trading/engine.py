@@ -246,6 +246,14 @@ class Engine:
             return self._record_skip(trade_id, plan_file, idea, f"price {price} already past the stop or target")
         if d.get("order_type") == "market":
             entry = price
+        if asset != "option" and not idea.get("pair_id"):
+            from desk import learning as _l
+            new_stop, new_target, tuned = _l.tuned_levels(d.get("style"), direction, entry, stop, target)
+            if tuned and ((direction == "long" and price <= new_stop) or (direction == "short" and price >= new_stop)):
+                tuned = None   # the tighter stop would already be hit at today's price; keep the original levels
+            if tuned:
+                stop, target = new_stop, new_target
+                floor.event("positions", f"{idea['symbol']}: {tuned} (from how past trades in this style actually played out)", idea["symbol"])
         # If the market already moved through our limit, chasing is only allowed within a quarter of the risk.
         risk = abs(entry - stop)
         if (long and price > entry + 0.25 * risk) or (not long and price < entry - 0.25 * risk):
@@ -641,6 +649,7 @@ class Engine:
         t["last_price"] = price
         r = r_multiple(t["direction"], entry, t["initial_stop"], price)
         t["max_r"] = round(max(t.get("max_r", 0), r), 2)
+        t["min_r"] = round(min(t.get("min_r", 0), r), 2)   # deepest dip, for auto-tuning stops
 
         # Crypto has no resting take-profit order, so the engine takes it.
         if t["asset"] == "crypto" and price >= t["target"]:
@@ -672,6 +681,7 @@ class Engine:
         long = t["direction"] == "long"   # long = calls (bullish), short = puts (bearish)
         r = r_multiple(t["direction"], t["underlying_entry"], t["initial_stop"], under)
         t["max_r"] = round(max(t.get("max_r", 0), r), 2)
+        t["min_r"] = round(min(t.get("min_r", 0), r), 2)   # deepest dip, for auto-tuning stops
         reason = None
         if (long and under <= t["stop"]) or (not long and under >= t["stop"]):
             reason = "underlying hit the stop"

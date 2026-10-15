@@ -111,8 +111,117 @@ def shadow_lessons() -> list[str]:
     return out
 
 
+# ---- Auto-tuning exits ---------------------------------------------------------------
+TUNE_MIN_TRADES = 15     # per style; styles with fewer use the all-trades numbers once there are 30
+
+
+def _pct(vals: list[float], q: float) -> float:
+    v = sorted(vals)
+    if not v:
+        return 0.0
+    k = (len(v) - 1) * q
+    lo, hi = int(k), min(int(k) + 1, len(v) - 1)
+    return v[lo] + (v[hi] - v[lo]) * (k - lo)
+
+
+def _tune(ts: list[dict]) -> dict | None:
+    rows = []
+    for t in ts:
+        e, s, g = t.get("entry_price"), t.get("initial_stop"), t.get("target")
+        if not (e and s and g) or t.get("max_r") is None or e == s:
+            continue
+        rows.append({"planned": abs(g - e) / abs(e - s), "max_r": t["max_r"], "min_r": t.get("min_r"),
+                     "win": (t.get("pnl_usd") or 0) > 0})
+    if len(rows) < TUNE_MIN_TRADES:
+        return None
+    planned = _pct([r["planned"] for r in rows], 0.5)
+    reach = _pct([r["max_r"] for r in rows], 0.75)      # how far the better trades actually ran
+    dips = [r["min_r"] for r in rows if r["win"] and r["min_r"] is not None]
+    out = {"n": len(rows), "planned_target_r": round(planned, 2), "p75_max_r": round(reach, 2), "advice": []}
+    if planned > reach * 1.15 and reach >= 1.2:
+        out["target_r"] = round(max(1.2, _pct([r["max_r"] for r in rows], 0.65)), 2)
+        out["advice"].append(f"targets are too far: only a quarter of trades ran past {reach:.1f}R, but targets sit at "
+                             f"{planned:.1f}R. Aim for about {out['target_r']}R.")
+    if len(dips) >= 8:
+        deep = abs(_pct(dips, 0.1))                      # 90% of winners never dipped deeper than this
+        out["winners_deepest_dip_r"] = round(deep, 2)
+        if deep < 0.5:
+            out["stop_scale"] = round(max(0.6, deep + 0.25), 2)
+            out["advice"].append(f"stops are wider than needed: 90% of winners never dipped past {deep:.2f}R. "
+                                 f"Stops about {round((1 - out['stop_scale']) * 100)}% closer would cut losses without losing many winners.")
+    return out
+
+
+def exit_tuning(trades: list[dict]) -> dict:
+    closed = [t for t in trades if t.get("status") == "closed" and t.get("asset") != "option" and t.get("style") != "hedge"]
+    out = {}
+    by_style: dict[str, list] = {}
+    for t in closed:
+        by_style.setdefault((t.get("style") or "other").lower(), []).append(t)
+    for style, ts in by_style.items():
+        r = _tune(ts)
+        if r:
+            out[style] = r
+    if len(closed) >= 2 * TUNE_MIN_TRADES:
+        r = _tune(closed)
+        if r:
+            out["_all"] = r
+    return out
+
+
+def tuned_levels(style: str | None, direction: str, entry: float, stop: float, target: float) -> tuple[float, float, str | None]:
+    """Apply the learned stop and target distances to a new trade. Returns (stop, target, note)."""
+    t = _load(TOURNAMENT, None) or {}
+    tune = (t.get("exit_tuning") or {})
+    rule = tune.get((style or "").lower()) or tune.get("_all")
+    if not rule or entry == stop:
+        return stop, target, None
+    sign = 1 if direction == "long" else -1
+    risk = abs(entry - stop)
+    notes = []
+    if rule.get("stop_scale"):
+        risk *= rule["stop_scale"]
+        stop = entry - sign * risk
+        notes.append(f"stop {round((1 - rule['stop_scale']) * 100)}% closer")
+    want = rule.get("target_r")
+    if want and abs(target - entry) / risk > want * 1.15:
+        target = entry + sign * want * risk
+        notes.append(f"target at {want}R")
+    return round(stop, 6), round(target, 6), ("auto-tuned: " + ", ".join(notes)) if notes else None
+
+
+# ---- Research budget by session ------------------------------------------------------
+SESSION_MIN_TRADES = 10
+
+
+def session_budget(trades: list[dict]) -> dict:
+    """Which research sessions' ideas make money. Once 2+ sessions have 10+ closed trades, the best gets 30% more
+    ideas researched and the worst 30% fewer."""
+    by: dict[str, list[float]] = {}
+    for t in trades:
+        if t.get("status") != "closed" or t.get("r_result") is None or not t.get("plan_file"):
+            continue
+        parts = t["plan_file"].removesuffix(".json").split("-")
+        session = parts[3] if len(parts) > 3 else "other"
+        by.setdefault(session, []).append(t["r_result"])
+    rows = {s: {"trades": len(v), "avg_r": round(mean(v), 3), "win_rate": round(sum(r > 0 for r in v) / len(v) * 100)}
+            for s, v in by.items()}
+    ready = sorted([s for s, r in rows.items() if r["trades"] >= SESSION_MIN_TRADES and s in ("morning", "intraday", "evening", "overnight")],
+                   key=lambda s: rows[s]["avg_r"])
+    mult = {s: 1.0 for s in ready}
+    if len(ready) >= 2:
+        mult[ready[-1]] = 1.3
+        if rows[ready[0]]["avg_r"] < rows[ready[-1]]["avg_r"]:
+            mult[ready[0]] = 0.7
+    for s, m in mult.items():
+        rows[s]["budget"] = m
+    return {"sessions": rows, "multipliers": mult}
+
+
 def update_tournament(trades: list[dict]) -> dict:
     t = compute_tournament(trades)
+    t["exit_tuning"] = exit_tuning(trades)
+    t["session_budget"] = session_budget(trades)
     t["edge_tilt"] = edge_tilt(trades)
     t["shadow_lessons"] = shadow_lessons()
     _save(TOURNAMENT, t)

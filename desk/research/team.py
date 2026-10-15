@@ -25,10 +25,21 @@ def _j(obj) -> str:
     return json.dumps(obj, indent=1, default=str)
 
 
+def _style(*seats: str) -> str:
+    """Working approach of anyone recently hired into these seats (replacements for fired analysts)."""
+    try:
+        from desk import staff
+        found = {s: staff.approaches().get(s) for s in seats}
+        lines = [f"- {staff.SEATS[s][1]} ({staff.name(s)}): {a}" for s, a in found.items() if a]
+        return ("\nWORKING STYLE OF NEW HIRES (follow it for that role):\n" + "\n".join(lines) + "\n") if lines else ""
+    except Exception:
+        return ""
+
+
 # ---- Macro analyst -----------------------------------------------------------
 def macro_view(context: dict) -> dict:
     prompt = f"""You are the desk's MACRO STRATEGIST. Read today's market data and set the game plan.
-
+{_style("macro")}
 DATA:
 {_j(context)}
 
@@ -50,6 +61,7 @@ Return JSON: {{"regime": str, "risk_appetite": int, "bucket_weights": {{"core": 
 # ---- Per-idea debate ---------------------------------------------------------
 def specialists(dossier: dict, macro: dict) -> dict:
     prompt = f"""You are four SPECIALIST ANALYSTS writing quick notes on {dossier['symbol']} ({dossier['asset_type']}).
+{_style("technical", "fundamental", "sentiment", "smartmoney")}
 Market backdrop: {macro.get('regime')} | {macro.get('summary')}
 
 DOSSIER:
@@ -69,7 +81,7 @@ Return JSON: {{"technical": {{"score": int, "points": [str]}}, "fundamental": {{
 
 
 def bull(dossier: dict, notes: dict) -> dict:
-    prompt = f"""You are the BULL on {dossier['symbol']}. Make the strongest honest case to trade it in the direction you think pays best
+    prompt = f"""{_style("bull")}You are the BULL on {dossier['symbol']}. Make the strongest honest case to trade it in the direction you think pays best
 (usually long, but if the best trade is a short, argue for the short). Use the data.
 
 DOSSIER:
@@ -83,7 +95,7 @@ Return JSON: {{"direction": "long" or "short", "case": str (4-6 sentences), "cat
 
 
 def bear(dossier: dict, notes: dict, bull_case: dict) -> dict:
-    prompt = f"""You are the BEAR (devil's advocate) on {dossier['symbol']}. The bull wants to go {bull_case.get('direction')}.
+    prompt = f"""{_style("bear")}You are the BEAR (devil's advocate) on {dossier['symbol']}. The bull wants to go {bull_case.get('direction')}.
 Attack that trade as hard as the data allows: what's priced in, what could go wrong, bad timing, crowded positioning, upcoming events.
 
 DOSSIER:
@@ -138,6 +150,8 @@ DECISION JSON: {{"premortem": {{"failure_story": str, "failure_more_likely": boo
 "decision": "long"|"short"|"pass", "reason": str, "bucket": str, "style": str, "expression": "shares"|"call_options"|"put_options",
 "order_type": "limit"|"market", "entry": number|null, "stop": number|null, "target": number|null, "conviction": int,
 "confidence_pct": int, "horizon": str, "thesis": str (3-5 plain-English sentences), "invalidation": str,
+"plain_english": str (explain the decision to a complete beginner in 3-5 short sentences, defining any finance term
+you use in brackets, e.g. "RSI [a 0-100 gauge of how stretched a price is]"),
 "evidence": [{{"fact": str, "value": number}}]}}"""
 
 
@@ -145,7 +159,7 @@ def portfolio_manager(dossier: dict, notes: dict, bull_case: dict, bear_case: di
                       planned_today: list[dict], holdings: list[str], rulebook: list[str], extra: dict | None = None) -> dict:
     extra = extra or {}
     prompt = f"""You are the PORTFOLIO MANAGER and make the final call on {dossier['symbol']} ({dossier['asset_type']}).
-
+{_style("pm")}
 MARKET GAME PLAN: {_j(macro)}
 ALREADY PLANNED TODAY (avoid piling into the same bet): {_j(planned_today)}
 ALREADY HOLDING: {holdings or "nothing"}
@@ -170,7 +184,7 @@ def quick_desk(dossier: dict, macro: dict, planned_today: list[dict], holdings: 
     extra = extra or {}
     prompt = f"""Run the whole desk on {dossier['symbol']} ({dossier['asset_type']}) in one pass, keeping each role honest
 and separate: four specialists, a bull, a bear who attacks the bull, then the portfolio manager's final call.
-
+{_style(*("technical", "fundamental", "sentiment", "smartmoney", "bull", "bear", "pm"))}
 MARKET GAME PLAN: {_j(macro)}
 ALREADY PLANNED TODAY: {_j(planned_today)}
 ALREADY HOLDING: {holdings or "nothing"}

@@ -1,6 +1,6 @@
 """The trading floor: who's on the desk, what each person is doing right now, and what they did recently.
 
-Every agent in the system is a named person. Code calls `working()` when someone starts a task and `done()`
+Every agent in the system is a named person (see staff.py). Code calls `working()` when someone starts a task and `done()`
 when they finish. The state is published as a small JSON file to the repo's `live` branch about every
 40 seconds (via the GitHub API), so the dashboard's Trading floor page stays close to live without waiting
 for the slower GitHub Pages rebuild. A copy also goes to docs/live/ as a fallback.
@@ -18,32 +18,7 @@ import requests
 from desk import config
 from desk.state import now
 
-# id: (name, role, desk)
-ROSTER = {
-    "maya":   ("Maya Chen", "Market scanner", "research"),
-    "darius": ("Darius Webb", "Chief macro strategist", "research"),
-    "ben":    ("Ben Carter", "Research associate", "research"),
-    "priya":  ("Priya Natarajan", "Technical analyst", "research"),
-    "marcus": ("Marcus Hale", "Fundamental analyst", "research"),
-    "sofia":  ("Sofia Reyes", "News and sentiment analyst", "research"),
-    "theo":   ("Theo Okafor", "Smart money tracker", "research"),
-    "jake":   ("Jake Morrison", "The bull", "research"),
-    "nadia":  ("Nadia Volkov", "The bear", "research"),
-    "elena":  ("Elena Castillo", "Portfolio manager", "research"),
-    "sam":    ("Sam Brooks", "Fact-checker", "research"),
-    "iris":   ("Iris Lindqvist", "Position sizer", "research"),
-    "kenji":  ("Kenji Watanabe", "Execution trader", "trading"),
-    "grace":  ("Grace Adeyemi", "Risk manager", "trading"),
-    "leo":    ("Leo Moretti", "Position manager", "trading"),
-    "ava":    ("Ava Sinclair", "Options trader", "trading"),
-    "ruth":   ("Ruth Klein", "Trade reviewer", "learning"),
-    "omar":   ("Omar Haddad", "Performance analyst", "learning"),
-    "nina":   ("Nina Petrova", "Quant researcher", "learning"),
-    "victor": ("Victor Ashford", "Chief investment officer", "learning"),
-    "riley":  ("Riley Park", "Client desk (your Telegram)", "learning"),
-}
-SPECIALISTS = ("priya", "marcus", "sofia", "theo")
-DESK_TEAM = SPECIALISTS + ("jake", "nadia", "elena")
+from desk.staff import DESK_TEAM, SPECIALISTS  # noqa: F401  (re-exported for callers)
 
 LIVE_DIR = config.ROOT / "docs" / "live"
 HISTORY_HOURS = 3
@@ -103,7 +78,12 @@ def event(agent: str, text: str, symbol: str | None = None, kind: str = "info") 
 
 
 def _event(agent, text, symbol, kind) -> None:
-    _state["events"].append({"t": _iso(), "agent": agent, "text": text[:400], "symbol": symbol, "kind": kind, "job": _job})
+    try:
+        from desk.staff import name
+        who = name(agent)
+    except Exception:
+        who = agent
+    _state["events"].append({"t": _iso(), "agent": agent, "name": who, "text": text[:400], "symbol": symbol, "kind": kind, "job": _job})
     _state["events"] = _state["events"][-MAX_EVENTS:]
 
 
@@ -203,4 +183,5 @@ def _read_local(job: str) -> dict | None:
 
 
 def roster() -> list[dict]:
-    return [{"id": k, "name": n, "role": r, "desk": d} for k, (n, r, d) in ROSTER.items()]
+    from desk.staff import org_chart
+    return org_chart()

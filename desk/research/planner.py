@@ -98,7 +98,7 @@ def run(session: str = "morning") -> dict:
     skip |= {i["symbol"] for _, i in recent_ideas(12) if i.get("status") == "approved"}
 
     # 1. Scan everything (ask for extra so the skip list doesn't leave us short)
-    floor.working("maya", f"Scanning stocks, ETFs, crypto and forex for the {session} session")
+    floor.working("scanner", f"Scanning stocks, ETFs, crypto and forex for the {session} session")
     stock_picks, stock_ctx = scanner.scan_stocks(cfg["stocks"] * 2, core_slots=0 if session == "intraday" else 5) if cfg["stocks"] else ([], {"etf_readings": {}, "scanned": 0})
     crypto_picks, crypto_ctx = scanner.scan_crypto(cfg["crypto"] * 2)
     fx_picks, fx_ctx = scanner.scan_forex(cfg["forex"] * 2)
@@ -106,7 +106,7 @@ def run(session: str = "morning") -> dict:
     finalists = pick(stock_picks, cfg["stocks"]) + pick(crypto_picks, cfg["crypto"]) + pick(fx_picks, cfg["forex"])
     print(f"{session}: scanned {stock_ctx['scanned']} stocks/ETFs; {len(finalists)} finalists; skipped {len(skip)} recent")
     scope = f"{stock_ctx['scanned']} stocks/ETFs plus crypto and forex" if cfg["stocks"] else f"{len(scanner.CRYPTO)} cryptos and {len(scanner.FOREX)} currency pairs"
-    floor.done("maya", f"Scanned {scope}. Finalists: "
+    floor.done("scanner", f"Scanned {scope}. Finalists: "
                + (", ".join(c["symbol"] for c in finalists) or "none"))
 
     # 2. Macro strategist (fast sessions reuse the latest view to save AI calls)
@@ -124,12 +124,28 @@ def run(session: str = "morning") -> dict:
     }
     macro = latest_macro() if cfg["reuse_macro"] else None
     if macro:
-        floor.event("darius", f"Sticking with the latest market read: {macro.get('regime')}, aggression {macro.get('risk_appetite')}/100")
+        floor.event("macro", f"Sticking with the latest market read: {macro.get('regime')}, aggression {macro.get('risk_appetite')}/100")
     else:
-        floor.working("darius", "Reading rates, inflation, the VIX, every ETF, overnight moves and the calendar")
+        floor.working("macro", "Reading rates, inflation, the VIX, every ETF, overnight moves and the calendar")
         macro = team.macro_view(macro_ctx)
-        floor.done("darius", f"Market regime: {macro.get('regime')}, aggression {macro.get('risk_appetite')}/100. {macro.get('summary', '')}")
+        floor.done("macro", f"Market regime: {macro.get('regime')}, aggression {macro.get('risk_appetite')}/100. {macro.get('summary', '')}")
     print("macro:", macro.get("regime"), macro.get("risk_appetite"))
+
+    # 2b. Interns make their own picks (morning and evening); hired juniors pitch their best one to the full team
+    if session in ("morning", "evening"):
+        try:
+            from desk import interns
+            menu = pick(stock_picks, cfg["stocks"] * 2) + pick(crypto_picks, cfg["crypto"] * 2) + pick(fx_picks, cfg["forex"] * 2)
+            for jp in interns.make_picks(menu, macro, session):
+                if jp["symbol"] in {c["symbol"] for c in finalists}:
+                    continue
+                cand = next((c for c in menu if c["symbol"] == jp["symbol"]), None)
+                if cand:
+                    cand = {**cand, "why_scanned": (cand.get("why_scanned") or []) + [f"pitched by junior analyst {jp['intern']}: {jp['reason']}"]}
+                    finalists.append(cand)
+                    floor.event(f"intern:{jp['id']}", f"Pitched {jp['symbol']} ({jp['direction']}) to the full team", jp["symbol"], kind="plan")
+        except Exception:
+            traceback.print_exc()
 
     # 3. Research each finalist
     funds = _try(smartmoney.fund_holdings) or {}
@@ -143,9 +159,9 @@ def run(session: str = "morning") -> dict:
     for cand in finalists:
         sym = cand["symbol"]
         try:
-            floor.working("ben", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
+            floor.working("associate", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
             d = dossiers.build(cand, funds, light=cfg["fast"])
-            floor.done("ben", f"Dossier ready on {sym}", sym)
+            floor.done("associate", f"Dossier ready on {sym}", sym)
             if cfg["fast"]:
                 for a in floor.DESK_TEAM:
                     floor.working(a, f"Quick huddle on {sym}", sym)
@@ -158,27 +174,27 @@ def run(session: str = "morning") -> dict:
                     floor.working(a, f"Analyzing {sym}", sym)
                 notes = team.specialists(d, macro)
                 _report_specialists(sym, notes)
-                floor.working("jake", f"Building the case for {sym}", sym)
+                floor.working("bull", f"Building the case for {sym}", sym)
                 bull = team.bull(d, notes)
-                floor.done("jake", f"{sym}: argues {bull.get('direction', 'long')}. {bull.get('case', '')}", sym)
-                floor.working("nadia", f"Attacking the {bull.get('direction', 'long')} case on {sym}", sym)
+                floor.done("bull", f"{sym}: argues {bull.get('direction', 'long')}. {bull.get('case', '')}", sym)
+                floor.working("bear", f"Attacking the {bull.get('direction', 'long')} case on {sym}", sym)
                 bear = team.bear(d, notes, bull)
-                floor.done("nadia", f"{sym}: {bear.get('case', '')}", sym)
-                floor.working("elena", f"Pre-mortem and final call on {sym}", sym)
+                floor.done("bear", f"{sym}: {bear.get('case', '')}", sym)
+                floor.working("pm", f"Pre-mortem and final call on {sym}", sym)
                 pm = team.portfolio_manager(d, notes, bull, bear, macro, planned, holdings, rulebook, extra)
             expr = {"call_options": " with calls", "put_options": " with puts"}.get(pm.get("expression"), "")
             verdict = f"{pm.get('decision', '?').upper()}{expr}" + (f", conviction {pm.get('conviction')}/10" if pm.get("decision") != "pass" else "")
-            floor.done("elena", f"{sym}: {verdict}. {pm.get('reason') or pm.get('thesis') or ''}", sym,
+            floor.done("pm", f"{sym}: {verdict}. {pm.get('reason') or pm.get('thesis') or ''}", sym,
                        kind="decision" if pm.get("decision") in ("long", "short") else "pass")
-            floor.working("sam", f"Checking every number Elena cited on {sym}", sym)
+            floor.working("factcheck", f"Checking every number Elena cited on {sym}", sym)
             check = team.fact_check(pm, dossiers.facts(d), d)
             if check["passed"]:
-                floor.done("sam", f"{sym}: all {check['verified_facts']} cited numbers check out", sym)
+                floor.done("factcheck", f"{sym}: all {check['verified_facts']} cited numbers check out", sym)
             else:
-                floor.done("sam", f"{sym}: blocked. {check['problems'][0]}", sym, kind="blocked")
+                floor.done("factcheck", f"{sym}: blocked. {check['problems'][0]}", sym, kind="blocked")
             idea = {"symbol": sym, "venue": cand["venue"], "asset": cand["asset"],
                     "price_at_research": d["technicals"]["price"], "why_scanned": cand.get("why_scanned"),
-                    "setups": d["technicals"].get("setups"),
+                    "setups": d["technicals"].get("setups"), "atr_pct": d["technicals"].get("atr_pct"),
                     "specialists": notes, "bull": bull, "bear": bear, "decision": pm, "fact_check": check}
             if pm.get("decision") in ("long", "short") and check["passed"]:
                 kw = {}
@@ -188,7 +204,7 @@ def run(session: str = "morning") -> dict:
                 idea["sizing"] = team.size(pm, book.equity, cand["asset"], **kw)
                 idea["status"] = "approved"
                 sz = idea["sizing"]
-                floor.done("iris", f"{sym}: ${sz['notional_usd']:,.0f} position risking ${sz['risk_usd']:,.0f} ({sz['risk_pct']}% of the account)", sym)
+                floor.done("sizer", f"{sym}: ${sz['notional_usd']:,.0f} position risking ${sz['risk_usd']:,.0f} ({sz['risk_pct']}% of the account)", sym)
                 planned.append({"symbol": sym, "direction": pm["decision"], "style": pm.get("style")})
             else:
                 idea["status"] = "pass" if pm.get("decision") == "pass" else "blocked_by_fact_check"
@@ -197,7 +213,7 @@ def run(session: str = "morning") -> dict:
         except Exception as exc:
             traceback.print_exc()
             ideas.append({"symbol": sym, "venue": cand["venue"], "asset": cand["asset"], "status": "error", "error": str(exc)[:300]})
-            for a in ("ben",) + floor.DESK_TEAM + ("sam",):
+            for a in ("associate",) + floor.DESK_TEAM + ("factcheck",):
                 if floor._state.get("agents", {}).get(a, {}).get("status") == "working":
                     floor.done(a, f"{sym}: research hit an error and was dropped", sym, kind="error")
 
@@ -214,7 +230,7 @@ def run(session: str = "morning") -> dict:
     path = PLANS_DIR / f"{name}.json"
     path.write_text(json.dumps(plan, indent=1, default=str))
     n_ok = sum(i.get("status") == "approved" for i in ideas)
-    floor.event("elena", f"Sent the {session} plan: {n_ok} trade{'s' if n_ok != 1 else ''} out of {len(ideas)} researched", kind="plan")
+    floor.event("pm", f"Sent the {session} plan: {n_ok} trade{'s' if n_ok != 1 else ''} out of {len(ideas)} researched", kind="plan")
     floor.finish(f"{session} session: {n_ok} approved of {len(ideas)}")
     if cfg["fast"]:
         text = quick_brief(plan)
@@ -236,8 +252,8 @@ def _report_specialists(sym: str, notes: dict | None) -> None:
 
 def _report_debate(sym: str, bull: dict | None, bear: dict | None) -> None:
     bull, bear = bull or {}, bear or {}
-    floor.done("jake", f"{sym}: argues {bull.get('direction', 'long')}. {bull.get('case', '')}", sym)
-    floor.done("nadia", f"{sym}: {bear.get('case', '')}", sym)
+    floor.done("bull", f"{sym}: argues {bull.get('direction', 'long')}. {bull.get('case', '')}", sym)
+    floor.done("bear", f"{sym}: {bear.get('case', '')}", sym)
 
 
 def quick_brief(plan: dict) -> str | None:

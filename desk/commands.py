@@ -19,6 +19,8 @@ HELP = (
     "/flatten confirm - emergency: close everything\n"
     "/letter - the latest weekly fund letter\n"
     "/rules - the desk's rulebook\n"
+    "/pitch NVDA - the full team researches your idea\n"
+    "/interns - how the interns are doing\n"
     "\nOr just ask a question, like \"why did you short IONQ?\"\n"
     "\nReplies usually take a few seconds (occasionally a few minutes between runs)."
 )
@@ -84,6 +86,23 @@ def handle(text: str, state: dict) -> str | None:
         state["dry_run"] = True
         log_event("mode", dry_run=True)
         return "Dry-run mode ON. The bot will analyze and log trades but not place orders."
+    if cmd == "/pitch":
+        if not args:
+            return "Send a ticker after it, like /pitch NVDA, /pitch BTC or /pitch EURUSD."
+        telegram.send(f"On it. The research desk is huddling on {esc(args[0].upper())}; give them a few minutes.")
+        from desk import pitch
+        try:
+            return pitch.run(args[0])
+        except Exception as exc:
+            return f"Couldn't research {esc(args[0])}: {esc(str(exc)[:200])}"
+    if cmd == "/interns":
+        from desk import interns
+        rows = [i for i in interns.all_interns() if i["status"] in ("intern", "junior")]
+        if not rows:
+            return "No interns yet. The first class starts with the next research session."
+        return "<b>Intern program</b> (hire at $500, let go at $30)\n" + "\n".join(
+            f"{esc(i['name'])} ({'junior analyst' if i['status'] == 'junior' else 'intern'}): ${i['equity']:,.2f}, "
+            f"{len(i['positions'])} open. {esc(i.get('mood') or '')}" for i in rows)
     if cmd == "/letter":
         from desk import learning
         letters = learning._load(learning.LETTERS, [])
@@ -125,8 +144,8 @@ def process(state: dict, wait: int = 0) -> int:
             telegram.send(reply)
         try:
             from desk import activity as floor
-            floor.event("riley", f"You sent \"{text[:120]}\". Replied: {telegram_plain(reply)[:220]}", kind="chat")
-            floor.working("riley", "On the phone: waiting for your Telegram messages")
+            floor.event("client", f"You sent \"{text[:120]}\". Replied: {telegram_plain(reply)[:220]}", kind="chat")
+            floor.working("client", "On the phone: waiting for your Telegram messages")
         except Exception:
             pass
     return len(texts)

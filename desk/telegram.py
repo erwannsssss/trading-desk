@@ -25,6 +25,15 @@ def send(text: str, *, silent: bool = False) -> None:
         })
 
 
+def send_photo(path, caption: str = "") -> None:
+    import requests as _rq
+    with open(path, "rb") as f:
+        r = _rq.post(_url("sendPhoto"), data={"chat_id": config.telegram_chat(), "caption": caption[:1000]},
+                     files={"photo": f}, timeout=60)
+    if r.status_code >= 400:
+        raise RuntimeError(f"Telegram photo failed: {r.text[:200]}")
+
+
 def _split(text: str) -> list[str]:
     """Split long messages between lines so HTML tags never get cut in half."""
     chunks, cur = [], ""
@@ -69,6 +78,8 @@ def set_command_menu() -> None:
         {"command": "golive", "description": "Leave dry-run and place paper trades"},
         {"command": "dryrun", "description": "Go back to analyze-only mode"},
         {"command": "flatten", "description": "Emergency: close every position"},
+        {"command": "pitch", "description": "Pitch a ticker to the research team, e.g. /pitch NVDA"},
+        {"command": "interns", "description": "How the interns are doing"},
         {"command": "letter", "description": "The latest weekly fund letter"},
         {"command": "rules", "description": "The desk's rulebook"},
         {"command": "help", "description": "List commands"},

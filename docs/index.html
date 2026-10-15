@@ -170,6 +170,55 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 .feed-row .who { font-weight: 700; }
 .kind-blocked .what, .kind-error .what { color: var(--loss); }
 .kind-trade .what, .kind-decision .what { color: var(--ink); }
+
+/* org chart */
+.org { margin-top: 18px; }
+.org-level { display: flex; justify-content: center; gap: 18px; position: relative; }
+.org-stem { width: 2px; height: 22px; background: var(--rule); margin: 0 auto; }
+.branch { display: flex; gap: 16px; position: relative; padding-top: 22px; }
+.branch::before { content: ""; position: absolute; top: 0; left: var(--l, 10%); right: var(--r, 10%); height: 2px; background: var(--rule); }
+.twig { position: relative; flex: 1; min-width: 0; }
+.twig::before { content: ""; position: absolute; top: -22px; left: 50%; width: 2px; height: 22px; background: var(--rule); }
+.person { display: grid; grid-template-columns: 36px 1fr; gap: 9px; align-items: start; padding: 10px 12px; width: 100%; text-align: left;
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px; cursor: pointer; }
+.person:hover { border-color: var(--ink-3); }
+.person.head { border-color: var(--ink); }
+.person.partner { background: var(--ink); color: var(--paper); border-color: var(--ink); max-width: 340px; }
+.person.partner .seat-role, .person.partner .seat-now { color: color-mix(in srgb, var(--paper) 75%, transparent); }
+.person .avatar { width: 36px; height: 36px; font-size: 13px; }
+.person.partner .avatar { background: var(--signal); color: #16233F; }
+.avatar.leadership { background: var(--ink-2); color: var(--paper); }
+.avatar.partner { background: var(--signal); color: #16233F; }
+.avatar.intern { background: transparent; color: var(--ink); border: 2px dashed var(--ink-3); }
+.person.working .avatar .st { background: var(--signal); }
+@media (prefers-reduced-motion: no-preference) { .person.working .avatar .st { animation: pulse 1.4s ease-in-out infinite; } }
+.hit { display: inline-block; margin-top: 4px; font-size: 12.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink-2); }
+.hit.good { background: color-mix(in srgb, var(--gain) 14%, transparent); color: var(--gain); }
+.hit.bad { background: color-mix(in srgb, var(--loss) 12%, transparent); color: var(--loss); }
+.person .seat-now { -webkit-line-clamp: 2; font-size: 13px; }
+.desk-col { display: flex; flex-direction: column; gap: 8px; }
+.stem-cio { margin: 0 0 0 calc(16.67% - 6px); }
+.branch.desks .twig::before { left: 50%; }
+.desk-col .desk-name { font-weight: 700; font-size: 13px; color: var(--ink-3); margin: 2px 0 2px 2px; }
+.members { display: grid; gap: 8px; padding-left: 14px; border-left: 2px solid var(--rule); margin-left: 18px; }
+.members.two { grid-template-columns: 1fr 1fr; }
+.intern-bar { height: 6px; background: var(--rule); border-radius: 3px; margin-top: 6px; position: relative; overflow: hidden; }
+.intern-bar span { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: var(--ink); }
+@media (max-width: 860px) {
+  .branch { flex-direction: column; padding-top: 0; padding-left: 16px; border-left: 2px solid var(--rule); margin-left: 18px; }
+  .branch::before, .twig::before { display: none; }
+  .org-level { flex-direction: column; align-items: stretch; }
+  .members.two { grid-template-columns: 1fr; }
+  .person.partner { max-width: none; }
+}
+/* glossary + explain */
+abbr.g { text-decoration: underline dotted var(--ink-3); text-underline-offset: 3px; cursor: help; }
+.gpop { position: absolute; z-index: 50; max-width: 280px; background: var(--ink); color: var(--paper); font-size: 13.5px; line-height: 1.45;
+  padding: 9px 12px; border-radius: 8px; box-shadow: 0 6px 24px rgba(16,26,46,.25); }
+.gpop b { display: block; margin-bottom: 2px; }
+.eli { margin: 10px 0; padding: 12px 14px; border-left: 3px solid var(--signal); background: color-mix(in srgb, var(--signal) 10%, transparent); }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.cards-grid img { width: 100%; border-radius: 8px; border: 1px solid var(--rule); }
 footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -283,6 +332,7 @@ function render(d) {
 
   renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderGhost(d); renderLearning(d);
   $("#foot").textContent = `Updated ${when(d.generated_at)} New York time. Paper money only. Refreshes every minute.`;
+  document.querySelectorAll("main .panel").forEach(gloss);
 }
 
 function drawCurve(curve) {
@@ -397,7 +447,9 @@ function renderPlan(d) {
       <div class="idea-levels">Entry ${px(i.entry)}, stop ${px(i.stop)}, target ${px(i.target)}. Reward is ${i.reward_to_risk}x the risk.
         ${i.sizing ? ` Size ${money(i.sizing.notional_usd, 0)}, risking ${money(i.sizing.risk_usd, 0)}.` : ""}</div>
       <p class="note" style="margin:8px 0 6px">${esc(i.thesis)}</p>
-      <button class="link" data-memo="${esc(i.memo_key)}">Read the research</button></div>`).join("") || `<p class="empty">The desk found no trade worth taking in this session.</p>`}
+      ${i.plain_english ? `<div class="eli note" id="eli-${esc(i.memo_key).replace(/[^a-z0-9]/gi, "")}" hidden>${esc(i.plain_english)}</div>` : ""}
+      <button class="link" data-memo="${esc(i.memo_key)}">Read the research</button>
+      ${i.plain_english ? `&nbsp;&nbsp;<button class="link" data-eli="eli-${esc(i.memo_key).replace(/[^a-z0-9]/gi, "")}">Explain like I'm new</button>` : ""}</div>`).join("") || `<p class="empty">The desk found no trade worth taking in this session.</p>`}
     <h3>Researched but not traded (${others.length})</h3>
     <div class="scroll"><table><thead><tr><th>Symbol</th><th>Outcome</th><th>Reason</th></tr></thead><tbody>
     ${others.map(i => `<tr class="click" data-memo="${esc(i.memo_key)}"><td class="sym">${esc(i.symbol)}</td><td>${esc(statusName[i.status] || i.status)}</td>
@@ -464,8 +516,21 @@ function renderGhost(d) {
 }
 
 function renderLearning(d) {
+  const people = personMap();
+  const rv = d.reviews;
+  const hrBlock = rv ? `<h3>Performance reviews from ${esc(people.hr?.name || "HR")}, ${esc(rv.date)}</h3><p class="note">${esc(rv.memo)}</p>
+    <div class="scroll"><table><thead><tr><th>Person</th><th>Grade</th><th>Review</th></tr></thead><tbody>
+    ${Object.entries(rv.reviews || {}).map(([seat, r]) => `<tr class="click" data-person="${esc(seat)}"><td class="sym">${esc(people[seat]?.name || seat)}</td><td><b>${esc(r.grade)}</b></td><td class="small">${esc(r.review)}</td></tr>`).join("")}
+    </tbody></table></div>
+    ${(rv.fired || []).map(f => `<p class="note"><b>Staffing change:</b> ${esc(f.old)} (${esc(f.role)}) was let go after a ${f.pct}% hit rate. ${esc(f.new)} joined with a new approach: ${esc(f.approach)}</p>`).join("")}`
+    : `<h3>Performance reviews</h3><p class="empty">${esc(people.hr?.name || "HR")} writes the first reviews on Sunday evening.</p>`;
+  const cardsBlock = (d.cards || []).length ? `<h3>Trade of the week</h3><div class="cards-grid">${d.cards.slice().reverse().map(c => `<a href="${esc(c.file)}" target="_blank" rel="noopener"><img src="${esc(c.file)}" alt="Trade of the week: ${esc(c.symbol)} ${signed(c.pnl_usd)}" loading="lazy"></a>`).join("")}</div>`
+    : `<h3>Trade of the week</h3><p class="empty">The first card is made Sunday from the week's best closed trade.</p>`;
+  const recapBlock = (d.recaps || []).length ? d.recaps.slice().reverse().map(r => `<article><h3>${esc(r.title)}</h3><div class="note">${esc(r.body).replace(/\n/g, "<br>")}</div></article>`).join("")
+    : `<p class="empty">The first season recap arrives on the 1st of next month.</p>`;
   $("#p-learning").innerHTML = `<h2>Lessons</h2>
-    <p class="lede">Every closed trade gets a post-mortem. Each Sunday the desk reviews the week, writes a letter, and turns hard lessons into rules it reads before every trade.</p>
+    <p class="lede">Every closed trade gets a post-mortem. Each Sunday the desk reviews the week, writes a letter, turns hard lessons into rules, and HR reviews everyone.</p>
+    ${hrBlock}${cardsBlock}<h3>Season recaps</h3>${recapBlock}
     <h3>Rulebook</h3>
     ${d.rulebook.length ? `<ul>${d.rulebook.map(r => `<li class="note">${esc(r.rule)} <span class="small muted">(${esc(r.date || "")})</span></li>`).join("")}</ul>`
       : `<p class="empty">No rules yet. The first weekly review (Sunday evening) writes them from real results.</p>`}
@@ -492,6 +557,7 @@ function showMemo(m, trade) {
       <button class="close" onclick="this.closest('dialog').close()">Close</button></div>
     <h3>Decision: ${esc((d.decision || "").toUpperCase())}${d.conviction ? `, conviction ${d.conviction}/10, ${d.confidence_pct}% confident` : ""}</h3>
     <p class="note">${esc(d.thesis || d.reason || "")}</p>
+    ${d.plain_english ? `<button class="link" data-eli="eli-memo">Explain like I'm new</button><div class="eli note" id="eli-memo" hidden>${esc(d.plain_english)}</div>` : ""}
     ${d.entry ? `<p class="small">Entry ${px(d.entry)}, stop ${px(d.stop)}, target ${px(d.target)}, ${esc(d.horizon || "")}. Wrong if: ${esc(d.invalidation || "")}</p>` : ""}
     ${d.expression && d.expression !== "shares" ? `<p class="small"><b>Expressed with:</b> ${d.expression === "call_options" ? "call options" : "put options"}${trade && trade.option_symbol ? ` (${esc(trade.option_symbol)})` : ""}</p>` : ""}
     ${trade && trade.postmortem ? `<h3>Post-mortem: ${esc(trade.postmortem.verdict)}</h3><p class="note">${esc(trade.postmortem.what_happened)}</p>${trade.postmortem.lesson ? `<p class="small"><b>Lesson:</b> ${esc(trade.postmortem.lesson)}</p>` : ""}` : ""}
@@ -507,9 +573,88 @@ function showMemo(m, trade) {
     <p class="small">${fc.passed ? `<span class="check-ok">Passed.</span> ${fc.verified_facts} cited numbers matched the data.` : `<span class="check-bad">Failed.</span>`}</p>
     ${(fc.problems || []).length ? `<ul class="small">${fc.problems.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
     ${(d.evidence || []).length ? `<ul class="small muted">${d.evidence.map(e => `<li>${esc(e.fact)} = ${esc(e.value)}</li>`).join("")}</ul>` : ""}`;
+  gloss($("#memo-body"));
   $("#memo").showModal();
 }
 
+
+
+/* ---------- glossary: tap a term to see what it means ---------- */
+const GLOSSARY = {
+  "ATR": "Average true range: how much the price typically moves in a day. Stops are usually set a few ATRs away.",
+  "RSI": "Relative strength index: a 0-100 gauge of how stretched a price is. Above 70 is overbought, below 30 oversold.",
+  "R": "One unit of risk: what you'd lose if the stop hits. A +2R trade made twice what it risked.",
+  "P/E": "Price to earnings: what investors pay for each $1 of yearly profit. Higher means pricier or more growth expected.",
+  "conviction": "How strongly the portfolio manager believes in a trade, 1-10. Higher conviction means a bigger bet.",
+  "stop-loss": "A price where the trade is closed automatically to cap the loss: the point where the idea is proven wrong.",
+  "short selling": "Betting a price will fall: sell borrowed shares now, buy them back cheaper later.",
+  "call options": "Options that pay off if the stock rises above a set price before a date. The most you can lose is what you paid.",
+  "put options": "Options that pay off if the stock falls below a set price before a date. The most you can lose is what you paid.",
+  "options trader": "Trades options: contracts that pay off if a stock moves past a set price by a set date.",
+  "premium": "The price paid for an option. It's the most an options buyer can lose.",
+  "drawdown": "How far the account fell from its highest point before recovering.",
+  "Sharpe ratio": "Return per unit of volatility. Above 1 is good; above 2 is excellent.",
+  "profit factor": "Total money won divided by total money lost. Above 1 means the desk makes money overall.",
+  "win rate": "The share of closed trades that made money.",
+  "bracket order": "An order with a stop-loss and take-profit attached, so the broker exits automatically.",
+  "breakout": "Price pushing above a recent high, often a sign a new move is starting.",
+  "breakdown": "Price falling below a recent low, often a sign of more selling.",
+  "momentum": "Trading in the direction a price is already moving strongly.",
+  "mean reversion": "Betting a stretched price snaps back toward its average.",
+  "risk-off": "When investors get nervous and move money out of risky assets into safer ones.",
+  "regime": "The market's current mood or state, like a strong uptrend or a defensive, risk-off market.",
+  "reward-to-risk": "How much the trade can make compared with how much it can lose.",
+  "dry run": "Practice mode: the desk researches and logs trades but doesn't place orders.",
+  "pre-mortem": "Imagining a trade already failed and explaining why, to catch problems before they happen.",
+  "bucket": "Which pot of money a trade comes from: core (quality swings), tactical (short-term) or high-risk.",
+  "hit rate": "How often someone's calls turned out right. 50% is a coin flip.",
+  "S&P 500": "An index of 500 big US companies, the standard benchmark to beat.",
+  "insider": "Executives and directors buying or selling their own company's stock. Buying is often a good sign.",
+  "13F": "A quarterly filing showing what big investment funds own.",
+  "forex": "Trading currencies against each other, like euros versus dollars.",
+  "leverage": "Controlling more money than you have, which magnifies gains and losses.",
+  "backtest": "Testing a strategy on past data to see how it would have done.",
+  "calibration": "Whether the desk's stated odds match reality: 70% calls should win about 70% of the time.",
+};
+const GKEYS = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
+const GRE = new RegExp(`(?<![\\w/])(${GKEYS.map(k => k.replace(/[.*+?^${}()|[\]\\\/&]/g, "\\$&")).join("|")})(?![\\w/])`, "i");
+
+function gloss(root) {
+  if (!root) return;
+  const seen = new Set();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: (n) => {
+    const p = n.parentElement;
+    if (!p || p.closest("abbr, script, style, canvas, h2, .avatar, .seat-name, .sym, .hit, .side")) return NodeFilter.FILTER_REJECT;
+    return GRE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+  }});
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  for (const n of nodes) {
+    const m = n.nodeValue.match(GRE); if (!m) continue;
+    const key = GKEYS.find(k => k.toLowerCase() === m[1].toLowerCase());
+    const scope = n.parentElement.closest(".person, .feed-row, .idea, tr, .fig, p, li") || root;
+    const tag = key + "|" + (scope.dataset.gid || (scope.dataset.gid = Math.random().toString(36).slice(2)));
+    if (seen.has(tag) || (key === "R" && m[1] !== "R")) continue;
+    seen.add(tag);
+    const after = n.splitText(m.index); after.nodeValue = after.nodeValue.slice(m[1].length);
+    const ab = document.createElement("abbr"); ab.className = "g"; ab.dataset.term = key; ab.textContent = m[1];
+    n.parentNode.insertBefore(ab, after);
+  }
+}
+let gpop = null;
+document.addEventListener("click", (e) => {
+  const ab = e.target.closest("abbr.g");
+  if (gpop) { gpop.remove(); gpop = null; }
+  if (!ab) return;
+  e.stopPropagation(); e.preventDefault();
+  gpop = document.createElement("div"); gpop.className = "gpop";
+  gpop.innerHTML = `<b>${esc(ab.dataset.term)}</b>${esc(GLOSSARY[ab.dataset.term])}`;
+  const host = ab.closest("dialog") || document.body; host.appendChild(gpop);
+  const r = ab.getBoundingClientRect(), hr = host === document.body ? {left: -scrollX, top: -scrollY} : host.getBoundingClientRect();
+  gpop.style.left = Math.max(8, Math.min(r.left - hr.left, (host.clientWidth || innerWidth) - 296)) + "px";
+  gpop.style.top = (r.bottom - hr.top + (host === document.body ? 0 : host.scrollTop) + 6) + "px";
+}, true);
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-eli]"); if (!b) return;
+  const box = document.getElementById(b.dataset.eli); if (box) { box.hidden = !box.hidden; b.textContent = box.hidden ? "Explain like I'm new" : "Hide the simple version"; } });
 
 /* ---------- trading floor ---------- */
 const LIVE_JOBS = ["research", "desk", "client", "learning"];
@@ -580,54 +725,101 @@ function nextUp() {
   return "";
 }
 
+function personMap() {
+  const m = {};
+  for (const p of (DATA.roster || [])) m[p.id] = p;
+  for (const i of (DATA.interns || [])) m[i.seat] = {id: i.seat, name: i.name, role: i.status === "junior" ? "Junior analyst" : "Intern",
+    desk: i.status === "junior" ? "research" : "intern", reports_to: i.status === "junior" ? "pm" : "hr", intern: i};
+  return m;
+}
+
+function hitBadge(id) {
+  const sc = (DATA.scores || {})[id];
+  if (!sc) return "";
+  if (sc.pct == null) return `<span class="hit">${sc.total ? `${sc.total} graded, needs ${3 - sc.total} more` : "not graded yet"}</span>`;
+  return `<span class="hit ${sc.pct >= 55 ? "good" : sc.pct < 45 ? "bad" : ""}">${sc.pct}% ${esc(sc.label)} (${sc.total})</span>`;
+}
+
+function personCard(p, agents, opts = {}) {
+  if (!p) return "";
+  const a = agents[p.id] || {};
+  const working = a.status === "working";
+  let now = working ? `<b>Now:</b> ${esc(a.task)}` : a.last ? esc(a.last) : (p.id === "partner" ? "Runs the firm. Pitches ideas with /pitch." : "Between tasks.");
+  let extra = "";
+  if (p.intern) {
+    const i = p.intern, pct = Math.max(0, Math.min(100, (i.equity - 30) / (500 - 30) * 100));
+    extra = `<span class="hit ${i.equity >= 150 ? "good" : "bad"}">$${(+i.equity).toFixed(2)} of $500</span>
+      <span class="intern-bar"><span style="width:${pct}%"></span></span>`;
+    if (!working && !a.last) now = esc(i.mood ? `Mood: ${i.mood}` : i.persona);
+  }
+  const avatarClass = p.id === "partner" ? "partner" : p.intern && p.intern.status !== "junior" ? "intern" : p.desk;
+  return `<button class="person ${opts.head ? "head" : ""} ${p.id === "partner" ? "partner" : ""} ${working ? "working" : ""}" data-person="${esc(p.id)}">
+    <span class="avatar ${avatarClass}">${initials(p.name)}<span class="st"></span></span>
+    <span><span class="seat-name">${esc(p.name)}</span><span class="seat-role">${esc(p.role)}</span>
+      ${hitBadge(p.id)}${extra}<span class="seat-now">${now}</span></span></button>`;
+}
+
 function renderFloor() {
   if (!DATA) return;
   const el = $("#p-floor");
-  const roster = DATA.roster || [];
+  const people = personMap();
   const {agents, events} = floorState();
-  const hourAgo = new Date(Date.now() - 3600000).toISOString();
-  const recent = events.filter(e => new Date(e.t) > new Date(hourAgo));
-  const busy = roster.filter(p => agents[p.id]?.status === "working");
+  const hourAgo = Date.now() - 3600000;
+  const recent = events.filter(e => new Date(e.t) > hourAgo);
+  const busy = Object.keys(agents).filter(id => agents[id]?.status === "working");
   const running = Object.values(LIVE).filter(j => j.running && new Date(j.updated) > Date.now() - 25 * 60000);
   const newest = Object.values(LIVE).map(j => j.updated).sort().pop();
+  const kids = (boss) => Object.values(people).filter(p => p.reports_to === boss);
+  const card = (id, o) => personCard(people[id], agents, o);
+  const deskCol = (headId, label, twoCol) => `<div class="twig"><div class="desk-col">
+      <span class="desk-name">${label}</span>${card(headId, {head: true})}
+      <div class="members ${twoCol ? "two" : ""}">${kids(headId).map(p => personCard(p, agents)).join("")}</div></div></div>`;
+  const interns = (DATA.interns || []).filter(i => i.status === "intern");
   const headline = busy.length
-    ? `${busy.length} ${busy.length === 1 ? "person is" : "people are"} working: ${running.map(j => esc(j.label)).join(", ")}`
+    ? `${busy.length} ${busy.length === 1 ? "person is" : "people are"} working: ${running.map(j => esc(j.label)).join(", ") || "wrapping up"}`
     : `The floor is quiet. Next up: ${esc(nextUp())}`;
   el.innerHTML = `
     <div class="floor-top"><h2>Trading floor</h2>
       <span class="small muted"><span class="livedot ${running.length ? "on" : ""}"></span>${newest ? "Updated " + ago(newest) : "Waiting for the first update"}</span></div>
-    <p class="lede">${headline}</p>
-    ${["research", "trading", "learning"].map(desk => `
-      <div class="desk-block">
-        <div class="desk-head"><h3>${deskInfo[desk][0]}</h3><span class="small muted">${deskInfo[desk][1]}</span></div>
-        <div class="seats">${roster.filter(p => p.desk === desk).map(p => seat(p, agents[p.id], recent)).join("")}</div>
-      </div>`).join("")}
+    <p class="lede">${headline}. Tap anyone to see their last hour, hit rate and latest review.</p>
+    <div class="org">
+      <div class="org-level">${card("partner")}</div>
+      <div class="org-stem"></div>
+      <div class="branch" style="--l:16.6%;--r:16.6%">
+        <div class="twig">${card("cio", {head: true})}</div>
+        <div class="twig">${card("hr", {head: true})}</div>
+        <div class="twig">${card("client")}</div>
+      </div>
+      <div class="org-stem stem-cio"></div>
+      <div class="branch desks" style="--l:calc(16.67% - 1px);--r:12.5%; display:grid; grid-template-columns: 2fr 1fr 1fr">
+        ${deskCol("pm", "Research desk", true)}
+        <div class="twig"><div class="desk-col"><span class="desk-name">Trading desk</span>${card("execution", {head: true})}
+          <div class="members">${kids("execution").map(p => personCard(p, agents)).join("")}</div>
+          <span class="desk-name" style="margin-top:8px">Risk (reports straight to Victor)</span>${card("risk", {head: true})}</div></div>
+        ${deskCol("performance", "Learning desk", false)}
+      </div>
+      <h3>Intern program <span class="small muted">(reports to ${esc(people.hr?.name || "HR")}; $150 to start, hired at $500)</span></h3>
+      <div class="members two" style="margin-left:0;padding-left:0;border-left:0">${interns.map(i => personCard(people[i.seat], agents)).join("") || `<p class="empty">The first intern class starts with the next 15-minute check.</p>`}</div>
+      ${(DATA.alumni || []).length || (DATA.interns || []).some(i => i.status === "let_go") ? `<h3>Alumni</h3><ul class="small">
+        ${(DATA.alumni || []).map(a => `<li>${esc(a.name)}, ${esc(a.role)} until ${esc(a.to)}: ${esc(a.reason)}</li>`).join("")}
+        ${(DATA.interns || []).filter(i => i.status === "let_go").map(i => `<li>${esc(i.name)}, intern, let go ${esc(i.left || "")} at $${(+i.equity).toFixed(2)}</li>`).join("")}
+        </ul>` : ""}
+    </div>
     <div class="feed"><h3>Floor feed, last hour</h3>
-      ${recent.length ? recent.slice(0, 80).map(e => feedRow(e, roster)).join("") : `<p class="empty">Nothing in the last hour. ${esc(nextUp() ? "Next up: " + nextUp() + "." : "")}</p>`}
+      ${recent.length ? recent.slice(0, 80).map(e => feedRow(e, people)).join("") : `<p class="empty">Nothing in the last hour. ${esc(nextUp() ? "Next up: " + nextUp() + "." : "")}</p>`}
     </div>`;
   if (floorOpen) showPerson(floorOpen, true);
+  gloss(el);
 }
 
-function seat(p, a, recent) {
-  const working = a?.status === "working";
-  const n = recent.filter(e => e.agent === p.id).length;
-  const now = working ? `<b>Now:</b> ${esc(a.task)} <span class="muted">(${ago(a.since).replace(" ago", "")})</span>`
-    : a?.last ? `${esc(a.last)} <span class="muted">${ago(a.since)}</span>` : `<span class="muted">Hasn't started yet.</span>`;
-  return `<button class="seat ${working ? "working" : ""}" data-person="${p.id}" aria-label="${esc(p.name)}, ${esc(p.role)}">
-    <span class="avatar ${p.desk}">${initials(p.name)}<span class="st"></span></span>
-    <span><span class="seat-name">${esc(p.name)}</span> <span class="seat-role">${esc(p.role)}</span>
-      <span class="seat-now">${now}</span>
-      ${n ? `<span class="seat-role">${n} thing${n > 1 ? "s" : ""} done in the last hour</span>` : ""}</span></button>`;
-}
-
-function feedRow(e, roster) {
-  const p = roster.find(r => r.id === e.agent) || {name: e.agent};
+function feedRow(e, people) {
+  const p = people[e.agent] || {name: e.name || e.agent};
   return `<div class="feed-row kind-${esc(e.kind)}"><span class="when">${clock(e.t)}</span>
-    <span><span class="who">${esc(p.name)}</span> <span class="what">${esc(e.text)}</span></span></div>`;
+    <span><span class="who">${esc(e.name || p.name)}</span> <span class="what">${esc(e.text)}</span></span></div>`;
 }
 
 function showPerson(id, refresh = false) {
-  const p = (DATA.roster || []).find(r => r.id === id); if (!p) return;
+  const people = personMap(); const p = people[id]; if (!p) return;
   floorOpen = id;
   const {agents, events} = floorState();
   const a = agents[id] || {};
@@ -635,15 +827,26 @@ function showPerson(id, refresh = false) {
   const hourAgo = Date.now() - 3600000;
   const hour = mine.filter(e => new Date(e.t) > hourAgo), earlier = mine.filter(e => new Date(e.t) <= hourAgo);
   const list = (rows) => rows.map(e => `<div class="feed-row kind-${esc(e.kind)}"><span class="when">${clock(e.t)}</span><span class="what note" style="font-size:15px">${esc(e.text)}</span></div>`).join("");
+  const review = DATA.reviews && DATA.reviews.reviews ? DATA.reviews.reviews[id] : null;
+  const boss = p.reports_to ? people[p.reports_to] : null;
+  const sc = (DATA.scores || {})[id];
+  const i = p.intern;
   $("#memo-body").innerHTML = `
     <div class="memo-top"><div style="display:flex;gap:12px;align-items:center">
-      <span class="avatar ${p.desk}" style="width:48px;height:48px">${initials(p.name)}</span>
-      <div><h2>${esc(p.name)}</h2><div class="small muted">${esc(p.role)}, ${esc(deskInfo[p.desk][0])}</div></div></div>
+      <span class="avatar ${id === "partner" ? "partner" : i && i.status !== "junior" ? "intern" : p.desk}" style="width:48px;height:48px">${initials(p.name)}</span>
+      <div><h2>${esc(p.name)}</h2><div class="small muted">${esc(p.role)}${boss ? `, reports to ${esc(boss.name)}` : ""}${p.since ? `, joined ${esc(p.since)}` : ""}</div></div></div>
       <button class="close" onclick="this.closest('dialog').close()">Close</button></div>
+    ${sc ? `<p class="small" style="margin-top:14px">${hitBadge(id)} ${sc.pct == null ? "" : `<span class="muted">${sc.right} of ${sc.total} over the last 30 days</span>`}</p>` : ""}
+    ${p.approach ? `<p class="small"><b>Working style:</b> ${esc(p.approach)}</p>` : ""}
+    ${i ? `<p class="small"><b>Style:</b> ${esc(i.persona)}<br><b>Account:</b> $${(+i.equity).toFixed(2)} (started $150, best $${(+(i.peak || i.equity)).toFixed(2)})${i.mood ? `<br><b>Mood:</b> ${esc(i.mood)}` : ""}</p>
+      ${i.positions.length ? `<h3>Holding</h3><ul class="small">${i.positions.map(x => `<li>${esc(x.symbol)} ${esc(x.direction)} $${(+x.size_usd).toFixed(0)} at ${px(x.entry)}: ${esc(x.reason)}</li>`).join("")}</ul>` : ""}
+      ${i.closed.length ? `<h3>Recent results</h3><ul class="small">${i.closed.slice().reverse().map(x => `<li>${esc(x.symbol)} ${esc(x.direction)}: <span class="${cls(x.pnl)}">${signed(x.pnl)}</span> (${esc(x.why)})</li>`).join("")}</ul>` : ""}` : ""}
+    ${review ? `<h3>Performance review from ${esc(people.hr?.name || "HR")}: ${esc(review.grade)}</h3><p class="note">${esc(review.review)}</p>` : ""}
     <h3>Right now</h3>
     <p class="note">${a.status === "working" ? `Working on: ${esc(a.task)} (started ${ago(a.since)})` : `Between tasks. ${a.last ? "Last: " + esc(a.last) : ""}`}</p>
     <h3>Last hour (${hour.length})</h3>${hour.length ? list(hour) : `<p class="small muted">Nothing in the last hour.</p>`}
     ${earlier.length ? `<h3>Earlier</h3>${list(earlier.slice(0, 60))}` : ""}`;
+  gloss($("#memo-body"));
   if (!refresh || !$("#memo").open) $("#memo").showModal();
 }
 $("#memo").addEventListener("close", () => { floorOpen = null; });

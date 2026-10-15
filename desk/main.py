@@ -115,13 +115,24 @@ def tick() -> int:
         from desk import learning
         from desk.trading import ledger
         if learning.run_postmortems(limit=2) or state.get("tournament_day") != now().date().isoformat():
-            floor.working("omar", "Re-scoring the strategy tournament")
+            floor.working("performance", "Re-scoring the strategy tournament")
             t = learning.update_tournament(ledger.load())
             leader = (t.get("board") or [{}])[0]
-            floor.done("omar", f"Tournament updated: {len(t.get('board', []))} styles scored"
+            floor.done("performance", f"Tournament updated: {len(t.get('board', []))} styles scored"
                        + (f"; leader is {leader['style']} ({leader['pnl']:+,.2f})" if leader.get("style") else "; waiting for closed trades"))
             state["tournament_day"] = now().date().isoformat()
         learning.maybe_send_recap(state, book)
+        from desk import interns
+        for msg in interns.update():
+            telegram.send(f"<b>Intern program:</b> {telegram.esc(msg)}")
+        hour = now().strftime("%Y-%m-%d %H")
+        if state.get("scorecard_hour") != hour:
+            from desk import scorecard
+            from desk.dashboard import _recent_plans
+            scorecard.grade_ideas(_recent_plans(45))
+            state["scorecard_hour"] = hour
+        from desk import hr
+        hr.maybe_season_recap(state)
     except Exception:
         traceback.print_exc()
     save(state)
@@ -136,7 +147,7 @@ def tick() -> int:
     state["last_tick"] = now().isoformat(timespec="seconds")
     save(state)
     print(f"tick ok | equity ${book.equity:,.2f} | positions {book.open_positions}")
-    floor.event("grace", f"Account ${book.equity:,.2f}; today {-daily_loss_pct(book, state['day_start_equity']):+.2f}%; "
+    floor.event("risk", f"Account ${book.equity:,.2f}; today {-daily_loss_pct(book, state['day_start_equity']):+.2f}%; "
                 f"{book.open_positions} positions; {state.get('trades_today', 0)}/{config.MAX_TRADES_PER_DAY} trades used", kind="check")
     floor.finish()
 
@@ -179,7 +190,7 @@ def listen_only() -> int:
     """Answer Telegram commands for LISTEN_SECONDS, then exit (runs after the tick's work is saved)."""
     from desk import activity as floor
     floor.start_job("client", "Telegram client desk")
-    floor.working("riley", "On the phone: waiting for your Telegram messages")
+    floor.working("client", "On the phone: waiting for your Telegram messages")
     state = load()
     try:
         listen(state, int(os.environ.get("LISTEN_SECONDS", "780")))

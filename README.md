@@ -112,6 +112,26 @@ the page stays within a minute or two of live without waiting for GitHub Pages t
 | Trading | Kenji Watanabe (execution trader), Grace Adeyemi (risk manager), Leo Moretti (position manager), Ava Sinclair (options trader) |
 | Learning | Ruth Klein (trade reviewer), Omar Haddad (performance analyst), Nina Petrova (quant researcher), Victor Ashford (chief investment officer), Riley Park (client desk, your Telegram) |
 
+## The firm
+
+`desk/staff.py` holds the org chart: Erwann (managing partner) at the top; Victor Ashford (CIO), Ashley Brennan
+(Head of HR) and Riley Park (client desk) report to him; the research, trading and learning desks report to Victor.
+
+- **Hit rates** (`desk/scorecard.py`): every researched idea is graded 3 trading days later, giving each analyst a
+  hit rate (specialists' scores, the bull's and bear's calls, the PM's decisions, the macro regime call, the
+  scanner's picks, the fact-checker's blocks). Trading desk numbers come from real trades.
+- **HR** (`desk/hr.py`): Ashley writes weekly reviews with grades. Analysts with 20+ graded calls in 30 days and a
+  hit rate under 42% are let go and replaced by a new hire with a different working approach, which goes into
+  the AI prompts. Former staff are listed as alumni.
+- **Interns** (`desk/interns.py`): three interns with their own personalities and $150 of pretend money pick
+  trades after each morning and evening session. Reach $500 and they're hired as junior analysts whose best pick
+  gets debated by the full team each session; drop to $30 and they're let go and replaced.
+- **`/pitch TICKER`** (`desk/pitch.py`): the full team researches any stock, ETF, crypto or currency pair; an
+  approved pitch is traded like any other idea.
+- **Trade of the week** image card (`desk/cards.py`) and a monthly **season recap** from Victor.
+- Dashboard: org chart floor with live status and hit rates, "Explain like I'm new" on every idea, and a
+  tap-to-define glossary.
+
 ## Secrets
 
 Add these in **Settings → Secrets and variables → Actions**:

@@ -6,7 +6,7 @@ import math
 from datetime import datetime, timedelta
 from statistics import mean, pstdev
 
-from desk import activity, config, marketdata
+from desk import activity, config, marketdata, scorecard, staff
 from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research.planner import PLANS_DIR
@@ -64,6 +64,13 @@ def build(state: dict) -> None:
         "rulebook": _json(config.DATA_DIR / "rulebook.json", []),
         "tournament": _json(config.DATA_DIR / "tournament.json", None),
         "roster": activity.roster(),
+        "scores": _safe(lambda: scorecard.seat_scores(trades, curve), {}),
+        "interns": _safe(_interns, []),
+        "reviews": (_json(config.DATA_DIR / "reviews.json", []) or [None])[-1],
+        "alumni": _safe(lambda: staff.load()["alumni"], []),
+        "graduates": _safe(lambda: _json(config.DATA_DIR / "interns.json", {}).get("graduates", []), []),
+        "cards": _json(config.DATA_DIR / "cards.json", [])[-12:],
+        "recaps": _json(config.DATA_DIR / "recaps.json", [])[-12:],
         "schedule": SCHEDULE,
         "backtest": _json(config.DATA_DIR / "backtest.json", None),
         "sessions_today": [{"session": p.get("session"), "created_at": p.get("created_at"),
@@ -76,6 +83,27 @@ def build(state: dict) -> None:
 
 
 # ---- pieces ------------------------------------------------------------------
+def _safe(fn, default):
+    try:
+        return fn()
+    except Exception as exc:
+        print(f"dashboard piece failed: {exc}")
+        return default
+
+
+def _interns() -> list[dict]:
+    from desk import interns
+    out = []
+    for i in interns.all_interns():
+        out.append({"id": i["id"], "seat": f"intern:{i['id']}", "name": i["name"], "persona": i["persona"], "status": i["status"],
+                    "equity": i.get("equity", i.get("cash")), "peak": i.get("peak"), "mood": i.get("mood"),
+                    "started": i.get("started"), "hired": i.get("hired"), "left": i.get("left"),
+                    "positions": [{k: p.get(k) for k in ("symbol", "direction", "entry", "stop", "target", "size_usd", "reason", "opened")}
+                                  for p in i.get("positions", [])],
+                    "closed": [{k: c.get(k) for k in ("symbol", "direction", "pnl", "why", "closed")} for c in i.get("closed", [])[-8:]]})
+    return out
+
+
 def _json(path, default):
     return json.loads(path.read_text()) if path.exists() else default
 
@@ -181,7 +209,7 @@ def _latest_plan(plans: list[dict]) -> dict | None:
                           "decision": d.get("decision"), "expression": d.get("expression"), "conviction": d.get("conviction"),
                           "bucket": d.get("bucket"), "style": d.get("style"), "entry": d.get("entry"), "stop": d.get("stop"),
                           "target": d.get("target"), "reward_to_risk": d.get("reward_to_risk"), "thesis": d.get("thesis"),
-                          "reason": d.get("reason"), "sizing": i.get("sizing"),
+                          "reason": d.get("reason"), "sizing": i.get("sizing"), "plain_english": d.get("plain_english"),
                           "problems": (i.get("fact_check") or {}).get("problems"),
                           "error": i.get("error"), "memo_key": f"{plan['_file']}|{i.get('symbol')}"})
     return {"file": p["_file"], "date": p.get("date"), "session": p.get("session"), "created_at": p.get("created_at"),

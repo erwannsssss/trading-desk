@@ -24,19 +24,30 @@
   "created_at": "2026-10-15T01:55:57-04:00",
   "expires_at": "2026-10-15T13:39:05-04:00",
   "entry_order_id": "11",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-15T01:55 entry order placed",
-   "2026-10-15T02:14 filled 7947 @ 157.907"
+   "2026-10-15T02:14 filled 7947 @ 157.907",
+   "2026-10-15T15:54 closed at 158.115: time stop (intraday), P&L $+10.35"
   ],
   "oanda_trade_id": "12",
   "entry_price": 157.907,
   "filled_qty": 7947.0,
   "filled_qty_initial": 7947.0,
   "opened_at": "2026-10-15T02:14:32-04:00",
-  "last_price": 158.163,
+  "last_price": 158.1225,
   "max_r": 0.24,
-  "min_r": 0
+  "min_r": 0,
+  "exit_price": 158.115,
+  "exit_reason": "time stop (intraday)",
+  "closed_at": "2026-10-15T15:54:55-04:00",
+  "pnl_usd": 10.35,
+  "r_result": 0.15,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The pair pulled back to the 20\u2011day SMA and then nudged higher, delivering a modest gain before the intraday time\u2011stop forced an exit. The move was in the direction of the mean\u2011reversion bounce forecast, though the target was not reached.",
+   "lesson": "When using short\u2011term time stops on pullback trades, ensure the horizon matches the expected price swing or use a flexible exit (e.g., trailing stop) to capture more of the move."
+  }
  },
  {
   "id": "2026-10-15-intraday-1053-FMC",
@@ -77,8 +88,8 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "5c876690-1ff3-457f-9cd8-a309a11d35a4",
   "stop_order_id": "a3932e3d-ba82-4bd8-89bd-4a61cbe87883",
-  "last_price": 5.595,
-  "max_r": 0.34,
+  "last_price": 5.605,
+  "max_r": 0.36,
   "stop_history": [
    {
     "t": "2026-10-15T11:32:31-04:00",
@@ -132,7 +143,7 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "5136b334-5a9d-4edb-bffa-3ad5418f9bfb",
   "stop_order_id": "a69463e8-a093-4375-897a-62d41640bce0",
-  "last_price": 10.31,
+  "last_price": 10.28,
   "max_r": 0.6,
   "industry": null,
   "stop_history": [
@@ -185,8 +196,8 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "7a7e6ae0-ac6f-44c2-be29-369d85084d85",
   "stop_order_id": "e76d3cd9-3b5b-4f66-acfa-721eb0761292",
-  "last_price": 6.275,
-  "max_r": 0.32,
+  "last_price": 6.345,
+  "max_r": 0.42,
   "industry": "Networking & Communications Equipment",
   "min_r": 0
  },
@@ -326,10 +337,10 @@
   "opened_at": "2026-10-15T14:41:43-04:00",
   "premium_paid": 1.43,
   "underlying_entry": 32.885,
-  "last_price": 33.895,
-  "option_mark": 1.0,
+  "last_price": 34.235,
+  "option_mark": 0.97,
   "max_r": 0,
-  "min_r": -0.35,
+  "min_r": -0.47,
   "stop_history": [
    {
     "t": "2026-10-15T14:41:43-04:00",
@@ -341,5 +352,68 @@
    }
   ],
   "last_huddle": "2026-10-15T15:27:24-04:00"
+ },
+ {
+  "id": "2026-10-15-intraday-1529-RKLB",
+  "plan_file": "2026-10-15-intraday-1529.json",
+  "symbol": "RKLB",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 54.96,
+  "initial_stop": 58.0,
+  "stop": 58.0,
+  "target": 45.0,
+  "bucket": "high_risk",
+  "style": "short/fade",
+  "conviction": 7,
+  "thesis": "RKLB is in a strong downtrend with price far below its 20\u2011, 50\u2011 and 200\u2011day averages. RSI is below 30, indicating oversold conditions but the stock\u2019s high beta, negative margins and insider sell\u2011off suggest further weakness. A put spread captures the expected move lower while limiting risk.",
+  "created_at": "2026-10-15T15:54:55-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-15-intraday-1529-CIFR",
+  "plan_file": "2026-10-15-intraday-1529.json",
+  "symbol": "CIFR",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 10.0,
+  "initial_stop": 8.78,
+  "stop": 8.78,
+  "target": 12.0,
+  "bucket": "tactical",
+  "style": "mean reversion",
+  "conviction": 6,
+  "thesis": "CIFR is deeply oversold (RSI 24) and trading well below its 20\u2011day SMA. Heavy short interest creates a potential short\u2011squeeze catalyst. A modest long position near the current price targets a bounce to around $12, offering >1.2\u00d7 reward\u2011to\u2011risk.",
+  "created_at": "2026-10-15T15:54:55-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-15-intraday-1529-NBIS",
+  "plan_file": "2026-10-15-intraday-1529.json",
+  "symbol": "NBIS",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 186.75,
+  "initial_stop": 210.0,
+  "stop": 210.0,
+  "target": 150.0,
+  "bucket": "high_risk",
+  "style": "short/fade",
+  "conviction": 7,
+  "thesis": "NBIS is below its short\u2011term averages and shows weak momentum (RSI 35.7). Volume surge and a 18.9% short\u2011float indicate bearish pressure. In a defensive market, a put option lets us profit from a further drop while limiting loss to the premium.",
+  "created_at": "2026-10-15T15:54:55-04:00",
+  "pair_id": null,
+  "pair_with": null
  }
 ]

@@ -211,6 +211,13 @@ def run_firm(state: dict, book) -> None:
     from desk.telegram import esc
     from desk.trading import ledger
     firm.accrue_payroll(book.equity)
+    from desk import bank
+    trades = ledger.load()
+    fixes = bank.reprice_forex_loans(trades)
+    if fixes:
+        ledger.save(trades)
+        for n in fixes:
+            floor.event("treasury", f"Repriced a bank loan: {n}", kind="trade")
 
     findings = compliance.audit(ledger.load(), book)
     major = [f for f in findings if f["severity"] == "major"]

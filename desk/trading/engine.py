@@ -23,7 +23,7 @@ from desk.research.planner import PLANS_DIR, quote_to_usd
 from desk.risk import Book, OrderIdea, check_order, in_blackout
 from desk.state import log_event, now
 from desk.telegram import esc
-from desk.trading import ledger, options
+from desk.trading import guards, ledger, options
 
 NY = ZoneInfo(config.TIMEZONE)
 IDEA_LIFETIME_HOURS = {"crypto": 12, "forex": 12}
@@ -158,6 +158,7 @@ class Engine:
                 summary["managed"] += 1
             except Exception as exc:
                 ledger.note(t, f"manage error: {str(exc)[:150]}", self.iso)
+        self._earnings_exits()
         for plan_file, plan, idea in plan_ideas(self.at):
             try:
                 result = self.enter(plan_file, plan, idea)
@@ -202,6 +203,19 @@ class Engine:
             return "forex market closed"
         if asset == "crypto" and direction == "short":
             return self._record_skip(trade_id, plan_file, idea, "crypto can't be shorted on Alpaca")
+        why = guards.risk_off_block((plan.get("macro") or {}).get("regime"), asset, direction, d.get("conviction"))
+        if why:
+            return self._record_skip(trade_id, plan_file, idea, why)
+        why = guards.same_bet(self.trades, asset, idea["symbol"], direction, d.get("style"))
+        if why:
+            floor.event("risk", f"Blocked {idea['symbol']}: {why}", idea["symbol"], kind="blocked")
+            return self._record_skip(trade_id, plan_file, idea, f"same bet: {why}")
+        if asset in ("stock", "etf"):
+            e = guards.earnings_calendar().get(idea["symbol"]) or {}
+            why = guards.earnings_conflict(e.get("date"), d.get("horizon"), d.get("style"), self.at.date())
+            if why:
+                floor.event("risk", f"Skipped {idea['symbol']}: {why}", idea["symbol"], kind="blocked")
+                return self._record_skip(trade_id, plan_file, idea, why)
 
         price = current_price({"venue": idea["venue"], "symbol": idea["symbol"]})
         entry, stop, target = float(d["entry"]), float(d["stop"]), float(d["target"])
@@ -246,6 +260,22 @@ class Engine:
         else:
             notional = units * entry
 
+        # The bank: forex only ties up its margin; other trades borrow only at conviction 7+.
+        cash_needed = notional * oanda.margin_rate(idea["symbol"]) if asset == "forex" else notional
+        loan = bank.loan_needed(cash_needed, self.book.equity, self.book.cash_used)
+        if loan > 0 and asset != "forex" and int(d.get("conviction") or 0) < bank.BORROW_MIN_CONVICTION:
+            free = bank.free_cash(self.book.equity, self.book.cash_used) * 0.98
+            new_units = math.floor(free / entry) if asset in ("stock", "etf") else round(free / entry, 6)
+            if new_units <= 0 or new_units * entry < 50:
+                return self._record_skip(trade_id, plan_file, idea, "the firm's own cash is fully used, and only conviction "
+                                         f"{bank.BORROW_MIN_CONVICTION}+ trades can borrow from the bank")
+            ratio = new_units / units
+            floor.event("treasury", f"{idea['symbol']}: conviction {d.get('conviction')} is too low to borrow, so it's sized to the "
+                        f"firm's free cash (${free:,.0f}) instead of ${notional:,.0f}", idea["symbol"])
+            units, notional, cash_needed, loan = new_units, new_units * entry, new_units * entry, 0.0
+            sizing = {**sizing, "units": units, "risk_usd": round(sizing["risk_usd"] * ratio, 2),
+                      "risk_pct": round(sizing["risk_pct"] * ratio, 2)}
+
         verdict = check_order(OrderIdea(idea["symbol"], idea["venue"], "buy" if long else "sell", notional, entry, stop, target),
                               self.book, self.state, stock_blackout=self.blackout() if asset in ("stock", "etf") else False)
         if not verdict.ok:
@@ -265,8 +295,9 @@ class Engine:
             "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),
         }
 
-        t["loan_usd"] = bank.loan_needed(notional, self.book.equity, self.book.gross_exposure)
+        t["loan_usd"] = loan
         t["loan_apr"] = bank.current_apr()
+        t["loan_basis"] = "margin" if asset == "forex" else "cash"
         if self.state.get("dry_run"):
             t["status"] = "would_trade"
             self.trades.append(t)
@@ -285,6 +316,7 @@ class Engine:
             self.book.stock_gross_exposure += notional
         elif asset == "forex":
             self.book.forex_gross_notional += notional
+            self.book.forex_margin += cash_needed
         else:
             self.book.stock_gross_exposure += notional
         self.book.open_positions += 1
@@ -312,6 +344,9 @@ class Engine:
         if qty < 1:
             return None
         premium_total = round(qty * limit * 100, 2)
+        loan = bank.loan_needed(premium_total, self.book.equity, self.book.cash_used)
+        if loan > 0 and conv < bank.BORROW_MIN_CONVICTION:
+            return None   # options below conviction 7 must be paid from the firm's own cash
         verdict = check_order(OrderIdea(c["symbol"], "alpaca", "buy", premium_total, limit, limit * 0.5, limit * 2),
                               self.book, self.state, stock_blackout=self.blackout())
         if not verdict.ok:
@@ -335,7 +370,7 @@ class Engine:
             self.alert(agent="options", symbol=idea["symbol"], text=f"<b>[DRY RUN] Would buy {label}</b> at ${limit:.2f} (${premium_total:,.0f} total, the most it can lose)\n"
                        f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}")
             return "entered"
-        t["loan_usd"] = bank.loan_needed(premium_total, self.book.equity, self.book.gross_exposure)
+        t["loan_usd"] = loan
         t["loan_apr"] = bank.current_apr()
         o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
                                "limit_price": f"{limit:.2f}", "time_in_force": "day", "client_order_id": trade_id[:48]})
@@ -612,6 +647,23 @@ class Engine:
         t["partial_taken"] = True
         ledger.note(t, f"took half off at {price} (+${pnl:,.2f})", self.iso)
         self.alert(f"Took partial profit on {esc(t['symbol'])}: closed half at {_p(price)} for ${pnl:+,.2f}.", agent="positions", symbol=t["symbol"])
+
+    def _earnings_exits(self) -> None:
+        """In the last stretch of the session, close positions that would otherwise be held through earnings."""
+        if self.at.weekday() >= 5 or not ((15, 15) <= (self.at.hour, self.at.minute) < (15, 50)):
+            return
+        held = [t for t in self.trades if t["status"] == "open" and t.get("asset") in ("stock", "etf", "option")]
+        if not held or not self.stock_market_open():
+            return
+        cal = guards.earnings_calendar()
+        for t in held:
+            why = guards.must_exit_before_earnings(t, cal, self.at)
+            if why:
+                try:
+                    self._exit_now(t, why)
+                    self.alert(f"<b>Closing {esc(t['symbol'])} before earnings</b>\n<i>{esc(why)}</i>", agent="positions", symbol=t["symbol"])
+                except Exception as exc:
+                    ledger.note(t, f"earnings exit failed: {str(exc)[:120]}", self.iso)
 
     def _exit_now(self, t: dict, reason: str) -> None:
         """Close the whole position at market."""

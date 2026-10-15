@@ -20,10 +20,33 @@ BANK_NAME = "First Hoosier Bank"
 ACTIVE = ("pending", "open", "closing")
 
 
-def loan_needed(notional: float, equity: float, exposure_now: float) -> float:
-    """How much of a new position has to be borrowed: whatever the firm's free cash can't cover."""
-    free = max(0.0, equity - exposure_now)
-    return round(max(0.0, notional - free), 2)
+BORROW_MIN_CONVICTION = 7   # stock, crypto and options trades below this must fit in the firm's own cash
+
+
+def loan_needed(cash_needed: float, equity: float, cash_used: float) -> float:
+    """How much of a new position has to be borrowed: whatever the firm's free cash can't cover.
+    For forex, cash_needed is only the margin (that's all the position ties up), not the full position value."""
+    free = max(0.0, equity - cash_used)
+    return round(max(0.0, cash_needed - free), 2)
+
+
+def free_cash(equity: float, cash_used: float) -> float:
+    return max(0.0, equity - cash_used)
+
+
+def reprice_forex_loans(trades: list[dict]) -> list[str]:
+    """One-time fix for forex trades opened when loans covered the full position value: from now on they only
+    borrow their margin. Interest is figured on the smaller loan for the whole trade."""
+    from desk.brokers import oanda
+    notes = []
+    for t in trades:
+        if t.get("asset") == "forex" and t.get("status") in ACTIVE and t.get("loan_usd") and t.get("loan_basis") != "margin":
+            margin = round((t.get("notional_usd") or 0) * oanda.margin_rate(t["symbol"]), 2)
+            old = t["loan_usd"]
+            t["loan_usd"] = min(old, margin)
+            t["loan_basis"] = "margin"
+            notes.append(f"{t['symbol']}: loan cut from ${old:,.0f} to ${t['loan_usd']:,.0f} (forex only ties up its margin)")
+    return notes
 
 
 def current_apr() -> float:

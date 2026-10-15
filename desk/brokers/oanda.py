@@ -43,6 +43,20 @@ def instruments() -> dict:
     return {i["name"]: i for i in data}
 
 
+_inst_cache: dict | None = None
+
+
+def margin_rate(instrument: str) -> float:
+    """Share of a position's value OANDA holds as margin (2% for majors at 50:1, more for others)."""
+    global _inst_cache
+    try:
+        if _inst_cache is None:
+            _inst_cache = instruments()
+        return float(_inst_cache.get(instrument, {}).get("marginRate", 0.05))
+    except Exception:
+        return 0.05
+
+
 def precision(instrument: str) -> int:
     return int(instruments().get(instrument, {}).get("displayPrecision", 5))
 

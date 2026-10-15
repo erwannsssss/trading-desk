@@ -26,6 +26,12 @@ class Book:
     financing_cost: float = 0.0         # bank interest paid and building up (bank.py)
     borrowed: float = 0.0               # outstanding bank loans
     opex: float = 0.0                   # payroll and bonuses paid to staff (firm.py)
+    forex_margin: float = 0.0           # cash OANDA holds as margin against forex positions
+
+    @property
+    def cash_used(self) -> float:
+        """Cash actually tied up: stock/crypto/option positions at full value, forex only at its margin."""
+        return self.stock_gross_exposure + self.forex_margin
 
     @property
     def equity(self) -> float:

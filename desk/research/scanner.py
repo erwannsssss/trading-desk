@@ -40,8 +40,8 @@ CRYPTO = ["BTC/USD", "ETH/USD", "SOL/USD", "XRP/USD", "DOGE/USD", "AVAX/USD", "L
 FOREX = ["EUR_USD", "GBP_USD", "USD_JPY", "AUD_USD", "USD_CAD", "USD_CHF", "NZD_USD", "EUR_JPY", "GBP_JPY",
          "EUR_GBP", "AUD_JPY", "EUR_CHF", "CAD_JPY", "USD_MXN", "EUR_AUD", "GBP_AUD"]
 
-MIN_PRICE = 5.0
-MIN_DOLLAR_VOLUME = 25_000_000  # avg $ traded per day, so we can get in and out
+MIN_PRICE = 10.0           # cheap stocks have wide spreads and jumpy prices
+MIN_DOLLAR_VOLUME = 50_000_000  # avg $ traded per day, so we can get in and out cheaply
 
 
 def _clean(sym: str) -> bool:

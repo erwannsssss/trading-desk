@@ -195,7 +195,17 @@ DESK_TARGET = (
     "DESK TARGET: the desk aims for roughly 20-30 trades a day across all sessions and markets, many of them small "
     "tactical or intraday trades. Pass only when you see no edge at all. A modest edge with a clear stop deserves a "
     "small, low-conviction position (conviction 4-5) rather than a pass; save conviction 8+ for the best setups. "
-    "The firm has a $100,000 bank credit line (8% a year interest), so cash is not the constraint; risk per trade is."
+    "The firm has a $100,000 bank credit line, but only conviction 7+ trades may borrow; lower-conviction trades are "
+    "sized to the firm's own free cash."
+)
+DESK_RULES = (
+    "FIRM RULES (the system enforces these, so don't fight them): "
+    "(1) when the market regime is risk-off or panic, buying stocks needs conviction 6+; "
+    "(2) no more than 2 positions leaning the same way on one currency, 3 crypto longs, or 3 stock positions with the "
+    "same direction and style, so look for a DIFFERENT bet instead of another copy of an existing one; "
+    "(3) don't hold a stock through its earnings report unless the style is \"earnings play\"; "
+    "(4) bearish stock views are traded with puts, because this account can't short shares; "
+    "(5) stocks must trade above $10."
 )
 
 
@@ -204,6 +214,7 @@ def _decision_rules(dossier: dict, extra: dict) -> str:
     options_ok = dossier["asset_type"] in ("stock", "etf")
     return f"""Current price: {t['price']}. ATR (typical daily range): {t.get('atr14')} ({t.get('atr_pct')}%).
 {DESK_TARGET}
+{DESK_RULES}
 {_team_record(extra)}
 SESSION: {extra.get('session_note', '')}
 STRATEGY TOURNAMENT (how each style has actually performed for this desk; lean toward what works): {_j(extra.get('tournament') or 'no history yet')}

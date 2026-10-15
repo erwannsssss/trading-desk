@@ -36,6 +36,7 @@ def snapshot(state: dict) -> tuple[Book, dict]:
         baseline_oanda=float(baseline.get("oanda", fx["NAV"])),
         stock_gross_exposure=stock_gross,
         forex_gross_notional=abs(float(fx.get("positionValue", 0) or 0)),
+        forex_margin=abs(float(fx.get("marginUsed", 0) or 0)),
         open_positions=len(pos) + len(fx_trades),
         pending_exposure=pending,
     )

@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 import time
@@ -58,6 +59,10 @@ def healthcheck() -> int:
     check("FRED", lambda: f"Fed funds {datasources.fred_latest('FEDFUNDS').get('value')}%")
     check("Gemini AI", lambda: ai.ask("Reply with exactly: ready", temperature=0)[:40])
 
+    try:
+        telegram.set_command_menu()
+    except Exception:
+        pass
     report = "\n".join(results)
     print(report)
 
@@ -103,6 +108,18 @@ def tick() -> int:
         traceback.print_exc()
         telegram.send(f"<b>Trading engine error</b>: <code>{telegram.esc(str(exc)[:400])}</code>")
 
+    # Learning: grade closed trades, refresh the strategy tournament daily, send the evening recap.
+    try:
+        from desk import learning
+        from desk.trading import ledger
+        if learning.run_postmortems(limit=2) or state.get("tournament_day") != now().date().isoformat():
+            learning.update_tournament(ledger.load())
+            state["tournament_day"] = now().date().isoformat()
+        learning.maybe_send_recap(state, book)
+    except Exception:
+        traceback.print_exc()
+    save(state)
+
     record_equity(state)
     try:
         from desk import dashboard
@@ -128,6 +145,20 @@ def listen(state: dict, seconds: int) -> None:
         except Exception as exc:
             print(f"listen error: {exc}")
             time.sleep(10)
+
+
+def weekly() -> int:
+    from desk import dashboard, learning
+    learning.weekly_review()
+    dashboard.build(load())
+    return 0
+
+
+def run_backtest() -> int:
+    from desk import backtest
+    out = backtest.run()
+    print(json.dumps(out["results"], indent=1))
+    return 0
 
 
 def listen_only() -> int:
@@ -166,7 +197,8 @@ def research() -> int:
 def main() -> int:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "tick"
     try:
-        return {"healthcheck": healthcheck, "tick": tick, "research": research, "listen": listen_only}[cmd]()
+        return {"healthcheck": healthcheck, "tick": tick, "research": research, "listen": listen_only,
+                "weekly": weekly, "backtest": run_backtest}[cmd]()
     except Exception as exc:
         traceback.print_exc()
         try:

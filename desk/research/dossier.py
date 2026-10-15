@@ -12,7 +12,8 @@ def _safe(fn, *a, **kw):
         return {"unavailable": str(exc)[:120]}
 
 
-def build(cand: dict, fund_holdings: dict) -> dict:
+def build(cand: dict, fund_holdings: dict, light: bool = False) -> dict:
+    """`light` skips the slow SEC press-release fetch (used by the fast sessions)."""
     sym, asset = cand["symbol"], cand["asset"]
     d = {
         "symbol": sym,
@@ -34,7 +35,7 @@ def build(cand: dict, fund_holdings: dict) -> dict:
                 e = cand["earnings"]
                 d["upcoming_earnings"] = {"date": e.get("date"), "timing": e.get("hour"),
                                           "expected_eps": e.get("epsEstimate"), "expected_revenue": e.get("revenueEstimate")}
-            rel = _safe(smartmoney.latest_earnings_release, sym)
+            rel = None if light else _safe(smartmoney.latest_earnings_release, sym)
             if rel and "text" in rel:
                 d["latest_earnings_press_release"] = {"filed": rel["filed"], "excerpt": rel["text"][:3500]}
     elif asset == "crypto":

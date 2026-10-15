@@ -21,7 +21,7 @@ from desk.research.planner import PLANS_DIR, quote_to_usd
 from desk.risk import Book, OrderIdea, check_order, in_blackout
 from desk.state import log_event, now
 from desk.telegram import esc
-from desk.trading import ledger
+from desk.trading import ledger, options
 
 NY = ZoneInfo(config.TIMEZONE)
 IDEA_LIFETIME_HOURS = {"crypto": 12, "forex": 12}
@@ -69,22 +69,26 @@ def time_stop_due(horizon: str | None, opened_at: str, at: datetime) -> bool:
 def plan_ideas(at: datetime) -> list[tuple[str, dict, dict]]:
     """(plan file, plan, idea) for every approved idea in the last day's plans."""
     out = []
-    for day in (at.date(), at.date() - timedelta(days=1)):
-        for session in ("morning", "evening"):
-            path = PLANS_DIR / f"{day.isoformat()}-{session}.json"
-            if not path.exists():
-                continue
-            plan = json.loads(path.read_text())
-            for idea in plan.get("ideas", []):
-                if idea.get("status") == "approved":
-                    out.append((path.name, plan, idea))
+    if not PLANS_DIR.exists():
+        return out
+    days = {at.date().isoformat(), (at.date() - timedelta(days=1)).isoformat()}
+    for path in sorted(PLANS_DIR.glob("*.json")):
+        if path.name[:10] not in days:
+            continue
+        plan = json.loads(path.read_text())
+        for idea in plan.get("ideas", []):
+            if idea.get("status") == "approved":
+                out.append((path.name, plan, idea))
     return out
 
 
 def idea_expiry(plan: dict, idea: dict) -> datetime:
     created = datetime.fromisoformat(plan["created_at"])
     if idea["asset"] in ("stock", "etf"):
-        return created.replace(hour=STOCK_LAST_ENTRY[0], minute=STOCK_LAST_ENTRY[1], second=0, microsecond=0)
+        last = created.replace(hour=STOCK_LAST_ENTRY[0], minute=STOCK_LAST_ENTRY[1], second=0, microsecond=0)
+        if plan.get("session") == "intraday":
+            return min(created + timedelta(hours=2), last)  # intraday ideas go stale fast
+        return last
     return created + timedelta(hours=IDEA_LIFETIME_HOURS[idea["asset"]])
 
 
@@ -184,9 +188,15 @@ class Engine:
         if (long and price > entry + 0.25 * risk) or (not long and price < entry - 0.25 * risk):
             return "price moved away from the entry; waiting for a pullback"
 
-        kw = {}
+        if asset in ("stock", "etf") and d.get("expression") in ("call_options", "put_options"):
+            result = self._enter_option(trade_id, plan_file, plan, idea, price, entry, stop, target, long)
+            if result is not None:
+                return result  # otherwise no affordable contract: trade the shares instead
+
+        from desk import learning
+        kw = {"multiplier": learning.risk_multiplier(d.get("style"))}
         if asset == "forex":
-            kw = {"quote_to_usd": quote_to_usd(idea["symbol"]), "unit_usd": oanda.usd_value_per_unit(idea["symbol"])}
+            kw.update(quote_to_usd=quote_to_usd(idea["symbol"]), unit_usd=oanda.usd_value_per_unit(idea["symbol"]))
         sizing = team.size({**d, "entry": entry}, self.book.equity, asset, **kw)
         units = sizing["units"]
         if asset in ("stock", "etf"):
@@ -244,6 +254,58 @@ class Engine:
                    f"conviction {t['conviction']}/10)\n"
                    f"{_qty(t)} @ {_p(entry)} | stop {_p(stop)} | target {_p(target)}\n"
                    f"Size ${notional:,.0f}, risking ${t['risk_usd']:,.0f} ({t['risk_pct']}%)\n<i>{esc(t['thesis'])}</i>")
+        return "entered"
+
+    def _enter_option(self, trade_id, plan_file, plan, idea, price, entry, stop, target, long) -> str | None:
+        d = idea["decision"]
+        kind = "call" if long else "put"
+        conv = int(d.get("conviction") or 5)
+        budget_pct = min(config.MAX_OPTIONS_PREMIUM_PCT, 6.0 if conv >= 8 else 4.0 if conv >= 6 else 2.5)
+        budget = self.book.equity * budget_pct / 100
+        open_premium = sum(t.get("notional_usd", 0) for t in self.trades if t.get("asset") == "option" and t["status"] in ledger.ACTIVE)
+        if open_premium + budget > self.book.equity * config.MAX_OPTIONS_TOTAL_PCT / 100:
+            return None
+        c = options.pick_contract(idea["symbol"], kind, price, d.get("horizon"), max_cost=budget)
+        if not c:
+            return None
+        limit = options.entry_limit(c)
+        qty = options.contracts_for(budget, limit)
+        if qty < 1:
+            return None
+        premium_total = round(qty * limit * 100, 2)
+        verdict = check_order(OrderIdea(c["symbol"], "alpaca", "buy", premium_total, limit, limit * 0.5, limit * 2),
+                              self.book, self.state, stock_blackout=self.blackout())
+        if not verdict.ok:
+            return str(verdict)
+        t = {
+            "id": trade_id, "plan_file": plan_file, "symbol": idea["symbol"], "venue": "alpaca", "asset": "option",
+            "option_symbol": c["symbol"], "option_type": kind, "strike": c["strike"], "expiry": c["expiry"],
+            "direction": "long" if long else "short", "bucket": d.get("bucket") or "high_risk", "style": d.get("style"),
+            "conviction": d.get("conviction"), "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"),
+            "thesis": d.get("thesis"), "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target,
+            "qty": qty, "premium_limit": limit, "notional_usd": premium_total, "risk_usd": premium_total,
+            "risk_pct": round(premium_total / self.book.equity * 100, 2), "quote_to_usd": 100.0,
+            "created_at": self.iso, "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),
+        }
+        label = f"{qty} {esc(idea['symbol'])} {c['expiry']} ${c['strike']:g} {kind}{'s' if qty > 1 else ''}"
+        if self.state.get("dry_run"):
+            t["status"] = "would_trade"
+            self.trades.append(t)
+            self.alert(f"<b>[DRY RUN] Would buy {label}</b> at ${limit:.2f} (${premium_total:,.0f} total, the most it can lose)\n"
+                       f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}")
+            return "entered"
+        o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
+                               "limit_price": f"{limit:.2f}", "time_in_force": "day", "client_order_id": trade_id[:48]})
+        t.update(status="pending", entry_order_id=o["id"])
+        ledger.note(t, f"bought to open {c['symbol']} limit {limit}", self.iso)
+        self.trades.append(t)
+        self.state["trades_today"] = self.state.get("trades_today", 0) + 1
+        self.book.stock_gross_exposure += premium_total
+        self.book.open_positions += 1
+        log_event("order_placed", trade=trade_id, symbol=c["symbol"], side="buy", qty=qty, entry=limit)
+        self.alert(f"<b>ORDER PLACED: buy {label}</b> ({esc(t['style'])}, conviction {t['conviction']}/10)\n"
+                   f"${limit:.2f} each, ${premium_total:,.0f} total (the most it can lose)\n"
+                   f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}\n<i>{esc(t['thesis'])}</i>")
         return "entered"
 
     def _submit(self, t: dict, long: bool) -> None:
@@ -320,6 +382,9 @@ class Engine:
             if pos:
                 qty = float(pos.get("qty_available") or pos["qty"])
         t.update(status="open", entry_price=price, filled_qty=qty, filled_qty_initial=qty, opened_at=self.iso)
+        if t["asset"] == "option":
+            t["premium_paid"] = price
+            t["underlying_entry"] = current_price(t)
         if order and t["asset"] in ("stock", "etf"):
             for leg in order.get("legs") or []:
                 if leg["type"] in ("stop", "stop_limit", "trailing_stop"):
@@ -353,6 +418,12 @@ class Engine:
                 return True
             return False
 
+        if t["asset"] == "option":
+            if alpaca.position(t["option_symbol"]) is None:
+                q = options.quote(t["option_symbol"]) or {}
+                self._closed(t, float(q.get("bid") or 0), "option position closed outside the engine or expired")
+                return True
+            return False
         for key, reason in (("target_order_id", "hit target"), ("stop_order_id", "stopped out")):
             if t.get(key):
                 o = alpaca.get_order(t[key])
@@ -366,6 +437,9 @@ class Engine:
         return False
 
     def _adjust(self, t: dict) -> None:
+        if t["asset"] == "option":
+            self._adjust_option(t)
+            return
         price = current_price(t)
         long = t["direction"] == "long"
         entry = t["entry_price"]
@@ -390,6 +464,34 @@ class Engine:
         new_stop = trailed_stop(t["direction"], entry, t["initial_stop"], t["stop"], price)
         if new_stop is not None:
             self._move_stop(t, new_stop)
+
+    def _adjust_option(self, t: dict) -> None:
+        under = current_price(t)
+        q = options.quote(t["option_symbol"]) or {}
+        mark = q.get("mid")
+        t["last_price"], t["option_mark"] = under, mark
+        long = t["direction"] == "long"   # long = calls (bullish), short = puts (bearish)
+        r = r_multiple(t["direction"], t["underlying_entry"], t["initial_stop"], under)
+        t["max_r"] = round(max(t.get("max_r", 0), r), 2)
+        reason = None
+        if (long and under <= t["stop"]) or (not long and under >= t["stop"]):
+            reason = "underlying hit the stop"
+        elif (long and under >= t["target"]) or (not long and under <= t["target"]):
+            reason = "underlying hit the target"
+        elif mark and mark >= 2 * t["premium_paid"]:
+            reason = "option doubled; taking the profit"
+        elif options.days_to_expiry(t["option_symbol"], self.at.date()) <= 3:
+            reason = "close to expiry"
+        elif time_stop_due(t.get("horizon"), t["opened_at"], self.at):
+            reason = f"time stop ({t.get('horizon')})"
+        if reason:
+            if self.stock_market_open():
+                self._exit_now(t, reason)
+            return
+        new_stop = trailed_stop(t["direction"], t["underlying_entry"], t["initial_stop"], t["stop"], under)
+        if new_stop is not None:
+            t["stop"] = new_stop
+            ledger.note(t, f"exit level on the underlying moved to {_p(new_stop)}", self.iso)
 
     def _move_stop(self, t: dict, new_stop: float) -> None:
         if t["venue"] == "oanda":
@@ -433,6 +535,12 @@ class Engine:
             fill = res.get("orderFillTransaction", {})
             self._closed(t, float(fill.get("price") or current_price(t)), reason, pnl=float(fill.get("pl") or 0))
             return
+        if t["asset"] == "option":
+            o = alpaca.submit_raw({"symbol": t["option_symbol"], "side": "sell", "type": "market",
+                                   "qty": str(int(t["filled_qty"])), "time_in_force": "day"})
+            t.update(status="closing", exit_order_id=o.get("id"), exit_reason=reason)
+            ledger.note(t, f"selling to close: {reason}", self.iso)
+            return
         for key in ("stop_order_id", "target_order_id"):
             if t.get(key):
                 try:
@@ -458,7 +566,10 @@ class Engine:
             pnl = (price - t["entry_price"]) * qty * (1 if long else -1) * t.get("quote_to_usd", 1.0)
         if not includes_partials:
             pnl += t.get("partial_pnl", 0)
-        initial_risk = abs(t["entry_price"] - t["initial_stop"]) * (t.get("filled_qty_initial") or t["qty"]) * t.get("quote_to_usd", 1.0)
+        if t["asset"] == "option":
+            initial_risk = t["entry_price"] * (t.get("filled_qty_initial") or t["qty"]) * 100
+        else:
+            initial_risk = abs(t["entry_price"] - t["initial_stop"]) * (t.get("filled_qty_initial") or t["qty"]) * t.get("quote_to_usd", 1.0)
         t.update(status="closed", exit_price=price, exit_reason=reason, closed_at=self.iso, pnl_usd=round(pnl, 2),
                  r_result=round(pnl / initial_risk, 2) if initial_risk else None)
         ledger.note(t, f"closed at {price}: {reason}, P&L ${pnl:+,.2f}", self.iso)
@@ -487,4 +598,6 @@ def _qty(t: dict) -> str:
         return f"{int(t['qty']):,} units"
     if t["asset"] == "crypto":
         return f"{t['qty']:g}"
+    if t["asset"] == "option":
+        return f"{int(t['qty'])} contracts"
     return f"{int(t['qty'])} shares"

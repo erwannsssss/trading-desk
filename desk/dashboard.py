@@ -49,6 +49,11 @@ def build(state: dict) -> None:
         "stats": _stats(trades, curve),
         "ghost": _ghost(plans, trades),
         "rulebook": _json(config.DATA_DIR / "rulebook.json", []),
+        "tournament": _json(config.DATA_DIR / "tournament.json", None),
+        "backtest": _json(config.DATA_DIR / "backtest.json", None),
+        "sessions_today": [{"session": p.get("session"), "created_at": p.get("created_at"),
+                            "approved": sum(i.get("status") == "approved" for i in p.get("ideas", [])),
+                            "researched": len(p.get("ideas", []))} for p in plans if p.get("date") == now().date().isoformat()],
         "letters": _json(config.DATA_DIR / "letters.json", []),
     }
     DOCS.mkdir(exist_ok=True)
@@ -83,7 +88,7 @@ def _recent_plans(days: int) -> list[dict]:
             plan = json.loads(p.read_text())
             plan["_file"] = p.name
             out.append(plan)
-    return out
+    return sorted(out, key=lambda p: p.get("created_at", ""))
 
 
 def _positions(trades: list[dict], details: dict) -> list[dict]:
@@ -95,7 +100,11 @@ def _positions(trades: list[dict], details: dict) -> list[dict]:
         entry = t.get("entry_price") or t["entry_plan"]
         long = t["direction"] == "long"
         unreal = None
-        if last and t.get("entry_price"):
+        if t.get("asset") == "option":
+            entry = t.get("underlying_entry") or t["entry_plan"]
+            if t.get("option_mark") and t.get("entry_price"):
+                unreal = round((t["option_mark"] - t["entry_price"]) * t["filled_qty"] * 100, 2)
+        elif last and t.get("entry_price"):
             unreal = round((last - entry) * t["filled_qty"] * (1 if long else -1) * t.get("quote_to_usd", 1.0) + t.get("partial_pnl", 0), 2)
         progress = None
         if last:
@@ -108,7 +117,8 @@ def _positions(trades: list[dict], details: dict) -> list[dict]:
 SLIM_KEYS = ("id", "plan_file", "symbol", "asset", "venue", "direction", "status", "bucket", "style", "conviction",
              "confidence_pct", "horizon", "thesis", "entry_plan", "entry_price", "initial_stop", "stop", "target", "qty",
              "filled_qty", "notional_usd", "risk_usd", "risk_pct", "created_at", "opened_at", "closed_at", "exit_price",
-             "exit_reason", "pnl_usd", "r_result", "skip_reason", "max_r", "notes", "partial_pnl")
+             "exit_reason", "pnl_usd", "r_result", "skip_reason", "max_r", "notes", "partial_pnl", "postmortem",
+             "option_symbol", "option_type", "strike", "expiry", "premium_paid", "option_mark", "underlying_entry")
 
 
 def _slim(t: dict) -> dict:
@@ -123,8 +133,8 @@ def _memo(idea: dict) -> dict:
 def _memos(trades: list[dict], plans: list[dict]) -> dict:
     """Full research memo for every trade, keyed by plan file + symbol."""
     wanted = {(t["plan_file"], t["symbol"]) for t in trades}
-    if plans:
-        wanted |= {(plans[-1]["_file"], i["symbol"]) for i in plans[-1].get("ideas", [])}
+    for plan in plans[-12:]:  # every idea in the recent sessions shown on the game plan tab
+        wanted |= {(plan["_file"], i.get("symbol")) for i in plan.get("ideas", [])}
     out = {}
     for plan in plans:
         for idea in plan.get("ideas", []):
@@ -141,22 +151,30 @@ def _memos(trades: list[dict], plans: list[dict]) -> dict:
 
 
 def _latest_plan(plans: list[dict]) -> dict | None:
+    """The latest full research session, plus every idea from the fast sessions that ran after it."""
     if not plans:
         return None
-    p = plans[-1]
+    full = [p for p in plans if p.get("session") in ("morning", "evening")]
+    p = full[-1] if full else plans[-1]
+    following = [q for q in plans if q.get("created_at", "") > p.get("created_at", "") and q is not p]
     ideas = []
-    for i in p.get("ideas", []):
-        d = i.get("decision") or {}
-        ideas.append({"symbol": i.get("symbol"), "asset": i.get("asset"), "status": i.get("status"),
-                      "decision": d.get("decision"), "conviction": d.get("conviction"), "bucket": d.get("bucket"),
-                      "style": d.get("style"), "entry": d.get("entry"), "stop": d.get("stop"), "target": d.get("target"),
-                      "reward_to_risk": d.get("reward_to_risk"), "thesis": d.get("thesis"), "reason": d.get("reason"),
-                      "sizing": i.get("sizing"), "problems": (i.get("fact_check") or {}).get("problems"),
-                      "error": i.get("error"), "memo_key": f"{p['_file']}|{i.get('symbol')}"})
+    for plan in [p] + following:
+        for i in plan.get("ideas", []):
+            d = i.get("decision") or {}
+            ideas.append({"symbol": i.get("symbol"), "asset": i.get("asset"), "status": i.get("status"),
+                          "session": plan.get("session"), "at": plan.get("created_at"),
+                          "decision": d.get("decision"), "expression": d.get("expression"), "conviction": d.get("conviction"),
+                          "bucket": d.get("bucket"), "style": d.get("style"), "entry": d.get("entry"), "stop": d.get("stop"),
+                          "target": d.get("target"), "reward_to_risk": d.get("reward_to_risk"), "thesis": d.get("thesis"),
+                          "reason": d.get("reason"), "sizing": i.get("sizing"),
+                          "problems": (i.get("fact_check") or {}).get("problems"),
+                          "error": i.get("error"), "memo_key": f"{plan['_file']}|{i.get('symbol')}"})
     return {"file": p["_file"], "date": p.get("date"), "session": p.get("session"), "created_at": p.get("created_at"),
             "macro": p.get("macro"), "calendar": (p.get("macro_inputs") or {}).get("calendar_next_10_days"),
             "economy": (p.get("macro_inputs") or {}).get("economy"), "ideas": ideas,
-            "ai_calls": p.get("ai_calls"), "minutes": p.get("minutes")}
+            "later_sessions": len(following),
+            "ai_calls": sum(q.get("ai_calls") or 0 for q in [p] + following),
+            "minutes": round(sum(q.get("minutes") or 0 for q in [p] + following), 1)}
 
 
 def _stats(trades: list[dict], curve: list[dict]) -> dict:

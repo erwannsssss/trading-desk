@@ -11,7 +11,10 @@ from desk.http import ApiError, request
 BASE = "https://generativelanguage.googleapis.com/v1beta/models"
 MIN_GAP_SECONDS = 6.0   # stay under the free tier's requests-per-minute limit
 _last_call = 0.0
-calls_made = 0
+calls_made = 0          # successful answers
+attempts = 0            # every request sent, including ones that failed over to another model
+_strikes: dict[str, int] = {}   # consecutive failures per model in this run
+MAX_STRIKES = 3
 
 
 def _pace() -> None:
@@ -20,7 +23,6 @@ def _pace() -> None:
     if wait > 0:
         time.sleep(wait)
     _last_call = time.monotonic()
-    calls_made += 1
 
 
 def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
@@ -35,8 +37,11 @@ def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
     if want_json:
         body["generationConfig"]["responseMimeType"] = "application/json"
 
+    global calls_made, attempts
     errors = []
-    for model in models or config.AI_MODELS:
+    pool = models or config.AI_MODELS
+    healthy = [m for m in pool if _strikes.get(m, 0) < MAX_STRIKES] or pool  # skip models that keep failing this run
+    for model in healthy:
         payload = body
         if model.startswith("gemma"):
             # Gemma doesn't take system instructions or JSON mode; fold them into the prompt.
@@ -45,6 +50,7 @@ def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
                        "generationConfig": {"temperature": temperature}}
         try:
             _pace()
+            attempts += 1
             d = request("Gemini", "POST", f"{BASE}/{model}:generateContent",
                         headers={"x-goog-api-key": config.gemini_key(), "Content-Type": "application/json"},
                         json=payload, retries=2, timeout=120)
@@ -52,9 +58,13 @@ def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
             text = "".join(p.get("text", "") for p in parts if not p.get("thought")).strip()
             if not text:
                 raise ValueError("empty answer")
-            return _parse_json(text) if want_json else text
+            result = _parse_json(text) if want_json else text
+            _strikes[model] = 0
+            calls_made += 1
+            return result
         except (ApiError, KeyError, IndexError, ValueError) as exc:
             errors.append(f"{model}: {exc}")
+            _strikes[model] = _strikes.get(model, 0) + 1
             time.sleep(1)
     raise RuntimeError("All AI models failed:\n" + "\n".join(errors))
 

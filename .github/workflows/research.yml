@@ -1,18 +1,26 @@
 name: Research team
 
-# Morning: full research before the US open (11:40 UTC = 7:40am New York in summer, 6:40am in winter).
-# Evening: crypto + forex after the close (22:10 UTC = 6:10pm New York in summer), every day incl. weekends.
+# All times UTC. New York is UTC-4 in summer, UTC-5 in winter.
+#   morning    11:40 weekdays            full team before the open (7:40am NY summer)
+#   intraday   14:20 15:50 17:20 18:50   fast scans while the market is open (10:20am-2:50pm NY summer)
+#   evening    22:10 daily               full team on crypto + forex (6:10pm NY summer)
+#   overnight  02:10 06:10 daily         fast crypto + forex scans
 on:
   schedule:
     - cron: "40 11 * * 1-5"
+    - cron: "20 14 * * 1-5"
+    - cron: "50 15 * * 1-5"
+    - cron: "20 17 * * 1-5"
+    - cron: "50 18 * * 1-5"
     - cron: "10 22 * * *"
+    - cron: "10 2,6 * * *"
   workflow_dispatch:
     inputs:
       session:
-        description: "morning (everything) or evening (crypto + forex)"
+        description: "Which session to run"
         default: morning
         type: choice
-        options: [morning, evening]
+        options: [morning, intraday, evening, overnight]
 
 permissions:
   contents: write
@@ -35,9 +43,14 @@ jobs:
       - name: Pick session
         id: s
         run: |
-          if [ -n "${{ inputs.session }}" ]; then echo "session=${{ inputs.session }}" >> "$GITHUB_OUTPUT";
-          elif [ "${{ github.event.schedule }}" = "10 22 * * *" ]; then echo "session=evening" >> "$GITHUB_OUTPUT";
-          else echo "session=morning" >> "$GITHUB_OUTPUT"; fi
+          case "${{ github.event.schedule }}" in
+            "40 11 * * 1-5") s=morning ;;
+            "10 22 * * *") s=evening ;;
+            "10 2,6 * * *") s=overnight ;;
+            "") s="${{ inputs.session }}" ;;
+            *) s=intraday ;;
+          esac
+          echo "session=${s:-morning}" >> "$GITHUB_OUTPUT"
       - name: Research
         run: python -m desk.main research ${{ steps.s.outputs.session }}
         env:
@@ -55,8 +68,7 @@ jobs:
         run: |
           git config user.name "trading-desk-bot"
           git config user.email "trading-desk-bot@users.noreply.github.com"
-          git add data/plans docs
-          [ -d data/cache ] && git add data/cache
+          git add data docs
           git diff --cached --quiet && exit 0
-          git commit -m "Research ${{ steps.s.outputs.session }} $(date -u +%Y-%m-%d)"
+          git commit -m "Research ${{ steps.s.outputs.session }} $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3; do git pull --rebase -X theirs origin main && git push origin HEAD:main && break; sleep 5; done

@@ -69,5 +69,7 @@ def set_command_menu() -> None:
         {"command": "golive", "description": "Leave dry-run and place paper trades"},
         {"command": "dryrun", "description": "Go back to analyze-only mode"},
         {"command": "flatten", "description": "Emergency: close every position"},
+        {"command": "letter", "description": "The latest weekly fund letter"},
+        {"command": "rules", "description": "The desk's rulebook"},
         {"command": "help", "description": "List commands"},
     ]})

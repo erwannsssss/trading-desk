@@ -17,6 +17,9 @@ HELP = (
     "/golive - leave dry-run and place paper trades\n"
     "/dryrun - back to analyze-only mode\n"
     "/flatten confirm - emergency: close everything\n"
+    "/letter - the latest weekly fund letter\n"
+    "/rules - the desk's rulebook\n"
+    "\nOr just ask a question, like \"why did you short IONQ?\"\n"
     "\nReplies usually take a few seconds (occasionally a few minutes between runs)."
 )
 
@@ -81,6 +84,17 @@ def handle(text: str, state: dict) -> str | None:
         state["dry_run"] = True
         log_event("mode", dry_run=True)
         return "Dry-run mode ON. The bot will analyze and log trades but not place orders."
+    if cmd == "/letter":
+        from desk import learning
+        letters = learning._load(learning.LETTERS, [])
+        if not letters:
+            return "No weekly letter yet. The first one comes Sunday evening."
+        l = letters[-1]
+        return f"<b>{esc(l['title'])}</b>\n\n{esc(l['body'])}"
+    if cmd == "/rules":
+        from desk import learning
+        rules = learning.rulebook()
+        return "<b>Rulebook</b>\n" + "\n".join(f"- {esc(r['rule'])}" for r in rules) if rules else "No rules yet. The weekly review writes them from real results."
     if cmd == "/flatten":
         if args[:1] != ["confirm"]:
             return "This closes EVERY position and cancels every order. To do it, send: /flatten confirm"
@@ -91,7 +105,8 @@ def handle(text: str, state: dict) -> str | None:
         return "Closed all positions, cancelled all orders, and paused trading. Send /resume when you're ready."
     if text.startswith("/"):
         return f"Unknown command {esc(cmd)}.\n\n{HELP}"
-    return "Got it. Chatting with the bot about its trades is coming in a later build. For now, try /status or /help."
+    from desk import chat
+    return telegram.esc(chat.answer(text, state))
 
 
 def process(state: dict, wait: int = 0) -> int:

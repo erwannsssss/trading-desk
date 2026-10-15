@@ -11,7 +11,8 @@ GitHub Actions runs the bot on a schedule for free (public repo):
 | Workflow | When | What it does |
 |---|---|---|
 | **Trading desk tick** | every 15 minutes, 24/7 | Reads your Telegram commands, checks risk limits, saves state |
-| **Research team** | 7:40am NY on weekdays (morning) and 6:10pm NY daily (evening) | Scans the market, runs the AI analyst team, sends the game plan to Telegram |
+| **Research team** | morning 7:40am NY weekdays; intraday 10:20, 11:50, 1:20, 2:50 NY; evening 6:10pm daily; overnight 10:10pm and 2:10am | Scans the market, runs the AI analysts, sends ideas to Telegram |
+| **Weekly review** | Sundays 7:30pm NY | Backtest, strategy tournament, fund letter, new rules |
 | **Health check** | by hand, or whenever the code changes | Runs the tests, checks every connection, messages you on Telegram |
 
 The bot's memory lives in `data/` and is committed back to the repo after each run.
@@ -38,10 +39,19 @@ It starts in **dry-run** (analyze and log only). Send `/golive` to let it place 
 1. **Foundation** (done): broker connections, budget, risk limits, kill switch, Telegram, AI and data clients
 2. **Research team** (done): see below
 3. **Trading engine** (done): see below
-4. Telegram: trade alerts and morning/evening briefs (done); evening recap, chat with the bot
+4. **Telegram** (done): trade alerts, briefs, evening recap, `/letter`, `/rules`, and free-text chat with the desk
 5. **Dashboard** (done): https://erwannsssss.github.io/trading-desk/
-6. Learning: strategy tournament, weekly review, rulebook, confidence calibration, ghost portfolio
-7. Backtesting
+6. **Learning** (done): trade post-mortems, strategy tournament, weekly review and fund letter, rulebook,
+   confidence calibration, passed-ideas tracking
+7. **Backtesting** (done): weekly backtest of every chart setup on ~2 years of data
+8. **Options** (done): buys calls and puts for strong views (spreads and option selling are not automated)
+
+## More trades
+
+Fast sessions use a one-call analyst (all four specialists, bull, bear and portfolio manager in one prompt) so the
+desk can research every ~90 minutes during market hours and through the night without running out of free AI
+calls. The portfolio manager is told the desk aims for 20-30 trades a day and should take small, low-conviction
+positions on modest edges instead of passing. Symbols researched in the last 3 hours are skipped.
 
 ## The research team
 

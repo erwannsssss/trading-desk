@@ -99,16 +99,57 @@ Return JSON: {{"case": str (4-6 sentences), "risks": [str], "would_change_my_min
     return ai.ask(prompt, system=DESK, want_json=True, temperature=0.5)
 
 
-def portfolio_manager(dossier: dict, notes: dict, bull_case: dict, bear_case: dict, macro: dict,
-                      planned_today: list[dict], holdings: list[str], rulebook: list[str]) -> dict:
+DESK_TARGET = (
+    "DESK TARGET: the desk aims for roughly 20-30 trades a day across all sessions and markets, many of them small "
+    "tactical or intraday trades. Pass only when you see no edge at all. A modest edge with a clear stop deserves a "
+    "small, low-conviction position (conviction 4-5) rather than a pass; save conviction 8+ for the best setups."
+)
+
+
+def _decision_rules(dossier: dict, extra: dict) -> str:
     t = dossier["technicals"]
+    options_ok = dossier["asset_type"] in ("stock", "etf")
+    return f"""Current price: {t['price']}. ATR (typical daily range): {t.get('atr14')} ({t.get('atr_pct')}%).
+{DESK_TARGET}
+SESSION: {extra.get('session_note', '')}
+STRATEGY TOURNAMENT (how each style has actually performed for this desk; lean toward what works): {_j(extra.get('tournament') or 'no history yet')}
+BACKTESTED EDGE OF CHART SETUPS (2 years of history): {_j(extra.get('backtest') or 'not available')}
+
+Steps:
+1. PRE-MORTEM: imagine this trade lost money. Write the most likely story of how it failed.
+   Then judge honestly: is that failure story more likely than the success story?
+2. DECIDE: "long", "short" or "pass". Crypto can only be traded long. Pass if there is no edge, the failure
+   story is more likely, or it duplicates a bet that is already planned or held.
+3. If trading, build the plan:
+   - bucket: "core", "tactical" or "high_risk"; style: one of momentum, breakout, mean reversion, earnings play,
+     trend pullback, short/fade, macro
+   - expression: {'"shares", "call_options" or "put_options". Options are a levered high_risk bet where the most you can lose is the premium: use calls for a strong bullish view, puts for a strong bearish one, typically with conviction 7+ and a move expected within 1-4 weeks. Otherwise "shares".' if options_ok else '"shares" (options are only available on stocks and ETFs).'}
+   - entry: a limit price near the current price (within about 1 ATR), or the current price for a market order
+   - stop: where the thesis is wrong (use real levels from the data; typically 1-2.5 ATR away). For options this is
+     the UNDERLYING price where you exit.
+   - target: a realistic take-profit level (underlying price for options); reward must be at least {config.MIN_REWARD_TO_RISK}x the risk
+   - conviction 1-10; confidence_pct = your honest probability the target hits before the stop
+   - horizon: "intraday", "1-5 days" or "1-4 weeks"
+4. EVIDENCE: list the 3-6 numbers from the dossier your decision relies on. "fact" must be the exact path
+   "section.field" (e.g. "technicals.rsi14", "fundamentals.pe_ratio", "insiders_last_90d.open_market_buys") and
+   "value" the number shown.
+
+DECISION JSON: {{"premortem": {{"failure_story": str, "failure_more_likely": bool}},
+"decision": "long"|"short"|"pass", "reason": str, "bucket": str, "style": str, "expression": "shares"|"call_options"|"put_options",
+"order_type": "limit"|"market", "entry": number|null, "stop": number|null, "target": number|null, "conviction": int,
+"confidence_pct": int, "horizon": str, "thesis": str (3-5 plain-English sentences), "invalidation": str,
+"evidence": [{{"fact": str, "value": number}}]}}"""
+
+
+def portfolio_manager(dossier: dict, notes: dict, bull_case: dict, bear_case: dict, macro: dict,
+                      planned_today: list[dict], holdings: list[str], rulebook: list[str], extra: dict | None = None) -> dict:
+    extra = extra or {}
     prompt = f"""You are the PORTFOLIO MANAGER and make the final call on {dossier['symbol']} ({dossier['asset_type']}).
-Current price: {t['price']}. ATR (typical daily range): {t.get('atr14')} ({t.get('atr_pct')}%).
 
 MARKET GAME PLAN: {_j(macro)}
 ALREADY PLANNED TODAY (avoid piling into the same bet): {_j(planned_today)}
 ALREADY HOLDING: {holdings or "nothing"}
-DESK RULEBOOK (lessons learned): {rulebook or "none yet"}
+DESK RULEBOOK (lessons learned; follow them): {rulebook or "none yet"}
 
 DOSSIER:
 {_j(dossier)}
@@ -117,27 +158,38 @@ SPECIALISTS: {_j(notes)}
 BULL: {_j(bull_case)}
 BEAR: {_j(bear_case)}
 
-Steps:
-1. PRE-MORTEM: imagine it is two weeks from now and this trade lost money. Write the most likely story of how it failed.
-   Then judge honestly: is that failure story more likely than the success story?
-2. DECIDE: "long", "short" or "pass". Crypto can only be traded long (no shorting). Pass if there is no edge, the failure story is more likely, or it duplicates a planned bet.
-3. If trading, build the plan:
-   - bucket: "core", "tactical" or "high_risk"; style: the trading style
-   - entry: a limit price near the current price where you want in (within about 1 ATR), or the current price for a market order
-   - stop: where the thesis is wrong (use real levels from the data; typically 1-2.5 ATR away)
-   - target: a realistic take-profit level; reward must be at least {config.MIN_REWARD_TO_RISK}x the risk
-   - conviction 1-10 (bigger bets on 8+); confidence_pct = your honest probability the target hits before the stop
-   - horizon: "intraday", "1-5 days", "1-4 weeks"
-   - options_idea: optional, if an options trade would express this better (e.g. calls for a cheap levered bet, or a credit spread when options look expensive)
-4. EVIDENCE: list the 3-6 numbers from the dossier your decision relies on. "fact" must be the exact path
-   "section.field" (e.g. "technicals.rsi14", "fundamentals.pe_ratio", "insiders_last_90d.open_market_buys") and "value" the number shown.
+{_decision_rules(dossier, extra)}
 
-Return JSON: {{"premortem": {{"failure_story": str, "failure_more_likely": bool}},
-"decision": "long"|"short"|"pass", "reason": str, "bucket": str, "style": str, "order_type": "limit"|"market",
-"entry": number|null, "stop": number|null, "target": number|null, "conviction": int, "confidence_pct": int,
-"horizon": str, "thesis": str (3-5 plain-English sentences), "invalidation": str, "options_idea": str|null,
-"evidence": [{{"fact": str, "value": number}}]}}"""
+Return only the DECISION JSON."""
     return ai.ask(prompt, system=DESK, want_json=True, temperature=0.2)
+
+
+def quick_desk(dossier: dict, macro: dict, planned_today: list[dict], holdings: list[str],
+               rulebook: list[str], extra: dict | None = None) -> dict:
+    """The whole team in ONE call, for the fast intraday and overnight sessions (saves the free AI quota)."""
+    extra = extra or {}
+    prompt = f"""Run the whole desk on {dossier['symbol']} ({dossier['asset_type']}) in one pass, keeping each role honest
+and separate: four specialists, a bull, a bear who attacks the bull, then the portfolio manager's final call.
+
+MARKET GAME PLAN: {_j(macro)}
+ALREADY PLANNED TODAY: {_j(planned_today)}
+ALREADY HOLDING: {holdings or "nothing"}
+DESK RULEBOOK: {rulebook or "none yet"}
+
+DOSSIER:
+{_j(dossier)}
+
+{_decision_rules(dossier, extra)}
+
+Return JSON: {{"specialists": {{"technical": {{"score": int, "points": [str]}}, "fundamental": {{"score": int, "points": [str]}},
+"news_sentiment": {{"score": int, "points": [str]}}, "smart_money": {{"score": int, "points": [str]}}, "best_style": str}},
+"bull": {{"direction": "long"|"short", "case": str, "catalysts": [str]}},
+"bear": {{"case": str, "risks": [str]}},
+"decision": <the DECISION JSON>}}"""
+    out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.25)
+    if not isinstance(out, dict) or not isinstance(out.get("decision"), dict):
+        raise ValueError("quick desk returned an unexpected shape")
+    return out
 
 
 # ---- Fact-checker (plain code, no AI) ----------------------------------------
@@ -187,11 +239,14 @@ def fact_check(decision: dict, facts: dict, dossier: dict) -> dict:
 
 
 # ---- Position sizing ---------------------------------------------------------
-def size(decision: dict, equity: float, asset: str, quote_to_usd: float = 1.0, unit_usd: float | None = None) -> dict:
+def size(decision: dict, equity: float, asset: str, quote_to_usd: float = 1.0, unit_usd: float | None = None,
+         multiplier: float = 1.0) -> dict:
     """Bet more on high conviction. Returns the dollar risk and position size; risk limits re-check it later.
     For forex, prices are in the quote currency: `quote_to_usd` converts them, `unit_usd` is one unit's $ value."""
     c = int(decision.get("conviction") or 0)
     risk_pct = 4.0 if c >= 9 else 2.5 if c >= 7 else 1.5 if c >= 5 else 0.75
+    # The strategy tournament and calibration scale bets up for styles that work, down for ones that don't.
+    risk_pct = min(config.MAX_RISK_PER_TRADE_PCT, risk_pct * max(0.25, min(multiplier, 1.6)))
     entry, stop = float(decision["entry"]), float(decision["stop"])
     per_unit_risk = abs(entry - stop) * quote_to_usd
     unit_value = unit_usd if unit_usd is not None else entry

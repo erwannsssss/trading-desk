@@ -192,7 +192,7 @@ const pct = (x, d = 2) => x == null ? "—" : (x > 0 ? "+" : "") + x.toFixed(d) 
 const cls = (x) => x > 0 ? "up" : x < 0 ? "down" : "";
 const px = (x) => x == null ? "—" : (Math.abs(x) >= 10 ? x.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2}) : Math.abs(x) >= 0.01 ? (+x).toFixed(4) : (+x).toPrecision(4));
 const when = (iso) => iso ? new Date(iso).toLocaleString("en-US", {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"}) : "—";
-const assetName = {stock: "Stock", etf: "ETF", crypto: "Crypto", forex: "Forex"};
+const assetName = {stock: "Stock", etf: "ETF", crypto: "Crypto", forex: "Forex", option: "Options"};
 const statusName = {open: "Open", pending: "Order working", closing: "Closing", closed: "Closed", cancelled: "Never filled",
   skipped: "Skipped", would_trade: "Dry run", approved: "Planned", pass: "Passed", blocked_by_fact_check: "Blocked by fact-check", error: "Research error"};
 let DATA = null, chart = null, charts = {};
@@ -269,7 +269,15 @@ function drawCurve(curve) {
   });
 }
 
-function sideTag(t) { return `<span class="side ${t.direction}">${t.direction === "short" ? "Short" : "Long"}</span>`; }
+function sideTag(t) {
+  if (t.asset === "option" || t.expression === "call_options" || t.expression === "put_options") {
+    const put = t.option_type === "put" || t.expression === "put_options";
+    return `<span class="side ${put ? "short" : "long"}">${put ? "Puts" : "Calls"}</span>`;
+  }
+  return `<span class="side ${t.direction}">${t.direction === "short" ? "Short" : "Long"}</span>`;
+}
+function optLine(t) { return t.option_symbol ? `<div class="tag">$${t.strike} ${esc(t.option_type)}s, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
+const sessionName = {morning: "Morning", intraday: "Intraday", evening: "Evening", overnight: "Overnight"};
 
 function renderOverview(d) {
   const a = d.account, s = d.stats, plan = d.plan;
@@ -288,6 +296,7 @@ function renderOverview(d) {
       <p class="note">${esc(plan.macro.summary)}</p>
       <p class="small muted">${esc(plan.macro.regime)}, aggression ${plan.macro.risk_appetite}/100, from the ${esc(plan.session)} research on ${esc(plan.date)}.
         <button class="link" onclick="openTab('plan')">See the game plan</button></p>` : `<p class="empty">No research yet. The first game plan arrives with the next morning or evening session.</p>`}
+    ${(d.sessions_today || []).length ? `<p class="small muted">Research today: ${d.sessions_today.map(x => `${esc(sessionName[x.session] || x.session)} ${when(x.created_at).split(", ").pop()} (${x.approved} of ${x.researched} approved)`).join("; ")}.</p>` : ""}
     <h3>Latest activity</h3>
     ${recent.length ? tradeTable(recent, false) : `<p class="empty">No trades yet. ${d.mode === "dry_run" ? "The desk is in dry-run mode: it researches and logs what it would trade. Send /golive on Telegram to place paper trades." : "Trades appear here as soon as orders go in."}</p>`}`;
 }
@@ -295,15 +304,15 @@ function renderOverview(d) {
 function renderPositions(d) {
   const rows = d.positions;
   if (!rows.length) { $("#p-positions").innerHTML = `<h2>Positions</h2><p class="empty">Nothing open right now. New positions appear here the moment an order fills.</p>`; return; }
-  $("#p-positions").innerHTML = `<h2>Positions</h2><p class="lede">The bar runs from the stop (left) through the entry (middle) to the target (right).</p>
+  $("#p-positions").innerHTML = `<h2>Positions</h2><p class="lede">The bar runs from the stop (left) through the entry (middle) to the target (right). For options, prices are the underlying stock's.</p>
   <div class="scroll"><table><thead><tr><th>Symbol</th><th>Status</th><th class="num">Entry</th><th class="num">Now</th><th class="num">Stop</th><th class="num">Target</th><th class="num">Unrealized</th><th>Progress</th></tr></thead><tbody>
   ${rows.map(t => {
     const p = t.progress ?? 0, w = Math.abs(p) * 50;
     const bar = p >= 0 ? `<span style="left:50%;width:${w}%;background:var(--gain)"></span>` : `<span style="left:${50 - w}%;width:${w}%;background:var(--loss)"></span>`;
     return `<tr class="click" data-memo="${esc(t.plan_file)}|${esc(t.symbol)}">
-      <td><span class="sym">${esc(t.symbol)}</span> ${sideTag(t)}<div class="tag">${esc(assetName[t.asset])}, ${esc(t.style || "")}</div></td>
+      <td><span class="sym">${esc(t.symbol)}</span> ${sideTag(t)}<div class="tag">${esc(assetName[t.asset])}, ${esc(t.style || "")}</div>${optLine(t)}</td>
       <td>${esc(statusName[t.status])}</td>
-      <td class="num">${px(t.entry_price ?? t.entry_plan)}</td><td class="num">${px(t.last_price)}</td>
+      <td class="num">${px(t.asset === "option" ? (t.underlying_entry ?? t.entry_plan) : (t.entry_price ?? t.entry_plan))}</td><td class="num">${px(t.last_price)}</td>
       <td class="num">${px(t.stop)}</td><td class="num">${px(t.target)}</td>
       <td class="num ${cls(t.unrealized_usd)}">${signed(t.unrealized_usd)}</td>
       <td><div class="track"><div class="mid"></div>${bar}</div></td></tr>`; }).join("")}
@@ -330,12 +339,13 @@ function renderTrades(d) {
 
 function renderPlan(d) {
   const p = d.plan;
-  if (!p) { $("#p-plan").innerHTML = `<h2>Today's game plan</h2><p class="empty">The research team runs at 7:40am New York time on weekdays and at 6:10pm every day. Its plan shows up here.</p>`; return; }
+  if (!p) { $("#p-plan").innerHTML = `<h2>Today's game plan</h2><p class="empty">The research team runs at 7:40am New York time on weekdays, scans again through the trading day, and covers crypto and forex every evening and overnight. Its plan shows up here.</p>`; return; }
   const m = p.macro || {}, w = m.bucket_weights || {};
   const approved = p.ideas.filter(i => i.status === "approved").sort((a, b) => (b.conviction || 0) - (a.conviction || 0));
   const others = p.ideas.filter(i => i.status !== "approved");
   $("#p-plan").innerHTML = `
     <h2>${p.session === "morning" ? "Morning" : "Evening"} game plan for ${esc(p.date)}</h2>
+    ${p.later_sessions ? `<p class="small muted">Plus ${p.later_sessions} faster scan${p.later_sessions > 1 ? "s" : ""} since then; their ideas are included below.</p>` : ""}
     <p class="lede">${esc(m.regime)}. Aggression ${m.risk_appetite}/100. Money split: core ${w.core}%, tactical ${w.tactical}%, high-risk ${w.high_risk}%.</p>
     <p class="note">${esc(m.summary)}</p>
     ${m.overnight_read ? `<p class="note"><b>Overnight:</b> ${esc(m.overnight_read)}</p>` : ""}
@@ -347,8 +357,9 @@ function renderPlan(d) {
     </div>
     <h3>Trades in the plan (${approved.length})</h3>
     ${approved.map(i => `<div class="idea">
-      <div class="idea-head"><span class="sym" style="font-size:18px">${esc(i.symbol)}</span> ${sideTag({direction: i.decision})}
-        <span class="pill">${esc(i.bucket)}</span><span class="pill">${esc(i.style)}</span><span class="tag">conviction ${i.conviction}/10</span></div>
+      <div class="idea-head"><span class="sym" style="font-size:18px">${esc(i.symbol)}</span> ${sideTag({direction: i.decision, expression: i.expression})}
+        <span class="pill">${esc(i.bucket)}</span><span class="pill">${esc(i.style)}</span><span class="tag">conviction ${i.conviction}/10</span>
+        <span class="tag">${esc(sessionName[i.session] || "")} ${when(i.at).split(", ").pop()}</span></div>
       <div class="idea-levels">Entry ${px(i.entry)}, stop ${px(i.stop)}, target ${px(i.target)}. Reward is ${i.reward_to_risk}x the risk.
         ${i.sizing ? ` Size ${money(i.sizing.notional_usd, 0)}, risking ${money(i.sizing.risk_usd, 0)}.` : ""}</div>
       <p class="note" style="margin:8px 0 6px">${esc(i.thesis)}</p>
@@ -363,8 +374,8 @@ function renderPlan(d) {
 
 function renderStats(d) {
   const s = d.stats;
-  const group = (rows, title) => rows.length ? `<h3>${title}</h3><div class="scroll"><table><thead><tr><th>Group</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Profit</th></tr></thead><tbody>
-    ${rows.map(g => `<tr><td>${esc(g.name)}</td><td class="num">${g.trades}</td><td class="num">${g.win_rate}%</td><td class="num ${cls(g.pnl)}">${signed(g.pnl)}</td></tr>`).join("")}</tbody></table></div>` : "";
+  const group = (rows, title) => rows.length ? `<div><h3>${title}</h3><div class="scroll"><table><thead><tr><th>Group</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Profit</th></tr></thead><tbody>
+    ${rows.map(g => `<tr><td>${esc(g.name)}</td><td class="num">${g.trades}</td><td class="num">${g.win_rate}%</td><td class="num ${cls(g.pnl)}">${signed(g.pnl)}</td></tr>`).join("")}</tbody></table></div></div>` : "";
   $("#p-stats").innerHTML = `<h2>Performance</h2>
     <p class="lede">The numbers a fund manager would look at. Most need a few weeks of trades to mean much.</p>
     <div class="figures">
@@ -379,6 +390,18 @@ function renderStats(d) {
     </div>
     <div class="two">${group(s.by_bucket, "By bucket")}${group(s.by_asset, "By market")}</div>
     ${group(s.by_style, "By trading style")}
+    <h3>Strategy tournament</h3>
+    <p class="lede small">Each trading style competes for money. Styles that make money get bigger bets (up to 1.5x); styles that lose get smaller ones (down to 0.5x). Last 45 days.</p>
+    ${d.tournament && d.tournament.board.length ? `<div class="scroll"><table><thead><tr><th>Style</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Avg result</th><th class="num">Profit</th><th class="num">Bet size</th></tr></thead><tbody>
+      ${d.tournament.board.map(b => `<tr><td>${esc(b.style)}</td><td class="num">${b.trades}</td><td class="num">${b.win_rate}%</td><td class="num ${cls(b.avg_r)}">${b.avg_r}R</td><td class="num ${cls(b.pnl)}">${signed(b.pnl)}</td><td class="num">${b.weight}x</td></tr>`).join("")}
+      </tbody></table></div>
+      <p class="small muted">Calibration: ${d.tournament.calibration.trades ? `predicted ${d.tournament.calibration.predicted}% wins, actual ${d.tournament.calibration.actual}%, so every bet is scaled ${d.tournament.calibration.factor}x.` : "needs closed trades."}</p>`
+      : `<p class="empty">Starts once trades close. Until then every style bets at 1x.</p>`}
+    <h3>Backtest of the chart setups</h3>
+    ${d.backtest ? `<p class="lede small">How each setup the scanner flags would have done over ~2 years on ${d.backtest.symbols} stocks and ETFs (${esc(d.backtest.rules)}). The analysts see this before every decision. Updated ${when(d.backtest.updated)}.</p>
+      <div class="scroll"><table><thead><tr><th>Setup</th><th>Side</th><th class="num">Trades</th><th class="num">Win rate</th><th class="num">Avg result</th></tr></thead><tbody>
+      ${d.backtest.results.map(r => `<tr><td>${esc(r.setup)}</td><td>${r.direction === "short" ? "Short" : "Long"}</td><td class="num">${r.trades.toLocaleString()}</td><td class="num">${r.win_rate}%</td><td class="num ${cls(r.avg_r)}">${r.avg_r > 0 ? "+" : ""}${r.avg_r}R</td></tr>`).join("")}
+      </tbody></table></div>` : `<p class="empty">The first backtest runs with the weekly review on Sunday.</p>`}
     <h3>Is its confidence honest?</h3>
     <p class="lede small">Each trade comes with the desk's own odds of hitting the target. Well-calibrated means its 70% calls win about 70% of the time.</p>
     ${s.calibration.length ? `<div class="box-chart"><canvas id="calib"></canvas></div>` : `<p class="empty">Shows up after the first closed trades.</p>`}`;
@@ -408,13 +431,13 @@ function renderGhost(d) {
 
 function renderLearning(d) {
   $("#p-learning").innerHTML = `<h2>Lessons</h2>
-    <p class="lede">The desk's rulebook and weekly fund letters. These come from the learning system, which reviews every closed trade.</p>
+    <p class="lede">Every closed trade gets a post-mortem. Each Sunday the desk reviews the week, writes a letter, and turns hard lessons into rules it reads before every trade.</p>
     <h3>Rulebook</h3>
     ${d.rulebook.length ? `<ul>${d.rulebook.map(r => `<li class="note">${esc(r.rule)} <span class="small muted">(${esc(r.date || "")})</span></li>`).join("")}</ul>`
-      : `<p class="empty">No rules yet. Once the learning system is switched on, every hard lesson from a losing trade becomes a rule the desk reads before trading.</p>`}
+      : `<p class="empty">No rules yet. The first weekly review (Sunday evening) writes them from real results.</p>`}
     <h3>Fund letters</h3>
     ${d.letters.length ? d.letters.slice().reverse().map(l => `<article><h3>${esc(l.title)}</h3><div class="note">${esc(l.body).replace(/\n/g, "<br>")}</div></article>`).join("")
-      : `<p class="empty">The first weekly letter arrives after the learning system is switched on.</p>`}`;
+      : `<p class="empty">The first weekly letter arrives Sunday evening.</p>`}`;
 }
 
 /* research memo drawer */
@@ -436,7 +459,8 @@ function showMemo(m, trade) {
     <h3>Decision: ${esc((d.decision || "").toUpperCase())}${d.conviction ? `, conviction ${d.conviction}/10, ${d.confidence_pct}% confident` : ""}</h3>
     <p class="note">${esc(d.thesis || d.reason || "")}</p>
     ${d.entry ? `<p class="small">Entry ${px(d.entry)}, stop ${px(d.stop)}, target ${px(d.target)}, ${esc(d.horizon || "")}. Wrong if: ${esc(d.invalidation || "")}</p>` : ""}
-    ${d.options_idea ? `<p class="small"><b>Options idea:</b> ${esc(d.options_idea)}</p>` : ""}
+    ${d.expression && d.expression !== "shares" ? `<p class="small"><b>Expressed with:</b> ${d.expression === "call_options" ? "call options" : "put options"}${trade && trade.option_symbol ? ` (${esc(trade.option_symbol)})` : ""}</p>` : ""}
+    ${trade && trade.postmortem ? `<h3>Post-mortem: ${esc(trade.postmortem.verdict)}</h3><p class="note">${esc(trade.postmortem.what_happened)}</p>${trade.postmortem.lesson ? `<p class="small"><b>Lesson:</b> ${esc(trade.postmortem.lesson)}</p>` : ""}` : ""}
     ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
     <h3>Pre-mortem</h3><p class="note">${esc(d.premortem?.failure_story || "")}</p>
     <p class="small">${d.premortem?.failure_more_likely ? "It judged failure more likely, so the trade was vetoed." : "It judged success more likely than this failure story."}</p>

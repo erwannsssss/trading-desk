@@ -17,7 +17,8 @@ from desk import ai, config, datasources, marketdata, telegram
 from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research import dossier as dossiers
-from desk.research import extra, scanner, smartmoney, team
+from desk.research import extra as extra_data
+from desk.research import scanner, smartmoney, team
 from desk.state import load, now
 from desk.telegram import esc
 
@@ -162,8 +163,8 @@ def run(session: str = "morning") -> dict:
         "forex": fx_ctx["forex_readings"],
         "headlines": _try(marketdata.news, None, 15, 1),
         "calendar_effects": _calendar_effects(),
-        "futures_positioning": _try(extra.cot),
-        "crypto_sentiment": _try(extra.crypto_sentiment),
+        "futures_positioning": _try(extra_data.cot),
+        "crypto_sentiment": _try(extra_data.crypto_sentiment),
     }
     macro = latest_macro() if cfg["reuse_macro"] else None
     if macro:

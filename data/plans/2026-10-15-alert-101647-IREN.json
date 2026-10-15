@@ -1,0 +1,135 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T10:16:47-04:00",
+ "dry_run": false,
+ "equity": 9997.53,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "IREN",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 26.69,
+   "atr_pct": 10.43,
+   "why_scanned": [
+    "breaking move: -12.9% since research"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "deeply oversold (bounce candidate)",
+    "strong 20-day move (-38.6%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": -3,
+     "points": [
+      "Severe downtrend with price at 26.69 trading well below sma20 (40.22), sma50 (41.14), and sma200 (45.41).",
+      "Extreme short-term exhaustion indicated by rsi14 at 22.21 and a 20-day decline of -38.62%.",
+      "Desk backtest shows 'deeply oversold' long setups produce a 68.1% win rate and +0.514 avg R."
+     ]
+    },
+    "fundamental": {
+     "score": -8,
+     "points": [
+      "Dismal profitability with net margin at -99.38% and return on equity at -22.97%.",
+      "Leverage is elevated with debt-to-equity at 1.872 and revenue growth contracting -23.32% quarter-over-quarter.",
+      "Earnings history shows severe back-to-back misses (-256.5% surprise in Q2 2026, -283.0% in Q1 2026)."
+     ]
+    },
+    "news_sentiment": {
+     "score": -7,
+     "points": [
+      "Gartner warning that 80% of neoclouds will cease independent operations by 2030 casts structural doubt on the sector.",
+      "Contagion from spiking CoreWeave bond yields and rate hike fears directly pressures capital-intensive neoclouds.",
+      "Prominent media personalities (Jim Cramer) explicitly advising against holding IREN."
+     ]
+    },
+    "smart_money": {
+     "score": -2,
+     "points": [
+      "Zero insider buying or selling over the last 90 days despite calls for executives to demonstrate confidence.",
+      "Whale options alerts logged on October 14, but institutional hedge fund ownership is recorded at zero.",
+      "Volume ratio at 0.88 indicates selling pressure without a clear institutional accumulation block yet."
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "IREN is severely washed out after falling -25.26% over 5 days and -38.62% over 20 days, pressing rsi14 down to 22.21 right near its 52-week low of 26.60. The desk's historical edge for 'deeply oversold' long setups is 68.1% win rate with +0.514 avg R, offering an asymmetric tactical bounce back toward prior broken support at 30.38.",
+    "catalysts": [
+     "Short-covering relief rally off the 52-week low level of 26.60.",
+     "Mean reversion rebound from deeply depressed rsi14 level of 22.21."
+    ]
+   },
+   "bear": {
+    "case": "IREN is fundamentally distressed with a -99.38% net margin, 1.872 debt-to-equity ratio, and consecutive negative earnings surprises exceeding -250%. With Gartner forecasting that 80% of neoclouds will fail and macro yields at 5.21%, catching this high-beta (4.269) knife risks a liquidity flush below 26.60 without any technical support floor.",
+    "risks": [
+     "Continued widening of neocloud bond spreads leading to equity dilution.",
+     "Breakdown through the 26.60 52-week low triggering cascading stop-loss selling."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy the oversold dip at 26.69, but neocloud credit concerns accelerate after the CoreWeave debt yield spike. Instead of a technical bounce, heavy institutional liquidation shatters the 52-week low of 26.60 and triggers an intraday flush to 22.00, stopping us out with zero relief rally.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "The stock has satisfied the 'deeply oversold' technical condition with RSI14 at 22.21, a setup with a 68.1% historical desk win rate. While fundamental headwinds are severe, a tactical mean-reversion trade with a strictly defined stop 1 ATR below the 52-week low provides a favorable 1.33:1 reward-to-risk ratio.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 26.69,
+    "stop": 23.91,
+    "target": 30.38,
+    "conviction": 5,
+    "confidence_pct": 54,
+    "horizon": "1-5 days",
+    "thesis": "IREN has plummeted -38.62% in 20 days, pushing RSI14 down to 22.21 right at its 52-week low. The playbook permits mean reversion trades, and desk backtests show deeply oversold bounces carry a 68.1% win rate. We enter via shares on a small tactical size to capture a relief snapback toward the previous 20-day low at 30.38, risking 1 ATR to 23.91.",
+    "invalidation": "A daily close or intraday break below 23.91 confirms an unmitigated structural liquidation, invalidating the oversold bounce thesis.",
+    "plain_english": "IREN has dropped over 38% in the past month, pushing its RSI [a gauge from 0 to 100 measuring how stretched a stock is] down to 22, which signals that sellers are thoroughly exhausted. Our desk history shows that buying stocks this deeply oversold succeeds roughly 68% of the time on a short-term rebound. We are buying a small position to target a bounce back to $30.38, while placing a protective stop [an automatic exit order to cut losses] at $23.91 in case the drop continues.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 22.211707
+     },
+     {
+      "fact": "technicals.low_52w",
+      "value": 26.6
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 30.38
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 2.782822
+     },
+     {
+      "fact": "fundamentals.debt_to_equity",
+      "value": 1.872
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 4.269
+     }
+    ],
+    "reward_to_risk": 1.33
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 1.5,
+    "risk_usd": 149.96,
+    "units": 53.94,
+    "notional_usd": 1439.75
+   },
+   "status": "approved"
+  }
+ ]
+}

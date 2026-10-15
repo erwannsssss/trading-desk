@@ -1,0 +1,122 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T10:16:47-04:00",
+ "dry_run": false,
+ "equity": 9997.53,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "CRWG",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 8.3,
+   "atr_pct": 26.95,
+   "why_scanned": [
+    "breaking move: -15.8% since research"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "strong 20-day move (-46.6%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "RSI14 is at 27.141098, indicating deeply oversold conditions.",
+      "Price is at 8.3, well below the 20-day low of 9.36 and 50-day SMA of 19.166.",
+      "Historical backtest for deeply oversold setup shows a 68.1% win rate over 232 trades."
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "Market capitalization is extremely small at 0.56 million dollars.",
+      "Revenue growth year-over-year is -32.774% and net margin is -780.045%.",
+      "Debt to equity ratio is high at 206.27."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "No news articles available in the dossier."
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "Zero open market buys or sells by insiders in the last 90 days.",
+      "No hedge funds holding reported."
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "CRWG is extremely oversold with an RSI of 27.14 and has suffered a massive 47.3% decline over the last 5 days, setting up a classic mean reversion bounce backed by historical edge.",
+    "catalysts": [
+     "RSI14 at 27.14 triggers the deeply oversold backtest profile with a 68.1% win rate.",
+     "Price deviation from the 20-day SMA of 16.79 creates an elastic snapback opportunity.",
+     "Vol ratio of 1.62 indicates washout volume which often precedes an intraday or short-term relief rally."
+    ]
+   },
+   "bear": {
+    "case": "Buying a collapsing micro-cap stock with catastrophic fundamentals and a -780.045% net margin is catching a falling knife that can easily go to zero.",
+    "risks": [
+     "Net margin is -780.045% and revenue growth last quarter dropped -56.08%.",
+     "Debt to equity sits at a dangerous 206.27 with a market cap of only 0.56 million.",
+     "The overarching macro regime is risk-off with high Treasury yields, making speculative garbage stocks highly vulnerable to total loss."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy the oversold dip at 8.3 based on the statistical edge, but the company's catastrophic fundamentals (-780% net margin, 206 debt-to-equity) lead to emergency dilution or insolvency fears, causing the stock to gap down another 50% through our stop loss.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Despite the high win rate on the deeply oversold backtest setup, the fundamental profile (market cap 0.56M, net margin -780.45%, debt to equity 206.27) combined with a risk-off macro regime makes the risk of total loss or catastrophic gap down too high for a reliable mean reversion trade.",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 30,
+    "horizon": "intraday",
+    "thesis": "No trade is executed because the fundamental insolvency risks outweigh the quantitative oversold edge in a defensive market regime.",
+    "invalidation": "Not applicable as no position is taken.",
+    "plain_english": "We are passing on this stock. Even though it looks cheap because it has dropped a lot and its RSI [a 0 to 100 gauge showing if an asset is overextended] is very low, the company's financial health is terrible. In a risk-off [defensive market environment where investors avoid risk], trading a collapsing micro-cap is too dangerous.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 27.141098
+     },
+     {
+      "fact": "fundamentals.market_cap_millions",
+      "value": 0.56
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -780.045
+     },
+     {
+      "fact": "fundamentals.debt_to_equity",
+      "value": 206.27
+     },
+     {
+      "fact": "technicals.ret_5d",
+      "value": -47.3
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ]
+}

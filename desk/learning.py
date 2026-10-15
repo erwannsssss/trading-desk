@@ -127,7 +127,11 @@ def run_postmortems(limit: int = 3) -> int:
             plan = json.loads(path.read_text())
             memo = next((i for i in plan.get("ideas", []) if i.get("symbol") == t["symbol"]), None)
         try:
+            from desk import activity as floor
+            floor.working("ruth", f"Reviewing the closed {t['symbol']} trade", t["symbol"])
             t["postmortem"] = postmortem(t, memo)
+            pm = t["postmortem"]
+            floor.done("ruth", f"{t['symbol']} ({t.get('pnl_usd', 0):+,.2f}): {pm.get('verdict')}. {pm.get('lesson') or pm.get('what_happened', '')}", t["symbol"])
         except Exception as exc:
             t["postmortem"] = {"verdict": "not reviewed", "what_happened": f"review failed: {str(exc)[:100]}", "lesson": ""}
     if todo:
@@ -161,6 +165,8 @@ def maybe_send_recap(state: dict, book) -> None:
         lines += ["", "<b>Holding overnight</b>"] + [f"{esc(t['symbol'])} {t['direction']}" for t in open_now[:12]]
     telegram.send("\n".join(lines))
     state["recap_sent"] = today
+    from desk import activity as floor
+    floor.event("riley", f"Sent your evening recap: account ${book.equity:,.2f}, {len(closed)} trades closed today")
 
 
 # ---- Weekly review -----------------------------------------------------------
@@ -169,12 +175,21 @@ def weekly_review() -> dict:
     from desk.trading import ledger
     from desk import backtest
 
+    from desk import activity as floor
+    floor.working("nina", "Backtesting every chart setup on 2 years of data")
     try:
-        backtest.run()
+        bt = backtest.run()
+        best = (bt.get("results") or [{}])[0]
+        floor.done("nina", f"Backtest done on {bt.get('symbols')} symbols. Best setup: {best.get('setup')} {best.get('direction')} "
+                   f"({best.get('win_rate')}% wins, {best.get('avg_r')}R avg)")
     except Exception as exc:
         print(f"backtest failed: {exc}")
+        floor.done("nina", f"Backtest failed: {str(exc)[:120]}", kind="error")
     trades = ledger.load()
+    floor.working("omar", "Re-scoring the strategy tournament")
     tourney = update_tournament(trades)
+    floor.done("omar", f"Tournament updated: {len(tourney.get('board', []))} styles scored")
+    floor.working("victor", "Writing the weekly letter and updating the rulebook")
     week_ago = (now() - timedelta(days=7)).isoformat()
     week = [t for t in trades if (t.get("closed_at") or t.get("created_at") or "") >= week_ago]
     closed = [t for t in week if t.get("status") == "closed"]
@@ -227,4 +242,6 @@ Return JSON: {{"title": str, "letter": str, "new_rules": [str], "retire_rules": 
     if out.get("retire_rules"):
         msg += ["", "<b>Retired rules</b>"] + [f"- {esc(r)}" for r in out["retire_rules"]]
     telegram.send("\n".join(msg))
+    floor.done("victor", f"Sent the weekly letter \"{out.get('title', '')}\"; {len(out.get('new_rules') or [])} new rules, "
+               f"{len(out.get('retire_rules') or [])} retired")
     return out

@@ -138,6 +138,38 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 .memo li { margin: 4px 0; }
 .score { font-weight: 700; }
 .check-ok { color: var(--gain); font-weight: 600; } .check-bad { color: var(--loss); font-weight: 600; }
+
+/* trading floor */
+.floor-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 18px; margin-bottom: 6px; }
+.livedot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); margin-right: 6px; vertical-align: middle; }
+.livedot.on { background: var(--gain); }
+.desk-block { margin-top: 26px; }
+.desk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.desk-head h3 { margin: 0; font-size: 17px; font-variation-settings: "wdth" 110; }
+.seats { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 22px; }
+.seat { display: grid; grid-template-columns: 40px 1fr; gap: 10px; padding: 13px 4px 13px 0; border-bottom: 1px solid var(--rule);
+  background: none; border-left: 0; border-right: 0; border-top: 0; text-align: left; cursor: pointer; width: 100%; }
+.seat:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px;
+  font-variation-settings: "wdth" 115; position: relative; }
+.avatar.research { background: var(--ink); color: var(--paper); }
+.avatar.trading { background: var(--gain); color: var(--paper); }
+.avatar.learning { background: var(--signal); color: #16233F; }
+.avatar .st { position: absolute; right: -1px; bottom: -1px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--paper); background: var(--ink-3); }
+.seat.working .avatar .st { background: var(--signal); }
+@media (prefers-reduced-motion: no-preference) { .seat.working .avatar .st { animation: pulse 1.4s ease-in-out infinite; } }
+@keyframes pulse { 50% { transform: scale(1.35); } }
+.seat-name { font-weight: 700; font-size: 14.5px; }
+.seat-role { font-size: 12.5px; color: var(--ink-3); display: block; }
+.seat-now { font-size: 13.5px; margin-top: 5px; line-height: 1.4; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.seat.working .seat-now { color: var(--ink); }
+.seat-now b { font-weight: 700; }
+.feed { margin-top: 30px; }
+.feed-row { display: grid; grid-template-columns: 62px 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
+.feed-row .when { color: var(--ink-3); font-size: 12.5px; padding-top: 1px; }
+.feed-row .who { font-weight: 700; }
+.kind-blocked .what, .kind-error .what { color: var(--loss); }
+.kind-trade .what, .kind-decision .what { color: var(--ink); }
 footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -161,6 +193,7 @@ footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
 
   <nav class="tabs" role="tablist" id="tabs">
     <button class="tab" role="tab" data-tab="overview" aria-selected="true">Overview</button>
+    <button class="tab" role="tab" data-tab="floor">Trading floor</button>
     <button class="tab" role="tab" data-tab="positions">Positions</button>
     <button class="tab" role="tab" data-tab="trades">Trade log</button>
     <button class="tab" role="tab" data-tab="plan">Today's game plan</button>
@@ -171,6 +204,7 @@ footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
 
   <main>
     <section class="panel" id="p-overview"></section>
+    <section class="panel" id="p-floor" hidden></section>
     <section class="panel" id="p-positions" hidden></section>
     <section class="panel" id="p-trades" hidden></section>
     <section class="panel" id="p-plan" hidden></section>
@@ -247,7 +281,7 @@ function render(d) {
     ${spyRet != null ? `<span>S&amp;P 500 over the same time: <b>${pct(spyRet)}</b></span>` : ""}`;
   drawCurve(d.curve);
 
-  renderOverview(d); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderGhost(d); renderLearning(d);
+  renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderGhost(d); renderLearning(d);
   $("#foot").textContent = `Updated ${when(d.generated_at)} New York time. Paper money only. Refreshes every minute.`;
 }
 
@@ -476,8 +510,136 @@ function showMemo(m, trade) {
   $("#memo").showModal();
 }
 
+
+/* ---------- trading floor ---------- */
+const LIVE_JOBS = ["research", "desk", "client", "learning"];
+const RAW = "https://raw.githubusercontent.com/erwannsssss/trading-desk/live/live/";
+let LIVE = {}, liveTimer = null, floorOpen = null;
+const deskInfo = {
+  research: ["Research desk", "Finds trades: scans the market, reads the macro picture, debates every idea"],
+  trading: ["Trading desk", "Places orders, enforces the risk limits, manages every open position"],
+  learning: ["Learning desk", "Reviews results, runs the tournament and backtests, writes to you"],
+};
+const ago = (iso) => { if (!iso) return ""; const m = Math.round((Date.now() - new Date(iso)) / 60000);
+  return m < 1 ? "just now" : m < 60 ? `${m} min ago` : `${Math.floor(m / 60)} h ${m % 60} min ago`; };
+const clock = (iso) => new Date(iso).toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"});
+const initials = (n) => n.split(" ").map(w => w[0]).join("").slice(0, 2);
+
+async function loadLive() {
+  const got = await Promise.all(LIVE_JOBS.map(async j => {
+    for (const url of [`${RAW}${j}.json?t=${Date.now()}`, `live/${j}.json?t=${Date.now()}`]) {
+      try { const r = await fetch(url, {cache: "no-store"}); if (r.ok) return [j, await r.json()]; } catch (e) {}
+    }
+    return [j, null];
+  }));
+  LIVE = Object.fromEntries(got.filter(([, v]) => v));
+  renderFloor();
+}
+
+function floorState() {
+  const agents = {}, events = [];
+  const staleCutoff = Date.now() - 25 * 60000;
+  for (const job of Object.values(LIVE)) {
+    const alive = job.running && new Date(job.updated) > staleCutoff;
+    for (const [id, a] of Object.entries(job.agents || {})) {
+      const st = {...a, job: job.label};
+      if (st.status === "working" && !alive) st.status = "idle";
+      if (!agents[id] || (st.since || "") > (agents[id].since || "")) agents[id] = st;
+    }
+    for (const e of job.events || []) events.push(e);
+  }
+  events.sort((a, b) => b.t.localeCompare(a.t));
+  return {agents, events};
+}
+
+function nextUp() {
+  const s = (DATA && DATA.schedule) || [];
+  const ny = new Date(new Date().toLocaleString("en-US", {timeZone: "America/New_York"}));
+  for (let add = 0; add < 8; add++) {
+    const day = new Date(ny); day.setDate(ny.getDate() + add);
+    const dow = day.getDay();
+    const todays = s.filter(x => x.days === "daily" || (x.days === "weekdays" && dow >= 1 && dow <= 5) || (x.days === "sunday" && dow === 0))
+      .map(x => { const [h, m] = x.time.split(":").map(Number); const d = new Date(day); d.setHours(h, m, 0, 0); return {...x, at: d}; })
+      .filter(x => x.at > ny).sort((a, b) => a.at - b.at);
+    if (todays.length) { const x = todays[0];
+      return `${x.who} at ${x.at.toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"})}${add ? (add === 1 ? " tomorrow" : " " + x.at.toLocaleDateString("en-US", {weekday: "long"})) : ""} (New York time)`; }
+  }
+  return "";
+}
+
+function renderFloor() {
+  if (!DATA) return;
+  const el = $("#p-floor");
+  const roster = DATA.roster || [];
+  const {agents, events} = floorState();
+  const hourAgo = new Date(Date.now() - 3600000).toISOString();
+  const recent = events.filter(e => new Date(e.t) > new Date(hourAgo));
+  const busy = roster.filter(p => agents[p.id]?.status === "working");
+  const running = Object.values(LIVE).filter(j => j.running && new Date(j.updated) > Date.now() - 25 * 60000);
+  const newest = Object.values(LIVE).map(j => j.updated).sort().pop();
+  const headline = busy.length
+    ? `${busy.length} ${busy.length === 1 ? "person is" : "people are"} working: ${running.map(j => esc(j.label)).join(", ")}`
+    : `The floor is quiet. Next up: ${esc(nextUp())}`;
+  el.innerHTML = `
+    <div class="floor-top"><h2>Trading floor</h2>
+      <span class="small muted"><span class="livedot ${running.length ? "on" : ""}"></span>${newest ? "Updated " + ago(newest) : "Waiting for the first update"}</span></div>
+    <p class="lede">${headline}</p>
+    ${["research", "trading", "learning"].map(desk => `
+      <div class="desk-block">
+        <div class="desk-head"><h3>${deskInfo[desk][0]}</h3><span class="small muted">${deskInfo[desk][1]}</span></div>
+        <div class="seats">${roster.filter(p => p.desk === desk).map(p => seat(p, agents[p.id], recent)).join("")}</div>
+      </div>`).join("")}
+    <div class="feed"><h3>Floor feed, last hour</h3>
+      ${recent.length ? recent.slice(0, 80).map(e => feedRow(e, roster)).join("") : `<p class="empty">Nothing in the last hour. ${esc(nextUp() ? "Next up: " + nextUp() + "." : "")}</p>`}
+    </div>`;
+  if (floorOpen) showPerson(floorOpen, true);
+}
+
+function seat(p, a, recent) {
+  const working = a?.status === "working";
+  const n = recent.filter(e => e.agent === p.id).length;
+  const now = working ? `<b>Now:</b> ${esc(a.task)} <span class="muted">(${ago(a.since).replace(" ago", "")})</span>`
+    : a?.last ? `${esc(a.last)} <span class="muted">${ago(a.since)}</span>` : `<span class="muted">Hasn't started yet.</span>`;
+  return `<button class="seat ${working ? "working" : ""}" data-person="${p.id}" aria-label="${esc(p.name)}, ${esc(p.role)}">
+    <span class="avatar ${p.desk}">${initials(p.name)}<span class="st"></span></span>
+    <span><span class="seat-name">${esc(p.name)}</span> <span class="seat-role">${esc(p.role)}</span>
+      <span class="seat-now">${now}</span>
+      ${n ? `<span class="seat-role">${n} thing${n > 1 ? "s" : ""} done in the last hour</span>` : ""}</span></button>`;
+}
+
+function feedRow(e, roster) {
+  const p = roster.find(r => r.id === e.agent) || {name: e.agent};
+  return `<div class="feed-row kind-${esc(e.kind)}"><span class="when">${clock(e.t)}</span>
+    <span><span class="who">${esc(p.name)}</span> <span class="what">${esc(e.text)}</span></span></div>`;
+}
+
+function showPerson(id, refresh = false) {
+  const p = (DATA.roster || []).find(r => r.id === id); if (!p) return;
+  floorOpen = id;
+  const {agents, events} = floorState();
+  const a = agents[id] || {};
+  const mine = events.filter(e => e.agent === id);
+  const hourAgo = Date.now() - 3600000;
+  const hour = mine.filter(e => new Date(e.t) > hourAgo), earlier = mine.filter(e => new Date(e.t) <= hourAgo);
+  const list = (rows) => rows.map(e => `<div class="feed-row kind-${esc(e.kind)}"><span class="when">${clock(e.t)}</span><span class="what note" style="font-size:15px">${esc(e.text)}</span></div>`).join("");
+  $("#memo-body").innerHTML = `
+    <div class="memo-top"><div style="display:flex;gap:12px;align-items:center">
+      <span class="avatar ${p.desk}" style="width:48px;height:48px">${initials(p.name)}</span>
+      <div><h2>${esc(p.name)}</h2><div class="small muted">${esc(p.role)}, ${esc(deskInfo[p.desk][0])}</div></div></div>
+      <button class="close" onclick="this.closest('dialog').close()">Close</button></div>
+    <h3>Right now</h3>
+    <p class="note">${a.status === "working" ? `Working on: ${esc(a.task)} (started ${ago(a.since)})` : `Between tasks. ${a.last ? "Last: " + esc(a.last) : ""}`}</p>
+    <h3>Last hour (${hour.length})</h3>${hour.length ? list(hour) : `<p class="small muted">Nothing in the last hour.</p>`}
+    ${earlier.length ? `<h3>Earlier</h3>${list(earlier.slice(0, 60))}` : ""}`;
+  if (!refresh || !$("#memo").open) $("#memo").showModal();
+}
+$("#memo").addEventListener("close", () => { floorOpen = null; });
+document.addEventListener("click", (e) => { const s = e.target.closest("[data-person]"); if (s) showPerson(s.dataset.person); });
+
+function startLive() { if (!liveTimer) { loadLive(); liveTimer = setInterval(loadLive, 20000); } }
+
 openTab((location.hash || "#overview").slice(1));
-load();
+load().then(startLive);
 setInterval(load, 60000);
 </script>
 </body>

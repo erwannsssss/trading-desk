@@ -84,8 +84,10 @@ def healthcheck() -> int:
 
 
 def tick() -> int:
+    from desk import activity as floor
     state = load()
     ensure_initialized(state)
+    floor.start_job("desk", "Trading desk check")
 
     commands.process(state)
 
@@ -113,7 +115,11 @@ def tick() -> int:
         from desk import learning
         from desk.trading import ledger
         if learning.run_postmortems(limit=2) or state.get("tournament_day") != now().date().isoformat():
-            learning.update_tournament(ledger.load())
+            floor.working("omar", "Re-scoring the strategy tournament")
+            t = learning.update_tournament(ledger.load())
+            leader = (t.get("board") or [{}])[0]
+            floor.done("omar", f"Tournament updated: {len(t.get('board', []))} styles scored"
+                       + (f"; leader is {leader['style']} ({leader['pnl']:+,.2f})" if leader.get("style") else "; waiting for closed trades"))
             state["tournament_day"] = now().date().isoformat()
         learning.maybe_send_recap(state, book)
     except Exception:
@@ -130,6 +136,9 @@ def tick() -> int:
     state["last_tick"] = now().isoformat(timespec="seconds")
     save(state)
     print(f"tick ok | equity ${book.equity:,.2f} | positions {book.open_positions}")
+    floor.event("grace", f"Account ${book.equity:,.2f}; today {-daily_loss_pct(book, state['day_start_equity']):+.2f}%; "
+                f"{book.open_positions} positions; {state.get('trades_today', 0)}/{config.MAX_TRADES_PER_DAY} trades used", kind="check")
+    floor.finish()
 
     listen(state, int(os.environ.get("LISTEN_SECONDS", "0")))
     return 0
@@ -148,8 +157,13 @@ def listen(state: dict, seconds: int) -> None:
 
 
 def weekly() -> int:
+    from desk import activity as floor
     from desk import dashboard, learning
-    learning.weekly_review()
+    floor.start_job("learning", "Weekly review")
+    try:
+        learning.weekly_review()
+    finally:
+        floor.finish()
     dashboard.build(load())
     return 0
 
@@ -163,9 +177,15 @@ def run_backtest() -> int:
 
 def listen_only() -> int:
     """Answer Telegram commands for LISTEN_SECONDS, then exit (runs after the tick's work is saved)."""
+    from desk import activity as floor
+    floor.start_job("client", "Telegram client desk")
+    floor.working("riley", "On the phone: waiting for your Telegram messages")
     state = load()
-    listen(state, int(os.environ.get("LISTEN_SECONDS", "780")))
-    save(state)
+    try:
+        listen(state, int(os.environ.get("LISTEN_SECONDS", "780")))
+    finally:
+        save(state)
+        floor.finish()
     return 0
 
 
@@ -183,9 +203,13 @@ def record_equity(state: dict) -> None:
 
 
 def research() -> int:
+    from desk import activity as floor
     from desk.research import planner
     session = sys.argv[2] if len(sys.argv) > 2 else "morning"
-    planner.run(session)
+    try:
+        planner.run(session)
+    finally:
+        floor.finish()
     try:
         from desk import dashboard
         dashboard.build(load())

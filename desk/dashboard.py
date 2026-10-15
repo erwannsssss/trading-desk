@@ -6,7 +6,7 @@ import math
 from datetime import datetime, timedelta
 from statistics import mean, pstdev
 
-from desk import config, marketdata
+from desk import activity, config, marketdata
 from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research.planner import PLANS_DIR
@@ -15,6 +15,19 @@ from desk.state import now
 from desk.trading import ledger
 
 DOCS = config.ROOT / "docs"
+
+# New York times (summer schedule) for the trading floor's "next up" labels
+SCHEDULE = [
+    {"session": "morning", "time": "07:40", "days": "weekdays", "who": "Research desk, full team"},
+    {"session": "intraday", "time": "10:20", "days": "weekdays", "who": "Research desk, quick huddle"},
+    {"session": "intraday", "time": "11:50", "days": "weekdays", "who": "Research desk, quick huddle"},
+    {"session": "intraday", "time": "13:20", "days": "weekdays", "who": "Research desk, quick huddle"},
+    {"session": "intraday", "time": "14:50", "days": "weekdays", "who": "Research desk, quick huddle"},
+    {"session": "evening", "time": "18:10", "days": "daily", "who": "Research desk, crypto and forex"},
+    {"session": "overnight", "time": "22:10", "days": "daily", "who": "Research desk, crypto and forex"},
+    {"session": "overnight", "time": "02:10", "days": "daily", "who": "Research desk, crypto and forex"},
+    {"session": "weekly", "time": "19:30", "days": "sunday", "who": "Learning desk, weekly review"},
+]
 
 
 def build(state: dict) -> None:
@@ -50,6 +63,8 @@ def build(state: dict) -> None:
         "ghost": _ghost(plans, trades),
         "rulebook": _json(config.DATA_DIR / "rulebook.json", []),
         "tournament": _json(config.DATA_DIR / "tournament.json", None),
+        "roster": activity.roster(),
+        "schedule": SCHEDULE,
         "backtest": _json(config.DATA_DIR / "backtest.json", None),
         "sessions_today": [{"session": p.get("session"), "created_at": p.get("created_at"),
                             "approved": sum(i.get("status") == "approved" for i in p.get("ideas", [])),

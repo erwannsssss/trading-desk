@@ -99,6 +99,19 @@ to read its research memo: bull, bear, specialists, pre-mortem, fact-check), tod
 performance stats (win rate, profit factor, drawdown, Sharpe, results by bucket/style/market,
 confidence calibration), passed ideas and how they did, and the rulebook/fund letters.
 
+## The trading floor
+
+The dashboard's Trading floor tab shows every agent as a named person at one of three desks, what each one is
+working on right now, and what they did in the last hour. `desk/activity.py` records each step and publishes a
+small JSON file to the `live` branch about every 40 seconds (GitHub API with the workflow's built-in token), so
+the page stays within a minute or two of live without waiting for GitHub Pages to rebuild.
+
+| Desk | People |
+|---|---|
+| Research | Maya Chen (market scanner), Darius Webb (chief macro strategist), Ben Carter (research associate), Priya Natarajan (technical), Marcus Hale (fundamental), Sofia Reyes (news and sentiment), Theo Okafor (smart money), Jake Morrison (the bull), Nadia Volkov (the bear), Elena Castillo (portfolio manager), Sam Brooks (fact-checker), Iris Lindqvist (position sizer) |
+| Trading | Kenji Watanabe (execution trader), Grace Adeyemi (risk manager), Leo Moretti (position manager), Ava Sinclair (options trader) |
+| Learning | Ruth Klein (trade reviewer), Omar Haddad (performance analyst), Nina Petrova (quant researcher), Victor Ashford (chief investment officer), Riley Park (client desk, your Telegram) |
+
 ## Secrets
 
 Add these in **Settings → Secrets and variables → Actions**:

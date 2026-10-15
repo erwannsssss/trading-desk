@@ -11,9 +11,11 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
+from desk import activity as floor
 from desk import config, telegram
 from desk.brokers import alpaca, oanda
 from desk.research import team
@@ -127,11 +129,18 @@ class Engine:
         today_open = nxt_close.replace(hour=9, minute=30)
         return in_blackout(today_open, nxt_close, self.at)
 
-    def alert(self, text: str) -> None:
-        self.alerts.append(text)
+    def alert(self, text: str, agent: str = "kenji", symbol: str | None = None, telegram_too: bool = True) -> None:
+        if telegram_too:
+            self.alerts.append(text)
+        plain = re.sub(r"<[^>]+>", "", text).replace("\n", " | ")
+        floor.event(agent, plain, symbol, kind="trade")
 
     def run(self) -> dict:
         summary = {"managed": 0, "entered": 0, "skipped": []}
+        active = [t for t in self.trades if t["status"] in ledger.ACTIVE]
+        ideas = plan_ideas(self.at)
+        floor.working("leo", f"Watching {len(active)} open trade{'s' if len(active) != 1 else ''}") if active else None
+        floor.working("kenji", f"Working through {len(ideas)} idea{'s' if len(ideas) != 1 else ''} from the latest plans")
         for t in [t for t in self.trades if t["status"] in ledger.ACTIVE]:
             try:
                 self.manage(t)
@@ -148,6 +157,13 @@ class Engine:
             except Exception as exc:
                 summary["skipped"].append(f"{idea['symbol']}: error {str(exc)[:120]}")
         ledger.save(self.trades)
+        waiting = [s for s in summary["skipped"] if "waiting" in s or "closed" in s]
+        floor.done("kenji", f"Check done: {summary['entered']} new order{'s' if summary['entered'] != 1 else ''}"
+                   + (f", {len(waiting)} waiting for their market" if waiting else ""), kind="check")
+        if active:
+            open_now = [t for t in self.trades if t["status"] == "open"]
+            floor.done("leo", f"Managing {len(open_now)} open position{'s' if len(open_now) != 1 else ''}: "
+                       + (", ".join(f"{t['symbol']} {t['direction']}" for t in open_now[:8]) or "none"), kind="check")
         for a in self.alerts:
             telegram.send(a)
         return summary
@@ -217,9 +233,11 @@ class Engine:
         verdict = check_order(OrderIdea(idea["symbol"], idea["venue"], "buy" if long else "sell", notional, entry, stop, target),
                               self.book, self.state, stock_blackout=self.blackout() if asset in ("stock", "etf") else False)
         if not verdict.ok:
+            floor.event("grace", f"Blocked {idea['symbol']}: {'; '.join(verdict.reasons)}", idea["symbol"], kind="blocked")
             if any("paused" in r or "daily loss" in r or "trades today" in r or "open/close" in r for r in verdict.reasons):
                 return str(verdict)  # temporary block; try again later
             return self._record_skip(trade_id, plan_file, idea, str(verdict))
+        floor.event("grace", f"Approved {idea['symbol']}: ${notional:,.0f} position, risking ${sizing['risk_usd']:,.0f}; all limits OK", idea["symbol"])
 
         t = {
             "id": trade_id, "plan_file": plan_file, "symbol": idea["symbol"], "venue": idea["venue"], "asset": asset,
@@ -236,7 +254,7 @@ class Engine:
             self.trades.append(t)
             self.alert(f"<b>[DRY RUN] Would {'BUY' if long else 'SHORT'} {esc(idea['symbol'])}</b>\n"
                        f"{_qty(t)} @ {_p(entry)} | stop {_p(stop)} | target {_p(target)}\n"
-                       f"Size ${notional:,.0f}, risking ${sizing['risk_usd']:,.0f}")
+                       f"Size ${notional:,.0f}, risking ${sizing['risk_usd']:,.0f}", symbol=idea["symbol"])
             return "entered"
 
         self._submit(t, long)
@@ -253,7 +271,7 @@ class Engine:
         self.alert(f"<b>ORDER PLACED: {'BUY' if long else 'SHORT'} {esc(t['symbol'])}</b> ({esc(t['bucket'])}, {esc(t['style'])}, "
                    f"conviction {t['conviction']}/10)\n"
                    f"{_qty(t)} @ {_p(entry)} | stop {_p(stop)} | target {_p(target)}\n"
-                   f"Size ${notional:,.0f}, risking ${t['risk_usd']:,.0f} ({t['risk_pct']}%)\n<i>{esc(t['thesis'])}</i>")
+                   f"Size ${notional:,.0f}, risking ${t['risk_usd']:,.0f} ({t['risk_pct']}%)\n<i>{esc(t['thesis'])}</i>", symbol=t["symbol"])
         return "entered"
 
     def _enter_option(self, trade_id, plan_file, plan, idea, price, entry, stop, target, long) -> str | None:
@@ -276,7 +294,9 @@ class Engine:
         verdict = check_order(OrderIdea(c["symbol"], "alpaca", "buy", premium_total, limit, limit * 0.5, limit * 2),
                               self.book, self.state, stock_blackout=self.blackout())
         if not verdict.ok:
+            floor.event("grace", f"Blocked {idea['symbol']} options: {'; '.join(verdict.reasons)}", idea["symbol"], kind="blocked")
             return str(verdict)
+        floor.event("grace", f"Approved {idea['symbol']} options: ${premium_total:,.0f} premium is the most it can lose", idea["symbol"])
         t = {
             "id": trade_id, "plan_file": plan_file, "symbol": idea["symbol"], "venue": "alpaca", "asset": "option",
             "option_symbol": c["symbol"], "option_type": kind, "strike": c["strike"], "expiry": c["expiry"],
@@ -291,7 +311,7 @@ class Engine:
         if self.state.get("dry_run"):
             t["status"] = "would_trade"
             self.trades.append(t)
-            self.alert(f"<b>[DRY RUN] Would buy {label}</b> at ${limit:.2f} (${premium_total:,.0f} total, the most it can lose)\n"
+            self.alert(agent="ava", symbol=idea["symbol"], text=f"<b>[DRY RUN] Would buy {label}</b> at ${limit:.2f} (${premium_total:,.0f} total, the most it can lose)\n"
                        f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}")
             return "entered"
         o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
@@ -303,7 +323,7 @@ class Engine:
         self.book.stock_gross_exposure += premium_total
         self.book.open_positions += 1
         log_event("order_placed", trade=trade_id, symbol=c["symbol"], side="buy", qty=qty, entry=limit)
-        self.alert(f"<b>ORDER PLACED: buy {label}</b> ({esc(t['style'])}, conviction {t['conviction']}/10)\n"
+        self.alert(agent="ava", symbol=idea["symbol"], text=f"<b>ORDER PLACED: buy {label}</b> ({esc(t['style'])}, conviction {t['conviction']}/10)\n"
                    f"${limit:.2f} each, ${premium_total:,.0f} total (the most it can lose)\n"
                    f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}\n<i>{esc(t['thesis'])}</i>")
         return "entered"
@@ -331,6 +351,7 @@ class Engine:
 
     def _record_skip(self, trade_id: str, plan_file: str, idea: dict, reason: str) -> str:
         d = idea["decision"]
+        floor.event("kenji", f"Skipped {idea['symbol']}: {reason}", idea["symbol"], kind="skip")
         self.trades.append({"id": trade_id, "plan_file": plan_file, "symbol": idea["symbol"], "venue": idea["venue"],
                             "asset": idea["asset"], "direction": d.get("decision"), "status": "skipped",
                             "skip_reason": reason, "entry_plan": d.get("entry"), "initial_stop": d.get("stop"),
@@ -396,9 +417,11 @@ class Engine:
         ledger.note(t, f"filled {qty:g} @ {price}", self.iso)
         log_event("filled", trade=t["id"], price=price, qty=qty)
         self.alert(f"<b>FILLED: {'BOUGHT' if t['direction'] == 'long' else 'SHORTED'} {esc(t['symbol'])}</b> "
-                   f"{qty:g} @ {_p(price)}\nStop {_p(t['stop'])} | target {_p(t['target'])}")
+                   f"{qty:g} @ {_p(price)}\nStop {_p(t['stop'])} | target {_p(t['target'])}",
+                   agent="ava" if t["asset"] == "option" else "kenji", symbol=t["symbol"])
 
     def _cancelled(self, t: dict, why: str) -> None:
+        floor.event("kenji", f"Cancelled the {t['symbol']} entry: {why}", t["symbol"], kind="skip")
         t.update(status="cancelled", closed_at=self.iso, exit_reason=why)
         ledger.note(t, why, self.iso)
 
@@ -492,6 +515,7 @@ class Engine:
         if new_stop is not None:
             t["stop"] = new_stop
             ledger.note(t, f"exit level on the underlying moved to {_p(new_stop)}", self.iso)
+            floor.event("ava", f"Raised the exit level on {t['symbol']} calls/puts to {_p(new_stop)} to lock in gains", t["symbol"])
 
     def _move_stop(self, t: dict, new_stop: float) -> None:
         if t["venue"] == "oanda":
@@ -505,7 +529,7 @@ class Engine:
         what = "to breakeven" if abs(new_stop - t["entry_price"]) < 1e-9 else f"to {_p(new_stop)} (trailing)"
         ledger.note(t, f"stop moved {what}", self.iso)
         t["stop"] = new_stop
-        self.alert(f"Stop on {esc(t['symbol'])} moved {what}. Locking in gains.")
+        self.alert(f"Stop on {esc(t['symbol'])} moved {what}. Locking in gains.", agent="leo", symbol=t["symbol"])
 
     def _take_partial(self, t: dict, price: float) -> None:
         if t["venue"] == "oanda":
@@ -526,7 +550,7 @@ class Engine:
         t["partial_pnl"] = round(t.get("partial_pnl", 0) + pnl, 2)
         t["partial_taken"] = True
         ledger.note(t, f"took half off at {price} (+${pnl:,.2f})", self.iso)
-        self.alert(f"Took partial profit on {esc(t['symbol'])}: closed half at {_p(price)} for ${pnl:+,.2f}.")
+        self.alert(f"Took partial profit on {esc(t['symbol'])}: closed half at {_p(price)} for ${pnl:+,.2f}.", agent="leo", symbol=t["symbol"])
 
     def _exit_now(self, t: dict, reason: str) -> None:
         """Close the whole position at market."""
@@ -540,6 +564,7 @@ class Engine:
                                    "qty": str(int(t["filled_qty"])), "time_in_force": "day"})
             t.update(status="closing", exit_order_id=o.get("id"), exit_reason=reason)
             ledger.note(t, f"selling to close: {reason}", self.iso)
+            floor.event("ava", f"Selling {t['symbol']} options to close: {reason}", t["symbol"])
             return
         for key in ("stop_order_id", "target_order_id"):
             if t.get(key):
@@ -550,6 +575,7 @@ class Engine:
         o = alpaca.close_position(t["symbol"])
         t.update(status="closing", exit_order_id=o.get("id"), exit_reason=reason)
         ledger.note(t, f"closing: {reason}", self.iso)
+        floor.event("leo", f"Closing {t['symbol']}: {reason}", t["symbol"])
 
     def _check_closing(self, t: dict) -> None:
         if not t.get("exit_order_id"):
@@ -576,7 +602,8 @@ class Engine:
         log_event("closed", trade=t["id"], pnl=round(pnl, 2), reason=reason)
         verdict = "WIN" if pnl > 0 else "LOSS" if pnl < 0 else "FLAT"
         self.alert(f"<b>CLOSED {esc(t['symbol'])}: {verdict} ${pnl:+,.2f}</b> ({t['r_result']}R)\n"
-                   f"{'Long' if long else 'Short'} {_p(t['entry_price'])} -> {_p(price)} | {esc(reason)}")
+                   f"{'Long' if long else 'Short'} {_p(t['entry_price'])} -> {_p(price)} | {esc(reason)}",
+                   agent="ava" if t["asset"] == "option" else "leo", symbol=t["symbol"])
 
 
 def _exit_reason(t: dict, price: float) -> str:

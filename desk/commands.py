@@ -109,6 +109,11 @@ def handle(text: str, state: dict) -> str | None:
     return telegram.esc(chat.answer(text, state))
 
 
+def telegram_plain(text) -> str:
+    import html, re
+    return html.unescape(re.sub(r"<[^>]+>", "", str(text or ""))).replace("\n", " ")
+
+
 def process(state: dict, wait: int = 0) -> int:
     texts, state["telegram_offset"] = telegram.get_commands(state.get("telegram_offset", 0), wait)
     for text in texts:
@@ -118,4 +123,10 @@ def process(state: dict, wait: int = 0) -> int:
             reply = f"Something went wrong running that: {esc(exc)}"
         if reply:
             telegram.send(reply)
+        try:
+            from desk import activity as floor
+            floor.event("riley", f"You sent \"{text[:120]}\". Replied: {telegram_plain(reply)[:220]}", kind="chat")
+            floor.working("riley", "On the phone: waiting for your Telegram messages")
+        except Exception:
+            pass
     return len(texts)

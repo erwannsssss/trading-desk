@@ -12,6 +12,7 @@ import time
 import traceback
 from datetime import datetime, timedelta
 
+from desk import activity as floor
 from desk import ai, config, datasources, marketdata, telegram
 from desk.brokers import oanda
 from desk.portfolio import snapshot
@@ -84,6 +85,7 @@ def extra_context(session: str) -> dict:
 def run(session: str = "morning") -> dict:
     started = time.monotonic()
     cfg = SESSIONS[session]
+    floor.start_job("research", f"{session} research session")
     state = load()
     book, details = snapshot(state)
     holdings = [p["symbol"] for p in details["alpaca_positions"]] + [t["instrument"] for t in details["oanda_trades"]]
@@ -96,12 +98,15 @@ def run(session: str = "morning") -> dict:
     skip |= {i["symbol"] for _, i in recent_ideas(12) if i.get("status") == "approved"}
 
     # 1. Scan everything (ask for extra so the skip list doesn't leave us short)
+    floor.working("maya", f"Scanning stocks, ETFs, crypto and forex for the {session} session")
     stock_picks, stock_ctx = scanner.scan_stocks(cfg["stocks"] * 2, core_slots=0 if session == "intraday" else 5) if cfg["stocks"] else ([], {"etf_readings": {}, "scanned": 0})
     crypto_picks, crypto_ctx = scanner.scan_crypto(cfg["crypto"] * 2)
     fx_picks, fx_ctx = scanner.scan_forex(cfg["forex"] * 2)
     pick = lambda lst, n: [c for c in lst if c["symbol"] not in skip][:n]
     finalists = pick(stock_picks, cfg["stocks"]) + pick(crypto_picks, cfg["crypto"]) + pick(fx_picks, cfg["forex"])
     print(f"{session}: scanned {stock_ctx['scanned']} stocks/ETFs; {len(finalists)} finalists; skipped {len(skip)} recent")
+    floor.done("maya", f"Scanned {stock_ctx['scanned']} stocks/ETFs plus crypto and forex. Finalists: "
+               + (", ".join(c["symbol"] for c in finalists) or "none"))
 
     # 2. Macro strategist (fast sessions reuse the latest view to save AI calls)
     macro_ctx = {
@@ -117,8 +122,12 @@ def run(session: str = "morning") -> dict:
         "calendar_effects": _calendar_effects(),
     }
     macro = latest_macro() if cfg["reuse_macro"] else None
-    if not macro:
+    if macro:
+        floor.event("darius", f"Sticking with the latest market read: {macro.get('regime')}, aggression {macro.get('risk_appetite')}/100")
+    else:
+        floor.working("darius", "Reading rates, inflation, the VIX, every ETF, overnight moves and the calendar")
         macro = team.macro_view(macro_ctx)
+        floor.done("darius", f"Market regime: {macro.get('regime')}, aggression {macro.get('risk_appetite')}/100. {macro.get('summary', '')}")
     print("macro:", macro.get("regime"), macro.get("risk_appetite"))
 
     # 3. Research each finalist
@@ -133,16 +142,39 @@ def run(session: str = "morning") -> dict:
     for cand in finalists:
         sym = cand["symbol"]
         try:
+            floor.working("ben", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
             d = dossiers.build(cand, funds, light=cfg["fast"])
+            floor.done("ben", f"Dossier ready on {sym}", sym)
             if cfg["fast"]:
+                for a in floor.DESK_TEAM:
+                    floor.working(a, f"Quick huddle on {sym}", sym)
                 q = team.quick_desk(d, macro, planned, holdings, rulebook, extra)
                 notes, bull, bear, pm = q.get("specialists"), q.get("bull"), q.get("bear"), q["decision"]
+                _report_specialists(sym, notes)
+                _report_debate(sym, bull, bear)
             else:
+                for a in floor.SPECIALISTS:
+                    floor.working(a, f"Analyzing {sym}", sym)
                 notes = team.specialists(d, macro)
+                _report_specialists(sym, notes)
+                floor.working("jake", f"Building the case for {sym}", sym)
                 bull = team.bull(d, notes)
+                floor.done("jake", f"{sym}: argues {bull.get('direction', 'long')}. {bull.get('case', '')}", sym)
+                floor.working("nadia", f"Attacking the {bull.get('direction', 'long')} case on {sym}", sym)
                 bear = team.bear(d, notes, bull)
+                floor.done("nadia", f"{sym}: {bear.get('case', '')}", sym)
+                floor.working("elena", f"Pre-mortem and final call on {sym}", sym)
                 pm = team.portfolio_manager(d, notes, bull, bear, macro, planned, holdings, rulebook, extra)
+            expr = {"call_options": " with calls", "put_options": " with puts"}.get(pm.get("expression"), "")
+            verdict = f"{pm.get('decision', '?').upper()}{expr}" + (f", conviction {pm.get('conviction')}/10" if pm.get("decision") != "pass" else "")
+            floor.done("elena", f"{sym}: {verdict}. {pm.get('reason') or pm.get('thesis') or ''}", sym,
+                       kind="decision" if pm.get("decision") in ("long", "short") else "pass")
+            floor.working("sam", f"Checking every number Elena cited on {sym}", sym)
             check = team.fact_check(pm, dossiers.facts(d), d)
+            if check["passed"]:
+                floor.done("sam", f"{sym}: all {check['verified_facts']} cited numbers check out", sym)
+            else:
+                floor.done("sam", f"{sym}: blocked. {check['problems'][0]}", sym, kind="blocked")
             idea = {"symbol": sym, "venue": cand["venue"], "asset": cand["asset"],
                     "price_at_research": d["technicals"]["price"], "why_scanned": cand.get("why_scanned"),
                     "setups": d["technicals"].get("setups"),
@@ -154,6 +186,8 @@ def run(session: str = "morning") -> dict:
                 kw["multiplier"] = learning.risk_multiplier(pm.get("style"))
                 idea["sizing"] = team.size(pm, book.equity, cand["asset"], **kw)
                 idea["status"] = "approved"
+                sz = idea["sizing"]
+                floor.done("iris", f"{sym}: ${sz['notional_usd']:,.0f} position risking ${sz['risk_usd']:,.0f} ({sz['risk_pct']}% of the account)", sym)
                 planned.append({"symbol": sym, "direction": pm["decision"], "style": pm.get("style")})
             else:
                 idea["status"] = "pass" if pm.get("decision") == "pass" else "blocked_by_fact_check"
@@ -162,6 +196,9 @@ def run(session: str = "morning") -> dict:
         except Exception as exc:
             traceback.print_exc()
             ideas.append({"symbol": sym, "venue": cand["venue"], "asset": cand["asset"], "status": "error", "error": str(exc)[:300]})
+            for a in ("ben",) + floor.DESK_TEAM + ("sam",):
+                if floor._state.get("agents", {}).get(a, {}).get("status") == "working":
+                    floor.done(a, f"{sym}: research hit an error and was dropped", sym, kind="error")
 
     stamp = now()
     plan = {
@@ -175,6 +212,9 @@ def run(session: str = "morning") -> dict:
     name = f"{plan['date']}-{session}" + (stamp.strftime("-%H%M") if session in ("intraday", "overnight") else "")
     path = PLANS_DIR / f"{name}.json"
     path.write_text(json.dumps(plan, indent=1, default=str))
+    n_ok = sum(i.get("status") == "approved" for i in ideas)
+    floor.event("elena", f"Sent the {session} plan: {n_ok} trade{'s' if n_ok != 1 else ''} out of {len(ideas)} researched", kind="plan")
+    floor.finish(f"{session} session: {n_ok} approved of {len(ideas)}")
     if cfg["fast"]:
         text = quick_brief(plan)
         if text:
@@ -182,6 +222,21 @@ def run(session: str = "morning") -> dict:
     else:
         telegram.send(brief(plan))
     return plan
+
+
+def _report_specialists(sym: str, notes: dict | None) -> None:
+    notes = notes or {}
+    for agent, key in zip(floor.SPECIALISTS, ("technical", "fundamental", "news_sentiment", "smart_money")):
+        n = notes.get(key) or {}
+        score = n.get("score")
+        point = (n.get("points") or [""])[0]
+        floor.done(agent, f"{sym}: {'+' if isinstance(score, int) and score > 0 else ''}{score if score is not None else 'n/a'}. {point}", sym)
+
+
+def _report_debate(sym: str, bull: dict | None, bear: dict | None) -> None:
+    bull, bear = bull or {}, bear or {}
+    floor.done("jake", f"{sym}: argues {bull.get('direction', 'long')}. {bull.get('case', '')}", sym)
+    floor.done("nadia", f"{sym}: {bear.get('case', '')}", sym)
 
 
 def quick_brief(plan: dict) -> str | None:

@@ -80,6 +80,7 @@ def set_command_menu() -> None:
         {"command": "flatten", "description": "Emergency: close every position"},
         {"command": "pitch", "description": "Pitch a ticker to the research team, e.g. /pitch NVDA"},
         {"command": "interns", "description": "How the interns are doing"},
+        {"command": "ask", "description": "Ask anyone at the firm, e.g. /ask Nadia why ONDS?"},
         {"command": "letter", "description": "The latest weekly fund letter"},
         {"command": "rules", "description": "The desk's rulebook"},
         {"command": "help", "description": "List commands"},

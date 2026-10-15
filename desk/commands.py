@@ -21,6 +21,7 @@ HELP = (
     "/rules - the desk's rulebook\n"
     "/pitch NVDA - the full team researches your idea\n"
     "/interns - how the interns are doing\n"
+    "/ask Nadia why ONDS? - ask anyone at the firm directly\n"
     "\nOr just ask a question, like \"why did you short IONQ?\"\n"
     "\nReplies usually take a few seconds (occasionally a few minutes between runs)."
 )
@@ -88,6 +89,11 @@ def handle(text: str, state: dict) -> str | None:
         state["dry_run"] = True
         log_event("mode", dry_run=True)
         return "Dry-run mode ON. The bot will analyze and log trades but not place orders."
+    if cmd == "/ask":
+        from desk import ask
+        if not args:
+            return "Ask anyone at the firm: /ask Nadia why are you bearish on ONDS? or /ask Kenji how did the FMC fill go?"
+        return ask.answer(" ".join(args))
     if cmd == "/pitch":
         if not args:
             return "Send a ticker after it, like /pitch NVDA, /pitch BTC or /pitch EURUSD."

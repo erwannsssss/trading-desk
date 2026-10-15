@@ -220,7 +220,8 @@ SLIM_KEYS = ("id", "plan_file", "symbol", "asset", "venue", "direction", "status
              "confidence_pct", "horizon", "thesis", "entry_plan", "entry_price", "initial_stop", "stop", "target", "qty",
              "filled_qty", "notional_usd", "risk_usd", "risk_pct", "created_at", "opened_at", "closed_at", "exit_price",
              "exit_reason", "pnl_usd", "r_result", "skip_reason", "max_r", "notes", "partial_pnl", "postmortem",
-             "option_symbol", "option_type", "strike", "expiry", "premium_paid", "option_mark", "underlying_entry")
+             "option_symbol", "option_type", "strike", "expiry", "premium_paid", "option_mark", "underlying_entry",
+             "short_option_symbol", "short_strike", "spread_width", "single_option_cost", "loan_usd", "interest_usd")
 
 
 def _slim(t: dict) -> dict:

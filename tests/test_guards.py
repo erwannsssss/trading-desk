@@ -61,5 +61,37 @@ class GuardTests(unittest.TestCase):
             self.assertEqual(bank.reprice_forex_loans(trades), [])   # only once
 
 
+class SpreadTests(unittest.TestCase):
+    def _chain(self):
+        def snap(bid, ask, delta):
+            return {"latestQuote": {"bp": bid, "ap": ask}, "greeks": {"delta": delta}}
+        return {"AAPL261030C00345000": snap(6.2, 6.4, 0.5), "AAPL261030C00350000": snap(4.0, 4.2, 0.4),
+                "AAPL261030C00357500": snap(1.7, 1.9, 0.25), "AAPL261030C00340000": snap(9.0, 9.3, 0.62)}
+
+    def test_pick_spread_sells_the_strike_at_the_target(self):
+        from desk.trading import options
+        with mock.patch.object(options, "_chain", return_value=self._chain()):
+            s = options.pick_spread("AAPL", "call", 344.0, 358.0, "1-5 days", max_cost=600)
+        self.assertEqual((s["strike"], s["short_strike"]), (345.0, 357.5))
+        self.assertAlmostEqual(s["mid"], 4.5)
+        self.assertLess(s["mid"], s["single_cost"])
+        self.assertGreaterEqual(s["width"] - s["mid"], s["mid"])
+
+    def test_pick_spread_respects_budget(self):
+        from desk.trading import options
+        with mock.patch.object(options, "_chain", return_value=self._chain()):
+            cheaper = options.pick_spread("AAPL", "call", 344.0, 358.0, "1-5 days", max_cost=300)
+            none = options.pick_spread("AAPL", "call", 344.0, 358.0, "1-5 days", max_cost=100)
+        self.assertLessEqual(cheaper["limit"] * 100, 300)     # falls back to a tighter spread that fits
+        self.assertIsNone(none)
+
+    def test_net_price_of_two_leg_orders(self):
+        from desk.trading import options
+        opened = {"legs": [{"side": "buy", "filled_avg_price": "6.30"}, {"side": "sell", "filled_avg_price": "1.80"}]}
+        closed = {"legs": [{"side": "sell", "filled_avg_price": "9.10"}, {"side": "buy", "filled_avg_price": "3.00"}]}
+        self.assertAlmostEqual(options.mleg_net_price(opened), 4.5)
+        self.assertAlmostEqual(options.mleg_net_price(closed), 6.1)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -467,7 +467,7 @@ function sideTag(t) {
   }
   return `<span class="side ${t.direction}">${t.direction === "short" ? "Short" : "Long"}</span>`;
 }
-function optLine(t) { return t.option_symbol ? `<div class="tag">$${t.strike} ${esc(t.option_type)}s, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
+function optLine(t) { return t.option_symbol ? `<div class="tag">${t.short_strike ? `$${t.strike}/$${t.short_strike} ${esc(t.option_type)} spread` : `$${t.strike} ${esc(t.option_type)}s`}, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
 const sessionName = {morning: "Morning", intraday: "Intraday", evening: "Evening", overnight: "Overnight"};
 
 function renderOverview(d) {

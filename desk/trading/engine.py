@@ -336,10 +336,18 @@ class Engine:
         open_premium = sum(t.get("notional_usd", 0) for t in self.trades if t.get("asset") == "option" and t["status"] in ledger.ACTIVE)
         if open_premium + budget > self.book.equity * config.MAX_OPTIONS_TOTAL_PCT / 100:
             return None
-        c = options.pick_contract(idea["symbol"], kind, price, d.get("horizon"), max_cost=budget)
-        if not c:
-            return None
-        limit = options.entry_limit(c)
+        c = None
+        try:
+            c = options.pick_spread(idea["symbol"], kind, price, target, d.get("horizon"), max_cost=budget)
+        except Exception as exc:
+            print(f"spread pick failed for {idea['symbol']}: {exc}")
+        if c:
+            limit = c["limit"]
+        else:
+            c = options.pick_contract(idea["symbol"], kind, price, d.get("horizon"), max_cost=budget)
+            if not c:
+                return None
+            limit = options.entry_limit(c)
         qty = options.contracts_for(budget, limit)
         if qty < 1:
             return None
@@ -356,6 +364,8 @@ class Engine:
         t = {
             "id": trade_id, "plan_file": plan_file, "symbol": idea["symbol"], "venue": "alpaca", "asset": "option",
             "option_symbol": c["symbol"], "option_type": kind, "strike": c["strike"], "expiry": c["expiry"],
+            **({"short_option_symbol": c["short_symbol"], "short_strike": c["short_strike"], "spread_width": c["width"],
+                "single_option_cost": c.get("single_cost")} if c.get("short_symbol") else {}),
             "direction": "long" if long else "short", "bucket": d.get("bucket") or "high_risk", "style": d.get("style"),
             "conviction": d.get("conviction"), "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"),
             "thesis": d.get("thesis"), "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target,
@@ -363,7 +373,10 @@ class Engine:
             "risk_pct": round(premium_total / self.book.equity * 100, 2), "quote_to_usd": 100.0,
             "created_at": self.iso, "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),
         }
-        label = f"{qty} {esc(idea['symbol'])} {c['expiry']} ${c['strike']:g} {kind}{'s' if qty > 1 else ''}"
+        if c.get("short_symbol"):
+            label = (f"{qty} {esc(idea['symbol'])} {c['expiry']} ${c['strike']:g}/${c['short_strike']:g} {kind} spread{'s' if qty > 1 else ''}")
+        else:
+            label = f"{qty} {esc(idea['symbol'])} {c['expiry']} ${c['strike']:g} {kind}{'s' if qty > 1 else ''}"
         if self.state.get("dry_run"):
             t["status"] = "would_trade"
             self.trades.append(t)
@@ -372,8 +385,16 @@ class Engine:
             return "entered"
         t["loan_usd"] = loan
         t["loan_apr"] = bank.current_apr()
-        o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
-                               "limit_price": f"{limit:.2f}", "time_in_force": "day", "client_order_id": trade_id[:48]})
+        if c.get("short_symbol"):
+            o = alpaca.submit_raw({"order_class": "mleg", "qty": str(qty), "type": "limit", "limit_price": f"{limit:.2f}",
+                                   "time_in_force": "day", "client_order_id": trade_id[:48],
+                                   "legs": [{"symbol": c["symbol"], "ratio_qty": "1", "side": "buy", "position_intent": "buy_to_open"},
+                                            {"symbol": c["short_symbol"], "ratio_qty": "1", "side": "sell", "position_intent": "sell_to_open"}]})
+            floor.event("options", f"{idea['symbol']}: a ${c['strike']:g}/${c['short_strike']:g} {kind} spread costs ${limit:.2f} instead of "
+                        f"${c.get('single_cost') or 0:.2f} for the single {kind}; the profit is capped at the ${c['width']:g} gap", idea["symbol"])
+        else:
+            o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
+                                   "limit_price": f"{limit:.2f}", "time_in_force": "day", "client_order_id": trade_id[:48]})
         t.update(status="pending", entry_order_id=o["id"])
         self._borrow(t)
         ledger.note(t, f"bought to open {c['symbol']} limit {limit}", self.iso)
@@ -472,7 +493,8 @@ class Engine:
             if o["status"] == "filled" or (expired and filled > 0):
                 if o["status"] != "filled":
                     alpaca.cancel_order(o["id"])
-                self._opened(t, float(o["filled_avg_price"]), filled, o)
+                price = options.mleg_net_price(o) if t.get("short_option_symbol") else float(o["filled_avg_price"])
+                self._opened(t, price if price is not None else t.get("premium_limit") or 0.0, filled, o)
             elif o["status"] in ("canceled", "expired", "rejected"):
                 self._cancelled(t, f"entry order {o['status']}")
             elif expired:
@@ -539,8 +561,11 @@ class Engine:
 
         if t["asset"] == "option":
             if alpaca.position(t["option_symbol"]) is None:
-                q = options.quote(t["option_symbol"]) or {}
-                self._closed(t, float(q.get("bid") or 0), "option position closed outside the engine or expired")
+                if t.get("short_option_symbol"):
+                    q = options.spread_mark(t["option_symbol"], t["short_option_symbol"]) or {}
+                else:
+                    q = options.quote(t["option_symbol"]) or {}
+                self._closed(t, max(0.0, float(q.get("bid") or 0)), "option position closed outside the engine or expired")
                 return True
             return False
         for key, reason in (("target_order_id", "hit target"), ("stop_order_id", "stopped out")):
@@ -586,7 +611,8 @@ class Engine:
 
     def _adjust_option(self, t: dict) -> None:
         under = current_price(t)
-        q = options.quote(t["option_symbol"]) or {}
+        spread = bool(t.get("short_option_symbol"))
+        q = (options.spread_mark(t["option_symbol"], t["short_option_symbol"]) if spread else options.quote(t["option_symbol"])) or {}
         mark = q.get("mid")
         t["last_price"], t["option_mark"] = under, mark
         long = t["direction"] == "long"   # long = calls (bullish), short = puts (bearish)
@@ -597,6 +623,8 @@ class Engine:
             reason = "underlying hit the stop"
         elif (long and under >= t["target"]) or (not long and under <= t["target"]):
             reason = "underlying hit the target"
+        elif spread and mark and t.get("spread_width") and mark >= 0.8 * t["spread_width"]:
+            reason = "spread is worth 80%+ of its maximum; taking the profit"
         elif mark and mark >= 2 * t["premium_paid"]:
             reason = "option doubled; taking the profit"
         elif options.days_to_expiry(t["option_symbol"], self.at.date()) <= 3:
@@ -672,6 +700,20 @@ class Engine:
             fill = res.get("orderFillTransaction", {})
             self._closed(t, float(fill.get("price") or current_price(t)), reason, pnl=float(fill.get("pl") or 0))
             return
+        if t["asset"] == "option" and t.get("short_option_symbol"):
+            legs = [{"symbol": t["option_symbol"], "ratio_qty": "1", "side": "sell", "position_intent": "sell_to_close"},
+                    {"symbol": t["short_option_symbol"], "ratio_qty": "1", "side": "buy", "position_intent": "buy_to_close"}]
+            try:
+                o = alpaca.submit_raw({"order_class": "mleg", "qty": str(int(t["filled_qty"])), "type": "market",
+                                       "time_in_force": "day", "legs": legs})
+            except Exception:   # if market orders aren't accepted for spreads, sell at the current bid instead
+                bid = (options.spread_mark(t["option_symbol"], t["short_option_symbol"]) or {}).get("bid") or 0.01
+                o = alpaca.submit_raw({"order_class": "mleg", "qty": str(int(t["filled_qty"])), "type": "limit",
+                                       "limit_price": f"{max(0.01, bid):.2f}", "time_in_force": "day", "legs": legs})
+            t.update(status="closing", exit_order_id=o.get("id"), exit_reason=reason)
+            ledger.note(t, f"closing the spread: {reason}", self.iso)
+            floor.event("options", f"Closing the {t['symbol']} spread: {reason}", t["symbol"])
+            return
         if t["asset"] == "option":
             o = alpaca.submit_raw({"symbol": t["option_symbol"], "side": "sell", "type": "market",
                                    "qty": str(int(t["filled_qty"])), "time_in_force": "day"})
@@ -696,7 +738,8 @@ class Engine:
             return
         o = alpaca.get_order(t["exit_order_id"])
         if o["status"] == "filled":
-            self._closed(t, float(o["filled_avg_price"]), t.get("exit_reason", "closed"))
+            price = options.mleg_net_price(o) if t.get("short_option_symbol") else float(o["filled_avg_price"])
+            self._closed(t, price or 0.0, t.get("exit_reason", "closed"))
 
     def _closed(self, t: dict, price: float, reason: str, pnl: float | None = None, includes_partials: bool = False) -> None:
         long = t["direction"] == "long"

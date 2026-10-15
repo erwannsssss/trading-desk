@@ -1,5 +1,9 @@
-"""Options: picks a liquid call or put for an idea and values it. Buying options only (the most you can lose is
-the premium paid). Spreads and selling options aren't automated yet."""
+"""Options: picks a liquid call or put, or (preferred) a debit spread, for an idea and values it.
+
+A debit spread buys one option near the money and sells a further-out one with the same expiry, at about the
+trade's target. Selling the second option pays for part of the first, so the trade costs less and loses less to
+time decay; in exchange, the profit is capped at the gap between the two strikes. The most it can lose is still
+what was paid."""
 from __future__ import annotations
 
 import re
@@ -58,6 +62,72 @@ def pick_contract(underlying: str, kind: str, price: float, horizon: str | None,
                     "mid": round(mid, 2), "spread_pct": round(spread_pct, 1), "delta": delta or None,
                     "iv": s.get("impliedVolatility")}
     return best
+
+
+def _quotes(chain: dict) -> list[dict]:
+    rows = []
+    for sym, s in chain.items():
+        q = s.get("latestQuote") or {}
+        bid, ask = q.get("bp") or 0, q.get("ap") or 0
+        if bid <= 0 or ask <= 0:
+            continue
+        mid = (bid + ask) / 2
+        rows.append({"symbol": sym, **parse(sym), "bid": bid, "ask": ask, "mid": mid, "spread_pct": (ask - bid) / mid * 100,
+                     "delta": abs((s.get("greeks") or {}).get("delta") or 0) or None, "iv": s.get("impliedVolatility")})
+    return rows
+
+
+def pick_spread(underlying: str, kind: str, price: float, target: float, horizon: str | None,
+                max_cost: float | None = None) -> dict | None:
+    """A debit spread: buy the near-the-money option, sell the same-expiry option whose strike is closest to the
+    target. Needs a real discount, a payoff at least equal to the cost, and both legs liquid."""
+    dte = DTE_BY_HORIZON.get((horizon or "").strip(), (14, 35))
+    rows = _quotes(_chain(underlying, kind, dte, price))
+    longs = [r for r in rows if r["mid"] >= MIN_PREMIUM and r["spread_pct"] <= MAX_SPREAD_PCT and not (r["delta"] and r["delta"] < 0.3)]
+    longs.sort(key=lambda r: (abs(r["delta"] - 0.5) if r["delta"] else abs(r["strike"] / price - 1) * 4) + r["spread_pct"] / 100)
+    for lg in longs[:12]:
+        shorts = [r for r in rows if r["expiry"] == lg["expiry"] and r["spread_pct"] <= MAX_SPREAD_PCT * 2
+                  and ((kind == "call" and r["strike"] > lg["strike"]) or (kind == "put" and r["strike"] < lg["strike"]))]
+        if not shorts:
+            continue
+        sh = min(shorts, key=lambda r: abs(r["strike"] - target))
+        debit = lg["mid"] - sh["mid"]
+        width = abs(sh["strike"] - lg["strike"])
+        if debit < 0.10 or width - debit < debit:          # must be able to make at least what it costs
+            continue
+        natural = lg["ask"] - sh["bid"]
+        limit = round(debit + (natural - debit) * 0.3, 2)
+        if max_cost and limit * 100 > max_cost:
+            continue
+        return {"symbol": lg["symbol"], "type": kind, "strike": lg["strike"], "expiry": lg["expiry"].isoformat(),
+                "short_symbol": sh["symbol"], "short_strike": sh["strike"], "mid": round(debit, 2), "limit": limit,
+                "width": width, "max_value": width, "single_cost": round(lg["mid"], 2), "delta": lg["delta"]}
+    return None
+
+
+def spread_mark(long_symbol: str, short_symbol: str) -> dict | None:
+    """Current value of a debit spread (long leg minus short leg), from mid prices; bid = what closing would get."""
+    d = marketdata._alpaca("/v1beta1/options/snapshots", {"symbols": f"{long_symbol},{short_symbol}", "feed": "indicative"})
+    snaps = d.get("snapshots") or {}
+    a, b = snaps.get(long_symbol), snaps.get(short_symbol)
+    if not a or not b:
+        return None
+    qa, qb = a.get("latestQuote") or {}, b.get("latestQuote") or {}
+    mid = ((qa.get("bp", 0) + qa.get("ap", 0)) - (qb.get("bp", 0) + qb.get("ap", 0))) / 2
+    return {"mid": round(mid, 2), "bid": round((qa.get("bp") or 0) - (qb.get("ap") or 0), 2)}
+
+
+def mleg_net_price(order: dict) -> float | None:
+    """Net price of a filled two-leg order: what the bought leg cost minus what the sold leg brought in."""
+    if order.get("filled_avg_price"):
+        return abs(float(order["filled_avg_price"]))
+    net = 0.0
+    for leg in order.get("legs") or []:
+        if not leg.get("filled_avg_price"):
+            return None
+        p = float(leg["filled_avg_price"])
+        net += p if leg.get("side") == "buy" else -p
+    return abs(net)
 
 
 def quote(symbol: str) -> dict | None:

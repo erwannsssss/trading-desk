@@ -1,0 +1,130 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T13:19:32-04:00",
+ "dry_run": false,
+ "equity": 10041.23,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "IREN",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 28.57,
+   "atr_pct": 9.74,
+   "why_scanned": [
+    "breaking move: -6.5% since research"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "deeply oversold (bounce candidate)",
+    "strong 20-day move (-34.3%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 7,
+     "points": [
+      "technicals.rsi14=24.138723 (deeply oversold)",
+      "technicals.price=28.57 far below sma20=40.31275",
+      "technicals.setup includes \"breakdown below 20-day low\""
+     ]
+    },
+    "fundamental": {
+     "score": 3,
+     "points": [
+      "fundamentals.net_margin_pct=-99.38 (massive loss)",
+      "fundamentals.beta=4.294 (very high volatility)",
+      "fundamentals.debt_to_equity=1.872 (elevated leverage)"
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "news[0].summary warns 80% of neocloud stocks will cease independent ops",
+      "news[4].summary mentions CoreWeave bond yield spike and inflation worries"
+     ]
+    },
+    "smart_money": {
+     "score": 0,
+     "points": [
+      "insiders_last_90d.open_market_buys=0",
+      "hedge_funds_holding=[]"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The stock is deeply oversold (RSI 24) and trading far below its 20\u2011day SMA, suggesting a short\u2011term mean\u2011reversion bounce.",
+    "catalysts": [
+     "RSI below 30",
+     "price 28.57 vs sma20 40.31",
+     "historical win\u2011rate 68.1% for deeply oversold long setups"
+    ]
+   },
+   "bear": {
+    "case": "IREN is in a strong downtrend, broke below its 20\u2011day low, has a very high beta, and faces negative macro news; the risk\u2011off regime favors a bearish view.",
+    "risks": [
+     "Unexpected positive earnings surprise",
+     "Insider or smart\u2011money buying that isn\u2019t yet reported",
+     "Rapid macro shift to risk\u2011on"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "A surprise positive catalyst (e.g., CEO\u2011led buyback or better\u2011than\u2011expected earnings) triggers a sharp rally, pushing the price above the stop and wiping out the put premium. The underlying also spikes on broader market risk\u2011on moves, making the bearish bet lose.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "In a risk\u2011off regime the bearish edge from the breakdown and negative news is weak (short\u2011setup win rate only 38%). The failure scenario is more likely than success, so we avoid adding a new position.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "horizon": null,
+    "thesis": "No trade is taken because the downside risk outweighs the modest bearish edge and the failure story (price rally on unexpected news) is more probable than a successful short move.",
+    "invalidation": "If a clear positive catalyst appears (e.g., earnings beat, insider buy), the trade could be revisited.",
+    "plain_english": "We decided not to trade IREN. The stock is very cheap and oversold, but the market is scared and the company has weak fundamentals. A sudden good news story could push the price up, making a short bet risky. So we stay out.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 24.138723
+     },
+     {
+      "fact": "technicals.price",
+      "value": 28.57
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 40.31275
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 4.294
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -99.38
+     },
+     {
+      "fact": "news[0].summary",
+      "value": "Gartner warns 80% of neocloud stocks will cease independent operations by 2030"
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'news[0].summary', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  }
+ ]
+}

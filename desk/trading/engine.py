@@ -751,11 +751,17 @@ class Engine:
         long = t["direction"] == "long"
         qty = t["filled_qty"]
         if pnl is None:
-            pnl = (price - t["entry_price"]) * qty * (1 if long else -1) * t.get("quote_to_usd", 1.0)
+            if t["asset"] == "option":
+                # options are always bought (debit) or sold (credit) as a package, whatever the view on the stock:
+                # a debit position makes money when its price rises, a credit position when it falls
+                pnl = (t["entry_price"] - price if t.get("credit") else price - t["entry_price"]) * qty * 100
+            else:
+                pnl = (price - t["entry_price"]) * qty * (1 if long else -1) * t.get("quote_to_usd", 1.0)
         if not includes_partials:
             pnl += t.get("partial_pnl", 0)
         if t["asset"] == "option":
-            initial_risk = t["entry_price"] * (t.get("filled_qty_initial") or t["qty"]) * 100
+            per = (t.get("spread_width", 0) - t["entry_price"]) if t.get("credit") else t["entry_price"]
+            initial_risk = per * (t.get("filled_qty_initial") or t["qty"]) * 100
         else:
             initial_risk = abs(t["entry_price"] - t["initial_stop"]) * (t.get("filled_qty_initial") or t["qty"]) * t.get("quote_to_usd", 1.0)
         t.update(status="closed", exit_price=price, exit_reason=reason, closed_at=self.iso, pnl_usd=round(pnl, 2),

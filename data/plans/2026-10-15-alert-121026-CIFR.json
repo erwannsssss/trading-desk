@@ -1,0 +1,124 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T12:10:26-04:00",
+ "dry_run": false,
+ "equity": 10062.29,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "CIFR",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 9.33,
+   "atr_pct": 14.01,
+   "why_scanned": [
+    "breaking move: -6.2% since research"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "deeply oversold (bounce candidate)",
+    "strong 20-day move (-44.9%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "RSI14 is deeply oversold at 22.11",
+      "Price is at 9.33, below the 20-day low of 9.8001",
+      "Deep historical backtest shows deeply oversold long setups have a 68.1 percent win rate"
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "Net margin is heavily negative at -585.75 percent",
+      "Price to sales is elevated at 21.588",
+      "Debt to equity is 9.868"
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "Recent 850 million dollar convertible note offering is dilutive and caused selling pressure",
+      "Jim Cramer advises avoiding Cipher",
+      "Sector is transitioning towards AI data centers"
+     ]
+    },
+    "smart_money": {
+     "score": 1,
+     "points": [
+      "Zero open market insider buys in the last 90 days",
+      "No hedge funds holding data listed"
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "CIFR is deeply oversold with an RSI14 of 22.11 and has plunged 44.92 percent over the last 20 days, presenting a classic mean reversion bounce candidate. Historical backtests for deeply oversold stocks show a 68.1 percent win rate, and the current price of 9.33 is sitting near the 52-week low of 8.7902.",
+    "catalysts": [
+     "Extreme oversold bounce from 52-week low territory",
+     "High short-term volatility creating rapid snapping back potential"
+    ]
+   },
+   "bear": {
+    "case": "The market regime is risk-off with high Treasury yields and avoiding high-beta growth or crypto-adjacent assets is explicitly in the playbook. Furthermore, the company just priced an 850 million dollar convertible notes offering causing severe dilution fears, negative net margins of -585.75 percent, and zero insider buying.",
+    "risks": [
+     "Massive dilution from the 850 million dollar convertible notes offering",
+     "Failing in a risk-off macro environment with high beta of 3.464",
+     "Continuing breakdown below the 20-day low of 9.8001"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The stock continues its severe downtrend due to dilution from the 850 million dollar convertible note offering and the broader risk-off macro environment, breaking through the 52-week low and stopping us out immediately.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Although the technical setup is deeply oversold, the macro environment is strictly risk-off, the company is diluting shareholders with an 850 million dollar note offering, and the fundamental net margin is deeply negative. The bear case successfully outweighs the technical mean-reversion bounce potential.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 30,
+    "horizon": "intraday",
+    "thesis": "We are passing on this stock because the risk-off market regime and heavy fundamental dilution outweigh the oversold technical reading. Although the stock is technically oversold, the massive convertible note offering and negative net margins make a long trade too dangerous.",
+    "invalidation": "Not entering a trade, so no invalidation level applies.",
+    "plain_english": "We decided not to trade this stock. Even though it looks cheap because it has dropped a lot, the company is borrowing a huge amount of money through convertible notes [bonds that can be turned into stock, which dilutes current shareholders], and the overall market is in a risk-off [defensive] mode where investors are avoiding risky assets.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 22.108531
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -44.92
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -585.75
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 3.464
+     },
+     {
+      "fact": "technicals.low_52w",
+      "value": 8.7902
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ]
+}

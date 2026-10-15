@@ -520,8 +520,8 @@ async function latestLiveSha() {
   // One tiny API call; the browser revalidates with ETag so unchanged checks are free.
   try {
     const r = await fetch(`https://api.github.com/repos/${REPO}/commits/live`, {headers: {Accept: "application/vnd.github.sha"}, cache: "no-cache"});
-    if (r.ok) { liveSha = (await r.text()).trim(); }
-  } catch (e) {}
+    liveSha = r.ok ? (await r.text()).trim() : null;  // rate-limited: fall back to the (slightly cached) branch file
+  } catch (e) { liveSha = null; }
   return liveSha;
 }
 let LIVE = {}, liveTimer = null, floorOpen = null;
@@ -650,7 +650,7 @@ $("#memo").addEventListener("close", () => { floorOpen = null; });
 document.addEventListener("click", (e) => { const s = e.target.closest("[data-person]"); if (s) showPerson(s.dataset.person); });
 
 function startLive() {
-  if (!liveTimer) { loadLive(); liveTimer = setInterval(loadLive, 45000); }
+  if (!liveTimer) { loadLive(); liveTimer = setInterval(loadLive, 60000); }
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") loadLive(); });
 }
 

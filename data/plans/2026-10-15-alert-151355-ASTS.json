@@ -1,0 +1,102 @@
+{
+ "date": "2026-10-15",
+ "session": "alert",
+ "created_at": "2026-10-15T15:13:55-04:00",
+ "dry_run": false,
+ "equity": 10015.74,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "ASTS",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 44.48,
+   "atr_pct": 10.28,
+   "why_scanned": [
+    "breaking move: +5.5% since research"
+   ],
+   "setups": [
+    "strong 20-day move (-29.1%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 2,
+     "points": [
+      "technicals.rsi14 low suggests oversold",
+      "technicals.price below sma20, sma50, sma200 indicates downtrend",
+      "short_volume.short_volume_pct_latest high indicates bearish pressure"
+     ]
+    },
+    "fundamental": {
+     "score": 1,
+     "points": [
+      "fundamentals.net_margin_pct -536.66 extremely negative",
+      "fundamentals.price_to_sales 143.214 very high",
+      "fundamentals.beta 2.893 high volatility"
+     ]
+    },
+    "news_sentiment": {
+     "score": -2,
+     "points": [
+      "news.headline downgrade and price target cut to $54",
+      "insiders_last_90d.sell_value_usd 3063880 far exceeds buy value",
+      "short_volume.short_volume_pct_5d_avg 56.1% indicates crowding"
+     ]
+    },
+    "smart_money": {
+     "score": -1,
+     "points": [
+      "hedge_funds_holding empty, no supportive smart money",
+      "insiders_last_90d.open_market_sells > buys"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The stock is deeply oversold (RSI 32) and has just rallied 5.5% today, suggesting a short\u2011term bounce. A mean\u2011reversion trade could capture a quick rebound toward the 20\u2011day SMA around $56.8.",
+    "catalysts": [
+     "intraday buying pressure from short\u2011covering",
+     "potential positive news on satellite contracts"
+    ]
+   },
+   "bear": {
+    "case": "ASTS is in a strong downtrend, trading well below all moving averages, with a 41.9% short\u2011sale volume and recent downgrades cutting the price target to $54. Negative fundamentals and heavy insider selling further support a bearish view.",
+    "risks": [
+     "unexpected positive catalyst could trigger a short squeeze",
+     "price could stabilize above $45 if broader market rallies"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "A surprise positive announcement (e.g., a launch contract) triggers a rapid short\u2011squeeze, pushing the price above $55. The put options expire worthless and the loss exceeds the planned risk.",
+     "failure_more_likely": false
+    },
+    "decision": "short",
+    "reason": "All indicators point to continued weakness and the stock is heavily shorted. A put\u2011option position aligns with the risk\u2011off regime and offers limited loss.",
+    "bucket": "tactical",
+    "style": "short/fade",
+    "expression": "put_options",
+    "order_type": "limit",
+    "entry": 44.5,
+    "stop": 51.5,
+    "target": 35.0,
+    "conviction": 7,
+    "confidence_pct": 60,
+    "horizon": "1-5 days",
+    "thesis": "ASTS is in a prolonged downtrend, trading far below its 20\u2011day SMA and 52\u2011week low. RSI is low but the overwhelming short interest (41.9%) and recent downgrades suggest further downside. A put\u2011option allows us to profit from a move toward the $35\u2011$38 range while limiting loss if the stock rallies.",
+    "invalidation": "If the price breaks above the 20\u2011day SMA (~$56.8) or a major positive news event occurs, the bearish thesis is invalidated.",
+    "plain_english": "The stock is falling and many traders are betting it will keep falling (high short interest). We buy a put option, which makes money if the price goes down, and we set a stop if it rises too high. Our target is around $35, and we think there\u2019s about a 60% chance we\u2019ll hit it in the next few days.",
+    "reward_to_risk": 1.36
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 0,
+    "problems": [
+     "only 0 cited numbers checked out (need 2+)"
+    ]
+   },
+   "status": "blocked_by_fact_check"
+  }
+ ]
+}

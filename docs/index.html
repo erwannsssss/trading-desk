@@ -845,6 +845,7 @@ function showMemo(m, trade) {
     ${d.plain_english ? `<button class="link" data-eli="eli-memo">Explain like I'm new</button><div class="eli note" id="eli-memo" hidden>${esc(d.plain_english)}</div>` : ""}
     ${d.entry ? `<p class="small">Entry ${px(d.entry)}, stop ${px(d.stop)}, target ${px(d.target)}, ${esc(d.horizon || "")}. Wrong if: ${esc(d.invalidation || "")}</p>` : ""}
     ${trade && trade.loan_usd ? `<p class="small"><b>Financing:</b> borrowed ${money(trade.loan_usd, 0)} from the bank${trade.interest_usd != null ? `; repaid it with ${money(trade.interest_usd)} interest` : ""}.</p>` : ""}
+    ${trade && trade.opened_at ? `<h3>Trade replay</h3><p class="small muted" id="replay-cap">Loading the price chart...</p><div class="chart-box" id="replay-box"><canvas id="c-replay"></canvas></div>` : ""}
     ${d.expression && d.expression !== "shares" ? `<p class="small"><b>Expressed with:</b> ${d.expression === "call_options" ? "call options" : "put options"}${trade && trade.option_symbol ? ` (${esc(trade.option_symbol)})` : ""}</p>` : ""}
     ${trade && trade.postmortem ? `<h3>Post-mortem: ${esc(trade.postmortem.verdict)}</h3><p class="note">${esc(trade.postmortem.what_happened)}</p>${trade.postmortem.lesson ? `<p class="small"><b>Lesson:</b> ${esc(trade.postmortem.lesson)}</p>` : ""}` : ""}
     ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
@@ -861,6 +862,51 @@ function showMemo(m, trade) {
     ${(d.evidence || []).length ? `<ul class="small muted">${d.evidence.map(e => `<li>${esc(e.fact)} = ${esc(e.value)}</li>`).join("")}</ul>` : ""}`;
   gloss($("#memo-body"));
   $("#memo").showModal();
+  if (trade && trade.opened_at) drawReplay(trade);
+}
+
+/* trade replay: price path with the entry, every stop level, the target and the exit */
+async function drawReplay(trade) {
+  const cap = $("#replay-cap"), box = $("#replay-box");
+  let r;
+  try {
+    const res = await fetch(`replays/${encodeURIComponent(trade.id)}.json?v=${encodeURIComponent(DATA.generated_at)}`);
+    if (!res.ok) throw new Error(res.status);
+    r = await res.json();
+  } catch (e) {
+    if (cap) cap.textContent = "The replay chart is drawn at the next 15-minute check.";
+    if (box) box.hidden = true;
+    return;
+  }
+  if (!document.getElementById("c-replay") || !r.bars.length) return;
+  const T = r.bars.map(b => new Date(b.t).getTime());
+  const fmt = (ms) => new Date(ms).toLocaleString("en-US", r.timeframe === "1Day" ? {month: "short", day: "numeric"} : {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"});
+  const nearest = (iso) => { if (!iso) return -1; const x = new Date(iso).getTime(); let best = -1, gap = Infinity; T.forEach((t, i) => { const g = Math.abs(t - x); if (g < gap) { gap = g; best = i; } }); return best; };
+  const stops = (r.stops || []).map(s => ({t: new Date(s.t).getTime(), v: s.stop})).sort((a, b) => a.t - b.t);
+  const closedAt = r.closed_at ? new Date(r.closed_at).getTime() : Infinity, openedAt = new Date(r.opened_at).getTime();
+  const stopAt = (t) => { if (t < openedAt - 1 || t > closedAt + 1) return null; let v = stops.length ? stops[0].v : null; for (const s of stops) if (s.t <= t) v = s.v; return v; };
+  const iIn = nearest(r.opened_at), iOut = r.closed_at ? nearest(r.closed_at) : -1;
+  const marker = (i, v) => T.map((_, k) => k === i ? v : null);
+  const live = (v) => T.map(t => (t >= openedAt - 1 && t <= closedAt + 1) ? v : null);
+  const sets = [
+    {label: "Price", data: r.bars.map(b => b.c), borderColor: css("--ink"), borderWidth: 2, pointRadius: 0, tension: .15, order: 1},
+    {label: "Stop (moves as it trails)", data: T.map(stopAt), borderColor: css("--loss"), borderWidth: 1.6, borderDash: [6, 3], pointRadius: 0, stepped: true, order: 2},
+    {label: "Target", data: live(r.target), borderColor: css("--gain"), borderWidth: 1.6, borderDash: [2, 3], pointRadius: 0, order: 3},
+    {label: "Entry price", data: live(r.entry), borderColor: css("--ink-3"), borderWidth: 1, borderDash: [1, 3], pointRadius: 0, order: 4},
+    {label: "Entry", data: marker(iIn, r.entry), showLine: false, pointRadius: 7, pointStyle: "triangle", backgroundColor: css("--ink"), borderColor: css("--paper"), borderWidth: 2, order: 0}];
+  if (iOut >= 0 && r.exit != null) sets.push({label: "Exit", data: marker(iOut, r.exit), showLine: false, pointRadius: 7, pointStyle: "rectRot",
+    backgroundColor: css("--signal"), borderColor: css("--ink"), borderWidth: 2, order: 0});
+  mkChart("c-replay", {type: "line", data: {labels: T.map(fmt), datasets: sets},
+    options: {interaction: {mode: "index", intersect: false}, spanGaps: false,
+      plugins: {legend: {display: true, labels: {color: css("--ink-2"), boxWidth: 18, filter: (i) => i.text !== "Entry price"}},
+        tooltip: {filter: (i) => i.parsed.y != null, callbacks: {label: (i) => `${i.dataset.label}: ${px(i.parsed.y)}`}}},
+      scales: {x: axis("", {grid: {display: false}, ticks: {color: css("--ink-3"), maxTicksLimit: 6, maxRotation: 0}}),
+               y: axis(r.on_underlying ? `${r.symbol} stock price` : "Price")}}});
+  const moves = Math.max(0, stops.length - 1);
+  const tfName = {"15Min": "15-minute", "1Hour": "hourly", "1Day": "daily"}[r.timeframe] || r.timeframe;
+  if (cap) cap.textContent = `${tfName} prices${r.on_underlying ? " of the stock (this trade used options, so its stop and target are stock prices)" : ""}. `
+    + `The triangle marks the entry${r.exit != null ? ", the diamond the exit" : ""}. The stop ${moves ? `moved ${moves} time${moves > 1 ? "s" : ""}` : "hasn't moved yet"}.`
+    + (r.final ? ` Result: ${signed(r.pnl_usd)}${r.r_result != null ? ` (${r.r_result}R), ${r.exit_reason || ""}` : ""}.` : " Still open; redrawn about every hour.");
 }
 
 

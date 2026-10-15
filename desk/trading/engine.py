@@ -638,6 +638,7 @@ class Engine:
         new_stop = trailed_stop(t["direction"], t["underlying_entry"], t["initial_stop"], t["stop"], under)
         if new_stop is not None:
             t["stop"] = new_stop
+            ledger.stop_moved(t, new_stop, self.iso)
             ledger.note(t, f"exit level on the underlying moved to {_p(new_stop)}", self.iso)
             floor.event("options", f"Raised the exit level on {t['symbol']} calls/puts to {_p(new_stop)} to lock in gains", t["symbol"])
 
@@ -652,6 +653,7 @@ class Engine:
             self._place_crypto_stop(t, new_stop, t["filled_qty"])
         what = "to breakeven" if abs(new_stop - t["entry_price"]) < 1e-9 else f"to {_p(new_stop)} (trailing)"
         ledger.note(t, f"stop moved {what}", self.iso)
+        ledger.stop_moved(t, new_stop, self.iso)
         t["stop"] = new_stop
         self.alert(f"Stop on {esc(t['symbol'])} moved {what}. Locking in gains.", agent="positions", symbol=t["symbol"])
 

@@ -37,6 +37,7 @@ def build(state: dict) -> None:
     scores = _safe(lambda: scorecard.seat_scores(trades, curve), {})
     plans = _recent_plans(days=10)
     ghost = _ghost(plans, trades)
+    _safe(lambda: __import__("desk.replay", fromlist=["update"]).update(trades), 0)
     days = _write_days(plans, ghost)
 
     data = {

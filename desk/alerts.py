@@ -118,6 +118,7 @@ Return JSON: {{"action": "hold"|"close"|"tighten", "new_stop": number|null, "rea
             if ok:
                 if t["asset"] == "option":
                     t["stop"] = ns
+                    ledger.stop_moved(t, ns, now().isoformat(timespec="seconds"))
                 else:
                     engine._move_stop(t, ns)
                 result = f"stop tightened to {ns}"

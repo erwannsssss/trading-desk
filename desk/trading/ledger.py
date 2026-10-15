@@ -26,5 +26,13 @@ def active_symbols(trades: list[dict]) -> set[str]:
     return {t["symbol"] for t in trades if t["status"] in ACTIVE}
 
 
+def stop_moved(trade: dict, stop: float, when: str) -> None:
+    """Keep every stop level with its time, for the trade replay chart."""
+    hist = trade.setdefault("stop_history", [])
+    if not hist and trade.get("initial_stop") is not None:
+        hist.append({"t": trade.get("opened_at") or when, "stop": trade["initial_stop"]})
+    hist.append({"t": when, "stop": stop})
+
+
 def note(trade: dict, text: str, when: str) -> None:
     trade.setdefault("notes", []).append(f"{when[:16]} {text}")

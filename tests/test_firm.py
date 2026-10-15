@@ -122,6 +122,11 @@ class FirmTests(unittest.TestCase):
         self.assertEqual(rules["Risk per trade over cap"]["seat"], "sizer")
         self.assertEqual(again, [])                           # each finding is reported once
 
+    def test_better_fill_than_planned_is_fine(self):
+        good = self._trade(id="t2", entry_price=99.0)          # bought cheaper than planned
+        with mock.patch("desk.activity.event", lambda *a, **k: None):
+            self.assertNotIn("Fill too far from plan", [f["rule"] for f in compliance.audit([good], self._book())])
+
     def test_big_loss_flagged_on_close(self):
         t = self._trade(status="closed", r_result=-2.4, exit_reason="stop", closed_at="2026-10-15T12:00:00-04:00")
         with mock.patch("desk.activity.event", lambda *a, **k: None):

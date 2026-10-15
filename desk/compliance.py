@@ -58,10 +58,11 @@ def check_open(t: dict, equity: float) -> list[dict]:
     if t.get("stop") is None and asset != "option":
         out.append(("No stop loss", "major", "risk", "Position is open without a stop loss; every trade must have one."))
     if entry and plan and asset != "option":
-        slip = abs(entry / plan - 1) * 100
+        long = t.get("direction") == "long"
+        slip = (entry / plan - 1) * 100 * (1 if long else -1)   # positive = worse than planned
         if slip > SLIPPAGE_LIMIT.get(asset, 0.5):
             out.append(("Fill too far from plan", "minor", "execution",
-                        f"Filled at {entry:g}, {slip:.2f}% from the planned {plan:g} (limit {SLIPPAGE_LIMIT.get(asset, 0.5)}%)."))
+                        f"Filled at {entry:g}, {slip:.2f}% worse than the planned {plan:g} (limit {SLIPPAGE_LIMIT.get(asset, 0.5)}%)."))
     risk = None
     if asset == "option" and t.get("premium_paid") and t.get("filled_qty"):
         risk = t["premium_paid"] * t["filled_qty"] * 100

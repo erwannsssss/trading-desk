@@ -1,0 +1,34 @@
+name: Make staff photos
+
+# Manual only: generates AI headshots for anyone at the firm who doesn't have one yet.
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Space-separated slugs to regenerate (e.g. jake-morrison ruth-klein); blank = only missing"
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  faces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests pillow
+      - run: |
+          if [ -n "${{ inputs.force }}" ]; then python scripts/make_faces.py --force ${{ inputs.force }}; else python scripts/make_faces.py; fi
+      - name: Save
+        if: always()
+        run: |
+          git config user.name "trading-desk-bot"
+          git config user.email "trading-desk-bot@users.noreply.github.com"
+          git add docs/faces
+          git diff --cached --quiet && exit 0
+          git commit -m "Staff photos $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase -X theirs origin main && git push origin HEAD:main && break; sleep 5; done

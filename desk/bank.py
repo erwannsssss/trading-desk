@@ -26,11 +26,20 @@ def loan_needed(notional: float, equity: float, exposure_now: float) -> float:
     return round(max(0.0, notional - free), 2)
 
 
-def interest(loan: float, start_iso: str | None, end: datetime) -> float:
+def current_apr() -> float:
+    """8% a year, or 6.5% once the firm unlocks better bank terms (firm.UNLOCKS)."""
+    try:
+        from desk import firm
+        return firm.loan_apr()
+    except Exception:
+        return LOAN_APR
+
+
+def interest(loan: float, start_iso: str | None, end: datetime, apr: float | None = None) -> float:
     if not loan or not start_iso:
         return 0.0
     days = max(0.0, (end - datetime.fromisoformat(start_iso)).total_seconds() / 86400)
-    return round(loan * LOAN_APR * days / 365, 2)
+    return round(loan * (apr if apr is not None else LOAN_APR) * days / 365, 2)
 
 
 def totals(trades: list[dict], at: datetime) -> dict:
@@ -43,10 +52,10 @@ def totals(trades: list[dict], at: datetime) -> dict:
         if t.get("status") in ACTIVE:
             borrowed += loan
             if t.get("opened_at"):  # interest starts when the order fills
-                accruing += interest(loan, t["opened_at"], at)
+                accruing += interest(loan, t["opened_at"], at, t.get("loan_apr"))
         elif t.get("status") == "closed":
             paid += t.get("interest_usd") or 0
-    return {"credit_line": CREDIT_LINE, "apr_pct": LOAN_APR * 100, "bank": BANK_NAME,
+    return {"credit_line": CREDIT_LINE, "apr_pct": round(current_apr() * 100, 2), "bank": BANK_NAME,
             "borrowed": round(borrowed, 2), "available": round(CREDIT_LINE - borrowed, 2),
             "interest_paid": round(paid, 2), "interest_accruing": round(accruing, 2),
             "financing_cost": round(paid + accruing, 2)}

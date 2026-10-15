@@ -252,6 +252,7 @@ class Engine:
         }
 
         t["loan_usd"] = bank.loan_needed(notional, self.book.equity, self.book.gross_exposure)
+        t["loan_apr"] = bank.current_apr()
         if self.state.get("dry_run"):
             t["status"] = "would_trade"
             self.trades.append(t)
@@ -321,6 +322,7 @@ class Engine:
                        f"Exit if {esc(idea['symbol'])} hits {_p(stop)}; target {_p(target)}")
             return "entered"
         t["loan_usd"] = bank.loan_needed(premium_total, self.book.equity, self.book.gross_exposure)
+        t["loan_apr"] = bank.current_apr()
         o = alpaca.submit_raw({"symbol": c["symbol"], "side": "buy", "type": "limit", "qty": str(qty),
                                "limit_price": f"{limit:.2f}", "time_in_force": "day", "client_order_id": trade_id[:48]})
         t.update(status="pending", entry_order_id=o["id"])
@@ -339,7 +341,7 @@ class Engine:
     def _borrow(self, t: dict) -> None:
         if t.get("loan_usd"):
             self.book.borrowed += t["loan_usd"]
-            floor.event("treasury", f"Borrowed ${t['loan_usd']:,.0f} from {bank.BANK_NAME} for {t['symbol']} at {bank.LOAN_APR * 100:.0f}% a year "
+            floor.event("treasury", f"Borrowed ${t['loan_usd']:,.0f} from {bank.BANK_NAME} for {t['symbol']} at {(t.get("loan_apr") or bank.LOAN_APR) * 100:g}% a year "
                         f"(${self.book.borrowed:,.0f} of ${bank.CREDIT_LINE:,.0f} now drawn)", t["symbol"], kind="trade")
 
     def _fits_broker(self, t: dict, asset: str) -> bool:
@@ -644,7 +646,7 @@ class Engine:
         t.update(status="closed", exit_price=price, exit_reason=reason, closed_at=self.iso, pnl_usd=round(pnl, 2),
                  r_result=round(pnl / initial_risk, 2) if initial_risk else None)
         if t.get("loan_usd"):
-            t["interest_usd"] = bank.interest(t["loan_usd"], t.get("opened_at"), self.at)
+            t["interest_usd"] = bank.interest(t["loan_usd"], t.get("opened_at"), self.at, t.get("loan_apr"))
             t["pnl_after_interest"] = round(pnl - t["interest_usd"], 2)
             floor.event("treasury", f"Repaid {bank.BANK_NAME} ${t['loan_usd']:,.0f} + ${t['interest_usd']:,.2f} interest for {t['symbol']}",
                         t["symbol"], kind="trade")

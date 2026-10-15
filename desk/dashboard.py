@@ -36,6 +36,8 @@ def build(state: dict) -> None:
     curve = _curve()
     scores = _safe(lambda: scorecard.seat_scores(trades, curve), {})
     plans = _recent_plans(days=10)
+    ghost = _ghost(plans, trades)
+    days = _write_days(plans, ghost)
 
     data = {
         "generated_at": now().isoformat(timespec="seconds"),
@@ -60,9 +62,10 @@ def build(state: dict) -> None:
         "positions": _positions(trades, details),
         "trades": [_slim(t) for t in sorted(trades, key=lambda t: t.get("created_at", ""), reverse=True)],
         "memos": _memos(trades, plans),
-        "plan": _latest_plan(plans),
+        "plan": _day_plan(plans, days[-1]) if days else None,
+        "days": days,
         "stats": _stats(trades, curve),
-        "ghost": _ghost(plans, trades),
+        "ghost": [g for g in ghost if g.get("date") == (days[-1] if days else None)],
         "rulebook": _json(config.DATA_DIR / "rulebook.json", []),
         "tournament": _json(config.DATA_DIR / "tournament.json", None),
         "roster": activity.roster(),
@@ -73,10 +76,15 @@ def build(state: dict) -> None:
         "interns": _safe(_interns, []),
         "grading_starts": _grading_starts(),
         "reviews": (_json(config.DATA_DIR / "reviews.json", []) or [None])[-1],
+        "review_history": _json(config.DATA_DIR / "reviews.json", []),
+        "firm": _safe(lambda: __import__("desk.firm", fromlist=["summary"]).summary(book.equity), None),
+        "pnl": _safe(lambda: __import__("desk.pnl", fromlist=["statement"]).statement(
+            trades, __import__("desk.firm", fromlist=["load"]).load()), None),
+        "compliance": _safe(lambda: __import__("desk.compliance", fromlist=["summary"]).summary(), None),
         "alumni": _safe(lambda: staff.load()["alumni"], []),
         "graduates": _safe(lambda: _json(config.DATA_DIR / "interns.json", {}).get("graduates", []), []),
-        "cards": _json(config.DATA_DIR / "cards.json", [])[-12:],
-        "recaps": _json(config.DATA_DIR / "recaps.json", [])[-12:],
+        "cards": _json(config.DATA_DIR / "cards.json", []),
+        "recaps": _json(config.DATA_DIR / "recaps.json", []),
         "schedule": SCHEDULE,
         "backtest": _json(config.DATA_DIR / "backtest.json", None),
         "sessions_today": [{"session": p.get("session"), "created_at": p.get("created_at"),
@@ -241,6 +249,42 @@ def _memos(trades: list[dict], plans: list[dict]) -> dict:
             idea = next((i for i in plan.get("ideas", []) if i.get("symbol") == sym), None)
             if idea and idea.get("decision"):
                 out[key] = _memo(idea)
+    return out
+
+
+DAYS_DIR = DOCS / "days"
+
+
+def _write_days(plans: list[dict], ghost: list[dict]) -> list[str]:
+    """One archive file per day (game plan + passed ideas), so the dashboard can show any past day on request.
+    Days in the last 10 are rewritten every run; older files stay as they were last written."""
+    DAYS_DIR.mkdir(parents=True, exist_ok=True)
+    for day in sorted({p.get("date") for p in plans if p.get("date")}):
+        memos = {f"{p['_file']}|{i['symbol']}": _memo(i) for p in plans if p.get("date") == day
+                 for i in p.get("ideas", []) if i.get("decision") and i.get("symbol")}
+        body = {"date": day, "plan": _day_plan(plans, day), "ghost": [g for g in ghost if g.get("date") == day], "memos": memos,
+                "written_at": now().isoformat(timespec="minutes")}
+        (DAYS_DIR / f"{day}.json").write_text(json.dumps(body, default=str, separators=(",", ":")))
+    return sorted(p.stem for p in DAYS_DIR.glob("*.json"))
+
+
+def _day_plan(plans: list[dict], day: str) -> dict | None:
+    """Every research session from one New York date, in order, with the latest market read."""
+    todays = [p for p in plans if p.get("date") == day]
+    if not todays:
+        return None
+    base = next((p for p in reversed(todays) if p.get("macro")), todays[-1])
+    out = _latest_plan([base])
+    out["ideas"] = []
+    for plan in todays:
+        out["ideas"] += _latest_plan([plan])["ideas"]
+    out["sessions"] = [{"session": p.get("session"), "created_at": p.get("created_at"),
+                        "approved": sum(i.get("status") == "approved" for i in p.get("ideas", [])),
+                        "researched": len(p.get("ideas", []))} for p in todays]
+    out["later_sessions"] = len(todays) - 1
+    out["ai_calls"] = sum(p.get("ai_calls") or 0 for p in todays)
+    out["minutes"] = round(sum(p.get("minutes") or 0 for p in todays), 1)
+    out["date"] = day
     return out
 
 

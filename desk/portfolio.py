@@ -50,6 +50,11 @@ def snapshot(state: dict) -> tuple[Book, dict]:
         book.open_risk = sum(_live_risk(t) for t in trades if t.get("status") in bank.ACTIVE)
     except Exception as exc:
         print(f"bank totals failed: {exc}")
+    try:
+        from desk import firm
+        book.opex = firm.opex_total()
+    except Exception as exc:
+        print(f"firm costs failed: {exc}")
     details = {"alpaca_account": acct, "alpaca_positions": pos, "alpaca_orders": orders,
                "oanda_summary": fx, "oanda_trades": fx_trades}
     return book, details

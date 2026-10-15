@@ -31,6 +31,7 @@ LABELS = {
     "scanner": "picks that moved", "factcheck": "blocks that saved money",
     "sizer": "losses kept within plan", "execution": "orders filled", "positions": "winners protected",
     "options": "options trades won", "risk": "days within the loss limit",
+    "crypto": "calls right", "fx": "calls right", "events": "calls right",
 }
 BULLISH = ("strong uptrend", "recovery")
 BEARISH = ("risk-off/defensive", "panic/high volatility")
@@ -152,7 +153,8 @@ def seat_scores(trades: list[dict], curve: list[dict] | None = None) -> dict:
         tally[seat][0] += int(bool(ok))
         tally[seat][1] += 1
 
-    spec_key = {"technical": "technical", "fundamental": "fundamental", "sentiment": "news_sentiment", "smartmoney": "smart_money"}
+    spec_key = {"technical": "technical", "fundamental": "fundamental", "sentiment": "news_sentiment", "smartmoney": "smart_money",
+                "crypto": "crypto_desk", "fx": "fx_desk", "events": "event_desk"}
     for g in data["graded"].values():
         if g["date"] < since:
             continue

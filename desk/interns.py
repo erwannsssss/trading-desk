@@ -15,6 +15,7 @@ import json
 import random
 from datetime import datetime, timedelta
 
+from desk import firm
 from desk import ai, config, marketdata
 from desk.brokers import oanda
 from desk.state import now
@@ -72,7 +73,8 @@ def _hire(data: dict) -> dict:
 
 def ensure_staffed() -> None:
     data = _load()
-    while sum(i["status"] == "intern" for i in data["interns"]) < SLOTS:
+
+    while sum(i["status"] == "intern" for i in data["interns"]) < firm.intern_slots():
         _hire(data)
     _save(data)
 
@@ -223,7 +225,7 @@ def update() -> list[str]:
     """Mark every intern to market, close finished trades, and hire or let go. Returns announcements."""
     data = _load()
     news = []
-    while sum(i["status"] == "intern" for i in data["interns"]) < SLOTS:
+    while sum(i["status"] == "intern" for i in data["interns"]) < firm.intern_slots():
         new = _hire(data)
         news.append(f"New intern: {new['name']}. {new['persona']}")
     _apply_queue(data)
@@ -273,7 +275,7 @@ def update() -> list[str]:
             msg = f"{intern['name']} took ${START:.0f} down to ${intern['equity']:,.2f}. HR has let them go."
             news.append(msg)
             _floor("hr", msg, kind="fire")
-    while sum(i["status"] == "intern" for i in data["interns"]) < SLOTS:
+    while sum(i["status"] == "intern" for i in data["interns"]) < firm.intern_slots():
         new = _hire(data)
         news.append(f"New intern: {new['name']}. {new['persona']}")
     data["interns"] = [i for i in data["interns"] if i["status"] in ("intern", "junior")] + \

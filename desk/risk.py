@@ -25,12 +25,13 @@ class Book:
     open_risk: float = 0.0              # $ all open/pending trades would lose if every stop hit
     financing_cost: float = 0.0         # bank interest paid and building up (bank.py)
     borrowed: float = 0.0               # outstanding bank loans
+    opex: float = 0.0                   # payroll and bonuses paid to staff (firm.py)
 
     @property
     def equity(self) -> float:
-        """Firm equity = $10k plus profit/loss in both accounts, minus interest owed to the bank."""
+        """Firm equity = $10k plus profit/loss in both accounts, minus bank interest, payroll and bonuses."""
         pnl = (self.alpaca_equity - self.baseline_alpaca) + (self.oanda_nav - self.baseline_oanda)
-        return config.STARTING_CAPITAL + pnl - self.financing_cost
+        return config.STARTING_CAPITAL + pnl - self.financing_cost - self.opex
 
     @property
     def gross_exposure(self) -> float:

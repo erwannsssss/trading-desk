@@ -30,7 +30,7 @@ def _style(*seats: str) -> str:
     try:
         from desk import staff
         found = {s: staff.approaches().get(s) for s in seats}
-        lines = [f"- {staff.SEATS[s][1]} ({staff.name(s)}): {a}" for s, a in found.items() if a]
+        lines = [f"- {staff.ALL_SEATS[s][1]} ({staff.name(s)}): {a}" for s, a in found.items() if a]
         return ("\nWORKING STYLE OF NEW HIRES (follow it for that role):\n" + "\n".join(lines) + "\n") if lines else ""
     except Exception:
         return ""
@@ -56,6 +56,86 @@ Decide:
 Return JSON: {{"regime": str, "risk_appetite": int, "bucket_weights": {{"core": int, "tactical": int, "high_risk": int}},
 "playbook": {{"use": [str], "avoid": [str]}}, "favored": [str], "avoid": [str], "key_events": [str], "overnight_read": str, "summary": str}}"""
     return ai.ask(prompt, system=DESK, want_json=True, temperature=0.3)
+
+
+# ---- Unlocked desks (firm.UNLOCKS) ---------------------------------------------
+# seat: (notes key, which ideas it covers, what it focuses on)
+DESK_ROLES = {
+    "crypto": ("crypto_desk", "crypto",
+               "CRYPTO STRATEGIST: the crypto-specific read: this coin's trend and momentum against Bitcoin and the "
+               "other majors in the data, volatility regime, liquidity and weekend effects, hype vs. real buying"),
+    "fx": ("fx_desk", "forex",
+           "FX STRATEGIST: interest-rate gap and central-bank direction for both currencies (from the macro data), the "
+           "US dollar trend, carry, which trading session moves this pair, and key round-number levels"),
+    "events": ("event_desk", "stock",
+               "EVENT-DRIVEN ANALYST: the upcoming earnings date, the past earnings surprises, how the stock reacted to "
+               "recent news, the risk of a big gap, and whether to hold through the event or trade the reaction"),
+}
+
+
+def desk_roles(dossier: dict) -> list[tuple[str, str, str]]:
+    """Unlocked desks that should weigh in on this idea: (seat, notes key, focus)."""
+    try:
+        from desk import firm
+        fdata = firm.load()
+    except Exception:
+        return []
+    out = []
+    for seat, (key, asset, focus) in DESK_ROLES.items():
+        if not firm.seat_unlocked(seat, fdata):
+            continue
+        if seat == "events":
+            if dossier.get("asset_type") == "stock" and (dossier.get("upcoming_earnings") or dossier.get("earnings_history")):
+                out.append((seat, key, focus))
+        elif dossier.get("asset_type") == asset:
+            out.append((seat, key, focus))
+    return out
+
+
+def desk_notes(dossier: dict, macro: dict) -> dict:
+    """Extra specialist notes from unlocked desks (one AI call covering all that apply)."""
+    roles = desk_roles(dossier)
+    if not roles:
+        return {}
+    from desk import staff
+    keys = ", ".join(f'"{k}": {{"score": int, "points": [str]}}' for _, k, _ in roles)
+    prompt = f"""You are the firm's specialist desk{'s' if len(roles) > 1 else ''} writing a note on {dossier['symbol']} ({dossier['asset_type']}).
+{_style(*(s for s, _, _ in roles))}
+""" + "\n".join(f"- {k} ({staff.name(s)}): {f}" for s, k, f in roles) + f"""
+Market backdrop: {macro.get('regime')} | {macro.get('summary')}
+
+DOSSIER:
+{_j(dossier)}
+
+Each scores -5 (strongly bearish) to +5 (strongly bullish) with 2-4 evidence-based points from the data.
+Return JSON: {{{keys}}}"""
+    out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.3)
+    return {k: out[k] for _, k, _ in roles if isinstance(out, dict) and isinstance(out.get(k), dict)}
+
+
+def quant_note(dossier: dict) -> dict | None:
+    """Quant desk (once unlocked): the backtested record of this idea's chart setups. Plain code, no AI."""
+    try:
+        from desk import config, firm
+        if not firm.seat_unlocked("quantdesk"):
+            return None
+        path = config.DATA_DIR / "backtest.json"
+        if not path.exists():
+            return None
+        results = json.loads(path.read_text()).get("results") or {}
+        setups = dossier.get("technicals", {}).get("setups") or []
+        rows = {s: results[s] for s in setups if s in results}
+        return {"setups_backtested": rows or "none of this idea's setups have a backtest"} if setups else None
+    except Exception:
+        return None
+
+
+def _team_record(extra: dict) -> str:
+    team = extra.get("team")
+    if not team:
+        return ""
+    return ("TEAM TRACK RECORDS (levels and how often each person's calls were right over 30 days; give more weight "
+            "to senior, proven people and less to anyone under 50%): " + _j(team) + "\n")
 
 
 # ---- Per-idea debate ---------------------------------------------------------
@@ -124,6 +204,7 @@ def _decision_rules(dossier: dict, extra: dict) -> str:
     options_ok = dossier["asset_type"] in ("stock", "etf")
     return f"""Current price: {t['price']}. ATR (typical daily range): {t.get('atr14')} ({t.get('atr_pct')}%).
 {DESK_TARGET}
+{_team_record(extra)}
 SESSION: {extra.get('session_note', '')}
 STRATEGY TOURNAMENT (how each style has actually performed for this desk; lean toward what works): {_j(extra.get('tournament') or 'no history yet')}
 BACKTESTED EDGE OF CHART SETUPS (2 years of history): {_j(extra.get('backtest') or 'not available')}
@@ -176,15 +257,26 @@ BEAR: {_j(bear_case)}
 {_decision_rules(dossier, extra)}
 
 Return only the DECISION JSON."""
-    return ai.ask(prompt, system=DESK, want_json=True, temperature=0.2)
+    return ai.ask(prompt, system=DESK, want_json=True, temperature=0.2, check=_good_decision)
+
+
+def _good_decision(d) -> bool:
+    return isinstance(d, dict) and d.get("decision") in ("long", "short", "pass")
+
+
+def _good_quick(out) -> bool:
+    return isinstance(out, dict) and _good_decision(out.get("decision")) and isinstance(out.get("specialists"), dict)
 
 
 def quick_desk(dossier: dict, macro: dict, planned_today: list[dict], holdings: list[str],
                rulebook: list[str], extra: dict | None = None) -> dict:
     """The whole team in ONE call, for the fast intraday and overnight sessions (saves the free AI quota)."""
     extra = extra or {}
+    roles = desk_roles(dossier)
+    role_lines = "".join(f"\nAlso include a specialist note \"{k}\" from the {f}" for _, k, f in roles)
+    role_json = "".join(f', "{k}": {{{{"score": int, "points": [str]}}}}' for _, k, _ in roles).replace("{{", "{").replace("}}", "}")
     prompt = f"""Run the whole desk on {dossier['symbol']} ({dossier['asset_type']}) in one pass, keeping each role honest
-and separate: four specialists, a bull, a bear who attacks the bull, then the portfolio manager's final call.
+and separate: four specialists, a bull, a bear who attacks the bull, then the portfolio manager's final call.{role_lines}
 {_style(*("technical", "fundamental", "sentiment", "smartmoney", "bull", "bear", "pm"))}
 MARKET GAME PLAN: {_j(macro)}
 ALREADY PLANNED TODAY: {_j(planned_today)}
@@ -197,11 +289,11 @@ DOSSIER:
 {_decision_rules(dossier, extra)}
 
 Return JSON: {{"specialists": {{"technical": {{"score": int, "points": [str]}}, "fundamental": {{"score": int, "points": [str]}},
-"news_sentiment": {{"score": int, "points": [str]}}, "smart_money": {{"score": int, "points": [str]}}, "best_style": str}},
+"news_sentiment": {{"score": int, "points": [str]}}, "smart_money": {{"score": int, "points": [str]}}{role_json}, "best_style": str}},
 "bull": {{"direction": "long"|"short", "case": str, "catalysts": [str]}},
 "bear": {{"case": str, "risks": [str]}},
 "decision": <the DECISION JSON>}}"""
-    out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.25)
+    out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.25, check=_good_quick)
     if not isinstance(out, dict) or not isinstance(out.get("decision"), dict):
         raise ValueError("quick desk returned an unexpected shape")
     return out

@@ -38,7 +38,16 @@ SEATS = {
     "performance": ("Omar Haddad", "Performance analyst, head of learning", "learning", "cio", False),
     "reviewer":    ("Ruth Klein", "Trade reviewer", "learning", "performance", False),
     "quant":       ("Nina Petrova", "Quant researcher", "learning", "performance", False),
+    "compliance":  ("Diane Foster", "Chief compliance officer", "leadership", "partner", False),
 }
+# Seats that join when the firm unlocks a new desk (see firm.UNLOCKS)
+UNLOCK_SEATS = {
+    "crypto":      ("Lena Hoffmann", "Crypto strategist", "research", "pm", True),
+    "events":      ("Marisol Vega", "Event-driven analyst (earnings and news)", "research", "pm", True),
+    "fx":          ("Callum Reid", "FX strategist", "research", "pm", True),
+    "quantdesk":   ("Arjun Mehta", "Quant strategist", "learning", "performance", False),
+}
+ALL_SEATS = {**SEATS, **UNLOCK_SEATS}
 SPECIALISTS = ("technical", "fundamental", "sentiment", "smartmoney")
 DESK_TEAM = SPECIALISTS + ("bull", "bear", "pm")
 
@@ -67,7 +76,7 @@ def name(seat: str) -> str:
         from desk import interns
         i = interns.find(seat.split(":", 1)[1])
         return i["name"] if i else seat
-    return load()["seats"].get(seat, {}).get("name") or SEATS.get(seat, (seat,))[0]
+    return load()["seats"].get(seat, {}).get("name") or ALL_SEATS.get(seat, (seat,))[0]
 
 
 def approach(seat: str) -> str | None:
@@ -85,19 +94,33 @@ def fire_and_replace(seat: str, reason: str, new_approach: str) -> tuple[str, st
     used = {v["name"] for v in data["seats"].values()} | {a["name"] for a in data["alumni"]}
     new_name = next((n for n in HIRE_POOL if n not in used), f"New hire {len(data['alumni']) + 1}")
     today = now().date().isoformat()
-    data["alumni"].append({"seat": seat, "role": SEATS[seat][1], "name": old["name"], "from": old.get("since"),
+    data["alumni"].append({"seat": seat, "role": ALL_SEATS[seat][1], "name": old["name"], "from": old.get("since"),
                            "to": today, "reason": reason})
     data["seats"][seat] = {"name": new_name, "since": today, "approach": new_approach}
     save(data)
+    try:
+        from desk import firm
+        firm.set_level(seat, "Associate", f"new hire replacing {old['name']}")
+    except Exception as exc:
+        print(f"level reset failed: {exc}")
     return old["name"], new_name
 
 
 def org_chart() -> list[dict]:
     """Everyone in reporting order, for the dashboard."""
+    from desk import firm
     data = load()
+    fdata = firm.load()
     out = []
-    for seat, (default, role, desk, boss, fireable) in SEATS.items():
-        s = data["seats"][seat]
-        out.append({"id": seat, "name": s["name"], "role": role, "desk": desk, "reports_to": boss,
-                    "fireable": fireable, "since": s.get("since"), "approach": s.get("approach")})
+    for seat, (default, role, desk, boss, fireable) in ALL_SEATS.items():
+        s = data["seats"].get(seat) or {"name": default, "since": None, "approach": None}
+        row = {"id": seat, "name": s["name"], "role": role, "desk": desk, "reports_to": boss,
+               "fireable": fireable, "since": s.get("since"), "approach": s.get("approach")}
+        if seat in UNLOCK_SEATS:
+            u = firm.unlock_for_seat(seat)
+            row["locked"] = not firm.unlocked(u[0], fdata)
+            row["unlock_at"] = u[1]
+            row["unlock_title"] = u[2]
+        row["level"] = None if row.get("locked") else firm.level(seat, fdata)
+        out.append(row)
     return out

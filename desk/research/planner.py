@@ -79,12 +79,39 @@ def latest_macro(max_age_hours: float = 14) -> dict | None:
 def extra_context(session: str) -> dict:
     from desk import learning
     return {"session_note": SESSION_NOTES[session], "tournament": learning.tournament_summary(),
-            "backtest": learning.backtest_summary()}
+            "backtest": learning.backtest_summary(), "team": team_record()}
+
+
+def team_record() -> list[dict] | None:
+    """Each research person's level and 30-day hit rate, so the PM can weigh senior, proven people more."""
+    try:
+        from desk import scorecard, staff
+        from desk.dashboard import _curve
+        from desk.trading import ledger
+        scores = scorecard.seat_scores(ledger.load(), _curve())
+        out = []
+        for p in staff.org_chart():
+            if p["desk"] != "research" or p.get("locked") or p["id"] in ("scanner", "associate", "factcheck", "sizer"):
+                continue
+            sc = scores.get(p["id"]) or {}
+            out.append({"name": p["name"], "role": p["role"], "level": p.get("level"),
+                        "hit_rate": f"{sc['pct']}% of {sc['total']}" if sc.get("pct") is not None else "not enough calls yet"})
+        return out
+    except Exception as exc:
+        print(f"team record failed: {exc}")
+        return None
 
 
 def run(session: str = "morning") -> dict:
     started = time.monotonic()
-    cfg = SESSIONS[session]
+    cfg = dict(SESSIONS[session])
+    from desk import firm
+    if cfg["crypto"] and firm.unlocked("crypto_desk"):
+        cfg["crypto"] += 1
+    if cfg["forex"] and firm.unlocked("fx_desk"):
+        cfg["forex"] += 1
+    if cfg["stocks"] and firm.unlocked("event_desk"):
+        cfg["stocks"] += 1
     floor.start_job("research", f"{session} research session")
     state = load()
     book, details = snapshot(state)
@@ -166,6 +193,10 @@ def run(session: str = "morning") -> dict:
         try:
             floor.working("associate", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
             d = dossiers.build(cand, funds, light=cfg["fast"])
+            qn = team.quant_note(d)
+            if qn:
+                d["quant_desk"] = qn
+                floor.event("quantdesk", f"{sym}: attached the backtested record of its setups", sym)
             floor.done("associate", f"Dossier ready on {sym}", sym)
             if cfg["fast"]:
                 for a in floor.DESK_TEAM:
@@ -178,6 +209,14 @@ def run(session: str = "morning") -> dict:
                 for a in floor.SPECIALISTS:
                     floor.working(a, f"Analyzing {sym}", sym)
                 notes = team.specialists(d, macro)
+                roles = team.desk_roles(d)
+                if roles:
+                    for seat, _, _ in roles:
+                        floor.working(seat, f"Writing the desk note on {sym}", sym)
+                    try:
+                        notes = {**(notes or {}), **team.desk_notes(d, macro)}
+                    except Exception as exc:
+                        print(f"desk notes failed: {exc}")
                 _report_specialists(sym, notes)
                 floor.working("bull", f"Building the case for {sym}", sym)
                 bull = team.bull(d, notes)
@@ -254,6 +293,12 @@ def _report_specialists(sym: str, notes: dict | None) -> None:
         score = n.get("score")
         point = (n.get("points") or [""])[0]
         floor.done(agent, f"{sym}: {'+' if isinstance(score, int) and score > 0 else ''}{score if score is not None else 'n/a'}. {point}", sym)
+    for seat, (key, _, _) in team.DESK_ROLES.items():
+        n = notes.get(key)
+        if isinstance(n, dict):
+            score = n.get("score")
+            floor.done(seat, f"{sym}: {'+' if isinstance(score, int) and score > 0 else ''}{score if score is not None else 'n/a'}. "
+                       f"{(n.get('points') or [''])[0]}", sym)
 
 
 def _report_debate(sym: str, bull: dict | None, bear: dict | None) -> None:

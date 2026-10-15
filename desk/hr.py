@@ -14,9 +14,9 @@ REVIEWS = config.DATA_DIR / "reviews.json"
 RECAPS = config.DATA_DIR / "recaps.json"
 CARDS = config.DATA_DIR / "cards.json"
 CARD_DIR = config.ROOT / "docs" / "cards"
-FIRE_MIN_CALLS = 20      # graded calls in the last 30 days before anyone can be fired
-FIRE_BELOW_PCT = 42      # hit rate that gets you fired (a coin flip is 50%)
+FIRE_MIN_CALLS = 20      # graded calls in the last 30 days before a Junior can be let go
 GRACE_DAYS = 30          # new hires can't be fired in their first month
+# Firing now goes through the level ladder (firm.review_levels): Principal > Senior > Associate > Junior > let go.
 
 
 def _load(path, default):
@@ -42,7 +42,9 @@ def _context() -> dict:
         if p["id"] == "partner":
             continue
         sc = scores.get(p["id"])
-        people.append({"seat": p["id"], "name": p["name"], "role": p["role"], "desk": p["desk"],
+        if p.get("locked"):
+            continue
+        people.append({"seat": p["id"], "name": p["name"], "role": p["role"], "desk": p["desk"], "level": p.get("level"),
                        "since": p.get("since"), "score": sc})
     for i in interns.all_interns():
         if i["status"] in ("intern", "junior"):
@@ -53,14 +55,30 @@ def _context() -> dict:
 
 # ---- Weekly performance reviews, firing and hiring ---------------------------
 def weekly_reviews() -> dict:
+    from desk import compliance, firm
     ctx = _context()
     floor.working("hr", "Writing everyone's weekly performance review")
+    # Promotions and demotions first, so the reviews can mention them
+    changes = firm.review_levels(ctx["scores"])
+    for c in changes:
+        if c["kind"] != "fire":
+            for p in ctx["people"]:
+                if p["seat"] == c["seat"]:
+                    p["level"] = c["to"]
+    flags = compliance.findings_by_seat(days=7)
+    for p in ctx["people"]:
+        if flags.get(p["seat"]):
+            p["compliance_flags_this_week"] = flags[p["seat"]]
     prompt = f"""You are Ashley Brennan, Head of HR at a small AI trading desk. Write this week's performance reviews.
 Your voice: warm but blunt, corporate-HR phrasing with dry humor ("let's circle back on your stop placement").
 Grade each person A-F from their numbers. "score.pct" is how often their calls were right over the last 30 days
 (50% is a coin flip); null means not enough data yet, so grade on effort and keep it short. Interns are judged
 on their pretend account (they started with $150; $500 gets them hired).
 
+Each person has a level (Junior, Associate, Senior, Principal). Mention it when it changed this week.
+Some have compliance flags from Diane Foster, the compliance officer: bring those up.
+
+LEVEL CHANGES THIS WEEK: {json.dumps([c for c in changes if c['kind'] != 'fire'], default=str)}
 PEOPLE: {json.dumps(ctx['people'], default=str)[:14000]}
 
 Return JSON: {{"memo": str (2-3 sentence all-staff memo), "reviews": [{{"seat": str, "grade": str,
@@ -68,18 +86,23 @@ Return JSON: {{"memo": str (2-3 sentence all-staff memo), "reviews": [{{"seat": 
     out = ai.ask(prompt, want_json=True, temperature=0.6)
 
     fired = []
-    for p in ctx["people"]:
-        sc, seat = p.get("score") or {}, p["seat"]
-        if seat.startswith("intern:") or not staff.SEATS.get(seat, (0, 0, 0, 0, False))[4]:
+    for c in changes:
+        if c["kind"] != "fire":
             continue
-        since = p.get("since")
+        p = next((x for x in ctx["people"] if x["seat"] == c["seat"]), None)
+        sc = (p or {}).get("score") or {}
+        since = (p or {}).get("since")
         new_hire = since and datetime.fromisoformat(since) > now().replace(tzinfo=None) - timedelta(days=GRACE_DAYS)
-        if sc.get("total", 0) >= FIRE_MIN_CALLS and (sc.get("right", 0) / sc["total"] * 100) < FIRE_BELOW_PCT and not new_hire:
-            fired.append(_fire(seat, p, sc))
+        if p and sc.get("total", 0) >= FIRE_MIN_CALLS and not new_hire:
+            fired.append(_fire(c["seat"], p, sc))
+    for c in changes:
+        if c["kind"] in ("promote", "demote"):
+            verb = "Promoted" if c["kind"] == "promote" else "Demoted"
+            floor.event("hr", f"{verb} {c['name']} from {c['from']} to {c['to']} ({c['why']})", kind=c["kind"])
 
     record = {"date": now().date().isoformat(), "memo": out.get("memo", ""),
               "reviews": {r["seat"]: {"grade": r.get("grade"), "review": r.get("review")} for r in out.get("reviews", []) if r.get("seat")},
-              "fired": fired}
+              "fired": fired, "level_changes": [c for c in changes if c["kind"] != "fire"]}
     history = _load(REVIEWS, [])
     history.append(record)
     _save(REVIEWS, history[-26:])
@@ -88,6 +111,9 @@ Return JSON: {{"memo": str (2-3 sentence all-staff memo), "reviews": [{{"seat": 
     names = {p["seat"]: p["name"] for p in ctx["people"]}
     for seat, r in record["reviews"].items():
         lines.append(f"<b>{esc(names.get(seat, seat))}</b>: {esc(r['grade'])}. {esc(r['review'])}")
+    for c in record["level_changes"]:
+        lines += ["", f"<b>{'Promotion' if c['kind'] == 'promote' else 'Demotion'}:</b> {esc(c['name'])}, {esc(c['from'])} to "
+                      f"{esc(c['to'])} ({esc(c['why'])})"]
     for f in fired:
         lines += ["", f"<b>Staffing change:</b> {esc(f['old'])} ({esc(f['role'])}) has been let go after a {f['pct']}% hit rate "
                       f"on {f['total']} calls. Welcome {esc(f['new'])}, who brings a new approach: {esc(f['approach'])}"]
@@ -98,7 +124,7 @@ Return JSON: {{"memo": str (2-3 sentence all-staff memo), "reviews": [{{"seat": 
 
 def _fire(seat: str, person: dict, sc: dict) -> dict:
     pct = round(sc["right"] / sc["total"] * 100)
-    role = staff.SEATS[seat][1]
+    role = staff.ALL_SEATS[seat][1]
     try:
         out = ai.ask(f"""A trading desk is replacing its {role}, {person['name']}, whose calls were right only {pct}% of the
 time over {sc['total']} calls (a coin flip is 50%). Describe, in 1-2 sentences, a clearly different working approach

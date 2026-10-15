@@ -161,6 +161,13 @@ def tick() -> int:
         traceback.print_exc()
     save(state)
 
+    # The business side: payroll, compliance audit, unlockable desks, monthly bonuses.
+    try:
+        run_firm(state, book)
+    except Exception:
+        traceback.print_exc()
+    save(state)
+
     # Breaking-news huddles on open positions, and re-research of today's big movers.
     try:
         from desk import alerts
@@ -193,6 +200,43 @@ def tick() -> int:
 
     listen(state, int(os.environ.get("LISTEN_SECONDS", "0")))
     return 0
+
+
+def run_firm(state: dict, book) -> None:
+    from desk import activity as floor
+    from desk import compliance, firm, scorecard, staff
+    from desk.dashboard import _curve
+    from desk.telegram import esc
+    from desk.trading import ledger
+    firm.accrue_payroll(book.equity)
+
+    findings = compliance.audit(ledger.load(), book)
+    major = [f for f in findings if f["severity"] == "major"]
+    if findings:
+        floor.event("compliance", f"Audit done: {len(findings)} new finding{'s' if len(findings) > 1 else ''}", kind="check")
+    for f in major:
+        telegram.send(f"<b>Compliance alert from {esc(staff.name('compliance'))}</b>\n{esc(f['rule'])}"
+                      + (f" on {esc(f['symbol'])}" if f.get("symbol") else "") + f"\nResponsible: {esc(f['who'])}\n<i>{esc(f['detail'])}</i>")
+
+    for key, at, title, effect, seat in firm.check_unlocks(book.equity):
+        floor.event("cio", f"Unlocked: {title}. The firm passed ${at:,.0f}. {effect}", kind="unlock")
+        if seat:
+            floor.event(seat, f"First day on the job as {staff.ALL_SEATS[seat][1]}", kind="hire")
+        telegram.send(f"<b>New desk unlocked: {esc(title)}</b>\nThe firm passed ${at:,.0f}.\n{esc(effect)}")
+
+    scores = scorecard.seat_scores(ledger.load(), _curve())
+    paid = firm.maybe_pay_bonuses(state, book.equity, scores)
+    if paid is not None:
+        if paid["pool"] > 0:
+            top = sorted(paid["by_seat"].values(), key=lambda v: -v["amount"])[:5]
+            telegram.send(f"<b>Bonus day ({esc(paid['month'])})</b>\nThe firm made ${paid['profit_above_hwm']:,.2f} above its previous high, "
+                          f"so the bonus pool is ${paid['pool']:,.2f} (20%).\nTop bonuses: "
+                          + ", ".join(f"{esc(v['name'])} ${v['amount']:,.2f}" for v in top))
+            floor.event("hr", f"Paid {paid['month']} bonuses: ${paid['pool']:,.2f} pool across {len(paid['by_seat'])} people", kind="bonus")
+        else:
+            telegram.send(f"<b>No bonuses for {esc(paid['month'])}</b>\nThe firm is below its previous high "
+                          f"(${paid['hwm_before']:,.2f}), so the bonus pool is $0.")
+            floor.event("hr", f"No {paid['month']} bonuses: the firm is below its high-water mark", kind="bonus")
 
 
 def listen(state: dict, seconds: int) -> None:
@@ -262,7 +306,8 @@ def record_equity(state: dict) -> None:
         return
     path = config.DATA_DIR / "equity.jsonl"
     with path.open("a") as f:
-        f.write(json.dumps({"t": now().isoformat(timespec="minutes"), "equity": round(book.equity, 2), "spy": spy}) + "\n")
+        f.write(json.dumps({"t": now().isoformat(timespec="minutes"), "equity": round(book.equity, 2), "spy": spy,
+                            "fin": round(book.financing_cost, 4), "opex": round(book.opex, 4)}) + "\n")
 
 
 def research() -> int:

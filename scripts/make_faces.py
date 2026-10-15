@@ -16,8 +16,9 @@ import requests
 from PIL import Image
 
 OUT = Path(__file__).resolve().parent.parent / "docs" / "faces"
-STYLE = ("professional corporate headshot photo, head and shoulders, wearing a {suit}, "
-         "plain dark gray studio backdrop, soft studio lighting, looking at camera, photorealistic, sharp focus, 85mm")
+STYLE = ("full color corporate headshot photograph, head and shoulders, dressed in a formal business suit: {suit} "
+         "with a suit jacket and lapels clearly visible, plain dark gray studio backdrop, soft studio lighting, "
+         "looking at camera, photorealistic, sharp focus, 85mm")
 
 PEOPLE = {
     # leadership
@@ -47,6 +48,12 @@ PEOPLE = {
     "Omar Haddad": "39-year-old Lebanese man, short dark curly hair, trimmed beard, glasses, thoughtful look",
     "Ruth Klein": "61-year-old white woman, short silver hair, reading glasses, wise slight smile",
     "Nina Petrova": "30-year-old Bulgarian woman, dark hair in a sleek ponytail, intelligent calm look",
+    "Diane Foster": "50-year-old white woman, short dark blonde hair, pearl earrings, stern no-nonsense expression",
+    # unlockable desks
+    "Lena Hoffmann": "33-year-old German woman, long straight light brown hair, sharp focused look",
+    "Marisol Vega": "36-year-old Puerto Rican woman, dark curly shoulder-length hair, confident smile",
+    "Callum Reid": "40-year-old Scottish man, short sandy hair, light beard, calm expression",
+    "Arjun Mehta": "29-year-old Indian man, short black hair, thin glasses, quietly confident smile",
     # interns (younger, a bit less polished)
     "Tyler Brooks": "21-year-old white man, messy brown hair, excited grin, slightly loose tie",
     "Zoe Kim": "20-year-old Korean American woman, black hair with bangs, mischievous smile",
@@ -86,7 +93,7 @@ def slug(name: str) -> str:
 
 
 def make(name: str, desc: str, i: int) -> bool:
-    prompt = f"{desc}, " + STYLE.format(suit=SUITS[i % len(SUITS)])
+    prompt = f"{desc}, " + STYLE.format(suit=SUITS[i % len(SUITS)]) + ", not black and white, no casual clothes"
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
            + f"?width=512&height=512&seed={1000 + i}&nologo=true&model=flux")
     for attempt in range(2):

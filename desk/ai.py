@@ -26,8 +26,9 @@ def _pace() -> None:
 
 
 def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
-        temperature: float = 0.4, models: list[str] | None = None) -> str | dict:
-    """Ask the AI a question. Tries each free model in turn if one is busy or out of quota."""
+        temperature: float = 0.4, models: list[str] | None = None, check=None) -> str | dict:
+    """Ask the AI a question. Tries each free model in turn if one is busy, out of quota, or (with `check`)
+    answers in the wrong shape."""
     body: dict = {
         "contents": [{"role": "user", "parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": temperature},
@@ -59,11 +60,14 @@ def ask(prompt: str, *, system: str | None = None, want_json: bool = False,
             if not text:
                 raise ValueError("empty answer")
             result = _parse_json(text) if want_json else text
+            if check is not None and not check(result):
+                raise ValueError("answer was missing required fields")
             _strikes[model] = 0
             calls_made += 1
             return result
         except (ApiError, KeyError, IndexError, ValueError) as exc:
             errors.append(f"{model}: {exc}")
+            print(f"AI model {model} failed: {str(exc)[:160]}")
             _strikes[model] = _strikes.get(model, 0) + 1
             time.sleep(1)
     raise RuntimeError("All AI models failed:\n" + "\n".join(errors))

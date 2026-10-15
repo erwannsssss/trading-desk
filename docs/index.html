@@ -175,6 +175,30 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 
 /* org chart */
 .org { margin-top: 18px; }
+.datebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 6px 0 14px; }
+.datebar select { font: inherit; font-size: 14px; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); color: var(--ink); max-width: 100%; }
+.datebar .dstep { font: inherit; font-size: 13px; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: none; color: var(--ink-2); cursor: pointer; }
+.datebar .dstep:disabled { opacity: .4; cursor: default; }
+.datebar .dstep:not(:disabled):hover { border-color: var(--ink-3); }
+.lvl { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 1px 6px; border-radius: 4px;
+  border: 1px solid var(--rule); color: var(--ink-2); margin-right: 4px; vertical-align: 1px; }
+.lvl.Principal { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.lvl.Senior { border-color: var(--ink-2); }
+.lvl.Junior { border-style: dashed; }
+.person.partner .lvl { border-color: var(--paper); color: var(--paper); }
+.person.locked { border-style: dashed; opacity: .6; }
+.person.locked .face { filter: grayscale(1); }
+.sev { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 1px 7px; border-radius: 4px; }
+.sev.major { background: var(--loss); color: #fff; }
+.sev.minor { border: 1px solid var(--signal); color: var(--ink); }
+.verdict-big { font-size: clamp(28px, 6vw, 44px); font-weight: 800; font-variation-settings: "wdth" 112; line-height: 1.05; margin: 4px 0 8px; }
+.stmt td:first-child { white-space: nowrap; }
+.stmt tr.total td { font-weight: 700; border-top: 2px solid var(--ink); }
+.stmt tr.sub td:first-child { padding-left: 20px; color: var(--ink-2); }
+.unlock { display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.unlock .bar { grid-column: 1 / -1; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.unlock .bar span { display: block; height: 100%; background: var(--ink); border-radius: 3px; }
+.unlock.done .bar span { background: var(--gain); }
 .org-level { display: flex; justify-content: center; gap: 18px; position: relative; }
 .org-stem { width: 2px; height: 22px; background: var(--rule); margin: 0 auto; }
 .branch { display: flex; gap: 16px; position: relative; padding-top: 22px; }
@@ -199,7 +223,7 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 .hit.bad { background: color-mix(in srgb, var(--loss) 12%, transparent); color: var(--loss); }
 .person .seat-now { -webkit-line-clamp: 2; font-size: 13px; }
 .desk-col { display: flex; flex-direction: column; gap: 8px; }
-.stem-cio { margin: 0 0 0 calc(16.67% - 6px); }
+.stem-cio { margin: 0 0 0 calc(12.5% - 8px); }
 .branch.desks .twig::before { left: 50%; }
 .desk-col .desk-name { font-weight: 700; font-size: 13px; color: var(--ink-3); margin: 2px 0 2px 2px; }
 .members { display: grid; gap: 8px; padding-left: 14px; border-left: 2px solid var(--rule); margin-left: 18px; }
@@ -272,11 +296,13 @@ footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
     <button class="tab" role="tab" data-tab="floor">Trading floor</button>
     <button class="tab" role="tab" data-tab="positions">Positions</button>
     <button class="tab" role="tab" data-tab="trades">Trade log</button>
-    <button class="tab" role="tab" data-tab="plan">Today's game plan</button>
+    <button class="tab" role="tab" data-tab="plan">Game plan</button>
     <button class="tab" role="tab" data-tab="stats">Performance</button>
     <button class="tab" role="tab" data-tab="edge">Luck or skill?</button>
     <button class="tab" role="tab" data-tab="ghost">Passed ideas</button>
     <button class="tab" role="tab" data-tab="learning">Lessons</button>
+    <button class="tab" role="tab" data-tab="firm">Firm P&amp;L</button>
+    <button class="tab" role="tab" data-tab="compliance">Compliance</button>
   </nav>
 
   <main>
@@ -289,6 +315,8 @@ footer { color: var(--ink-3); font-size: 12.5px; padding: 0 0 40px; }
     <section class="panel" id="p-edge" hidden></section>
     <section class="panel" id="p-ghost" hidden></section>
     <section class="panel" id="p-learning" hidden></section>
+    <section class="panel" id="p-firm" hidden></section>
+    <section class="panel" id="p-compliance" hidden></section>
   </main>
   <footer id="foot"></footer>
 </div>
@@ -308,6 +336,56 @@ const assetName = {stock: "Stock", etf: "ETF", crypto: "Crypto", forex: "Forex",
 const statusName = {open: "Open", pending: "Order working", closing: "Closing", closed: "Closed", cancelled: "Never filled",
   skipped: "Skipped", would_trade: "Dry run", approved: "Planned", pass: "Passed", blocked_by_fact_check: "Blocked by fact-check", error: "Research error"};
 let DATA = null, chart = null, charts = {};
+
+/* date pickers: anything that piles up shows one day (or week, or month) at a time */
+const NYDAY = (iso) => iso ? new Date(iso).toLocaleDateString("en-CA", {timeZone: "America/New_York"}) : null;
+const fmtDay = (d) => new Date(d + "T12:00:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric", year: "numeric"});
+const fmtMonth = (m) => new Date(m + "-15T12:00:00").toLocaleDateString("en-US", {month: "long", year: "numeric"});
+const PICK = {};
+const PICK_PANEL = {trades: "trades", plan: "plan", ghost: "ghost", reviews: "learning", cards: "learning", letters: "learning",
+  recaps: "learning", comp: "compliance", month: "firm"};
+const uniq = (arr) => [...new Set(arr.filter(Boolean))].sort();
+function pickVal(key, values) {
+  if (!values.length) return null;
+  if (!values.includes(PICK[key])) PICK[key] = values[values.length - 1];
+  return PICK[key];
+}
+function picker(key, values, fmt = fmtDay, label = "Choose a date") {
+  if (values.length < 2) return "";
+  const cur = pickVal(key, values), i = values.indexOf(cur);
+  return `<div class="datebar" role="group" aria-label="${esc(label)}">
+    <button class="dstep" data-pick="${key}" data-to="${esc(values[i - 1] || "")}" ${i <= 0 ? "disabled" : ""}>&lsaquo; Earlier</button>
+    <select id="pick-${key}" data-pick-sel="${key}" aria-label="${esc(label)}">${values.slice().reverse().map(v => `<option value="${esc(v)}" ${v === cur ? "selected" : ""}>${esc(fmt(v))}</option>`).join("")}</select>
+    <button class="dstep" data-pick="${key}" data-to="${esc(values[i + 1] || "")}" ${i >= values.length - 1 ? "disabled" : ""}>Later &rsaquo;</button>
+    ${i < values.length - 1 ? `<button class="link" data-pick="${key}" data-to="${esc(values.at(-1))}">Jump to latest</button>` : ""}</div>`;
+}
+function setPick(key, v) {
+  if (!v || !DATA) return;
+  PICK[key] = v;
+  const panel = PICK_PANEL[key];
+  ({trades: renderTrades, plan: renderPlan, ghost: renderGhost, learning: renderLearning, compliance: renderCompliance, firm: renderFirm})[panel](DATA);
+  gloss($("#p-" + panel));
+}
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-pick][data-to]"); if (b && b.dataset.to) setPick(b.dataset.pick, b.dataset.to); });
+document.addEventListener("change", (e) => { const sel = e.target.closest("[data-pick-sel]"); if (sel) setPick(sel.dataset.pickSel, sel.value); });
+
+/* past days' game plans and passed ideas live in days/<date>.json */
+const DAYS = {};
+async function getDay(date) {
+  if (!DAYS[date]) {
+    const r = await fetch(`days/${date}.json?v=${encodeURIComponent(DATA.generated_at)}`);
+    if (!r.ok) throw new Error(r.status);
+    DAYS[date] = await r.json();
+  }
+  Object.assign(DATA.memos, DAYS[date].memos || {});
+  return DAYS[date];
+}
+function withDay(panel, date, latest, draw) {
+  if (!date || date === latest.date) return draw(latest);
+  $("#p-" + panel).innerHTML = `<p class="empty">Loading ${esc(fmtDay(date))}...</p>`;
+  getDay(date).then(j => { if (PICK[panel] === date) { draw(j); gloss($("#p-" + panel)); } })
+    .catch(() => { $("#p-" + panel).innerHTML = `<p class="empty">Couldn't load ${esc(fmtDay(date))}. Try again in a minute.</p>`; });
+}
 
 /* theme */
 (function () {
@@ -359,7 +437,7 @@ function render(d) {
     ${spyRet != null ? `<span>S&amp;P 500 over the same time: <b>${pct(spyRet)}</b></span>` : ""}`;
   drawCurve(d.curve);
 
-  renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderEdge(d); renderGhost(d); renderLearning(d);
+  renderOverview(d); renderFloor(); renderPositions(d); renderTrades(d); renderPlan(d); renderStats(d); renderEdge(d); renderGhost(d); renderLearning(d); renderFirm(d); renderCompliance(d);
   $("#foot").textContent = `Updated ${when(d.generated_at)} New York time. Paper money only. Refreshes every minute.`;
   document.querySelectorAll("main .panel").forEach(gloss);
 }
@@ -466,20 +544,30 @@ function tradeTable(rows, full = true) {
 }
 
 function renderTrades(d) {
-  const rows = d.trades;
-  $("#p-trades").innerHTML = `<h2>Trade log</h2><p class="lede">Every trade the desk planned, placed, skipped or closed. Tap any row to read the full research behind it.</p>
-    ${rows.length ? tradeTable(rows) : `<p class="empty">The log starts with the first trade the desk takes.</p>`}`;
+  const dates = uniq(d.trades.map(t => NYDAY(t.created_at)));
+  const day = pickVal("trades", dates);
+  const rows = d.trades.filter(t => NYDAY(t.created_at) === day);
+  const closed = rows.filter(t => t.pnl_usd != null), pnlDay = closed.reduce((a, t) => a + t.pnl_usd, 0);
+  $("#p-trades").innerHTML = `<h2>Trade log</h2><p class="lede">Every trade the desk planned, placed, skipped or closed, one day at a time (by the day the trade was planned). Tap any row to read the full research behind it.</p>
+    ${picker("trades", dates)}
+    ${rows.length ? `<p class="small muted">${esc(fmtDay(day))}: ${rows.length} trade${rows.length > 1 ? "s" : ""}${closed.length ? `, ${closed.length} closed for <b class="${cls(pnlDay)}">${signed(pnlDay)}</b>` : ""}.</p>${tradeTable(rows)}`
+      : `<p class="empty">The log starts with the first trade the desk takes.</p>`}`;
 }
 
 function renderPlan(d) {
-  const p = d.plan;
-  if (!p) { $("#p-plan").innerHTML = `<h2>Today's game plan</h2><p class="empty">The research team runs at 7:40am New York time on weekdays, scans again through the trading day, and covers crypto and forex every evening and overnight. Its plan shows up here.</p>`; return; }
+  const date = pickVal("plan", d.days || []);
+  withDay("plan", date, {date: d.plan?.date, plan: d.plan}, (j) => drawPlan(j.plan, d.days || []));
+}
+function drawPlan(p, days) {
+  const bar = picker("plan", days);
+  if (!p) { $("#p-plan").innerHTML = `<h2>Game plan</h2>${bar}<p class="empty">The research team runs at 7:40am New York time on weekdays, scans again through the trading day, and covers crypto and forex every evening and overnight. Its plan shows up here.</p>`; return; }
   const m = p.macro || {}, w = m.bucket_weights || {};
   const approved = p.ideas.filter(i => i.status === "approved").sort((a, b) => (b.conviction || 0) - (a.conviction || 0));
   const others = p.ideas.filter(i => i.status !== "approved");
   $("#p-plan").innerHTML = `
-    <h2>${p.session === "morning" ? "Morning" : "Evening"} game plan for ${esc(p.date)}</h2>
-    ${p.later_sessions ? `<p class="small muted">Plus ${p.later_sessions} faster scan${p.later_sessions > 1 ? "s" : ""} since then; their ideas are included below.</p>` : ""}
+    <h2>Game plan for ${esc(fmtDay(p.date))}</h2>
+    ${bar}
+    ${(p.sessions || []).length ? `<p class="small muted">Research sessions this day: ${p.sessions.map(x => `${esc(sessionName[x.session] || x.session)} ${when(x.created_at).split(", ").pop()} (${x.approved} of ${x.researched} approved)`).join("; ")}.</p>` : ""}
     <p class="lede">${esc(m.regime)}. Aggression ${m.risk_appetite}/100. Money split: core ${w.core}%, tactical ${w.tactical}%, high-risk ${w.high_risk}%.</p>
     <p class="note">${esc(m.summary)}</p>
     ${m.overnight_read ? `<p class="note"><b>Overnight:</b> ${esc(m.overnight_read)}</p>` : ""}
@@ -565,29 +653,41 @@ function renderStats(d) {
 }
 
 function renderGhost(d) {
-  const rows = d.ghost.filter(g => g.price_now);
+  const date = pickVal("ghost", d.days || []);
+  withDay("ghost", date, {date: (d.days || []).at(-1), ghost: d.ghost}, (j) => drawGhost(j, d.days || []));
+}
+function drawGhost(j, days) {
+  const rows = (j.ghost || []).filter(g => g.price_now);
   $("#p-ghost").innerHTML = `<h2>Passed ideas</h2>
     <p class="lede">Ideas the desk researched but didn't trade, and how they moved since. If the skipped ideas keep winning, the desk is being too cautious.</p>
+    ${picker("ghost", days)}
+    ${j.written_at && j.date !== (days || []).at(-1) ? `<p class="small muted">Prices as of ${esc(when(j.written_at))}.</p>` : ""}
     ${rows.length ? `<div class="scroll"><table><thead><tr><th>Symbol</th><th>Researched</th><th>Outcome</th><th class="num">Then</th><th class="num">Now</th><th class="num">Move in the bull's direction</th></tr></thead><tbody>
       ${rows.map(g => `<tr class="click" data-memo="${esc(g.memo_key)}"><td><span class="sym">${esc(g.symbol)}</span><div class="tag">bull leaned ${esc(g.lean)}</div></td>
         <td class="small">${esc(g.date)} ${esc(g.session)}</td><td class="small">${esc(statusName[g.status])}</td>
         <td class="num">${px(g.price_then)}</td><td class="num">${px(g.price_now)}</td>
         <td class="num ${cls(g.lean_result_pct)}">${pct(g.lean_result_pct)}</td></tr>`).join("")}</tbody></table></div>`
-      : `<p class="empty">Fills in after the first research session.</p>`}`;
+      : `<p class="empty">${(j.ghost || []).length ? "Prices are loading." : "No passed ideas on this day."}</p>`}`;
 }
 
 function renderLearning(d) {
   const people = personMap();
-  const rv = d.reviews;
-  const hrBlock = rv ? `<h3>Performance reviews from ${esc(people.hr?.name || "HR")}, ${esc(rv.date)}</h3><p class="note">${esc(rv.memo)}</p>
+  const hist = d.review_history || (d.reviews ? [d.reviews] : []);
+  const rvDate = pickVal("reviews", uniq(hist.map(r => r.date)));
+  const rv = hist.filter(r => r.date === rvDate).at(-1);
+  const hrBlock = rv ? `<h3>Performance reviews from ${esc(people.hr?.name || "HR")}, ${esc(fmtDay(rv.date))}</h3>
+    ${picker("reviews", uniq(hist.map(r => r.date)), fmtDay, "Choose a review week")}<p class="note">${esc(rv.memo)}</p>
+    ${(rv.level_changes || []).map(c => `<p class="note"><b>${c.kind === "promote" ? "Promotion" : "Demotion"}:</b> ${esc(c.name)}, ${esc(c.from)} to ${esc(c.to)} (${esc(c.why)})</p>`).join("")}
     <div class="scroll"><table><thead><tr><th>Person</th><th>Grade</th><th>Review</th></tr></thead><tbody>
     ${Object.entries(rv.reviews || {}).map(([seat, r]) => `<tr class="click" data-person="${esc(seat)}"><td class="sym">${esc(people[seat]?.name || seat)}</td><td><b>${esc(r.grade)}</b></td><td class="small">${esc(r.review)}</td></tr>`).join("")}
     </tbody></table></div>
     ${(rv.fired || []).map(f => `<p class="note"><b>Staffing change:</b> ${esc(f.old)} (${esc(f.role)}) was let go after a ${f.pct}% hit rate. ${esc(f.new)} joined with a new approach: ${esc(f.approach)}</p>`).join("")}`
     : `<h3>Performance reviews</h3><p class="empty">${esc(people.hr?.name || "HR")} writes the first reviews on Sunday evening.</p>`;
-  const cardsBlock = (d.cards || []).length ? `<h3>Trade of the week</h3><div class="cards-grid">${d.cards.slice().reverse().map(c => `<a href="${esc(c.file)}" target="_blank" rel="noopener"><img src="${esc(c.file)}" alt="Trade of the week: ${esc(c.symbol)} ${signed(c.pnl_usd)}" loading="lazy"></a>`).join("")}</div>`
+  const cardDates = uniq((d.cards || []).map(c => c.date)), cardDate = pickVal("cards", cardDates);
+  const cardsBlock = (d.cards || []).length ? `<h3>Trade of the week</h3>${picker("cards", cardDates, fmtDay, "Choose a week")}<div class="cards-grid">${d.cards.filter(c => c.date === cardDate).map(c => `<a href="${esc(c.file)}" target="_blank" rel="noopener"><img src="${esc(c.file)}" alt="Trade of the week: ${esc(c.symbol)} ${signed(c.pnl_usd)}" loading="lazy"></a>`).join("")}</div>`
     : `<h3>Trade of the week</h3><p class="empty">The first card is made Sunday from the week's best closed trade.</p>`;
-  const recapBlock = (d.recaps || []).length ? d.recaps.slice().reverse().map(r => `<article><h3>${esc(r.title)}</h3><div class="note">${esc(r.body).replace(/\n/g, "<br>")}</div></article>`).join("")
+  const recapMonths = uniq((d.recaps || []).map(r => r.month)), recapMonth = pickVal("recaps", recapMonths);
+  const recapBlock = (d.recaps || []).length ? picker("recaps", recapMonths, fmtMonth, "Choose a month") + d.recaps.filter(r => r.month === recapMonth).map(r => `<article><h3>${esc(r.title)}</h3><div class="note">${esc(r.body).replace(/\n/g, "<br>")}</div></article>`).join("")
     : `<p class="empty">The first season recap arrives on the 1st of next month.</p>`;
   $("#p-learning").innerHTML = `<h2>Lessons</h2>
     <p class="lede">Every closed trade gets a post-mortem. Each Sunday the desk reviews the week, writes a letter, turns hard lessons into rules, and HR reviews everyone.</p>
@@ -596,8 +696,130 @@ function renderLearning(d) {
     ${d.rulebook.length ? `<ul>${d.rulebook.map(r => `<li class="note">${esc(r.rule)} <span class="small muted">(${esc(r.date || "")})</span></li>`).join("")}</ul>`
       : `<p class="empty">No rules yet. The first weekly review (Sunday evening) writes them from real results.</p>`}
     <h3>Fund letters</h3>
-    ${d.letters.length ? d.letters.slice().reverse().map(l => `<article><h3>${esc(l.title)}</h3><div class="note">${esc(l.body).replace(/\n/g, "<br>")}</div></article>`).join("")
+    ${picker("letters", uniq(d.letters.map(l => l.date)), fmtDay, "Choose a letter")}
+    ${d.letters.length ? d.letters.filter(l => l.date === pickVal("letters", uniq(d.letters.map(l => l.date)))).map(l => `<article><h3>${esc(l.title)}</h3><div class="note">${esc(l.body).replace(/\n/g, "<br>")}</div></article>`).join("")
       : `<p class="empty">The first weekly letter arrives Sunday evening.</p>`}`;
+}
+
+/* Firm P&L: is the firm profitable after the bank and payroll? */
+function renderFirm(d) {
+  const P = d.pnl, F = d.firm, people = personMap();
+  const el = $("#p-firm");
+  if (!P || !F) { el.innerHTML = `<h2>Firm P&amp;L</h2><p class="empty">The firm's books start with the next 15-minute check.</p>`; return; }
+  const T = P.total, months = P.months.map(m => m.month);
+  const month = pickVal("month", months);
+  const M = P.months.find(m => m.month === month);
+  const days = P.days.filter(x => x.date.startsWith(month || "x"));
+  const assetsIn = (r) => Object.entries(r || {}).filter(([, v]) => v).map(([a, v]) => `<tr class="sub"><td>${esc(assetName[a] || a)}</td><td class="num ${cls(v)}">${signed(v)}</td></tr>`).join("");
+  const stmt = (x, title) => `<div class="scroll"><table class="stmt"><thead><tr><th>${esc(title)}</th><th class="num">Amount</th></tr></thead><tbody>
+      <tr><td>Realized trading profit (closed trades)</td><td class="num ${cls(x.realized_total)}">${signed(x.realized_total)}</td></tr>
+      ${assetsIn(x.realized)}
+      <tr><td>Change in open positions' value</td><td class="num ${cls(x.unrealized_change)}">${signed(x.unrealized_change)}</td></tr>
+      <tr class="total"><td>Trading gains</td><td class="num ${cls(x.trading)}">${signed(x.trading)}</td></tr>
+      <tr><td>Bank interest (${esc(d.bank?.bank || "the bank")})</td><td class="num">${signed(-x.interest)}</td></tr>
+      <tr><td>Base payroll</td><td class="num">${signed(-x.payroll)}</td></tr>
+      <tr><td>Bonuses</td><td class="num">${signed(-x.bonuses)}</td></tr>
+      <tr class="total"><td>Net income</td><td class="num ${cls(x.net)}">${signed(x.net)}</td></tr></tbody></table></div>`;
+  const staffRows = Object.keys(F.levels).map(id => {
+    const bonus = (F.bonuses || []).reduce((t, b) => t + ((b.by_seat || {})[id]?.amount || 0), 0);
+    const monthPay = ((F.payroll_by_month_seat || {})[month] || {})[id] || 0;
+    return {id, name: people[id]?.name || id, role: people[id]?.role || "", level: F.levels[id], salary: F.salaries[id], month: monthPay,
+            paid: (F.payroll_by_seat || {})[id] || 0, bonus};
+  }).sort((a, b) => b.salary - a.salary || a.name.localeCompare(b.name));
+  const bonusesThisMonth = (F.bonuses || []).filter(b => b.month === month);
+  const movesThisMonth = (F.level_log || []).filter(x => (x.date || "").startsWith(month || "x"));
+  const eq = d.account.equity;
+  el.innerHTML = `<h2>Firm P&amp;L</h2>
+    <p class="lede">The firm's income statement. Trading gains first, then everything the firm has to pay: interest to the bank, base pay for the staff, and bonuses. What's left is yours as managing partner.</p>
+    <div class="verdict-big ${cls(T.net)}">${T.days ? (T.profitable ? "Yes, the firm is profitable" : "Not profitable yet") : "Too early to tell"}</div>
+    <p class="note">${T.days ? `After paying the bank and the staff, the firm is ${T.net >= 0 ? "up" : "down"} <b>${signed(T.net)}</b> since it opened. Trading made ${signed(T.trading)}; costs were ${money(T.costs)}${T.cost_share_pct != null ? `, or ${T.cost_share_pct}% of trading gains` : ""}. ${T.profitable_days} of ${T.days} days were profitable.` : "The first day's numbers arrive after today's checks."}</p>
+    <div class="figures">
+      <div class="fig"><div class="v ${cls(T.trading)}">${signed(T.trading)}</div><div class="k">Trading gains</div></div>
+      <div class="fig"><div class="v">${money(T.interest)}</div><div class="k">Bank interest</div></div>
+      <div class="fig"><div class="v">${money(T.payroll)}</div><div class="k">Base payroll</div></div>
+      <div class="fig"><div class="v">${money(T.bonuses)}</div><div class="k">Bonuses</div></div>
+      <div class="fig"><div class="v ${cls(T.net)}">${signed(T.net)}</div><div class="k">Net income</div></div>
+      <div class="fig"><div class="v">${money(F.hwm)}</div><div class="k">High-water mark (bonuses only above this)</div></div>
+    </div>
+    ${P.days.length > 1 ? `<h3>Trading gains vs. what the firm keeps</h3>
+      <p class="small muted">Running totals since the firm opened. The gap between the two lines is what the bank and the staff cost.</p>
+      <div class="chart-box"><canvas id="c-firm"></canvas></div>` : ""}
+    <h3>Income statement since opening</h3>${stmt(T, "Since opening")}
+    ${P.months.length ? `<h3>Month by month</h3><div class="scroll"><table><thead><tr><th>Month</th><th class="num">Trading gains</th><th class="num">Interest</th><th class="num">Payroll</th><th class="num">Bonuses</th><th class="num">Net income</th></tr></thead><tbody>
+      ${P.months.slice().reverse().map(m => `<tr class="click" data-pick="month" data-to="${esc(m.month)}"><td>${esc(fmtMonth(m.month))}</td><td class="num ${cls(m.trading)}">${signed(m.trading)}</td><td class="num">${money(m.interest)}</td><td class="num">${money(m.payroll)}</td><td class="num">${money(m.bonuses)}</td><td class="num ${cls(m.net)}"><b>${signed(m.net)}</b></td></tr>`).join("")}
+      </tbody></table></div>` : ""}
+    ${M ? `<h3>${esc(fmtMonth(month))}</h3>${picker("month", months, fmtMonth, "Choose a month")}
+      ${stmt(M, fmtMonth(month))}
+      <h3>Day by day in ${esc(fmtMonth(month))}</h3>
+      <div class="scroll"><table><thead><tr><th>Day</th><th class="num">Closed trades</th><th class="num">Trading gains</th><th class="num">Interest</th><th class="num">Payroll</th><th class="num">Bonuses</th><th class="num">Net income</th><th class="num">Firm equity</th></tr></thead><tbody>
+      ${days.slice().reverse().map(x => `<tr><td>${esc(fmtDay(x.date))}</td><td class="num">${x.closed_trades}</td><td class="num ${cls(x.trading)}">${signed(x.trading)}</td><td class="num">${money(x.interest)}</td><td class="num">${money(x.payroll)}</td><td class="num">${money(x.bonuses)}</td><td class="num ${cls(x.net)}"><b>${signed(x.net)}</b></td><td class="num">${money(x.equity)}</td></tr>`).join("")}
+      </tbody></table></div>
+      <h3>Bonuses for ${esc(fmtMonth(month))}</h3>
+      ${bonusesThisMonth.length ? bonusesThisMonth.map(b => b.pool > 0 ? `<p class="small">Paid ${esc(b.date)}: the firm ended at ${money(b.equity)}, ${money(b.profit_above_hwm)} above its previous high of ${money(b.hwm_before)}, so the pool was <b>${money(b.pool)}</b> (20%).</p>
+          <div class="scroll"><table><thead><tr><th>Person</th><th>Level</th><th class="num">Hit rate</th><th class="num">Bonus</th></tr></thead><tbody>
+          ${Object.entries(b.by_seat).sort((x, y) => y[1].amount - x[1].amount).map(([id, v]) => `<tr class="click" data-person="${esc(id)}"><td class="sym">${esc(v.name)}</td><td><span class="lvl ${esc(v.level)}">${esc(v.level)}</span></td><td class="num">${v.pct == null ? "—" : v.pct + "%"}</td><td class="num">${money(v.amount)}</td></tr>`).join("")}
+          </tbody></table></div>` : `<p class="small">No bonuses: on ${esc(b.date)} the firm was at ${money(b.equity)}, below its high-water mark of ${money(b.hwm_before)}.</p>`).join("")
+        : `<p class="small muted">Bonuses for each month are paid on the 1st of the next month, from 20% of any profit above the firm's previous high.</p>`}
+      ${movesThisMonth.length ? `<h3>Promotions and demotions in ${esc(fmtMonth(month))}</h3><ul class="small">${movesThisMonth.map(x => `<li>${esc(x.date)}: ${esc(people[x.seat]?.name || x.seat)}, ${esc(x.from)} to ${esc(x.to)} (${esc(x.reason)})</li>`).join("")}</ul>` : ""}` : ""}
+    <h3>Payroll</h3>
+    <p class="lede small">Like a real hedge fund, the staff is paid from fees on the money managed: a base pay pool of ${F.fees.management_pct}% a year of firm equity (${money(eq * F.fees.management_pct / 100)} a year at today's ${money(eq, 0)}), split by level: Junior 0.6x, Associate 1x, Senior 1.5x, Principal 2.2x. Bonuses are ${F.fees.performance_pct}% of new profits above the high-water mark, split by level and hit rate. You take no salary, and interns are unpaid.</p>
+    <div class="scroll"><table><thead><tr><th>Person</th><th>Level</th><th class="num">Salary a year</th><th class="num">${esc(month ? fmtMonth(month) : "This month")}</th><th class="num">Base pay to date</th><th class="num">Bonuses to date</th></tr></thead><tbody>
+      ${staffRows.map(r => `<tr class="click" data-person="${esc(r.id)}"><td><span class="sym">${esc(r.name)}</span><div class="tag">${esc(r.role)}</div></td><td><span class="lvl ${esc(r.level)}">${esc(r.level)}</span></td><td class="num">${money(r.salary)}</td><td class="num">${money(r.month)}</td><td class="num">${money(r.paid)}</td><td class="num">${money(r.bonus)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="small muted">Promotions and demotions happen in ${esc(people.hr?.name || "HR")}'s Sunday review, at most once every 4 weeks per person: promoted at 60%+ right over 15+ graded calls, demoted under 45%. A Junior who stays under 45% is let go.</p>
+    <h3>Unlockable desks</h3>
+    <p class="lede small">The first time the firm's equity reaches each milestone, a new desk opens. Once unlocked, it stays.</p>
+    ${F.unlocks.map(u => `<div class="unlock ${u.unlocked ? "done" : ""}"><div><b>${esc(u.title)}</b> <span class="small muted">at ${money(u.at, 0)}</span><div class="small">${esc(u.effect)}</div></div>
+      <div class="small ${u.unlocked ? "up" : "muted"}" style="text-align:right">${u.unlocked ? "Unlocked " + esc(u.unlocked) : money(Math.max(0, u.at - eq)) + " to go"}</div>
+      <div class="bar" role="img" aria-label="${Math.round(Math.min(1, eq / u.at) * 100)}% of the way"><span style="width:${Math.min(100, eq / u.at * 100)}%"></span></div></div>`).join("")}`;
+  if (document.getElementById("c-firm")) {
+    let g = 0, n = 0; const gross = [], net = [];
+    for (const x of P.days) { g += x.trading; n += x.net; gross.push(+g.toFixed(2)); net.push(+n.toFixed(2)); }
+    mkChart("c-firm", {type: "line", data: {labels: P.days.map(x => x.date), datasets: [
+      {label: "Trading gains", data: gross, borderColor: css("--spy"), borderDash: [5, 4], borderWidth: 2, pointRadius: 0, tension: .2},
+      {label: "Net income (what the firm keeps)", data: net, borderColor: css("--ink"), borderWidth: 2.2, pointRadius: 0, tension: .2}]},
+      options: {interaction: {mode: "index", intersect: false}, plugins: {legend: {display: true, labels: {color: css("--ink-2")}},
+        tooltip: {callbacks: {label: (i) => `${i.dataset.label}: ${signed(i.parsed.y)}`}}},
+        scales: {x: axis("", {grid: {display: false}, ticks: {color: css("--ink-3"), maxTicksLimit: 8}}), y: axis("Running total ($)")}}});
+  }
+}
+
+/* Compliance: Diane's audit of every trade */
+const COMPLIANCE_RULES = [
+  ["Every position has a stop loss", "major"], ["Risk per trade stays under " + "5% of the firm", "major"], ["Options premium under 6% per trade", "major"],
+  ["If every stop hit at once, the firm loses under 20%", "major"], ["Positions stay within equity plus the bank line", "major"],
+  ["Stops only ever get tighter, never wider", "major"], ["Losses stay near the planned 1R (flagged past 1.25R)", "minor / major past 2R"],
+  ["Fills land close to the planned price", "minor"], ["Reward is at least 1.2x the risk at the actual fill", "minor"],
+  ["No stock fills in the first or last 5 minutes of the session", "minor"], ["Trades don't overstay their planned time frame", "minor"]];
+function renderCompliance(d) {
+  const C = d.compliance, people = personMap();
+  const el = $("#p-compliance");
+  const who = people.compliance?.name || "Compliance";
+  if (!C) { el.innerHTML = `<h2>Compliance</h2><p class="empty">${esc(who)} starts auditing with the next 15-minute check.</p>`; return; }
+  const dates = uniq([...Object.keys(C.days || {}), ...C.findings.map(f => f.date)]);
+  const day = pickVal("comp", dates);
+  const rows = C.findings.filter(f => f.date === day).slice().reverse();
+  const L = C.last_30, dayStats = (C.days || {})[day] || {audits: 0};
+  el.innerHTML = `<h2>Compliance</h2>
+    <p class="lede">${esc(who)}, chief compliance officer, reports straight to you. Risk management blocks bad orders before they go in; compliance checks what actually happened afterwards, on every trade, and names who was responsible. Major findings are sent to Telegram, and all of them go into ${esc(people.hr?.name || "HR")}'s weekly reviews.</p>
+    <div class="figures">
+      <div class="fig"><div class="v">${L.audits}</div><div class="k">Trade audits, last 30 days</div></div>
+      <div class="fig"><div class="v">${L.findings}</div><div class="k">Findings</div></div>
+      <div class="fig"><div class="v ${L.major ? "down" : ""}">${L.major}</div><div class="k">Major findings</div></div>
+      <div class="fig"><div class="v">${L.clean_pct == null ? "—" : L.clean_pct + "%"}</div><div class="k">Clean audit rate</div></div>
+    </div>
+    ${Object.keys(L.by_seat).length ? `<h3>Findings by person, last 30 days</h3><div class="scroll"><table><thead><tr><th>Person</th><th class="num">Findings</th></tr></thead><tbody>
+      ${Object.entries(L.by_seat).sort((a, b) => b[1] - a[1]).map(([seat, n]) => `<tr class="click" data-person="${esc(seat)}"><td class="sym">${esc(people[seat]?.name || seat)}</td><td class="num">${n}</td></tr>`).join("")}</tbody></table></div>` : ""}
+    <h3>Audit log</h3>
+    ${picker("comp", dates)}
+    ${day ? `<p class="small muted">${esc(fmtDay(day))}: ${dayStats.audits} trade audit${dayStats.audits === 1 ? "" : "s"}, ${rows.length} finding${rows.length === 1 ? "" : "s"}.</p>` : ""}
+    ${rows.length ? `<div class="scroll"><table><thead><tr><th>Time</th><th>Severity</th><th>Rule</th><th>Responsible</th><th>What happened</th></tr></thead><tbody>
+      ${rows.map(f => `<tr><td class="small">${clock(f.at)}</td><td><span class="sev ${esc(f.severity)}">${esc(f.severity)}</span></td>
+        <td><b>${esc(f.rule)}</b>${f.symbol ? `<div class="tag">${esc(f.symbol)}</div>` : ""}</td>
+        <td class="click" data-person="${esc(f.seat)}">${esc(f.who)}</td><td class="small">${esc(f.detail)}</td></tr>`).join("")}</tbody></table></div>`
+      : `<p class="empty">${day ? "Clean day: no findings." : "No trades to audit yet."}</p>`}
+    <h3>What ${esc(who.split(" ")[0])} checks</h3>
+    <div class="scroll"><table><thead><tr><th>Rule</th><th>If broken</th></tr></thead><tbody>${COMPLIANCE_RULES.map(([r, s]) => `<tr><td>${esc(r)}</td><td class="small">${esc(s)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 /* research memo drawer */
@@ -1026,10 +1248,12 @@ function personCard(p, agents, opts = {}) {
     if (!working && !a.last) now = esc(i.mood ? `Mood: ${i.mood}` : i.persona);
   }
   const avatarClass = p.id === "partner" ? "partner" : p.intern && p.intern.status !== "junior" ? "intern" : p.desk;
-  return `<button class="person ${opts.head ? "head" : ""} ${p.id === "partner" ? "partner" : ""} ${working ? "working" : ""}" data-person="${esc(p.id)}">
+  if (p.locked) now = `Joins when the firm reaches ${money(p.unlock_at, 0)} (${esc(p.unlock_title)}).`;
+  const lvl = p.level ? `<span class="lvl ${esc(p.level)}">${esc(p.level)}</span>` : "";
+  return `<button class="person ${opts.head ? "head" : ""} ${p.id === "partner" ? "partner" : ""} ${working ? "working" : ""} ${p.locked ? "locked" : ""}" data-person="${esc(p.id)}">
     <span class="avatar ${avatarClass}">${avatarInner(p.name)}<span class="st"></span></span>
-    <span><span class="seat-name">${esc(p.name)}</span><span class="seat-role">${esc(p.role)}</span>
-      ${hitBadge(p.id)}${extra}<span class="seat-now">${now}</span></span></button>`;
+    <span><span class="seat-name">${esc(p.name)}</span><span class="seat-role">${lvl}${esc(p.role)}</span>
+      ${p.locked ? "" : hitBadge(p.id)}${extra}<span class="seat-now">${now}</span></span></button>`;
 }
 
 function renderFloor() {
@@ -1058,13 +1282,14 @@ function renderFloor() {
     <div class="org">
       <div class="org-level">${card("partner")}</div>
       <div class="org-stem"></div>
-      <div class="branch" style="--l:16.6%;--r:16.6%">
+      <div class="branch" style="--l:12.5%;--r:12.5%">
         <div class="twig">${card("cio", {head: true})}</div>
         <div class="twig">${card("hr", {head: true})}</div>
+        <div class="twig">${card("compliance", {head: true})}</div>
         <div class="twig">${card("client")}</div>
       </div>
       <div class="org-stem stem-cio"></div>
-      <div class="branch desks" style="--l:calc(16.67% - 1px);--r:12.5%; display:grid; grid-template-columns: 2fr 1fr 1fr">
+      <div class="branch desks" style="--l:calc(12.5% - 1px);--r:12.5%; display:grid; grid-template-columns: 2fr 1fr 1fr">
         ${deskCol("pm", "Research desk", true)}
         <div class="twig"><div class="desk-col"><span class="desk-name">Trading desk</span>${card("execution", {head: true})}
           <div class="members">${kids("execution").map(p => personCard(p, agents)).join("")}</div>
@@ -1111,6 +1336,7 @@ function showPerson(id, refresh = false) {
       <button class="close" onclick="this.closest('dialog').close()">Close</button></div>
     ${sc ? `<p class="small" style="margin-top:14px">${hitBadge(id)} ${sc.pct == null ? "" : `<span class="muted">${sc.right} of ${sc.total} over the last 30 days</span>`}</p>` : ""}
     ${p.approach ? `<p class="small"><b>Working style:</b> ${esc(p.approach)}</p>` : ""}
+    ${p.locked ? `<p class="note">Not hired yet. ${esc(p.name)} joins when the firm first reaches ${money(p.unlock_at, 0)}, unlocking the ${esc(p.unlock_title)}.</p>` : payBlock(id)}
     ${i ? `<p class="small"><b>Style:</b> ${esc(i.persona)}<br><b>Account:</b> $${(+i.equity).toFixed(2)} (started $150, best $${(+(i.peak || i.equity)).toFixed(2)})${i.mood ? `<br><b>Mood:</b> ${esc(i.mood)}` : ""}</p>
       ${i.positions.length ? `<h3>Holding</h3><ul class="small">${i.positions.map(x => `<li>${esc(x.symbol)} ${esc(x.direction)} $${(+x.size_usd).toFixed(0)} at ${px(x.entry)}: ${esc(x.reason)}</li>`).join("")}</ul>` : ""}
       ${i.closed.length ? `<h3>Recent results</h3><ul class="small">${i.closed.slice().reverse().map(x => `<li>${esc(x.symbol)} ${esc(x.direction)}: <span class="${cls(x.pnl)}">${signed(x.pnl)}</span> (${esc(x.why)})</li>`).join("")}</ul>` : ""}` : ""}
@@ -1124,6 +1350,17 @@ function showPerson(id, refresh = false) {
 }
 $("#memo").addEventListener("close", () => { floorOpen = null; });
 document.addEventListener("click", (e) => { const s = e.target.closest("[data-person]"); if (s) showPerson(s.dataset.person); });
+
+function payBlock(id) {
+  const f = DATA.firm; if (!f || !f.levels || !f.levels[id]) return id === "partner" ? `<p class="small"><b>Pay:</b> no salary. As managing partner, whatever the firm keeps after the bank and payroll is yours.</p>` : "";
+  const bonus = (f.bonuses || []).reduce((t, b) => t + ((b.by_seat || {})[id]?.amount || 0), 0);
+  const moves = (f.level_log || []).filter(x => x.seat === id).slice(-5).reverse();
+  const flags = ((DATA.compliance || {}).findings || []).filter(x => x.seat === id).slice(-5).reverse();
+  return `<p class="small"><span class="lvl ${esc(f.levels[id])}">${esc(f.levels[id])}</span>
+      Salary ${money(f.salaries[id])} a year at the firm's current size. Paid so far: ${money((f.payroll_by_seat || {})[id] || 0)} base, ${money(bonus)} in bonuses.</p>
+    ${moves.length ? `<p class="small"><b>Career:</b> ${moves.map(x => `${esc(x.date)}: ${esc(x.from)} to ${esc(x.to)} (${esc(x.reason)})`).join("; ")}</p>` : ""}
+    ${flags.length ? `<p class="small"><b>Compliance flags:</b> ${flags.map(x => `${esc(x.date)} <span class="sev ${x.severity}">${x.severity}</span> ${esc(x.rule)}${x.symbol ? " (" + esc(x.symbol) + ")" : ""}`).join("; ")}</p>` : ""}`;
+}
 
 function startLive() {
   if (!liveTimer) { loadLive(); liveTimer = setInterval(loadLive, 60000); }

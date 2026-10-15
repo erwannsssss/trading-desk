@@ -34,8 +34,9 @@ VOICES = {
     "performance": "data-driven, cites the scoreboard",
     "reviewer": "reflective, talks about lessons from closed trades",
     "quant": "statistical, talks about samples and luck vs skill",
+    "second": "independent and blunt; judges trades on the data alone",
 }
-NOTE_KEYS = {"technical": "technical", "fundamental": "fundamental", "sentiment": "news_sentiment",
+NOTE_KEYS = {"second": "second_opinion", "technical": "technical", "fundamental": "fundamental", "sentiment": "news_sentiment",
              "smartmoney": "smart_money", "crypto": "crypto_desk", "fx": "fx_desk", "events": "event_desk"}
 
 

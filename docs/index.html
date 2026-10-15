@@ -367,7 +367,7 @@ const px = (x) => x == null ? "—" : (Math.abs(x) >= 10 ? x.toLocaleString("en-
 const when = (iso) => iso ? new Date(iso).toLocaleString("en-US", {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"}) : "—";
 const assetName = {stock: "Stock", etf: "ETF", crypto: "Crypto", forex: "Forex", option: "Options"};
 const statusName = {open: "Open", pending: "Order working", closing: "Closing", closed: "Closed", cancelled: "Never filled",
-  skipped: "Skipped", would_trade: "Dry run", approved: "Planned", pass: "Passed", blocked_by_fact_check: "Blocked by fact-check", error: "Research error"};
+  skipped: "Skipped", would_trade: "Dry run", approved: "Planned", pass: "Passed", blocked_by_fact_check: "Blocked by fact-check", vetoed_by_second_opinion: "Vetoed by second opinion", error: "Research error"};
 let DATA = null, chart = null, charts = {};
 
 /* date pickers: anything that piles up shows one day (or week, or month) at a time */
@@ -494,13 +494,14 @@ function drawCurve(curve) {
 }
 
 function sideTag(t) {
+  if (t.credit) return `<span class="side ${t.direction === "short" ? "short" : "long"}">${t.direction === "short" ? "Bearish" : "Bullish"}</span>`;
   if (t.asset === "option" || t.expression === "call_options" || t.expression === "put_options") {
     const put = t.option_type === "put" || t.expression === "put_options";
     return `<span class="side ${put ? "short" : "long"}">${put ? "Puts" : "Calls"}</span>`;
   }
   return `<span class="side ${t.direction}">${t.direction === "short" ? "Short" : "Long"}</span>`;
 }
-function optLine(t) { return t.option_symbol ? `<div class="tag">${t.short_strike ? `$${t.strike}/$${t.short_strike} ${esc(t.option_type)} spread` : `$${t.strike} ${esc(t.option_type)}s`}, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
+function optLine(t) { return t.option_symbol ? `<div class="tag">${t.credit ? `sold $${t.strike}/$${t.hedge_strike} ${esc(t.option_type === "call" ? "call" : "put")} credit spread` : t.short_strike ? `$${t.strike}/$${t.short_strike} ${esc(t.option_type)} spread` : `$${t.strike} ${esc(t.option_type)}s`}, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
 const sessionName = {morning: "Morning", intraday: "Intraday", evening: "Evening", overnight: "Overnight"};
 
 function renderOverview(d) {
@@ -882,6 +883,8 @@ function showMemo(m, trade) {
     ${d.expression && d.expression !== "shares" ? `<p class="small"><b>Expressed with:</b> ${d.expression === "call_options" ? "call options" : "put options"}${trade && trade.option_symbol ? ` (${esc(trade.option_symbol)})` : ""}</p>` : ""}
     ${trade && trade.postmortem ? `<h3>Post-mortem: ${esc(trade.postmortem.verdict)}</h3><p class="note">${esc(trade.postmortem.what_happened)}</p>${trade.postmortem.lesson ? `<p class="small"><b>Lesson:</b> ${esc(trade.postmortem.lesson)}</p>` : ""}` : ""}
     ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
+    ${m.second_opinion ? `<h3>Second opinion (${esc(personMap().second?.name || "independent reviewer")}): ${esc({agree: "Agrees", disagree: "Disagrees", strong_disagree: "Strongly disagrees"}[m.second_opinion.verdict] || "")}</h3>
+      <p class="note">${esc(m.second_opinion.reason || "")}</p><p class="small muted">Their own view: ${m.second_opinion.score > 0 ? "+" : ""}${m.second_opinion.score} on a -5 to +5 scale. ${m.second_opinion.verdict === "agree" ? "The bet was sized up 15%." : m.second_opinion.verdict === "disagree" ? "The bet was cut to 60% of its size." : "The trade was vetoed."}</p>` : ""}
     <h3>Pre-mortem</h3><p class="note">${esc(d.premortem?.failure_story || "")}</p>
     <p class="small">${d.premortem?.failure_more_likely ? "It judged failure more likely, so the trade was vetoed." : "It judged success more likely than this failure story."}</p>
     <h3>Bull case (${esc(m.bull?.direction || "")})</h3><p class="note">${esc(m.bull?.case || "")}</p>

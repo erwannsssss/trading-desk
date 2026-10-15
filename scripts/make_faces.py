@@ -48,6 +48,7 @@ PEOPLE = {
     "Omar Haddad": "39-year-old Lebanese man, short dark curly hair, trimmed beard, glasses, thoughtful look",
     "Ruth Klein": "61-year-old white woman, short silver hair, reading glasses, wise slight smile",
     "Nina Petrova": "30-year-old Bulgarian woman, dark hair in a sleek ponytail, intelligent calm look",
+    "Raj Iyer": "37-year-old Indian man, short neat black hair, trimmed beard, calm skeptical expression",
     "Diane Foster": "50-year-old white woman, short dark blonde hair, pearl earrings, stern no-nonsense expression",
     # unlockable desks
     "Lena Hoffmann": "33-year-old German woman, long straight light brown hair, sharp focused look",

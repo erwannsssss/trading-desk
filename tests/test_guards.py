@@ -92,6 +92,20 @@ class SpreadTests(unittest.TestCase):
         self.assertLessEqual(cheaper["limit"] * 100, 300)     # falls back to a tighter spread that fits
         self.assertIsNone(none)
 
+    def test_credit_spread_only_when_options_are_expensive(self):
+        from desk.trading import options
+        def snap(bid, ask, delta, iv):
+            return {"latestQuote": {"bp": bid, "ap": ask}, "greeks": {"delta": delta}, "impliedVolatility": iv}
+        chain = {"XYZ261113P00095000": snap(2.4, 2.6, 0.3, 0.6), "XYZ261113P00090000": snap(0.9, 1.0, 0.18, 0.62),
+                 "XYZ261113P00100000": snap(4.0, 4.3, 0.5, 0.58)}
+        with mock.patch.object(options, "_chain", return_value=chain):
+            rich = options.pick_credit_spread("XYZ", True, 101.0, 95.0, atr_pct=2.0, max_loss=600)   # realized ~25%
+            fair = options.pick_credit_spread("XYZ", True, 101.0, 95.0, atr_pct=6.0, max_loss=600)   # realized ~76%
+        self.assertEqual((rich["strike"], rich["hedge_strike"]), (95.0, 90.0))
+        self.assertGreaterEqual(rich["limit"] / rich["width"], 0.2)
+        self.assertAlmostEqual(rich["max_loss"], rich["width"] - rich["limit"])
+        self.assertIsNone(fair)
+
     def test_net_price_of_two_leg_orders(self):
         from desk.trading import options
         opened = {"legs": [{"side": "buy", "filled_avg_price": "6.30"}, {"side": "sell", "filled_avg_price": "1.80"}]}

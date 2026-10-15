@@ -30,6 +30,7 @@ SEATS = {
     "bear":        ("Nadia Volkov", "The bear", "research", "pm", True),
     "factcheck":   ("Sam Brooks", "Fact-checker", "research", "pm", False),
     "sizer":       ("Iris Lindqvist", "Position sizer", "research", "pm", False),
+    "second":      ("Raj Iyer", "Independent reviewer (second opinion)", "research", "cio", True),
     "execution":   ("Kenji Watanabe", "Execution trader, head of trading", "trading", "cio", False),
     "positions":   ("Leo Moretti", "Position manager", "trading", "execution", False),
     "options":     ("Ava Sinclair", "Options trader", "trading", "execution", False),

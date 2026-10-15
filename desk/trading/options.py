@@ -105,6 +105,69 @@ def pick_spread(underlying: str, kind: str, price: float, target: float, horizon
     return None
 
 
+CREDIT_DTE = (14, 45)
+IV_RICH = 1.25          # options count as expensive when implied volatility is 25%+ above the stock's realized volatility
+MIN_CREDIT_SHARE = 0.25  # collect at least a quarter of the spread's width
+
+
+def realized_vol(atr_pct: float | None) -> float | None:
+    """Rough yearly volatility from the average daily range (ATR is about 1.25x the daily standard deviation)."""
+    return (atr_pct / 1.25) * (252 ** 0.5) / 100 if atr_pct else None
+
+
+def pick_credit_spread(underlying: str, bullish: bool, price: float, stop: float, atr_pct: float | None,
+                       max_loss: float | None = None) -> dict | None:
+    """When options are expensive, SELL a spread instead of buying one. Bullish: sell a put near the stop and buy a
+    cheaper one below it (keeps the credit if the stock stays above the sold strike). Bearish: the same with calls
+    above the price. Returns None if options aren't expensive or no spread pays enough."""
+    kind = "put" if bullish else "call"
+    rows = _quotes(_chain(underlying, kind, CREDIT_DTE, price))
+    rv = realized_vol(atr_pct)
+    for exp in sorted({r["expiry"] for r in rows}):
+        legs = sorted([r for r in rows if r["expiry"] == exp], key=lambda r: r["strike"])
+        if bullish:
+            cands = [r for r in legs if r["strike"] <= price * 0.99]
+            short = min(cands, key=lambda r: abs(r["strike"] - stop), default=None)
+            further = [r for r in legs if short and r["strike"] < short["strike"]][::-1]
+        else:
+            cands = [r for r in legs if r["strike"] >= price * 1.01]
+            short = min(cands, key=lambda r: abs(r["strike"] - stop), default=None)
+            further = [r for r in legs if short and r["strike"] > short["strike"]]
+        if not short or not short.get("iv") or short["spread_pct"] > MAX_SPREAD_PCT:
+            continue
+        if rv is None or short["iv"] < max(IV_RICH * rv, 0.30):
+            return None                           # options aren't expensive: buy instead of sell
+        if short["delta"] and short["delta"] > 0.45:
+            continue
+        for lg in further[:3]:
+            width = abs(short["strike"] - lg["strike"])
+            credit = short["mid"] - lg["mid"]
+            natural = short["bid"] - lg["ask"]
+            if credit <= 0 or credit / width < MIN_CREDIT_SHARE:
+                continue
+            limit = round(credit - (credit - max(natural, 0.01)) * 0.3, 2)
+            loss = width - limit
+            if max_loss and loss * 100 > max_loss:
+                continue
+            return {"credit": True, "type": kind, "symbol": short["symbol"], "strike": short["strike"],
+                    "hedge_symbol": lg["symbol"], "hedge_strike": lg["strike"], "expiry": exp.isoformat(),
+                    "mid": round(credit, 2), "limit": limit, "width": width, "max_loss": round(loss, 2),
+                    "iv": round(short["iv"], 3), "realized_vol": round(rv, 3)}
+    return None
+
+
+def credit_close_cost(sold: str, bought: str) -> dict | None:
+    """What it costs to close a credit spread now: buy back the sold option, sell the protective one."""
+    d = marketdata._alpaca("/v1beta1/options/snapshots", {"symbols": f"{sold},{bought}", "feed": "indicative"})
+    snaps = d.get("snapshots") or {}
+    a, b = snaps.get(sold), snaps.get(bought)
+    if not a or not b:
+        return None
+    qa, qb = a.get("latestQuote") or {}, b.get("latestQuote") or {}
+    mid = ((qa.get("bp", 0) + qa.get("ap", 0)) - (qb.get("bp", 0) + qb.get("ap", 0))) / 2
+    return {"mid": round(max(0.0, mid), 2), "ask": round(max(0.0, (qa.get("ap") or 0) - (qb.get("bp") or 0)), 2)}
+
+
 def spread_mark(long_symbol: str, short_symbol: str) -> dict | None:
     """Current value of a debit spread (long leg minus short leg), from mid prices; bid = what closing would get."""
     d = marketdata._alpaca("/v1beta1/options/snapshots", {"symbols": f"{long_symbol},{short_symbol}", "feed": "indicative"})

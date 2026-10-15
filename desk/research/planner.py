@@ -247,11 +247,26 @@ def run(session: str = "morning") -> dict:
                     "price_at_research": d["technicals"]["price"], "why_scanned": cand.get("why_scanned"),
                     "setups": d["technicals"].get("setups"), "atr_pct": d["technicals"].get("atr_pct"),
                     "specialists": notes, "bull": bull, "bear": bear, "decision": pm, "fact_check": check}
+            so = None
             if pm.get("decision") in ("long", "short") and check["passed"]:
+                floor.working("second", f"Independent review of {sym} ({pm['decision']})", sym)
+                try:
+                    so = team.second_opinion(d, pm, macro)
+                    idea["second_opinion"] = so
+                    notes = {**(notes or {}), "second_opinion": {"score": so.get("score"), "points": [so.get("reason", "")]}}
+                    idea["specialists"] = notes
+                    word = {"agree": "AGREE, sizing up", "disagree": "DISAGREE, sizing down", "strong_disagree": "STRONG DISAGREE, vetoed"}[so["verdict"]]
+                    floor.done("second", f"{sym}: {word}. {so.get('reason', '')}", sym,
+                               kind="blocked" if so["verdict"] == "strong_disagree" else "decision")
+                except Exception as exc:
+                    floor.done("second", f"{sym}: couldn't review ({str(exc)[:80]}); trade goes ahead at normal size", sym)
+            if so and so.get("verdict") == "strong_disagree":
+                idea["status"] = "vetoed_by_second_opinion"
+            elif pm.get("decision") in ("long", "short") and check["passed"]:
                 kw = {}
                 if cand["asset"] == "forex":
                     kw = {"quote_to_usd": quote_to_usd(sym), "unit_usd": oanda.usd_value_per_unit(sym)}
-                kw["multiplier"] = learning.risk_multiplier(pm.get("style"))
+                kw["multiplier"] = learning.risk_multiplier(pm.get("style")) * ((so or {}).get("size_multiplier") or 1.0)
                 idea["sizing"] = team.size(pm, book.equity, cand["asset"], **kw)
                 idea["status"] = "approved"
                 sz = idea["sizing"]

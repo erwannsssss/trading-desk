@@ -65,7 +65,8 @@ def check_open(t: dict, equity: float) -> list[dict]:
                         f"Filled at {entry:g}, {slip:.2f}% worse than the planned {plan:g} (limit {SLIPPAGE_LIMIT.get(asset, 0.5)}%)."))
     risk = None
     if asset == "option" and t.get("premium_paid") and t.get("filled_qty"):
-        risk = t["premium_paid"] * t["filled_qty"] * 100
+        per = (t.get("spread_width", 0) - t["premium_paid"]) if t.get("credit") else t["premium_paid"]
+        risk = per * t["filled_qty"] * 100
         cap = equity * config.MAX_OPTIONS_PREMIUM_PCT / 100
         if risk > cap * RISK_TOLERANCE:
             out.append(("Options premium over cap", "major", "options",

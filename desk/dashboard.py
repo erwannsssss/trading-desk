@@ -214,8 +214,9 @@ def _positions(trades: list[dict], details: dict) -> list[dict]:
         unreal = None
         if t.get("asset") == "option":
             entry = t.get("underlying_entry") or t["entry_plan"]
-            if t.get("option_mark") and t.get("entry_price"):
-                unreal = round((t["option_mark"] - t["entry_price"]) * t["filled_qty"] * 100, 2)
+            if t.get("option_mark") is not None and t.get("entry_price"):
+                diff = (t["entry_price"] - t["option_mark"]) if t.get("credit") else (t["option_mark"] - t["entry_price"])
+                unreal = round(diff * t["filled_qty"] * 100, 2)
         elif last and t.get("entry_price"):
             unreal = round((last - entry) * t["filled_qty"] * (1 if long else -1) * t.get("quote_to_usd", 1.0) + t.get("partial_pnl", 0), 2)
         progress = None
@@ -231,7 +232,8 @@ SLIM_KEYS = ("id", "plan_file", "symbol", "asset", "venue", "direction", "status
              "filled_qty", "notional_usd", "risk_usd", "risk_pct", "created_at", "opened_at", "closed_at", "exit_price",
              "exit_reason", "pnl_usd", "r_result", "skip_reason", "max_r", "notes", "partial_pnl", "postmortem",
              "option_symbol", "option_type", "strike", "expiry", "premium_paid", "option_mark", "underlying_entry",
-             "short_option_symbol", "short_strike", "spread_width", "single_option_cost", "loan_usd", "interest_usd")
+             "short_option_symbol", "short_strike", "spread_width", "single_option_cost", "loan_usd", "interest_usd",
+             "credit", "hedge_strike", "iv_at_entry", "realized_vol_at_entry", "industry", "pair_id")
 
 
 def _slim(t: dict) -> dict:
@@ -240,7 +242,7 @@ def _slim(t: dict) -> dict:
 
 def _memo(idea: dict) -> dict:
     return {k: idea.get(k) for k in ("symbol", "asset", "status", "price_at_research", "why_scanned", "specialists",
-                                     "bull", "bear", "decision", "fact_check", "sizing")}
+                                     "bull", "bear", "decision", "fact_check", "sizing", "second_opinion")}
 
 
 def _memos(trades: list[dict], plans: list[dict]) -> dict:
@@ -394,7 +396,7 @@ def _ghost(plans: list[dict], trades: list[dict]) -> list[dict]:
     rows, seen = [], set()
     for plan in reversed(plans):
         for i in plan.get("ideas", []):
-            if i.get("status") not in ("pass", "blocked_by_fact_check") or not i.get("price_at_research"):
+            if i.get("status") not in ("pass", "blocked_by_fact_check", "vetoed_by_second_opinion") or not i.get("price_at_research"):
                 continue
             key = (plan["_file"], i["symbol"])
             if key in seen:

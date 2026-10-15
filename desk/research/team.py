@@ -334,6 +334,42 @@ Return JSON: {{"specialists": {{"technical": {{"score": int, "points": [str]}}, 
     return out
 
 
+# ---- Second opinion (a different AI model that never saw the team's debate) -------------
+SECOND_OPINION_SIZE = {"agree": 1.15, "disagree": 0.6}
+
+
+def second_opinion(dossier: dict, decision: dict, macro: dict) -> dict:
+    """Raj Iyer, independent reviewer. Runs on a different AI model family (Groq first) and sees only the data and
+    the proposed trade, not the debate, so the two models can catch each other's mistakes."""
+    from desk import config
+    side = decision.get("decision")
+    prompt = f"""{_style("second")}You are an INDEPENDENT REVIEWER at a trading desk. You did not hear the team's debate.
+Look only at the data and judge the proposed trade on its own merits. Be willing to disagree.
+
+PROPOSED TRADE: {side} {dossier['symbol']} ({dossier['asset_type']}), entry {decision.get('entry')}, stop {decision.get('stop')},
+target {decision.get('target')}, horizon {decision.get('horizon')}, conviction {decision.get('conviction')}/10.
+MARKET BACKDROP: {macro.get('regime')} | {macro.get('summary')}
+
+DATA:
+{_j(dossier)}
+
+{DATA_GUIDE}
+
+Give your own view of the direction from -5 (strongly bearish) to +5 (strongly bullish), then a verdict on THIS trade:
+"agree" (you'd take it), "disagree" (weak or poorly timed; take it smaller if at all), or "strong_disagree"
+(you expect it to lose). Return JSON: {{"score": int, "verdict": "agree"|"disagree"|"strong_disagree",
+"reason": str (1-2 sentences, citing the data)}}"""
+    out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.2,
+                 models=config.GROQ_MODELS + config.GEMINI_BACKUP + config.GEMINI_MODELS,
+                 check=lambda o: isinstance(o, dict) and o.get("verdict") in ("agree", "disagree", "strong_disagree"))
+    score = int(out.get("score") or 0)
+    # a "strong_disagree" only counts as a veto when the reviewer's own view points the other way
+    if out["verdict"] == "strong_disagree" and not ((side == "long" and score <= -2) or (side == "short" and score >= 2)):
+        out["verdict"] = "disagree"
+    out["size_multiplier"] = SECOND_OPINION_SIZE.get(out["verdict"], 0.0)
+    return out
+
+
 # ---- Fact-checker (plain code, no AI) ----------------------------------------
 MAX_ENTRY_DISTANCE = {"stock": 0.06, "etf": 0.04, "crypto": 0.10, "forex": 0.015}
 

@@ -35,6 +35,8 @@ SESSION_NOTES = {
     "overnight": "Overnight. Crypto and forex only; favor trades that can work over the next several hours.",
 }
 RESEARCH_COOLDOWN_HOURS = 3   # don't re-research a symbol that was looked at this recently
+FULL_TEAM_MAX = 8             # AI budget: the full team (4+ AI calls each) takes the top 8 ideas; the rest get the
+                              # one-call quick huddle, so the morning session can't burn most of the day's free quota
 
 
 def quote_to_usd(instrument: str) -> float:
@@ -188,8 +190,9 @@ def run(session: str = "morning") -> dict:
     planned = [{"symbol": i["symbol"], "direction": (i.get("decision") or {}).get("decision"),
                 "style": (i.get("decision") or {}).get("style")} for _, i in recent_ideas(12) if i.get("status") == "approved"]
     ideas = []
-    for cand in finalists:
+    for n, cand in enumerate(finalists):
         sym = cand["symbol"]
+        fast = cfg["fast"] or n >= FULL_TEAM_MAX
         try:
             floor.working("associate", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
             d = dossiers.build(cand, funds, light=cfg["fast"])
@@ -198,7 +201,7 @@ def run(session: str = "morning") -> dict:
                 d["quant_desk"] = qn
                 floor.event("quantdesk", f"{sym}: attached the backtested record of its setups", sym)
             floor.done("associate", f"Dossier ready on {sym}", sym)
-            if cfg["fast"]:
+            if fast:
                 for a in floor.DESK_TEAM:
                     floor.working(a, f"Quick huddle on {sym}", sym)
                 q = team.quick_desk(d, macro, planned, holdings, rulebook, extra)

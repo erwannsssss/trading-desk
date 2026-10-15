@@ -142,7 +142,7 @@ sentence, with personality.
 Return JSON: {{"picks": [{{"symbol": str, "direction": "long"|"short", "stop": number, "target": number,
 "size_pct": number, "reason": str}}], "mood": str (a few words on how you're feeling)}}"""
         try:
-            out = ai.ask(prompt, want_json=True, temperature=0.8)
+            out = ai.ask(prompt, want_json=True, temperature=0.8, models=config.AI_LIGHT)
         except Exception as exc:
             print(f"intern {intern['name']} failed: {exc}")
             continue

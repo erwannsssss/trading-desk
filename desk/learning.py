@@ -110,7 +110,7 @@ wrong, the timing/stop was bad, or just bad luck? max_r is how far it went in ou
 
 Return JSON: {{"verdict": "right and won"|"right but lost"|"wrong but won (lucky)"|"wrong and lost",
 "what_happened": str (2-3 sentences), "lesson": str (one specific, reusable lesson, or "" if none)}}"""
-    return ai.ask(prompt, want_json=True, temperature=0.2)
+    return ai.ask(prompt, want_json=True, temperature=0.2, models=config.AI_LIGHT)
 
 
 def run_postmortems(limit: int = 3) -> int:

@@ -49,4 +49,4 @@ Don't invent trades or numbers. Plain text only, no markdown.
 
 DESK RECORDS:
 {ctx}"""
-    return ai.ask(prompt, temperature=0.4)
+    return ai.ask(prompt, temperature=0.4, models=config.AI_LIGHT)

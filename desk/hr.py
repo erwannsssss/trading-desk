@@ -83,7 +83,7 @@ PEOPLE: {json.dumps(ctx['people'], default=str)[:14000]}
 
 Return JSON: {{"memo": str (2-3 sentence all-staff memo), "reviews": [{{"seat": str, "grade": str,
 "review": str (1-2 sentences, specific to their numbers)}}]}}"""
-    out = ai.ask(prompt, want_json=True, temperature=0.6)
+    out = ai.ask(prompt, want_json=True, temperature=0.6, models=config.AI_LIGHT)
 
     fired = []
     for c in changes:

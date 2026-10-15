@@ -12,7 +12,7 @@ import json
 from datetime import datetime, timedelta
 
 from desk import activity as floor
-from desk import ai, marketdata, telegram
+from desk import ai, config, marketdata, telegram
 from desk.state import now
 from desk.telegram import esc
 from desk.trading import ledger
@@ -98,7 +98,7 @@ Choose one:
 
 Return JSON: {{"action": "hold"|"close"|"tighten", "new_stop": number|null, "reason": str (1-2 sentences)}}"""
     try:
-        out = ai.ask(prompt, want_json=True, temperature=0.2)
+        out = ai.ask(prompt, want_json=True, temperature=0.2, models=config.AI_LIGHT)
     except Exception as exc:
         for seat in ("pm", "risk", "sentiment"):
             floor.done(seat, f"Huddle on {sym} failed: {str(exc)[:80]}", sym, kind="error")

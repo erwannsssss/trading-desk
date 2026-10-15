@@ -26,6 +26,7 @@ def oanda_token() -> str: return _env("OANDA_API_TOKEN")
 def telegram_token() -> str: return _env("TELEGRAM_BOT_TOKEN")
 def telegram_chat() -> str: return _env("TELEGRAM_CHAT_ID")
 def gemini_key() -> str: return _env("GEMINI_API_KEY")
+def groq_key() -> str: return os.environ.get("GROQ_API_KEY", "").strip()   # optional backup AI provider
 def finnhub_key() -> str: return _env("FINNHUB_API_KEY")
 def fred_key() -> str: return _env("FRED_API_KEY")
 
@@ -35,14 +36,14 @@ ALPACA_TRADING_URL = "https://paper-api.alpaca.markets/v2"
 ALPACA_DATA_URL = "https://data.alpaca.markets"
 OANDA_URL = "https://api-fxpractice.oanda.com/v3"
 
-# Free-tier Gemini models, tried in order until one answers.
-AI_MODELS = [
-    "gemini-3.8-flash",
-    "gemini-3.7-flash",
-    "gemini-flash-latest",
-    "gemini-3.5-flash-lite",
-    "gemma-4-31b-it",
-]
+# Free-tier AI models, tried in order until one answers. Gemini first; Groq (its own separate free limits)
+# takes over when Gemini's daily caps run out. "groq:" models are skipped if GROQ_API_KEY isn't set.
+GEMINI_MODELS = ["gemini-3.8-flash", "gemini-3.7-flash", "gemini-flash-latest"]
+GEMINI_BACKUP = ["gemini-3.5-flash-lite", "gemma-4-31b-it"]
+GROQ_MODELS = ["groq:openai/gpt-oss-120b", "groq:qwen/qwen3.8-27b", "groq:openai/gpt-oss-20b"]
+AI_MODELS = GEMINI_MODELS + GROQ_MODELS + GEMINI_BACKUP
+# Everyday chatter (Telegram chat, intern picks, huddles, HR) goes to Groq first to save Gemini for research.
+AI_LIGHT = GROQ_MODELS + GEMINI_MODELS + GEMINI_BACKUP
 
 # ---- Budget ------------------------------------------------------------------
 STARTING_CAPITAL = 10_000.0  # total budget across BOTH accounts

@@ -16,6 +16,7 @@ HELP = (
     "/resume - turn trading back on\n"
     "/golive - leave dry-run and place paper trades\n"
     "/dryrun - back to analyze-only mode\n"
+    "/close - see open positions; /close V takes profit (or cuts) on V now; /close EURUSD half takes half off\n"
     "/flatten confirm - emergency: close everything\n"
     "/letter - the latest weekly fund letter\n"
     "/rules - the desk's rulebook\n"
@@ -122,6 +123,9 @@ def handle(text: str, state: dict) -> str | None:
         from desk import learning
         rules = learning.rulebook()
         return "<b>Rulebook</b>\n" + "\n".join(f"- {esc(r['rule'])}" for r in rules) if rules else "No rules yet. The weekly review writes them from real results."
+    if cmd in ("/close", "/takeprofit", "/sell"):
+        from desk import manual
+        return manual.close(args, state)
     if cmd == "/flatten":
         if args[:1] != ["confirm"]:
             return "This closes EVERY position and cancels every order. To do it, send: /flatten confirm"

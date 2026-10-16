@@ -73,6 +73,7 @@ def set_command_menu() -> None:
     request("Telegram", "POST", _url("setMyCommands"), json={"commands": [
         {"command": "status", "description": "Account value, P&L and risk status"},
         {"command": "positions", "description": "Everything the bot is holding"},
+        {"command": "close", "description": "Take profit on a position yourself: /close V"},
         {"command": "pause", "description": "Kill switch: stop opening new trades"},
         {"command": "resume", "description": "Turn trading back on"},
         {"command": "golive", "description": "Leave dry-run and place paper trades"},

@@ -231,13 +231,16 @@
   "quote_to_usd": 0.7044808504492828,
   "created_at": "2026-10-15T10:59:46-04:00",
   "expires_at": "2026-10-15T22:53:54-04:00",
-  "loan_usd": 515.92,
+  "loan_usd": 0.0,
   "entry_order_id": "15",
-  "status": "pending",
+  "status": "cancelled",
   "notes": [
-   "2026-10-15T10:59 entry order placed"
+   "2026-10-15T10:59 entry order placed",
+   "2026-10-15T23:07 entry never filled before the idea expired"
   ],
-  "loan_basis": "margin"
+  "loan_basis": "margin",
+  "closed_at": "2026-10-15T23:07:42-04:00",
+  "exit_reason": "entry never filled before the idea expired"
  },
  {
   "id": "2026-10-15-alert-101647-IREN-IREN",
@@ -564,8 +567,80 @@
   "filled_qty": 26768.0,
   "filled_qty_initial": 26768.0,
   "opened_at": "2026-10-15T19:58:28-04:00",
-  "last_price": 0.844805,
+  "last_price": 0.844615,
   "max_r": 0.02,
-  "min_r": -0.04
+  "min_r": -0.08
+ },
+ {
+  "id": "2026-10-15-overnight-2243-LTCUSD",
+  "plan_file": "2026-10-15-overnight-2243.json",
+  "symbol": "LTC/USD",
+  "venue": "alpaca",
+  "asset": "crypto",
+  "direction": "long",
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 4,
+  "confidence_pct": 48,
+  "horizon": "1-5 days",
+  "thesis": "LTC/USD has pulled back -15.7% over 20 days and is now consolidating at its 50-day SMA ($59.75) while maintaining an overall uptrend with a +37.29% 60-day gain. With RSI14 at 44.77 indicating selling pressure is exhausting and 1-day return stabilizing at +0.28%, the asset offers an asymmetrical bounce setup. We structure a low-conviction tactical long aiming for a retest of the declining 20-day SMA area ($67.00) while defining clear risk just under the recent swing low ($57.12) at $56.50. This aligns with our top-performing tournament style, trend pullback, while keeping exposure small to account for thin trading volume.",
+  "entry_plan": 61.16,
+  "initial_stop": 56.5,
+  "stop": 56.5,
+  "target": 67.0,
+  "qty": 9.650261,
+  "notional_usd": 590.21,
+  "risk_usd": 44.97,
+  "risk_pct": 0.45,
+  "quote_to_usd": 1.0,
+  "created_at": "2026-10-15T23:07:42-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-16T10:43:43-04:00",
+  "loan_usd": 0.0,
+  "loan_apr": 0.08,
+  "loan_basis": "cash",
+  "entry_order_id": "4546bb70-5145-459e-ac6d-bed16143fc88",
+  "status": "pending",
+  "notes": [
+   "2026-10-15T23:07 entry order placed"
+  ]
+ },
+ {
+  "id": "2026-10-15-overnight-2243-USD_CHF",
+  "plan_file": "2026-10-15-overnight-2243.json",
+  "symbol": "USD_CHF",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 5,
+  "confidence_pct": 55,
+  "horizon": "intraday",
+  "thesis": "Buy USD/CHF on a limit order near 0.8285 as the price pulls back toward its 20\u2011day SMA (0.8299). The stop is set just below the 50\u2011day SMA at 0.8180, and the target is near the recent 20\u2011day high at 0.8420, providing a risk\u2011reward of about 1.3:1. The trade is supported by strong USD long speculative positioning and weak CHF short positioning, while the overall regime is range\u2011bound, limiting downside volatility.",
+  "entry_plan": 0.8285,
+  "initial_stop": 0.818,
+  "stop": 0.818,
+  "target": 0.842,
+  "qty": 7086,
+  "notional_usd": 7086.0,
+  "risk_usd": 89.94,
+  "risk_pct": 0.9,
+  "quote_to_usd": 1.2087367492233867,
+  "created_at": "2026-10-15T23:07:42-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-16T10:43:43-04:00",
+  "loan_usd": 0.0,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "33",
+  "status": "pending",
+  "notes": [
+   "2026-10-15T23:07 entry order placed"
+  ]
  }
 ]

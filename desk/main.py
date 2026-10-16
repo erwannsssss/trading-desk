@@ -85,6 +85,23 @@ def healthcheck() -> int:
                 results.append(("OK  " if line != "no data" else "FAIL ") + f"{name}: {line}")
     except Exception as exc:
         results.append(f"FAIL Extra data sources: {str(exc)[:150]}")
+    def _kronos():
+        from desk.research import kronos
+        try:
+            import torch  # noqa: F401
+        except ImportError:
+            return "not installed in this job (it runs in the research and quant jobs)"
+        if not kronos.available():
+            raise RuntimeError(kronos._failed or "model didn't load")
+        from desk import marketdata
+        b = marketdata.stock_daily_bars(["SPY"], days=600)["SPY"]
+        kronos.PATHS, n = 4, kronos.PATHS
+        try:
+            f = kronos.forecast({"SPY": (b, "etf")}, steps=5).get("SPY")
+        finally:
+            kronos.PATHS = n
+        return f"SPY {f['expected_move_pct']:+.2f}% expected over 5 days ({kronos.MODEL})"
+    check("Kronos price model", _kronos)
     check("Groq AI (backup)", lambda: ai.ask("Reply with exactly: ready", temperature=0, models=config.GROQ_MODELS)[:40]
           if config.groq_key() else "not set up (add the GROQ_API_KEY secret)")
 
@@ -355,11 +372,33 @@ def research() -> int:
     return 0
 
 
+def quant() -> int:
+    """The quant desk: `quant all` (stocks while the market is open, plus crypto and forex) or `quant crypto_fx`."""
+    from desk import activity as floor
+    from desk.research import quant as qd
+    markets = sys.argv[2] if len(sys.argv) > 2 else "all"
+    try:
+        qd.run(markets)
+        try:
+            rec = qd.kronos_record()
+            print(f"Kronos live record: {rec}")
+        except Exception:
+            traceback.print_exc()
+    finally:
+        floor.finish()
+    try:
+        from desk import dashboard
+        dashboard.build(load())
+    except Exception:
+        traceback.print_exc()
+    return 0
+
+
 def main() -> int:
     cmd = sys.argv[1] if len(sys.argv) > 1 else "tick"
     try:
         return {"healthcheck": healthcheck, "tick": tick, "research": research, "listen": listen_only,
-                "weekly": weekly, "backtest": run_backtest, "reviews": reviews}[cmd]()
+                "weekly": weekly, "backtest": run_backtest, "reviews": reviews, "quant": quant}[cmd]()
     except Exception as exc:
         traceback.print_exc()
         try:

@@ -1,0 +1,105 @@
+{
+ "at": "2026-10-16T08:12:30.873842+00:00",
+ "horizon_days": 5,
+ "symbols": [
+  "SPY",
+  "QQQ",
+  "IWM",
+  "AAPL",
+  "NVDA",
+  "AMD",
+  "TSLA",
+  "META",
+  "AMZN",
+  "JPM",
+  "XOM",
+  "PLTR",
+  "IONQ",
+  "COIN",
+  "MU",
+  "SOFI"
+ ],
+ "by_lookback": {
+  "64": {
+   "all": {
+    "n": 224,
+    "direction_hit_pct": 51.8,
+    "avg_r_trading_its_call": 0.109
+   },
+   "strong_signal": {
+    "n": 59,
+    "direction_hit_pct": 52.5,
+    "avg_r_trading_its_call": 0.008
+   },
+   "confident_70pct": {
+    "n": 149,
+    "direction_hit_pct": 54.4,
+    "avg_r_trading_its_call": 0.167
+   },
+   "model_expected_r": 0.363,
+   "r_scale": 0.3,
+   "model_says_over_0_5R": {
+    "n": 75,
+    "direction_hit_pct": 54.7,
+    "avg_r_trading_its_call": 0.071
+   }
+  }
+ },
+ "baseline_always_up_pct": 48.7,
+ "note": "5-day direction calls; avg_r trades each call with a 1.5 ATR stop and 2.5 ATR target",
+ "runs": [
+  {
+   "at": "2026-10-16T07:50Z",
+   "lookback": 64,
+   "all": {
+    "n": 224,
+    "direction_hit_pct": 56.2,
+    "avg_r_trading_its_call": 0.171
+   },
+   "confident_70pct": {
+    "n": 139,
+    "direction_hit_pct": 56.8,
+    "avg_r_trading_its_call": 0.159
+   },
+   "strong_signal": {
+    "n": 56,
+    "direction_hit_pct": 57.1,
+    "avg_r_trading_its_call": 0.049
+   }
+  },
+  {
+   "at": "2026-10-16T08:12:30.873842+00:00",
+   "lookback": 64,
+   "all": {
+    "n": 224,
+    "direction_hit_pct": 51.8,
+    "avg_r_trading_its_call": 0.109
+   },
+   "confident_70pct": {
+    "n": 149,
+    "direction_hit_pct": 54.4,
+    "avg_r_trading_its_call": 0.167
+   },
+   "strong_signal": {
+    "n": 59,
+    "direction_hit_pct": 52.5,
+    "avg_r_trading_its_call": 0.008
+   },
+   "model_says_over_0_5R": {
+    "n": 75,
+    "direction_hit_pct": 54.7,
+    "avg_r_trading_its_call": 0.071
+   },
+   "model_expected_r": 0.363,
+   "r_scale": 0.3
+  }
+ ],
+ "combined": {
+  "n": 448,
+  "direction_hit_pct": 54.0,
+  "avg_r_trading_its_call": 0.14,
+  "confident_70pct_avg_r": 0.163,
+  "r_scale": 0.3,
+  "verdict": "weak but consistent edge on confident calls (+0.16R in both runs); its own size estimates run about 3x too high"
+ }
+}

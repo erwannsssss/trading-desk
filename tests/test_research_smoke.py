@@ -30,6 +30,11 @@ def decision(price, side="long"):
             "evidence": [{"fact": "technicals.price", "value": price}, {"fact": "technicals.rsi14", "value": 45.0}]}
 
 
+UP = {"high": [101, 103, 106, 109, 110], "low": [99.5, 100, 102, 104, 105], "close": [100.5, 102, 105, 108, 109]}
+DOWN = {"high": [100.5, 99, 98, 97, 96], "low": [97, 95, 94, 93, 92], "close": [98, 96, 95, 94, 93]}
+KRONOS = {"AAA": {"horizon_days": 5, "expected_move_pct": 4.0, "median_move_pct": 5.0, "prob_up_pct": 75, "range_low_10pct": 93,
+                  "range_high_90pct": 109, "range_width_pct": 16, "direction": "up", "signal_strength": 0.6, "paths": 4,
+                  "_paths": [UP, UP, UP, DOWN]}}
 NOTES = {k: {"score": 2, "points": ["x"]} for k in ("technical", "fundamental", "news_sentiment", "smart_money")}
 
 
@@ -68,6 +73,9 @@ class ResearchSessionSmokeTest(unittest.TestCase):
             mock.patch.object(planner.team, "second_opinion", return_value={"score": 2, "verdict": "agree", "reason": "fine", "size_multiplier": 1.15}),
             mock.patch("desk.interns.make_picks", return_value=[]),
             mock.patch("desk.research.pairs.candidates", return_value=[]),
+            mock.patch.object(planner.extra_data, "vol_indexes", return_value={"vix": 16}),
+            mock.patch.object(planner.extra_data, "implied_move", return_value=None),
+            mock.patch.object(planner, "_kronos_for", return_value=(KRONOS, 0.6)),
         ]
         for p in patches:
             p.start()
@@ -86,6 +94,10 @@ class ResearchSessionSmokeTest(unittest.TestCase):
         self.assertTrue(plan["ideas"])
         self.assertTrue(all(i["status"] == "approved" for i in plan["ideas"]), [i.get("error") for i in plan["ideas"]])
         self.assertTrue(all(i["second_opinion"]["verdict"] == "agree" for i in plan["ideas"]))
+        aaa = next(i for i in plan["ideas"] if i["symbol"] == "AAA")
+        self.assertEqual(aaa["kronos_odds"]["target_first_pct"], 75)     # 3 of 4 futures reach 108 before 96
+        self.assertIn("kronos", aaa["specialists"])
+        self.assertGreater(aaa["specialists"]["kronos"]["score"], 0)
 
     def test_morning_session_runs_end_to_end(self):
         plan = self._run("morning")

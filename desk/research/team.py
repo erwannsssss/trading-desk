@@ -35,7 +35,18 @@ DATA_GUIDE = (
     "crowded trade that tends to reverse. "
     "crypto_sentiment = Crypto Fear & Greed (0-100; extreme fear often marks bottoms, extreme greed tops), stablecoin "
     "supply growth (new money ready to buy crypto) and DeFi value locked. "
-    "sector = the company's sector and industry."
+    "sector = the company's sector and industry. "
+    "kronos_forecast = Kronos, an AI model trained only on price charts from 45+ exchanges, drew many possible "
+    "futures for the next few days: expected_move_pct and median_move_pct (where it thinks price goes), prob_up_pct "
+    "(share of futures that end higher), range_low_10pct/range_high_90pct (the likely range), signal_strength (expected "
+    "move vs its own uncertainty; above 1 is a confident call) and trust_weight (0-1, how much its backtest says to "
+    "trust it). It is one more opinion, strongest when it agrees with the chart and the story; it knows nothing about "
+    "news or earnings. options_market = what options traders are pricing: implied_move_pct by the next weekly expiry "
+    "(a target beyond that move needs a reason), implied_vol_pct, and put_call_volume_ratio (above 1 = more bearish bets). "
+    "volatility_indexes = VIX (expected 30-day S&P swings; under 15 calm, over 25 fearful), vix_term_ratio (VIX over "
+    "3-month VIX; above 1 = near-term panic), VVIX and SKEW (demand for crash protection). market_internals = breadth: "
+    "share of stocks above their 50- and 200-day averages, new highs vs new lows, leading and lagging sectors. A rally "
+    "with weak breadth is fragile; a sell-off with breadth already washed out often bounces."
 )
 
 
@@ -216,8 +227,10 @@ Return JSON: {{"case": str (4-6 sentences), "risks": [str], "would_change_my_min
 
 DESK_TARGET = (
     "DESK MANDATE: this is an aggressive trading desk that has to make money, not preserve it. Sitting in cash is a "
-    "losing strategy. Aim for roughly 20-30 trades a day across all sessions and markets, and approve most ideas that "
-    "have a real edge: a typical session should approve at least half of what it researches. "
+    "losing strategy. The firm aims for about 30 orders a day across all sessions and markets (the research desk plus "
+    "the quant desk), so approve every idea that has a real edge: a typical session should approve at least half of "
+    "what it researches, more when the desk is behind its daily pace. Volume is never a reason to take a trade with "
+    "negative expected value. "
     "Judge each trade on EXPECTED VALUE, not on whether it is more likely to win than lose: a 40% chance to make 3x "
     "the risk is a GOOD trade. Take calculated risks you believe can actually happen, with a clear stop. "
     "A risk-off or choppy market is NOT a reason to pass: it changes WHICH trades to take (shorts and puts on weak "

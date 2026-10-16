@@ -88,7 +88,7 @@ def idea_expiry(plan: dict, idea: dict) -> datetime:
     created = datetime.fromisoformat(plan["created_at"])
     if idea["asset"] in ("stock", "etf"):
         last = created.replace(hour=STOCK_LAST_ENTRY[0], minute=STOCK_LAST_ENTRY[1], second=0, microsecond=0)
-        if plan.get("session") in ("intraday", "alert"):
+        if plan.get("session") in ("intraday", "alert", "quant"):
             return min(created + timedelta(hours=3), last)  # intraday ideas go stale fast
         if plan.get("session") == "pitch":
             return created + timedelta(hours=26)  # a pitch made after hours can still be placed the next day

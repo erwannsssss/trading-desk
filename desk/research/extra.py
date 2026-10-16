@@ -310,6 +310,80 @@ def crypto_sentiment() -> dict | None:
     return _mem["crypto"]
 
 
+# ---- Volatility indexes and the options market ---------------------------------------
+def vol_indexes() -> dict | None:
+    """VIX (30-day fear gauge), VIX3M (3-month), VVIX (volatility of the VIX) and SKEW (crash-protection demand)."""
+    if "vol" in _mem:
+        return _mem["vol"]
+    out = None
+    try:
+        import yfinance as yf
+        d = yf.download(["^VIX", "^VIX3M", "^VVIX", "^SKEW"], period="1mo", progress=False, auto_adjust=False)["Close"]
+        last = {c: float(d[c].dropna().iloc[-1]) for c in d.columns if len(d[c].dropna())}
+        vix, v3 = last.get("^VIX"), last.get("^VIX3M")
+        out = {"vix": _r(vix), "vix_3m": _r(v3), "vvix": _r(last.get("^VVIX")), "skew": _r(last.get("^SKEW"), 1),
+               "vix_term_ratio": _r(vix / v3, 3) if vix and v3 else None,
+               "vix_20d_avg": _r(float(d["^VIX"].dropna().tail(20).mean())) if "^VIX" in d else None}
+        out["term_structure"] = ("inverted (near-term fear above long-term: stress)" if (out["vix_term_ratio"] or 0) > 1
+                                 else "normal (calm)")
+    except Exception as exc:
+        print(f"vol indexes failed: {exc}")
+    _mem["vol"] = out
+    return out
+
+
+def implied_move(symbol: str, price: float | None = None) -> dict | None:
+    """How big a move the options market is pricing by the nearest weekly expiry (at-the-money straddle / price)."""
+    try:
+        import yfinance as yf
+        from datetime import date as _d
+        t = yf.Ticker(symbol)
+        exps = [e for e in t.options if (_d.fromisoformat(e) - _d.today()).days >= 2][:1]
+        if not exps:
+            return None
+        ch = t.option_chain(exps[0])
+        px = price or float(t.fast_info["last_price"])
+
+        def val(df):
+            row = df.iloc[(df["strike"] - px).abs().argsort()[:1]]
+            bid, ask, last = (float(row[k].iloc[0]) for k in ("bid", "ask", "lastPrice"))
+            return ((bid + ask) / 2 if bid > 0 and ask > 0 else last), float(row["strike"].iloc[0]), float(row["impliedVolatility"].iloc[0])
+        c, k, iv_c = val(ch.calls)
+        p, _, iv_p = val(ch.puts)
+        if not c or not p:
+            return None
+        return {"expiry": exps[0], "days": (_d.fromisoformat(exps[0]) - _d.today()).days, "atm_strike": k,
+                "implied_move_pct": _r((c + p) / px * 100), "implied_vol_pct": _r((iv_c + iv_p) / 2 * 100, 1),
+                "put_call_volume_ratio": _r(float(ch.puts["volume"].fillna(0).sum()) / max(1.0, float(ch.calls["volume"].fillna(0).sum())))}
+    except Exception as exc:
+        print(f"implied move {symbol} failed: {str(exc)[:80]}")
+        return None
+
+
+def market_internals(stocks: list[dict], etfs: dict) -> dict | None:
+    """Breadth and leadership from the scanner's own numbers (no extra downloads)."""
+    ts = [s["technicals"] for s in stocks if s.get("technicals")]
+    if len(ts) < 20:
+        return None
+    pct = lambda cond: _r(sum(1 for t in ts if cond(t)) / len(ts) * 100, 0)
+    spy = (etfs.get("SPY") or {}).get("ret_20d")
+    sectors = {k: v.get("ret_20d") for k, v in etfs.items() if k.startswith("XL") or k in ("SMH", "XBI", "KRE", "ITB")}
+    rank = sorted((k for k in sectors if isinstance(sectors[k], (int, float))), key=lambda k: -sectors[k])
+    return {
+        "stocks_measured": len(ts),
+        "pct_above_50d_avg": pct(lambda t: t.get("sma50") and t["price"] > t["sma50"]),
+        "pct_above_200d_avg": pct(lambda t: t.get("sma200") and t["price"] > t["sma200"]),
+        "pct_up_today": pct(lambda t: (t.get("ret_1d") or 0) > 0),
+        "pct_rsi_over_70": pct(lambda t: (t.get("rsi14") or 50) > 70),
+        "pct_rsi_under_30": pct(lambda t: (t.get("rsi14") or 50) < 30),
+        "near_52w_high": sum(1 for t in ts if t.get("high_52w") and t["price"] >= 0.97 * t["high_52w"]),
+        "near_52w_low": sum(1 for t in ts if t.get("low_52w") and t["price"] <= 1.03 * t["low_52w"]),
+        "spy_ret_20d": spy,
+        "leading_sectors_20d": [f"{k} {sectors[k]:+.1f}%" for k in rank[:3]],
+        "lagging_sectors_20d": [f"{k} {sectors[k]:+.1f}%" for k in rank[-3:][::-1]],
+    }
+
+
 def health() -> dict[str, str]:
     """One line per source, for the health check."""
     res = {}
@@ -326,5 +400,9 @@ def health() -> dict[str, str]:
     res["CFTC positioning"] = f"{len(c)} markets, EUR speculators at {c['EUR']['three_year_percentile']:.0f} on a 0-100 three-year scale" if c.get("EUR") else "no data"
     k = crypto_sentiment()
     res["Crypto sentiment"] = f"fear & greed {k.get('fear_greed_now_0_100')} ({k.get('fear_greed_label')})" if k else "no data"
+    vi = vol_indexes()
+    res["Volatility indexes"] = f"VIX {vi.get('vix')}, VIX3M {vi.get('vix_3m')}, {vi.get('term_structure')}" if vi else "no data"
+    im = implied_move("SPY")
+    res["Options implied move"] = f"SPY {im['implied_move_pct']}% by {im['expiry']}" if im else "no data"
     res["_seconds"] = f"{time.monotonic() - t:.0f}"
     return res

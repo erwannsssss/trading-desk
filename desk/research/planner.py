@@ -18,7 +18,7 @@ from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research import dossier as dossiers
 from desk.research import extra as extra_data
-from desk.research import scanner, smartmoney, team
+from desk.research import kronos, quant, scanner, smartmoney, team
 from desk.state import load, now
 from desk.telegram import esc
 
@@ -108,6 +108,42 @@ def team_record() -> list[dict] | None:
         return None
 
 
+def kronos_size(odds: dict | None, weight: float) -> float:
+    """Size up a little when Kronos' simulated futures favor the plan, down when they're against it (scaled by trust)."""
+    if not odds:
+        return 1.0
+    er = odds.get("expected_r") or 0
+    return round(1 + max(-0.3, min(0.25, er * 0.5)) * weight, 2)
+
+
+def _kronos_for(finalists: list[dict]) -> tuple[dict, float]:
+    """Kronos forecasts for every finalist in one batch (an empty dict when the model isn't installed)."""
+    try:
+        if not kronos.available():
+            return {}, 0.0
+        floor.working("mlquant", f"Running Kronos on the {len(finalists)} finalists")
+        stocks = [c["symbol"] for c in finalists if c["asset"] in ("stock", "etf")]
+        cryptos = [c["symbol"] for c in finalists if c["asset"] == "crypto"]
+        bars = {}
+        if stocks:
+            bars.update(marketdata.stock_daily_bars(stocks, days=900))
+        if cryptos:
+            bars.update(marketdata.crypto_daily_bars(cryptos, days=900))
+        for c in finalists:
+            if c["asset"] == "forex":
+                bars[c["symbol"]] = marketdata.forex_daily_bars(c["symbol"], 700)
+        series = {c["symbol"]: (bars.get(c["symbol"]) or [], c["asset"]) for c in finalists}
+        fc = kronos.forecast(series, steps=5)
+        w = quant.kronos_weight()
+        quant._log_forecasts(fc, {c["symbol"]: {"asset": c["asset"], "t": c["technicals"]} for c in finalists})
+        floor.done("mlquant", f"Kronos forecasts ready for {len(fc)} finalists (trust weight {w})")
+        return fc, w
+    except Exception as exc:
+        traceback.print_exc()
+        floor.done("mlquant", f"Kronos skipped this session ({str(exc)[:80]})")
+        return {}, 0.0
+
+
 def run(session: str = "morning") -> dict:
     started = time.monotonic()
     cfg = dict(SESSIONS[session])
@@ -165,6 +201,10 @@ def run(session: str = "morning") -> dict:
         "calendar_effects": _calendar_effects(),
         "futures_positioning": _try(extra_data.cot),
         "crypto_sentiment": _try(extra_data.crypto_sentiment),
+        "volatility_indexes": _try(extra_data.vol_indexes),
+        "market_internals": _try(extra_data.market_internals, stock_ctx.get("analyzed") or [], stock_ctx["etf_readings"]),
+        "spy_options": _try(extra_data.implied_move, "SPY") if cfg["stocks"] else None,
+        "daily_trade_pace": quant._pace(state),
     }
     macro = latest_macro() if cfg["reuse_macro"] else None
     if macro:
@@ -205,12 +245,16 @@ def run(session: str = "morning") -> dict:
     planned = [{"symbol": i["symbol"], "direction": (i.get("decision") or {}).get("decision"),
                 "style": (i.get("decision") or {}).get("style")} for _, i in recent_ideas(12) if i.get("status") == "approved"]
     ideas = []
+    kz_all, kz_w = _kronos_for(finalists)
     for n, cand in enumerate(finalists):
         sym = cand["symbol"]
         fast = cfg["fast"] or n >= FULL_TEAM_MAX
         try:
             floor.working("associate", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
             d = dossiers.build(cand, funds, light=cfg["fast"])
+            kz = kz_all.get(sym)
+            if kz:
+                d["kronos_forecast"] = {**kronos.public(kz), "trust_weight": kz_w}
             qn = team.quant_note(d)
             if qn:
                 d["quant_desk"] = qn
@@ -258,6 +302,19 @@ def run(session: str = "morning") -> dict:
                     "price_at_research": d["technicals"]["price"], "why_scanned": cand.get("why_scanned"),
                     "setups": d["technicals"].get("setups"), "atr_pct": d["technicals"].get("atr_pct"),
                     "specialists": notes, "bull": bull, "bear": bear, "decision": pm, "fact_check": check}
+            if kz:
+                idea["specialists"] = {**(notes or {}), "kronos": {"score": quant._kronos_score(kz),
+                                       "points": [f"Kronos: {kz['expected_move_pct']:+.1f}% expected over {kz['horizon_days']} days, "
+                                                  f"{kz['prob_up_pct']}% of simulated futures end higher"]}}
+                notes = idea["specialists"]
+                if pm.get("decision") in ("long", "short") and all(isinstance(pm.get(k), (int, float)) for k in ("entry", "stop", "target")):
+                    try:
+                        idea["kronos_odds"] = quant.kronos_r(kz["_paths"], pm["decision"] == "long", pm["entry"], pm["stop"], pm["target"])
+                        ko = idea["kronos_odds"]
+                        floor.event("mlquant", f"{sym}: Kronos has the target first in {ko['target_first_pct']}% of futures, "
+                                    f"the stop first in {ko['stop_first_pct']}% (expected {ko['expected_r']:+.2f}R)", sym)
+                    except Exception as exc:
+                        print(f"kronos odds failed: {exc}")
             so = None
             if pm.get("decision") in ("long", "short") and check["passed"]:
                 floor.working("second", f"Independent review of {sym} ({pm['decision']})", sym)
@@ -277,7 +334,8 @@ def run(session: str = "morning") -> dict:
                 kw = {}
                 if cand["asset"] == "forex":
                     kw = {"quote_to_usd": quote_to_usd(sym), "unit_usd": oanda.usd_value_per_unit(sym)}
-                kw["multiplier"] = learning.risk_multiplier(pm.get("style")) * ((so or {}).get("size_multiplier") or 1.0)
+                kw["multiplier"] = (learning.risk_multiplier(pm.get("style")) * ((so or {}).get("size_multiplier") or 1.0)
+                                    * kronos_size(idea.get("kronos_odds"), kz_w))
                 idea["sizing"] = team.size(pm, book.equity, cand["asset"], **kw)
                 idea["status"] = "approved"
                 sz = idea["sizing"]

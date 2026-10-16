@@ -253,6 +253,24 @@ def check_unlocks(equity: float) -> list[tuple]:
     return new
 
 
+def unlock(key: str, why: str = "opened early by the managing partner") -> bool:
+    """Open a desk now, regardless of the milestone. Returns True if it was locked."""
+    u = next((u for u in UNLOCKS if u[0] == key), None)
+    data = load()
+    if not u or key in data["unlocked"]:
+        return False
+    data["unlocked"][key] = now().date().isoformat()
+    data.setdefault("unlock_notes", {})[key] = why
+    save(data)
+    if u[4]:
+        from desk import staff
+        sdata = staff.load()
+        sdata["seats"].setdefault(u[4], {"name": staff.ALL_SEATS[u[4]][0], "since": None, "approach": None})
+        sdata["seats"][u[4]]["since"] = now().date().isoformat()
+        staff.save(sdata)
+    return True
+
+
 def loan_apr() -> float:
     return 0.065 if unlocked("bank_terms") else 0.08
 

@@ -50,15 +50,16 @@ STARTING_CAPITAL = 10_000.0  # total budget across BOTH accounts
 
 # ---- HARD RISK LIMITS (the AI cannot override these) ---------------------------
 MAX_DAILY_LOSS_PCT = 6.0         # stop trading for the day after losing this much
-MAX_TRADES_PER_DAY = 30          # a cap, not a quota
-MAX_OPEN_POSITIONS = 20
+MAX_TRADES_PER_DAY = 75          # a cap, not a quota
+DAILY_TRADE_GOAL = 30            # what the desk aims for (prompts and the quant desk's budget), never forced
+MAX_OPEN_POSITIONS = 40          # room for ~30 orders a day held 1-5 days
 MAX_POSITION_PCT = 100.0         # largest single stock/crypto position, % of the firm's own equity (notional)
 MAX_RISK_PER_TRADE_PCT = 5.0     # max loss if the stop-loss hits, % of bot equity
 # Total exposure (stocks + crypto + options + forex) can reach the firm's equity plus the bank credit line (bank.py).
 MAX_FOREX_POSITION_X = 6.0       # one forex position's size vs bot equity (forex moves are small, so sizes run bigger)
-MAX_TOTAL_OPEN_RISK_PCT = 30.0   # all open trades together can't lose more than this % of the firm's own money at their stops
+MAX_TOTAL_OPEN_RISK_PCT = 40.0   # all open trades together can't lose more than this % of the firm's own money at their stops
 MAX_OPTIONS_PREMIUM_PCT = 6.0    # most premium to pay on one options trade, % of bot equity (the max loss)
-MAX_OPTIONS_TOTAL_PCT = 15.0     # all open options positions combined
+MAX_OPTIONS_TOTAL_PCT = 25.0     # all open options positions combined
 MIN_REWARD_TO_RISK = 1.2         # target must be at least this many times farther than the stop
 REQUIRE_STOP_LOSS = True         # every new trade must have a stop
 NO_TRADE_OPEN_MINUTES = 5        # skip the first minutes after the stock market opens

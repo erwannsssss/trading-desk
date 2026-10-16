@@ -155,6 +155,7 @@ dialog::backdrop { background: rgba(16,26,46,.45); }
 .avatar.research { background: var(--ink); color: var(--paper); }
 .avatar.trading { background: var(--gain); color: var(--paper); }
 .avatar.learning { background: var(--signal); color: #16233F; }
+.avatar.quant { background: #6B4FA0; color: #fff; }
 .avatar .face { position: absolute; inset: 2px; width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 50%; object-fit: cover; background: var(--paper); }
 .avatar { overflow: visible; }
 .avatar .st { position: absolute; right: -1px; bottom: -1px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--paper); background: var(--ink-3); }
@@ -280,6 +281,7 @@ button.plain { background: none; border: 0; padding: 0; color: inherit; font: in
   .branch::before, .twig::before { display: none; }
   .org-level { flex-direction: column; align-items: stretch; }
   .members.two { grid-template-columns: 1fr; }
+  .branch.desks { grid-template-columns: minmax(0, 1fr) !important; }
   .person.partner { max-width: none; }
 }
 /* glossary + explain */
@@ -533,7 +535,7 @@ function sideTag(t) {
   return `<span class="side ${t.direction}">${t.direction === "short" ? "Short" : "Long"}</span>`;
 }
 function optLine(t) { return t.option_symbol ? `<div class="tag">${t.credit ? `sold $${t.strike}/$${t.hedge_strike} ${esc(t.option_type === "call" ? "call" : "put")} credit spread` : t.short_strike ? `$${t.strike}/$${t.short_strike} ${esc(t.option_type)} spread` : `$${t.strike} ${esc(t.option_type)}s`}, expire ${esc(t.expiry)}${t.premium_paid ? `, paid $${(+t.premium_paid).toFixed(2)}` : ""}${t.option_mark ? `, now $${(+t.option_mark).toFixed(2)}` : ""}</div>` : ""; }
-const sessionName = {morning: "Morning", intraday: "Intraday", evening: "Evening", overnight: "Overnight"};
+const sessionName = {morning: "Morning", intraday: "Intraday", evening: "Evening", overnight: "Overnight", quant: "Quant desk", pitch: "Pitch", alert: "Alert"};
 
 function breakdownBlock(b) {
   const row = (label, v, note = "") => `<tr><td>${label}${note ? `<div class="tag">${note}</div>` : ""}</td><td class="num ${cls(v)}">${signed(v)}</td></tr>`;
@@ -553,6 +555,19 @@ function breakdownBlock(b) {
     </tbody></table></div>`;
 }
 
+function quantCard(q, a) {
+  const kb = q.kronos_backtest || {}, live = kb.live || {}, lb = kb.combined || Object.values(kb.by_lookback || {})[0]?.all;
+  const pace = q.last_summary?.pace;
+  const rec = live.n >= 30 ? `live record: ${live.direction_hit_pct}% of ${live.n} calls right, ${live.avg_r > 0 ? "+" : ""}${live.avg_r}R a call`
+    : lb ? `backtest: ${lb.direction_hit_pct}% of ${lb.n} past calls right, ${lb.avg_r_trading_its_call > 0 ? "+" : ""}${lb.avg_r_trading_its_call}R a call` : "no track record yet";
+  return `<h3>Quant desk and Kronos</h3>
+    <p class="small">${q.runs_today} quant run${q.runs_today === 1 ? "" : "s"} today, <b>${q.approved_today}</b> trade${q.approved_today === 1 ? "" : "s"} sent to the trading desk.
+      ${q.trades ? `All-time: ${q.trades} quant trades, ${q.closed} closed for <b class="${cls(q.pnl)}">${signed(q.pnl)}</b>.` : ""}
+      Daily goal: about ${pace?.goal || 30} orders (cap ${a.max_trades}); ${a.trades_today} placed so far.</p>
+    <p class="small muted">Kronos trust: ${q.last_summary?.kronos_weight ?? "—"} out of 1 (${esc(rec)}).
+      ${q.last_summary?.desk_note ? esc(q.last_summary.desk_note) : ""}</p>`;
+}
+
 function renderOverview(d) {
   const a = d.account, s = d.stats, plan = d.plan;
   const recent = d.trades.filter(t => ["open","closed","pending","would_trade"].includes(t.status)).slice(0, 6);
@@ -566,6 +581,7 @@ function renderOverview(d) {
       <div class="fig"><div class="v">${s.win_rate == null ? "—" : s.win_rate + "%"}</div><div class="k">Win rate (${s.closed} closed)</div></div>
     </div>
     ${a.breakdown ? breakdownBlock(a.breakdown) : ""}
+    ${d.quant ? quantCard(d.quant, a) : ""}
     ${d.bank ? `<h3>Bank credit line</h3>
       <p class="small">Borrowed <b>${money(d.bank.borrowed, 0)}</b> of ${money(d.bank.credit_line, 0)} from ${esc(d.bank.bank)} at ${d.bank.apr_pct}% a year.
         Interest so far: <b>${money(d.bank.financing_cost)}</b> (${money(d.bank.interest_paid)} repaid with closed trades, ${money(d.bank.interest_accruing)} building on open ones).</p>
@@ -952,12 +968,15 @@ function showMemo(m, trade) {
     ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
     ${m.second_opinion ? `<h3>Second opinion (${esc(personMap().second?.name || "independent reviewer")}): ${esc({agree: "Agrees", disagree: "Disagrees", strong_disagree: "Strongly disagrees"}[m.second_opinion.verdict] || "")}</h3>
       <p class="note">${esc(m.second_opinion.reason || "")}</p><p class="small muted">Their own view: ${m.second_opinion.score > 0 ? "+" : ""}${m.second_opinion.score} on a -5 to +5 scale. ${m.second_opinion.verdict === "agree" ? "The bet was sized up 20%." : m.second_opinion.verdict === "disagree" ? "The bet was cut to 80% of its size." : m.second_opinion.overruled ? "Elena overruled the veto (conviction 7+); the bet was cut to 60% of its size." : "The trade was vetoed."}</p>` : ""}
-    <h3>Pre-mortem</h3><p class="note">${esc(d.premortem?.failure_story || "")}</p>
+    ${m.quant ? quantBlock(m.quant) : ""}
+    ${!m.quant && m.kronos_odds ? kronosOdds(m.kronos_odds) : ""}
+    ${m.bull ? `<h3>Pre-mortem</h3><p class="note">${esc(d.premortem?.failure_story || "")}</p>
     <p class="small">${d.premortem?.failure_more_likely ? "It judged failure more likely, so the trade was vetoed." : "It judged success more likely than this failure story."}</p>
     <h3>Bull case (${esc(m.bull?.direction || "")})</h3><p class="note">${esc(m.bull?.case || "")}</p>
     ${(m.bull?.catalysts || []).length ? `<ul class="note">${m.bull.catalysts.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
     <h3>Bear case</h3><p class="note">${esc(m.bear?.case || "")}</p>
-    ${(m.bear?.risks || []).length ? `<ul class="note">${m.bear.risks.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+    ${(m.bear?.risks || []).length ? `<ul class="note">${m.bear.risks.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}` : ""}
+    ${spec("kronos", `Kronos price model (${esc(personMap().mlquant?.name || "ML quant")})`)}${spec("quant_momentum", "Momentum signal")}${spec("quant_reversion", "Mean-reversion signal")}
     ${spec("technical", "Technical analyst")}${spec("fundamental", "Fundamental analyst")}${spec("news_sentiment", "News and sentiment")}${spec("smart_money", "Smart money")}
     <h3>Fact-check</h3>
     <p class="small">${fc.passed ? `<span class="check-ok">Passed.</span> ${fc.verified_facts} cited numbers matched the data.` : `<span class="check-bad">Failed.</span>`}</p>
@@ -966,6 +985,20 @@ function showMemo(m, trade) {
   gloss($("#memo-body"));
   $("#memo").showModal();
   if (trade && trade.opened_at) drawReplay(trade);
+}
+
+function kronosOdds(k) {
+  return `<h3>Kronos simulation</h3><p class="note">Out of ${k.paths} possible futures drawn by the Kronos price model, this plan hit its
+    target first in <b>${k.target_first_pct}%</b> and its stop first in <b>${k.stop_first_pct}%</b>. Expected result: <b class="${cls(k.expected_r)}">${k.expected_r > 0 ? "+" : ""}${k.expected_r}R</b>
+    (R = the amount risked).</p>`;
+}
+function quantBlock(q) {
+  const h = q.history, who = personMap()[q.seat]?.name || "the quant desk";
+  return `<h3>Quant evidence (${esc(who)})</h3>
+    <p class="note">${h ? `The same signal on this symbol over the last 2 years: <b>${h.signals}</b> trades, <b>${h.win_pct}%</b> winners,
+      <b class="${cls(h.avg_r)}">${h.avg_r > 0 ? "+" : ""}${h.avg_r}R</b> on average (best ${h.best_r}R, worst ${h.worst_r}R).` : "This is a Kronos-only call: no rule history."}
+      Combined edge: <b class="${cls(q.edge_r)}">${q.edge_r > 0 ? "+" : ""}${q.edge_r}R</b> per trade. Kronos was trusted at ${q.kronos_weight} out of 1.</p>
+    ${q.kronos ? kronosOdds(q.kronos) : ""}`;
 }
 
 /* trade replay: price path with the entry, every stop level, the target and the exit */
@@ -1297,7 +1330,7 @@ function drawEdge(e) {
 }
 
 /* ---------- trading floor ---------- */
-const LIVE_JOBS = ["research", "desk", "client", "learning"];
+const LIVE_JOBS = ["research", "desk", "client", "learning", "quant"];
 const REPO = "erwannsssss/trading-desk";
 const RAW = `https://raw.githubusercontent.com/${REPO}/`;
 let liveSha = null;
@@ -1314,6 +1347,7 @@ const deskInfo = {
   research: ["Research desk", "Finds trades: scans the market, reads the macro picture, debates every idea"],
   trading: ["Trading desk", "Places orders, enforces the risk limits, manages every open position"],
   learning: ["Learning desk", "Reviews results, runs the tournament and backtests, writes to you"],
+  quant: ["Quant desk", "Systematic strategies all day: momentum, mean reversion and the Kronos price model"],
 };
 const ago = (iso) => { if (!iso) return ""; const m = Math.round((Date.now() - new Date(iso)) / 60000);
   return m < 1 ? "just now" : m < 60 ? `${m} min ago` : `${Math.floor(m / 60)} h ${m % 60} min ago`; };
@@ -1452,12 +1486,13 @@ function renderFloor() {
         <div class="twig">${card("client")}</div>
       </div>
       <div class="org-stem stem-cio"></div>
-      <div class="branch desks" style="--l:calc(12.5% - 1px);--r:12.5%; display:grid; grid-template-columns: 2fr 1fr 1fr">
+      <div class="branch desks" style="--l:calc(12.5% - 1px);--r:12.5%; display:grid; grid-template-columns: 2fr 1fr 1fr 1fr">
         ${deskCol("pm", "Research desk", true)}
         <div class="twig"><div class="desk-col"><span class="desk-name">Trading desk</span>${card("execution", {head: true})}
           <div class="members">${kids("execution").map(p => personCard(p, agents)).join("")}</div>
           <span class="desk-name" style="margin-top:8px">Risk and treasury (report straight to Victor)</span>${card("risk", {head: true})}${card("treasury", {head: true})}</div></div>
         ${deskCol("performance", "Learning desk", false)}
+        ${people.quantdesk ? deskCol("quantdesk", "Quant desk", false) : ""}
       </div>
       <h3>Intern program <span class="small muted">(reports to ${esc(people.hr?.name || "HR")}; $150 to start, hired at $500)</span></h3>
       <div class="members two" style="margin-left:0;padding-left:0;border-left:0">${interns.map(i => personCard(people[i.seat], agents)).join("") || `<p class="empty">The first intern class starts with the next 15-minute check.</p>`}</div>

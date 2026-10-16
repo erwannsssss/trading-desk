@@ -35,9 +35,13 @@ VOICES = {
     "reviewer": "reflective, talks about lessons from closed trades",
     "quant": "statistical, talks about samples and luck vs skill",
     "second": "independent and blunt; judges trades on the data alone",
+    "quantdesk": "head of quant; talks in signals, backtests and edge per trade",
+    "statarb": "stat-arb quant; talks about z-scores and prices snapping back to the mean",
+    "mlquant": "machine-learning quant who runs the Kronos price model; talks in simulated futures and probabilities",
 }
 NOTE_KEYS = {"second": "second_opinion", "technical": "technical", "fundamental": "fundamental", "sentiment": "news_sentiment",
-             "smartmoney": "smart_money", "crypto": "crypto_desk", "fx": "fx_desk", "events": "event_desk"}
+             "smartmoney": "smart_money", "crypto": "crypto_desk", "fx": "fx_desk", "events": "event_desk",
+             "mlquant": "kronos", "quantdesk": "quant_momentum", "statarb": "quant_reversion"}
 
 
 def people() -> list[dict]:
@@ -66,7 +70,8 @@ def find(text: str) -> tuple[dict | None, str]:
                 return p, " ".join(words[n:])
     key = words[0].lower().strip(",:?")
     aliases = {"the bull": "bull", "bull": "bull", "bear": "bear", "hr": "hr", "pm": "pm", "cio": "cio", "risk": "risk",
-               "compliance": "compliance", "macro": "macro", "options": "options", "treasurer": "treasury", "quant": "quant"}
+               "compliance": "compliance", "macro": "macro", "options": "options", "treasurer": "treasury", "quant": "quant",
+               "kronos": "mlquant"}
     if key in aliases:
         return next((p for p in roster if p["id"] == aliases[key]), None), " ".join(words[1:])
     return None, text
@@ -122,6 +127,9 @@ def context(p: dict, question: str) -> dict:
             row = {"symbol": i.get("symbol"), "when": plan.get("created_at"), "session": plan.get("session"), "outcome": i.get("status")}
             if seat in NOTE_KEYS and isinstance((i.get("specialists") or {}).get(NOTE_KEYS[seat]), dict):
                 row["your_note"] = i["specialists"][NOTE_KEYS[seat]]
+                if i.get("quant") or i.get("kronos_odds"):
+                    row["quant_evidence"] = i.get("quant") or {"kronos_odds": i.get("kronos_odds")}
+                    row["decision"] = {k: d.get(k) for k in ("decision", "conviction", "entry", "stop", "target", "thesis")}
             elif seat == "bull":
                 row["your_case"] = i.get("bull")
             elif seat == "bear":

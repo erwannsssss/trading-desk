@@ -55,6 +55,11 @@ MACRO_SERIES = {
     "CPIAUCSL": "CPI (inflation index)",
     "UNRATE": "Unemployment rate",
     "VIXCLS": "VIX (fear index)",
+    "T10Y2Y": "Yield curve, 10-year minus 2-year (negative = inverted)",
+    "BAMLH0A0HYM2": "Junk bond spread over Treasuries (credit stress gauge, %)",
+    "T10YIE": "10-year inflation expectations (%)",
+    "DTWEXBGS": "Dollar index (broad, trade-weighted)",
+    "NFCI": "Financial conditions index (negative = loose, positive = tight)",
 }
 
 

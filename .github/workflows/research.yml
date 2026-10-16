@@ -39,7 +39,12 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -r requirements.txt -r requirements-research.txt
+          cache-dependency-path: "requirements*.txt"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: kronos-small-v1
+      - run: pip install -r requirements.txt -r requirements-research.txt -r requirements-kronos.txt
       - name: Pick session
         id: s
         run: |

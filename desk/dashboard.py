@@ -104,12 +104,33 @@ def build(state: dict) -> None:
         "letters": _json(config.DATA_DIR / "letters.json", []),
         "calendar": _safe(lambda: _calendar(plans, trades), None),
         "awards": _safe(lambda: _awards(scores), None),
+        "quant": _safe(lambda: _quant(plans, trades), None),
     }
     DOCS.mkdir(exist_ok=True)
     (DOCS / "data.json").write_text(json.dumps(data, default=str, separators=(",", ":")))
 
 
 # ---- pieces ------------------------------------------------------------------
+def _quant(plans: list[dict], trades: list[dict]) -> dict:
+    """The quant desk at a glance: today's runs, trades, Kronos' trust and track record, and the daily pace."""
+    today = now().date().isoformat()
+    runs = [p for p in plans if p.get("session") == "quant" and p.get("date") == today]
+    last = next((p for p in reversed(plans) if p.get("session") == "quant"), None)
+    cal = _json(config.DATA_DIR / "kronos_backtest.json", {}) or {}
+    styles = ("quant momentum", "quant mean reversion", "kronos forecast")
+    mine = [t for t in trades if t.get("style") in styles and t.get("status") not in ("skipped", "would_trade")]
+    closed = [t for t in mine if t["status"] == "closed" and t.get("pnl_usd") is not None]
+    return {
+        "runs_today": len(runs),
+        "approved_today": sum(i.get("status") == "approved" for p in runs for i in p.get("ideas", [])),
+        "last_run": last.get("created_at") if last else None,
+        "last_summary": (last or {}).get("quant_summary"),
+        "kronos_backtest": {k: v for k, v in cal.items() if k not in ("rows", "symbols")},
+        "trades": len(mine), "closed": len(closed), "pnl": round(sum(t["pnl_usd"] for t in closed), 2),
+        "by_style": {s: {"trades": sum(t.get("style") == s for t in mine),
+                         "pnl": round(sum(t["pnl_usd"] for t in closed if t.get("style") == s), 2)} for s in styles},
+    }
+
 def _awards(scores: dict) -> dict:
     from desk import awards
     return {"standings": awards.standings(), "eotm": awards.load()["eotm"][-12:], "race": awards.race(scores)}
@@ -266,7 +287,7 @@ def _slim(t: dict) -> dict:
 
 def _memo(idea: dict) -> dict:
     return {k: idea.get(k) for k in ("symbol", "asset", "status", "price_at_research", "why_scanned", "specialists",
-                                     "bull", "bear", "decision", "fact_check", "sizing", "second_opinion")}
+                                     "bull", "bear", "decision", "fact_check", "sizing", "second_opinion", "quant", "kronos_odds")}
 
 
 def _memos(trades: list[dict], plans: list[dict]) -> dict:
@@ -310,7 +331,8 @@ def _day_plan(plans: list[dict], day: str) -> dict | None:
     todays = [p for p in plans if p.get("date") == day]
     if not todays:
         return None
-    base = next((p for p in reversed(todays) if p.get("macro")), todays[-1])
+    base = next((p for p in reversed(todays) if p.get("macro") and p.get("session") != "quant"),
+                next((p for p in reversed(todays) if p.get("macro")), todays[-1]))
     out = _latest_plan([base])
     out["ideas"] = []
     for plan in todays:

@@ -55,6 +55,9 @@ PEOPLE = {
     "Marisol Vega": "36-year-old Puerto Rican woman, dark curly shoulder-length hair, confident smile",
     "Callum Reid": "40-year-old Scottish man, short sandy hair, light beard, calm expression",
     "Arjun Mehta": "29-year-old Indian man, short black hair, thin glasses, quietly confident smile",
+    # quant desk
+    "Sasha Kim": "28-year-old Korean American woman, chin-length black hair, wire-rim glasses, analytical half smile",
+    "Mateo Russo": "34-year-old Argentine man, short dark hair, neat stubble, calm focused look",
     # interns (younger, a bit less polished)
     "Tyler Brooks": "21-year-old white man, messy brown hair, excited grin, slightly loose tie",
     "Zoe Kim": "20-year-old Korean American woman, black hair with bangs, mischievous smile",

@@ -40,13 +40,16 @@ SEATS = {
     "reviewer":    ("Ruth Klein", "Trade reviewer", "learning", "performance", False),
     "quant":       ("Nina Petrova", "Quant researcher", "learning", "performance", False),
     "compliance":  ("Diane Foster", "Chief compliance officer", "leadership", "partner", False),
+    # the quant desk: three quants running systematic strategies all day (desk/research/quant.py)
+    "mlquant":     ("Sasha Kim", "Machine-learning quant (runs the Kronos price model)", "quant", "quantdesk", True),
+    "statarb":     ("Mateo Russo", "Statistical-arbitrage quant (mean reversion)", "quant", "quantdesk", True),
 }
 # Seats that join when the firm unlocks a new desk (see firm.UNLOCKS)
 UNLOCK_SEATS = {
     "crypto":      ("Lena Hoffmann", "Crypto strategist", "research", "pm", True),
     "events":      ("Marisol Vega", "Event-driven analyst (earnings and news)", "research", "pm", True),
     "fx":          ("Callum Reid", "FX strategist", "research", "pm", True),
-    "quantdesk":   ("Arjun Mehta", "Quant strategist", "learning", "performance", False),
+    "quantdesk":   ("Arjun Mehta", "Head of quant (momentum and trend strategies)", "quant", "cio", True),
 }
 ALL_SEATS = {**SEATS, **UNLOCK_SEATS}
 SPECIALISTS = ("technical", "fundamental", "sentiment", "smartmoney")

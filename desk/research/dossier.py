@@ -61,6 +61,7 @@ def _add_extra(d: dict, sym: str, asset: str, light: bool) -> None:
         put("sector", extra.sector, sym)
         put("short_interest_and_analysts", extra.yahoo_stats, sym, d["technicals"].get("price"))
         put("short_volume", extra.short_volume, sym)
+        put("options_market", extra.implied_move, sym, d["technicals"].get("price"))
         if asset == "stock" and not light:
             put("sec_filings", extra.sec_snapshot, sym)
     elif asset == "forex":
@@ -76,7 +77,8 @@ def facts(dossier: dict) -> dict:
     """Flat {"section.field": number} map of every number in the dossier, for fact-checking."""
     out = {}
     for section in ("technicals", "fundamentals", "analyst_ratings", "insiders_last_90d", "reddit",
-                    "short_interest_and_analysts", "short_volume", "sec_filings", "crypto_sentiment", "futures_positioning"):
+                    "short_interest_and_analysts", "short_volume", "sec_filings", "crypto_sentiment", "futures_positioning",
+                    "kronos_forecast", "kronos_odds", "quant_backtest", "market_internals", "options_market"):
         block = dossier.get(section)
         if isinstance(block, dict):
             for k, v in block.items():

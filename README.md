@@ -242,3 +242,22 @@ Every source is cached and fails quietly. The health check tests all of them.
 - **Second opinion.** Raj's agreement sizes a trade up 20%, and disagreement trims it to 80%. A strong disagreement vetoes only trades below conviction 7; stronger trades go ahead at 60% size.
 - **Loosened limits.** Total open risk is capped at 30% of equity (was 20%). One currency position can be up to 6x equity in size (was 3x). Trades at conviction 6+ can borrow from the bank (was 7+). Stocks in a risk-off market need conviction 5+ (was 6+). Entries can chase up to half a stop's distance, and intraday ideas stay valid for 3 hours.
 - **Unchanged.** The 6% daily loss limit, 5% max risk per trade, mandatory stops and all compliance checks.
+
+## Quant desk and Kronos (Oct 16)
+- **All four locked desks are open now** (crypto, events, FX, quant), opened early by the managing partner.
+- **Kronos** (`desk/research/kronos.py`, code vendored from github.com/shiyu-coder/Kronos, MIT) is an AI model trained
+  only on price charts. For every finalist and every quant candidate it draws 20 possible 5-day futures from the last
+  64 daily candles. The analysts see where it thinks price goes; every plan gets "target first in X% of futures".
+  - Backtest (`scripts/kronos_backtest.py`, 16 stocks x 14 weeks, two runs): 52-56% of 5-day direction calls right,
+    about +0.14R a call; its confident calls (70%+ of futures one way) made about +0.16R in both runs. Its own
+    estimates of a trade's payoff ran about 3x too high, so they're scaled by 0.3.
+  - Trust weight (0.2-0.8 from the backtest, up to 1.0 once 30+ live calls are graded) scales how much it moves
+    sizing (+25% / -30% at most) and the quant edge. Every forecast is logged and graded (`data/kronos_log.jsonl`).
+- **The quant desk** (`desk/research/quant.py`, `.github/workflows/quant.yml`): Arjun Mehta (momentum and trend),
+  Mateo Russo (mean reversion) and Sasha Kim (Kronos). Every 30 minutes in market hours and every 2 hours for crypto
+  and currencies. Each signal is backtested on its own symbol's 2-year history, simulated with Kronos, then one AI
+  "desk meeting" keeps or drops each trade. Quant trades risk 0.75x the research desk's size for the same conviction.
+- **Volume**: cap 75 orders a day; the desk aims for about 30 (prompts, plus the quant desk's per-run budget grows
+  when the day is behind pace). Max open positions 40, total open risk 40%, options 25%.
+- **More data**: VIX / VIX3M / VVIX / SKEW, options implied move and put/call volume per stock, market breadth and
+  sector leadership, plus FRED yield curve, junk-bond spread, inflation expectations, dollar index and financial conditions.

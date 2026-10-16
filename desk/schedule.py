@@ -37,7 +37,7 @@ def _unlocked_desks() -> list[str]:
     try:
         from desk import firm
         fd = firm.load()
-        return [s for s in ("crypto", "fx", "events") if firm.seat_unlocked(s, fd)]
+        return [s for s in ("crypto", "fx", "events", "quantdesk") if firm.seat_unlocked(s, fd)]
     except Exception:
         return []
 
@@ -178,6 +178,15 @@ def build(plans: list[dict], trades: list[dict], econ: list[dict] | None, earnin
                           "agenda": [f"Leo trails stops and takes profits; Kenji works open orders; Grace checks the loss limits; "
                                      f"Diane audits every fill; Hugo tracks the bank loans. Holding: {held}",
                                      "Emergency huddle if a position moves sharply or gets news"]})
+        qruns = [p for p in plans if p.get("session") == "quant" and p.get("date") == day.isoformat()]
+        qok = [i["symbol"] for p in qruns for i in p.get("ideas", []) if i.get("status") == "approved"]
+        allday.insert(0, {"kind": "meeting", "title": "All day: the quant desk",
+                          "who": ["quantdesk", "statarb", "mlquant"],
+                          "agenda": ["Every 30 minutes while stocks trade (9:35am-3:35pm) and every 2 hours for crypto and currencies",
+                                     "Arjun hunts momentum, Mateo hunts stretched prices due to snap back, Sasha runs the Kronos price model on every candidate",
+                                     "Each signal is backtested on its own 2-year history; the three of them meet and keep the trades with a real edge"],
+                          **({"result": f"{len(qruns)} runs so far, {len(qok)} trades sent" + (f": {', '.join(qok[:10])}" if qok else "")}
+                             if qruns else {})})
         # unscheduled meetings that already happened: breaking-news re-research and your /pitch ideas
         for p in plans:
             if p.get("date") != day.isoformat() or p.get("session") not in ("alert", "pitch"):

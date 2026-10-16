@@ -1,7 +1,15 @@
 {
- "updated": "2026-10-16T00:00-04:00",
+ "updated": "2026-10-16T10:12-04:00",
  "window_days": 45,
  "board": [
+  {
+   "style": "mean reversion",
+   "trades": 3,
+   "win_rate": 33,
+   "avg_r": 0.02,
+   "pnl": 25.58,
+   "weight": 1.01
+  },
   {
    "style": "trend pullback",
    "trades": 2,
@@ -9,21 +17,13 @@
    "avg_r": 0.08,
    "pnl": 12.3,
    "weight": 1.0
-  },
-  {
-   "style": "mean reversion",
-   "trades": 1,
-   "win_rate": 0,
-   "avg_r": -0.09,
-   "pnl": -6.91,
-   "weight": 1.0
   }
  ],
  "calibration": {
-  "trades": 3,
+  "trades": 5,
   "factor": 1.0,
-  "predicted": 54,
-  "actual": 67
+  "predicted": 55,
+  "actual": 60
  },
  "exit_tuning": {},
  "session_budget": {
@@ -32,6 +32,11 @@
     "trades": 2,
     "avg_r": 0.085,
     "win_rate": 100
+   },
+   "intraday": {
+    "trades": 2,
+    "avg_r": 0.08,
+    "win_rate": 50
    },
    "evening": {
     "trades": 1,
@@ -43,7 +48,7 @@
  },
  "edge_tilt": {
   "factor": 1.0,
-  "reason": "3 of 30 closed trades needed before results change bet sizes"
+  "reason": "5 of 30 closed trades needed before results change bet sizes"
  },
  "shadow_lessons": []
 }

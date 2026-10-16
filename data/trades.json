@@ -75,14 +75,15 @@
   "expires_at": "2026-10-15T12:53:54-04:00",
   "loan_usd": 0.0,
   "entry_order_id": "94c6df52-c88b-4fb6-b9a0-99b8f96ab534",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-15T10:59 entry order placed",
    "2026-10-15T11:32 filled 112 @ 5.38",
    "2026-10-15T13:43 stop moved to 5.20000 (trailing)",
    "2026-10-15T13:43 emergency huddle (-1.8%): tighten. Price slipped 1.8% in the last hour but the oversold bounce thesis remains; moving the stop up protects gains while keeping upside to the 6.35 target.",
    "2026-10-16T09:30 stop moved to 5.35000 (trailing)",
-   "2026-10-16T09:30 emergency huddle (-2.5%): tighten. The dividend\u2011risk and price\u2011war news adds downside pressure to an already fragile fundamentals backdrop; tightening the stop protects the modest gain while keeping the oversold bounce thesis alive."
+   "2026-10-16T09:30 emergency huddle (-2.5%): tighten. The dividend\u2011risk and price\u2011war news adds downside pressure to an already fragile fundamentals backdrop; tightening the stop protects the modest gain while keeping the oversold bounce thesis alive.",
+   "2026-10-16T10:12 closed at 5.3125: stopped out, P&L $-7.56"
   ],
   "entry_price": 5.38,
   "filled_qty": 112.0,
@@ -108,7 +109,17 @@
   ],
   "last_huddle": "2026-10-16T09:30:37-04:00",
   "industry": "Chemicals",
-  "min_r": 0
+  "min_r": 0,
+  "exit_price": 5.3125,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-16T10:12:48-04:00",
+  "pnl_usd": -7.56,
+  "r_result": -0.11,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The stock kept sliding after the entry, never rebounded to the anticipated dead\u2011cat bounce and hit the tightened trailing stop at 5.35, resulting in a small loss of about \u20130.11\u202fR. The oversold RSI signal did not translate into price recovery because the underlying fundamentals and negative news outweighed the technical bounce premise.",
+   "lesson": "Do not rely solely on extreme oversold technicals for mean\u2011reversion trades when a company shows severe fundamental weakness or adverse news; incorporate a stronger fundamental filter or wider stop to account for downside bias."
+  }
  },
  {
   "id": "2026-10-15-intraday-1053-RKLX",
@@ -136,14 +147,15 @@
   "expires_at": "2026-10-15T12:53:54-04:00",
   "loan_usd": 0.0,
   "entry_order_id": "44b637d6-c80d-4f78-b0ee-c30a1c59706b",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-15T10:59 entry order placed",
    "2026-10-15T11:32 filled 107 @ 9.482337",
    "2026-10-15T14:41 stop moved to 9.30000 (trailing)",
    "2026-10-15T14:41 emergency huddle (+4.1%): tighten. The stock has rebounded sharply, confirming the mean\u2011reversion thesis, but tightening the stop to 9.30 protects the recent gain while keeping upside to the 11.80 target.",
    "2026-10-15T16:17 stop moved to 9.90000 (trailing)",
-   "2026-10-15T16:17 emergency huddle (+3.1%): tighten. Price rebounded sharply confirming the oversold bounce, but tightening the stop protects the accrued profit while keeping upside to the target."
+   "2026-10-15T16:17 emergency huddle (+3.1%): tighten. Price rebounded sharply confirming the oversold bounce, but tightening the stop protects the accrued profit while keeping upside to the target.",
+   "2026-10-16T10:12 closed at 9.856635: stopped out, P&L $+40.05"
   ],
   "entry_price": 9.482337,
   "filled_qty": 107.0,
@@ -169,7 +181,17 @@
    }
   ],
   "last_huddle": "2026-10-15T16:17:22-04:00",
-  "min_r": 0
+  "min_r": 0,
+  "exit_price": 9.856635,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-16T10:12:48-04:00",
+  "pnl_usd": 40.05,
+  "r_result": 0.27,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The stock rebounded as expected, reaching roughly 0.67\u202fR above entry before pulling back. A trailing stop was moved up to 9.90, which was hit at 9.8566, exiting the trade with a modest profit.",
+   "lesson": "On mean\u2011reversion plays, don\u2019t tighten stops too aggressively; allow enough room for the price to run toward the target."
+  }
  },
  {
   "id": "2026-10-15-intraday-1053-ONDS",
@@ -208,7 +230,7 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "7a7e6ae0-ac6f-44c2-be29-369d85084d85",
   "stop_order_id": "e76d3cd9-3b5b-4f66-acfa-721eb0761292",
-  "last_price": 6.2,
+  "last_price": 6.325,
   "max_r": 0.42,
   "industry": "Networking & Communications Equipment",
   "min_r": 0
@@ -353,8 +375,8 @@
   "opened_at": "2026-10-15T14:41:43-04:00",
   "premium_paid": 1.43,
   "underlying_entry": 32.885,
-  "last_price": 32.9,
-  "option_mark": 1.1,
+  "last_price": 32.95,
+  "option_mark": 1.17,
   "max_r": 0,
   "min_r": -0.6,
   "stop_history": [
@@ -477,7 +499,7 @@
   "filled_qty_initial": 36699.288410938,
   "opened_at": "2026-10-15T19:12:20-04:00",
   "stop_order_id": "d21093e3-c8c1-4e97-b99c-174a22c3d3c3",
-  "last_price": 0.081367,
+  "last_price": 0.0816,
   "max_r": 0.57,
   "min_r": -0.26,
   "fee_usd": 4.49
@@ -579,9 +601,9 @@
   "filled_qty": 26768.0,
   "filled_qty_initial": 26768.0,
   "opened_at": "2026-10-15T19:58:28-04:00",
-  "last_price": 0.843145,
+  "last_price": 0.842515,
   "max_r": 0.02,
-  "min_r": -0.51
+  "min_r": -0.7
  },
  {
   "id": "2026-10-15-overnight-2243-LTCUSD",
@@ -726,9 +748,9 @@
   "filled_qty": 55840.0,
   "filled_qty_initial": 55840.0,
   "opened_at": "2026-10-16T01:09:27-04:00",
-  "last_price": 1.4166349999999999,
+  "last_price": 1.4143050000000001,
   "max_r": 0.14,
-  "min_r": -0.49
+  "min_r": -0.6
  },
  {
   "id": "2026-10-16-overnight-0011-GBP_AUD",
@@ -849,7 +871,7 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.769,
+  "last_price": 210.79399999999998,
   "max_r": 0,
   "min_r": -0.17
  },
@@ -936,5 +958,109 @@
   "created_at": "2026-10-16T09:30:27-04:00",
   "pair_id": null,
   "pair_with": null
+ },
+ {
+  "id": "2026-10-16-quant-0940-V",
+  "plan_file": "2026-10-16-quant-0940.json",
+  "symbol": "V",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "short",
+  "bucket": "tactical",
+  "style": "kronos forecast",
+  "conviction": 5,
+  "confidence_pct": 47,
+  "horizon": "1-5 days",
+  "thesis": "Arjun (mlquant): The Kronos model shows a 90% chance of hitting the target before the stop on a 5% downside move, and the edge of 0.26 justifies a moderate\u2011high conviction short despite the current uptrend. The risk\u2011reward is solid (\u22481.5:1) and the trade aligns with our aggressive bias. A strong kronos forecast on V. No history for this signal. Kronos: target first in 90% of 20 simulated futures, stop first in 0%, expected +0.49R.",
+  "entry_plan": 403.4,
+  "initial_stop": 413.75,
+  "stop": 413.75,
+  "target": 386.15,
+  "qty": 2,
+  "notional_usd": 806.8,
+  "risk_usd": 21.71,
+  "risk_pct": 0.22,
+  "quote_to_usd": 1.0,
+  "created_at": "2026-10-16T10:12:48-04:00",
+  "industry": "Payments & Specialty Finance",
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-16T12:40:38-04:00",
+  "loan_usd": 0.0,
+  "loan_apr": 0.08,
+  "loan_basis": "cash",
+  "entry_order_id": "4633ed33-240e-4017-aa44-225f60c363dd",
+  "status": "pending",
+  "notes": [
+   "2026-10-16T10:12 entry order placed"
+  ]
+ },
+ {
+  "id": "2026-10-16-quant-0940-MA",
+  "plan_file": "2026-10-16-quant-0940.json",
+  "symbol": "MA",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "the firm's own cash is fully used, and only conviction 6+ trades can borrow from the bank",
+  "entry_plan": 621.28,
+  "initial_stop": 636.28,
+  "stop": 636.28,
+  "target": 596.27,
+  "bucket": "tactical",
+  "style": "kronos forecast",
+  "conviction": 5,
+  "thesis": "Arjun (mlquant): Kronos forecasts a 80% probability of reaching the target on a 4% decline, giving an edge of 0.25. Even though the stock is in an uptrend, the short is warranted given the tight stop and our aggressive stance. A strong kronos forecast on MA. No history for this signal. Kronos: target first in 80% of 20 simulated futures, stop first in 0%, expected +0.47R.",
+  "created_at": "2026-10-16T10:12:48-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-16-quant-0940-AXP",
+  "plan_file": "2026-10-16-quant-0940.json",
+  "symbol": "AXP",
+  "venue": "alpaca",
+  "asset": "option",
+  "option_symbol": "AXP261030C00325000",
+  "option_type": "call",
+  "strike": 325.0,
+  "expiry": "2026-10-30",
+  "credit": true,
+  "hedge_option_symbol": "AXP261030C00327500",
+  "hedge_strike": 327.5,
+  "spread_width": 2.5,
+  "credit_limit": 0.79,
+  "iv_at_entry": 0.345,
+  "realized_vol_at_entry": 0.227,
+  "direction": "short",
+  "bucket": "tactical",
+  "style": "quant mean reversion",
+  "industry": "Consumer Lending",
+  "pair_id": null,
+  "pair_with": null,
+  "conviction": 4,
+  "confidence_pct": 44,
+  "horizon": "1-5 days",
+  "thesis": "Mateo (statarb): Historical win\u2011rate is 60% with a modest avg\u202fR of 0.05; Kronos adds a strong 80% target\u2011first probability, giving a combined edge of 0.15 for a short on AXP. A stretched price likely to snap back on AXP. The same signal on axp over 2 years: 10 trades, 60% winners, +0.05r on average. Kronos: target first in 80% of 20 simulated futures, stop first in 10%, expected +0.38R.",
+  "entry_plan": 318.21,
+  "initial_stop": 325.34,
+  "stop": 325.34,
+  "target": 306.82,
+  "qty": 1,
+  "premium_limit": 0.79,
+  "notional_usd": 171.0,
+  "risk_usd": 171.0,
+  "risk_pct": 1.75,
+  "quote_to_usd": 100.0,
+  "created_at": "2026-10-16T10:12:48-04:00",
+  "expires_at": "2026-10-16T12:40:38-04:00",
+  "loan_usd": 0.0,
+  "loan_apr": 0.08,
+  "status": "pending",
+  "entry_order_id": "e109bfca-5a6d-4a58-87e4-6fad8f8ff175",
+  "notes": [
+   "2026-10-16T10:12 bought to open AXP261030C00325000 limit 0.79"
+  ]
  }
 ]

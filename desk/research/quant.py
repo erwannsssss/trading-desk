@@ -272,8 +272,15 @@ def _idea(c: dict, kind: str, side: str, kz: dict | None, kr: dict | None, recor
     conviction = max(3, min(8, conviction))
     conf = round(max(5, min(95, ((edge if edge is not None else 0) + 1) / (rr + 1) * 100)))
     rnd = lambda x: round(x, 8 if price < 1 else 6 if price < 5 else 5 if c["asset"] == "forex" else 2)
+    sma200 = t.get("sma200")
     dossier = {"symbol": c["symbol"], "asset_type": c["asset"], "technicals": t,
-               "kronos_forecast": kronos.public(kz), "kronos_odds": kr, "quant_backtest": record}
+               "kronos_forecast": kronos.public(kz), "kronos_odds": kr, "quant_backtest": record,
+               "setup_history": {"long_term_trend": ("up" if price > sma200 else "down")} if sma200 else None}
+    try:
+        from desk.research import context as ctx
+        reach = ctx.reach_odds(c.get("bars") or [], long, price, target, "1-5 days")
+    except Exception:
+        reach = None
     evidence = [{"fact": "technicals.ret_20d", "value": t.get("ret_20d")}, {"fact": "technicals.rsi14", "value": t.get("rsi14")},
                 {"fact": "technicals.atr_pct", "value": t.get("atr_pct")}]
     if record:
@@ -287,7 +294,7 @@ def _idea(c: dict, kind: str, side: str, kz: dict | None, kr: dict | None, recor
               f"{kr['stop_first_pct']}%, expected {kr['expected_r']:+.2f}R" if kr else "Kronos unavailable")
     decision = {
         "decision": side, "style": STYLE[kind], "bucket": "tactical", "order_type": "limit",
-        "expression": "put_options" if (not long and c["asset"] in ("stock", "etf")) else "shares",
+        "expression": "shares",      # the engine switches a bearish stock trade to puts if the account can't short
         "entry": rnd(price), "stop": rnd(stop), "target": rnd(target), "conviction": conviction, "confidence_pct": conf,
         "horizon": "1-5 days", "reason": f"Quant desk: {who}. {hist_txt}; {kz_txt}.",
         "thesis": f"{who.capitalize()} on {c['symbol']}. {hist_txt.capitalize()}. {kz_txt}.",
@@ -297,7 +304,7 @@ def _idea(c: dict, kind: str, side: str, kz: dict | None, kr: dict | None, recor
     }
     return {"symbol": c["symbol"], "venue": c["venue"], "asset": c["asset"], "price_at_research": price,
             "atr_pct": t.get("atr_pct"), "setups": t.get("setups"), "why_scanned": [f"{STYLE[kind]} signal ({SEAT[kind]})"],
-            "decision": decision, "_dossier": dossier, "quant": {"kind": kind, "seat": SEAT[kind], "edge_r": decision["quant_edge_r"],
+            "decision": decision, "_dossier": dossier, "quant": {"kind": kind, "seat": SEAT[kind], "edge_r": decision["quant_edge_r"], "reach": reach,
                                                                "history": record, "kronos": kr, "kronos_weight": w},
             "specialists": {**({"kronos": {"score": _kronos_score(kz), "points": [kz_txt]}} if kz else {}),
                             **({f"quant_{kind}": {"score": 3 if long else -3, "points": [hist_txt]}} if kind != "kronos" else {})}}
@@ -311,12 +318,14 @@ def _kronos_score(kz: dict | None) -> int | None:
     return int(max(-5, min(5, round(s * 2.5))))
 
 
-def meeting(shortlist: list[dict], macro: dict | None, pace: dict) -> dict:
+def meeting(shortlist: list[dict], macro: dict | None, pace: dict, rates: dict | None = None) -> dict:
     """One AI call: the three quants review the shortlist together and keep or drop each trade."""
     rows = [{"n": n, "symbol": i["symbol"], "asset": i["asset"], "quant": i["quant"]["seat"], "style": i["decision"]["style"],
              "direction": i["decision"]["decision"], "entry": i["decision"]["entry"], "stop": i["decision"]["stop"],
              "target": i["decision"]["target"], "edge_r": i["quant"]["edge_r"], "history": i["quant"]["history"],
              "kronos_odds": i["quant"]["kronos"], "kronos_forecast": i["_dossier"].get("kronos_forecast"),
+             "target_reached_in_5_days_historically_pct": (i["quant"].get("reach") or {}).get("reached_pct"),
+             "long_term_trend": (i["_dossier"].get("setup_history") or {}).get("long_term_trend"),
              "technicals": {k: i["_dossier"]["technicals"].get(k) for k in ("ret_5d", "ret_20d", "ret_60d", "rsi14", "atr_pct", "trend", "vol_ratio")}}
             for n, i in enumerate(shortlist)]
     prompt = f"""You are the QUANT DESK of a small aggressive trading firm: Arjun Mehta (head of quant, momentum and
@@ -326,10 +335,18 @@ record on that symbol ("history": avg_r is the average result in units of risk),
 ("kronos_odds": how often the target is hit before the stop; expected_r), and the technicals. edge_r blends the two.
 Kronos is trusted at weight {shortlist[0]['quant']['kronos_weight'] if shortlist else 0.5} out of 1 based on its own backtest.
 
+Kronos was backtested on stocks only (52-56% of direction calls right); on coins and currencies treat it as a
+second opinion. "target_reached_in_5_days_historically_pct" is how often this symbol has moved that far in 5 days.
+THE DESK'S REAL RECORD SO FAR: {json.dumps(rates, default=str)}
+
 MARKET: {(macro or {}).get('regime')} | {(macro or {}).get('summary', '')}
-DAILY VOLUME: the firm aims for about {pace['goal']} orders a day; {pace['placed_today']} placed so far
-(expected about {pace['expected_by_now']} by now). Keep every trade with a real positive edge; drop only the ones
-where the evidence conflicts badly, the move already happened, or the market backdrop makes it a bad bet.
+For context only: {pace['placed_today']} orders placed today. Volume is not a goal; quality is.
+
+Discuss each trade the way experienced quants would, not by rubber-stamping the numbers: Does the signal's own
+history on this symbol hold up (enough trades, not one lucky streak)? Do Kronos and the history agree, or is one of
+them carrying the whole case? Is the trade fighting the long-term trend, and is there a real reason to? Has the move
+already happened? Is the target realistically reachable in 5 days? Would you put your own money on it? Keep the
+ones you'd defend to the CIO; drop the rest.
 
 TRADES:
 {json.dumps(rows, default=str)}
@@ -403,8 +420,8 @@ def run(markets: str = "all") -> dict:
         if s in {c["symbol"] for c in cands} or not (kz["prob_up_pct"] >= 70 or kz["prob_up_pct"] <= 30):
             continue
         long = kz["prob_up_pct"] >= 70
-        if not long and u["asset"] == "crypto":
-            continue
+        if u["asset"] not in ("stock", "etf"):
+            continue        # Kronos was only backtested on stocks; on coins and currencies it can confirm, not originate
         if not _atr_of(u["t"]):
             continue
         stop, target = levels("kronos", u["t"]["price"], _atr_of(u["t"]), long)
@@ -416,7 +433,7 @@ def run(markets: str = "all") -> dict:
     # rank by edge, keep the ones with a real positive edge, then the desk meeting decides
     ideas = [i for i in ideas if (i["quant"]["edge_r"] or -1) > MIN_EDGE_R]
     ideas.sort(key=lambda i: -(i["quant"]["edge_r"] or 0))
-    room = 4 + pace["behind_by"] // 2 + (2 if stocks_open else 0)
+    room = 4 + (2 if stocks_open else 0)        # a fixed budget per run; good ideas fill it, a daily quota doesn't
     shortlist = ideas[:min(16, room * 2)]
     macro = planner.latest_macro()
     calls, note = {}, ""
@@ -424,7 +441,9 @@ def run(markets: str = "all") -> dict:
         for seat in ("quantdesk", "statarb", "mlquant"):
             floor.working(seat, f"Quant desk meeting: {len(shortlist)} trades on the table", None)
         try:
-            out = meeting(shortlist, macro, pace)
+            from desk.research import context as ctx
+            from desk.trading import ledger as _lg
+            out = meeting(shortlist, macro, pace, ctx.base_rates(_lg.load()))
             calls = {int(c.get("n", -1)): c for c in out.get("calls", []) if isinstance(c, dict)}
             note = out.get("desk_note") or ""
         except Exception as exc:
@@ -459,6 +478,7 @@ def run(markets: str = "all") -> dict:
                     from desk.brokers import oanda
                     kw = {"quote_to_usd": planner.quote_to_usd(i["symbol"]), "unit_usd": oanda.usd_value_per_unit(i["symbol"])}
                 kw["multiplier"] = QUANT_SIZE * learning.risk_multiplier(d["style"])
+                i["size_multiplier"] = round(kw["multiplier"], 3)
                 i["sizing"] = team.size(d, book.equity, i["asset"], **kw)
                 i["status"] = "approved"
                 approved += 1

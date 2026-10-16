@@ -97,11 +97,11 @@ class IdeaTests(unittest.TestCase):
         self.assertAlmostEqual(d["expected_r"], d["quant_edge_r"], delta=0.03)   # confidence matches the edge
         self.assertIn("quant_momentum", i["specialists"])
 
-    def test_bearish_stock_uses_puts_and_kronos_disagreement_lowers_conviction(self):
+    def test_bearish_stock_and_kronos_disagreement_lowers_conviction(self):
         rec = {"signals": 6, "win_pct": 50, "avg_r": 0.2, "best_r": 2.0, "worst_r": -1.0}
         bad = {"expected_r": -0.4, "target_first_pct": 10, "stop_first_pct": 60, "paths": 24}
         i = quant._idea(self._cand(), "momentum", "short", None, bad, rec, 0.8)
-        self.assertEqual(i["decision"]["expression"], "put_options")
+        self.assertEqual(i["decision"]["expression"], "shares")    # the engine swaps in puts only if shorting is off
         self.assertLess(i["decision"]["quant_edge_r"], 0)
         self.assertLessEqual(i["decision"]["conviction"], 5)
 

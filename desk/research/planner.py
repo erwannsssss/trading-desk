@@ -18,7 +18,7 @@ from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research import dossier as dossiers
 from desk.research import extra as extra_data
-from desk.research import kronos, quant, scanner, smartmoney, team
+from desk.research import context, kronos, quant, scanner, smartmoney, team
 from desk.state import load, now
 from desk.telegram import esc
 
@@ -116,15 +116,12 @@ def kronos_size(odds: dict | None, weight: float) -> float:
     return round(1 + max(-0.3, min(0.25, er * 0.5)) * weight, 2)
 
 
-def _kronos_for(finalists: list[dict]) -> tuple[dict, float]:
-    """Kronos forecasts for every finalist in one batch (an empty dict when the model isn't installed)."""
+def _bars_for(finalists: list[dict]) -> dict[str, list[dict]]:
+    """Two-plus years of daily candles for every finalist, fetched in bulk (for Kronos and the trader's context)."""
+    bars: dict[str, list[dict]] = {}
     try:
-        if not kronos.available():
-            return {}, 0.0
-        floor.working("mlquant", f"Running Kronos on the {len(finalists)} finalists")
         stocks = [c["symbol"] for c in finalists if c["asset"] in ("stock", "etf")]
         cryptos = [c["symbol"] for c in finalists if c["asset"] == "crypto"]
-        bars = {}
         if stocks:
             bars.update(marketdata.stock_daily_bars(stocks, days=900))
         if cryptos:
@@ -132,6 +129,18 @@ def _kronos_for(finalists: list[dict]) -> tuple[dict, float]:
         for c in finalists:
             if c["asset"] == "forex":
                 bars[c["symbol"]] = marketdata.forex_daily_bars(c["symbol"], 700)
+    except Exception as exc:
+        print(f"history bars failed: {exc}")
+    return bars
+
+
+def _kronos_for(finalists: list[dict], bars: dict[str, list[dict]] | None = None) -> tuple[dict, float]:
+    """Kronos forecasts for every finalist in one batch (an empty dict when the model isn't installed)."""
+    try:
+        if not kronos.available():
+            return {}, 0.0
+        floor.working("mlquant", f"Running Kronos on the {len(finalists)} finalists")
+        bars = bars if bars is not None else _bars_for(finalists)
         series = {c["symbol"]: (bars.get(c["symbol"]) or [], c["asset"]) for c in finalists}
         fc = kronos.forecast(series, steps=5)
         w = quant.kronos_weight()
@@ -142,6 +151,33 @@ def _kronos_for(finalists: list[dict]) -> tuple[dict, float]:
         traceback.print_exc()
         floor.done("mlquant", f"Kronos skipped this session ({str(exc)[:80]})")
         return {}, 0.0
+
+
+REACH_PUSHBACK_PCT = 15   # below this, the fact-checker walks the plan back to the PM for a second look
+
+
+def reconsider_reach(d: dict, pm: dict, bars: list[dict], macro: dict) -> tuple[dict, dict | None]:
+    """If the target is rarely reached in the planned time, a colleague pushes back and the PM thinks again."""
+    if pm.get("decision") not in ("long", "short") or not all(isinstance(pm.get(k), (int, float)) for k in ("entry", "target")):
+        return pm, None
+    odds = context.reach_odds(bars, pm["decision"] == "long", pm["entry"], pm["target"], pm.get("horizon"))
+    if not odds or odds["reached_pct"] >= REACH_PUSHBACK_PCT:
+        return pm, odds
+    floor.working("factcheck", f"{d['symbol']}: target is {odds['target_distance_atr']} ATR away; history says that's reached "
+                  f"only {odds['reached_pct']}% of the time in {odds['holding_days']} day(s). Walking it back to Elena", d["symbol"])
+    try:
+        new = team.reconsider(d, pm, odds, macro)
+    except Exception as exc:
+        print(f"reconsider failed: {exc}")
+        return pm, odds
+    new["pushback"] = {"reach_odds": odds, "original": {k: pm.get(k) for k in ("decision", "entry", "stop", "target", "horizon", "conviction")}}
+    if new.get("decision") in ("long", "short") and isinstance(new.get("target"), (int, float)):
+        new["pushback"]["reach_odds_after"] = context.reach_odds(bars, new["decision"] == "long", new.get("entry") or pm["entry"],
+                                                                 new["target"], new.get("horizon"))
+    floor.done("pm", f"{d['symbol']}: rethought after the pushback: {(new.get('decision') or '?').upper()}"
+               + (f", target {new.get('target')}, {new.get('horizon')}" if new.get("decision") in ("long", "short") else "")
+               + f". {new.get('reason') or ''}", d["symbol"])
+    return new, odds
 
 
 def run(session: str = "morning") -> dict:
@@ -245,13 +281,28 @@ def run(session: str = "morning") -> dict:
     planned = [{"symbol": i["symbol"], "direction": (i.get("decision") or {}).get("decision"),
                 "style": (i.get("decision") or {}).get("style")} for _, i in recent_ideas(12) if i.get("status") == "approved"]
     ideas = []
-    kz_all, kz_w = _kronos_for(finalists)
+    hist = _bars_for(finalists)
+    kz_all, kz_w = _kronos_for(finalists, hist)
+    from desk.trading import ledger as _ledger
+    all_trades = _ledger.load()
+    rates = context.base_rates(all_trades)
+    extra["base_rates"] = rates
     for n, cand in enumerate(finalists):
         sym = cand["symbol"]
         fast = cfg["fast"] or n >= FULL_TEAM_MAX
         try:
             floor.working("associate", f"Pulling the dossier on {sym}: prices, fundamentals, insiders, funds, news", sym)
             d = dossiers.build(cand, funds, light=cfg["fast"])
+            hb = hist.get(sym) or []
+            pb = context.price_behavior(hb)
+            if pb:
+                d["price_behavior_in_atr"] = pb
+            sh = context.setup_history(hb) if len(hb) > 220 else None
+            if sh:
+                d["setup_history"] = sh
+            jr = context.journal(all_trades, sym, None)
+            if jr:
+                d["desk_history_on_this_symbol"] = jr
             kz = kz_all.get(sym)
             if kz:
                 d["kronos_forecast"] = {**kronos.public(kz), "trust_weight": kz_w}
@@ -292,6 +343,12 @@ def run(session: str = "morning") -> dict:
             verdict = f"{pm.get('decision', '?').upper()}{expr}" + (f", conviction {pm.get('conviction')}/10" if pm.get("decision") != "pass" else "")
             floor.done("pm", f"{sym}: {verdict}. {pm.get('reason') or pm.get('thesis') or ''}", sym,
                        kind="decision" if pm.get("decision") in ("long", "short") else "pass")
+            pm, reach = reconsider_reach(d, pm, hb, macro)
+            if reach:
+                pm["reach_odds"] = pm.get("reach_odds") or (pm.get("pushback") or {}).get("reach_odds_after") or reach
+            br, bn = context.style_rate(rates, pm.get("style"), cand["asset"])
+            if br is not None:
+                pm["base_win_pct"], pm["base_trades"] = br, bn
             floor.working("factcheck", f"Checking every number Elena cited on {sym}", sym)
             check = team.fact_check(pm, dossiers.facts(d), d)
             if check["passed"]:
@@ -336,6 +393,7 @@ def run(session: str = "morning") -> dict:
                     kw = {"quote_to_usd": quote_to_usd(sym), "unit_usd": oanda.usd_value_per_unit(sym)}
                 kw["multiplier"] = (learning.risk_multiplier(pm.get("style")) * ((so or {}).get("size_multiplier") or 1.0)
                                     * kronos_size(idea.get("kronos_odds"), kz_w))
+                idea["size_multiplier"] = round(kw["multiplier"], 3)
                 idea["sizing"] = team.size(pm, book.equity, cand["asset"], **kw)
                 idea["status"] = "approved"
                 sz = idea["sizing"]

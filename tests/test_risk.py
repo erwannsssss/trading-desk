@@ -68,8 +68,8 @@ class RiskTests(unittest.TestCase):
         self.assertTrue(check_order(fx, book(), STATE).ok)
         self.assertTrue(check_order(OrderIdea(**{**fx.__dict__, "notional": 25_000}), book(), STATE).ok)
         tight = OrderIdea(**{**fx.__dict__, "stop": 1.099})                     # tiny stop, so only the size cap binds
-        self.assertTrue(check_order(OrderIdea(**{**tight.__dict__, "notional": 55_000}), book(), STATE).ok)
-        self.assertFalse(check_order(OrderIdea(**{**tight.__dict__, "notional": 65_000}), book(), STATE).ok)  # over 6x equity
+        self.assertTrue(check_order(OrderIdea(**{**tight.__dict__, "notional": 29_000}), book(), STATE).ok)
+        self.assertFalse(check_order(OrderIdea(**{**tight.__dict__, "notional": 35_000}), book(), STATE).ok)  # over 3x equity
 
     def test_daily_loss_limit(self):
         self.assertTrue(daily_limit_hit(book(alpaca_equity=9_400), 10_000))

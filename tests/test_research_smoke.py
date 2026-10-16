@@ -35,6 +35,8 @@ DOWN = {"high": [100.5, 99, 98, 97, 96], "low": [97, 95, 94, 93, 92], "close": [
 KRONOS = {"AAA": {"horizon_days": 5, "expected_move_pct": 4.0, "median_move_pct": 5.0, "prob_up_pct": 75, "range_low_10pct": 93,
                   "range_high_90pct": 109, "range_width_pct": 16, "direction": "up", "signal_strength": 0.6, "paths": 4,
                   "_paths": [UP, UP, UP, DOWN]}}
+BARS = [{"t": f"2025-{1 + i // 28:02d}-{1 + i % 28:02d}T05:00:00Z", "o": 100.0, "h": 101.0, "l": 99.0, "c": 100.0 + (i % 3 - 1) * 0.2,
+         "v": 1e6} for i in range(300)]   # a flat, quiet stock: ATR ~2, never moves 4 ATRs in a week
 NOTES = {k: {"score": 2, "points": ["x"]} for k in ("technical", "fundamental", "news_sentiment", "smart_money")}
 
 
@@ -76,6 +78,8 @@ class ResearchSessionSmokeTest(unittest.TestCase):
             mock.patch.object(planner.extra_data, "vol_indexes", return_value={"vix": 16}),
             mock.patch.object(planner.extra_data, "implied_move", return_value=None),
             mock.patch.object(planner, "_kronos_for", return_value=(KRONOS, 0.6)),
+            mock.patch.object(planner, "_bars_for", return_value={"AAA": BARS}),
+            mock.patch.object(planner.team, "reconsider", side_effect=lambda d, pm, odds, macro: {**pm, "horizon": "1-4 weeks", "reason": "needs more time"}),
         ]
         for p in patches:
             p.start()
@@ -98,6 +102,9 @@ class ResearchSessionSmokeTest(unittest.TestCase):
         self.assertEqual(aaa["kronos_odds"]["target_first_pct"], 75)     # 3 of 4 futures reach 108 before 96
         self.assertIn("kronos", aaa["specialists"])
         self.assertGreater(aaa["specialists"]["kronos"]["score"], 0)
+        # the target (+8 = ~4 ATRs) is almost never reached in 5 days, so the PM was asked to rethink it
+        self.assertEqual(aaa["decision"]["pushback"]["reach_odds"]["reached_pct"], 0)
+        self.assertEqual(aaa["decision"]["horizon"], "1-4 weeks")
 
     def test_morning_session_runs_end_to_end(self):
         plan = self._run("morning")

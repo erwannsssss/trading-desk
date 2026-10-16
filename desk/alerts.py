@@ -65,7 +65,8 @@ def review_positions(state: dict, engine) -> list[str]:
         move = (px / ref["px"] - 1) * 100
         fresh = [n for n in news.get(t["symbol"], []) if datetime.fromisoformat(n["time"] + ":00+00:00") > ref_t]
         last_huddle = datetime.fromisoformat(t["last_huddle"]) if t.get("last_huddle") else None
-        trigger = abs(move) >= MOVE_TRIGGER.get(t["asset"], 3.0) or len(fresh) >= 2 or (fresh and abs(move) >= MOVE_TRIGGER.get(t["asset"], 3.0) / 2)
+        trig = _trigger_pct(t)
+        trigger = abs(move) >= trig or len(fresh) >= 2 or (fresh and abs(move) >= trig / 2)
         if trigger and huddles < MAX_HUDDLES and (not last_huddle or at - last_huddle > COOLDOWN):
             huddles += 1
             notes.append(_huddle(t, px, move, fresh, engine))
@@ -77,34 +78,95 @@ def review_positions(state: dict, engine) -> list[str]:
     return [n for n in notes if n]
 
 
+HUDDLE_LOG = config.DATA_DIR / "huddles.jsonl"
+NOISE_ATR = 0.5     # Grace won't sign off on a stop closer to the price than half a normal day's range
+
+
+def _trigger_pct(t: dict) -> float:
+    """A move worth a huddle: the asset's usual hourly trigger, or 60% of this symbol's normal daily range if bigger."""
+    base = MOVE_TRIGGER.get(t["asset"], 3.0)
+    atr = t.get("atr_pct")
+    return max(base, 0.6 * atr) if isinstance(atr, (int, float)) and atr > 0 else base
+
+
+def _past_huddles(trades: list[dict], limit: int = 8) -> list[dict]:
+    """The desk's recent huddle calls and how those trades finally turned out (learning from experience)."""
+    if not HUDDLE_LOG.exists():
+        return []
+    rows = [json.loads(l) for l in HUDDLE_LOG.read_text().splitlines()[-60:] if l.strip()]
+    by_id = {t["id"]: t for t in trades}
+    out = []
+    for r in reversed(rows):
+        t = by_id.get(r.get("trade_id")) or {}
+        out.append({"symbol": r["symbol"], "move_pct": r.get("move_pct"), "move_vs_normal_day": r.get("move_vs_atr"),
+                    "decision": r.get("action"), "trade_ended": t.get("exit_reason") or t.get("status"),
+                    "final_r": t.get("r_result"), "best_r_reached": t.get("max_r")})
+        if len(out) >= limit:
+            break
+    return out
+
+
 def _huddle(t: dict, px: float, move: float, fresh: list[dict], engine) -> str | None:
     sym = t["symbol"]
     for seat in ("pm", "risk", "sentiment"):
         floor.working(seat, f"Emergency huddle on {sym}: {move:+.1f}% in the last hour" + (f", {len(fresh)} new headlines" if fresh else ""), sym)
     long = t["direction"] == "long"
-    prompt = f"""EMERGENCY HUDDLE. You are the portfolio manager, risk manager and news analyst of a trading desk, meeting
-because an open position just moved sharply or got news. Decide fast and honestly.
+    under = px if t["asset"] != "option" else px
+    entry = t.get("underlying_entry") or t.get("entry_price") or t.get("entry_plan")
+    risk = abs(entry - t["initial_stop"]) if entry and t.get("initial_stop") else None
+    r_now = round(((under - entry) if long else (entry - under)) / risk, 2) if risk else None
+    atr_pct = t.get("atr_pct")
+    atr = under * atr_pct / 100 if isinstance(atr_pct, (int, float)) else None
+    held_h = round((now() - datetime.fromisoformat(t["opened_at"])).total_seconds() / 3600, 1) if t.get("opened_at") else None
+    pos = {k: t.get(k) for k in ("symbol", "asset", "direction", "style", "entry_price", "initial_stop", "stop", "target",
+                                 "horizon", "thesis", "invalidation", "option_symbol", "max_r", "conviction")}
+    situation = {
+        "price_now": px, "move_last_hour_pct": round(move, 2),
+        "normal_daily_range_pct": atr_pct,
+        "this_move_as_share_of_a_normal_day": round(abs(move) / atr_pct, 2) if atr_pct else None,
+        "trade_result_now_r": r_now, "hours_held": held_h,
+        "stop_distance_now_in_daily_ranges": round(abs(under - t["stop"]) / atr, 2) if atr else None,
+        "stop_changes_so_far": [n for n in (t.get("notes") or []) if "stop moved" in n][-4:],
+    }
+    prompt = f"""EMERGENCY HUDDLE. You are the portfolio manager (Elena), risk manager (Grace) and news analyst (Sofia) of a
+trading desk. One of your open positions just moved sharply or got news. Talk it through like experienced traders,
+then decide.
 
-POSITION: {json.dumps({k: t.get(k) for k in ("symbol", "asset", "direction", "entry_price", "stop", "target", "initial_stop",
-    "horizon", "thesis", "option_symbol", "max_r")}, default=str)}
-PRICE NOW: {px} ({move:+.2f}% in about the last hour)
+POSITION AND ORIGINAL PLAN: {json.dumps(pos, default=str)}
+THE SITUATION: {json.dumps(situation, default=str)}
 NEW HEADLINES: {json.dumps([{"headline": n["headline"], "summary": n.get("summary")} for n in fresh][:6]) if fresh else "none"}
+YOUR RECENT HUDDLE CALLS AND HOW THOSE TRADES ENDED: {json.dumps(_past_huddles(engine.trades), default=str) or "none yet"}
+
+How good traders think about this:
+- Compare the move with the symbol's normal daily range. A move smaller than a normal day is usually noise, even
+  if it feels big. The plan already has a stop that says where the idea is wrong.
+- Ask whether the THESIS changed: news that breaks the story, or the invalidation level being hit, is a reason to
+  act. A price wiggle alone usually is not.
+- Moving a stop up early "to protect gains" turns many winners into small scratches: the price wobbles, tags the
+  tighter stop, then goes on to the target without you. The desk already moves stops automatically to breakeven at
+  +1R and trails from +2R. Only tighten for a specific reason, and keep the stop beyond normal noise
+  (at least ~{NOISE_ATR} of a normal day's range from the price).
+- Closing early is right when the reason for the trade is gone, not just because it's red or green right now.
+- Look at your past huddle calls above: if tightening or closing has mostly cost money, weigh that.
 
 Choose one:
-- "hold": the thesis still stands; this is noise
-- "close": the thesis is broken (or a gain should be locked in now); exit at market
-- "tighten": keep the trade but move the stop closer to lock in or limit loss (give new_stop; it must be
-  {'above the current stop and below the price' if long else 'below the current stop and above the price'})
+- "hold": the thesis stands; let the plan work
+- "close": the thesis is broken; exit at market
+- "tighten": keep the trade, move the stop to new_stop ({'above the current stop and below the price' if long else 'below the current stop and above the price'}), for a specific reason
+- "trim": take half off and keep the rest (only for currency and crypto positions)
 
-Return JSON: {{"action": "hold"|"close"|"tighten", "new_stop": number|null, "reason": str (1-2 sentences)}}"""
+Return JSON: {{"discussion": str (2-4 sentences: what each of you thinks), "action": "hold"|"close"|"tighten"|"trim",
+"new_stop": number|null, "reason": str (1-2 sentences, the deciding reason)}}"""
     try:
-        out = ai.ask(prompt, want_json=True, temperature=0.2, models=config.AI_LIGHT)
+        out = ai.ask(prompt, want_json=True, temperature=0.3, models=config.AI_LIGHT,
+                     check=lambda o: isinstance(o, dict) and o.get("action") in ("hold", "close", "tighten", "trim"))
     except Exception as exc:
         for seat in ("pm", "risk", "sentiment"):
             floor.done(seat, f"Huddle on {sym} failed: {str(exc)[:80]}", sym, kind="error")
         return None
     action, reason = out.get("action"), out.get("reason", "")
     result = "held"
+    stop_before = t["stop"]
     try:
         if action == "close":
             if t["asset"] in ("stock", "etf", "option") and not engine.stock_market_open():
@@ -112,10 +174,20 @@ Return JSON: {{"action": "hold"|"close"|"tighten", "new_stop": number|null, "rea
             else:
                 engine._exit_now(t, f"emergency huddle: {reason}")
                 result = "closing the position"
+        elif action == "trim":
+            if t["asset"] in ("forex", "crypto") and long or t["asset"] == "forex":
+                engine._take_partial(t, px)
+                result = "took half off"
+            else:
+                result = "trimming isn't supported for this position; holding"
         elif action == "tighten" and isinstance(out.get("new_stop"), (int, float)):
             ns = float(out["new_stop"])
             ok = (long and t["stop"] < ns < px) or (not long and px < ns < t["stop"])
-            if ok:
+            if ok and atr and abs(px - ns) < NOISE_ATR * atr:
+                result = (f"Grace refused: a stop at {ns} is only {abs(px - ns) / atr:.2f} of a normal day's range from the price, "
+                          "inside ordinary noise; holding with the current stop")
+                action = "hold (stop refused)"
+            elif ok:
                 if t["asset"] == "option":
                     t["stop"] = ns
                     ledger.stop_moved(t, ns, now().isoformat(timespec="seconds"))
@@ -126,13 +198,21 @@ Return JSON: {{"action": "hold"|"close"|"tighten", "new_stop": number|null, "rea
                 result = "suggested a stop that wasn't valid; holding"
     except Exception as exc:
         result = f"tried to act but hit an error ({str(exc)[:80]})"
+    try:
+        with HUDDLE_LOG.open("a") as f:
+            f.write(json.dumps({"t": now().isoformat(timespec="seconds"), "trade_id": t["id"], "symbol": sym, "action": action,
+                                "result": result, "px": px, "move_pct": round(move, 2),
+                                "move_vs_atr": situation["this_move_as_share_of_a_normal_day"], "r_now": r_now,
+                                "stop_before": stop_before, "stop_after": t["stop"], "reason": reason}) + "\n")
+    except Exception:
+        pass
     ledger.note(t, f"emergency huddle ({move:+.1f}%): {action}. {reason}", now().isoformat(timespec="seconds"))
-    floor.done("pm", f"Huddle on {sym} ({move:+.1f}%): {action.upper() if action else '?'}, {result}. {reason}", sym, kind="decision")
+    floor.done("pm", f"Huddle on {sym} ({move:+.1f}%): {str(action).upper()}, {result}. {out.get('discussion') or reason}", sym, kind="decision")
     floor.done("risk", f"Signed off on the {sym} huddle: {result}", sym)
     floor.done("sentiment", f"{sym}: " + (f"{len(fresh)} new headlines; top: {fresh[0]['headline'][:120]}" if fresh else "no news, price-driven move"), sym)
     return (f"<b>Emergency huddle: {esc(sym)}</b> moved {move:+.1f}% in about an hour"
             + (f" with {len(fresh)} new headline{'s' if len(fresh) > 1 else ''}" if fresh else "") + "\n"
-            f"Decision: <b>{esc((action or '?').upper())}</b>, {esc(result)}.\n<i>{esc(reason)}</i>")
+            f"Decision: <b>{esc(str(action).upper())}</b>, {esc(result)}.\n<i>{esc(reason)}</i>")
 
 
 def research_movers(state: dict) -> list[str]:

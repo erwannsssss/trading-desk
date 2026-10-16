@@ -46,7 +46,12 @@ DATA_GUIDE = (
     "volatility_indexes = VIX (expected 30-day S&P swings; under 15 calm, over 25 fearful), vix_term_ratio (VIX over "
     "3-month VIX; above 1 = near-term panic), VVIX and SKEW (demand for crash protection). market_internals = breadth: "
     "share of stocks above their 50- and 200-day averages, new highs vs new lows, leading and lagging sectors. A rally "
-    "with weak breadth is fragile; a sell-off with breadth already washed out often bounces."
+    "with weak breadth is fragile; a sell-off with breadth already washed out often bounces. "
+    "price_behavior_in_atr = over the last 2 years, the % of 1-, 5- and 20-day windows in which this symbol rose (up) "
+    "or fell (down) at least 0.5, 1, 1.5, 2 or 3 ATRs from a close: the honest odds that a target that far away is "
+    "reachable in that time. setup_history = the quant desk's 2-year replay of this symbol's momentum and "
+    "mean-reversion signals (signals, win_pct, avg_r in units of risk) plus its long-term trend. "
+    "desk_history_on_this_symbol = how the desk's own past trades in it went."
 )
 
 
@@ -226,19 +231,34 @@ Return JSON: {{"case": str (4-6 sentences), "risks": [str], "would_change_my_min
 
 
 DESK_TARGET = (
-    "DESK MANDATE: this is an aggressive trading desk that has to make money, not preserve it. Sitting in cash is a "
-    "losing strategy. The firm aims for about 30 orders a day across all sessions and markets (the research desk plus "
-    "the quant desk), so approve every idea that has a real edge: a typical session should approve at least half of "
-    "what it researches, more when the desk is behind its daily pace. Volume is never a reason to take a trade with "
-    "negative expected value. "
-    "Judge each trade on EXPECTED VALUE, not on whether it is more likely to win than lose: a 40% chance to make 3x "
-    "the risk is a GOOD trade. Take calculated risks you believe can actually happen, with a clear stop. "
-    "A risk-off or choppy market is NOT a reason to pass: it changes WHICH trades to take (shorts and puts on weak "
-    "names, defensive or relative-strength longs, currency and commodity trends, crypto momentum), not whether to "
-    "trade. Pass only when the expected value is negative or there is genuinely no edge. "
+    "DESK MANDATE: this desk takes real risk to make real money, and judges every trade on EXPECTED VALUE: a 40% "
+    "chance to make 3x the risk is a good trade, a 60% chance to make 0.5x is a bad one. Sitting in cash is not the "
+    "goal, but neither is volume: the firm usually ends up with 20-30 orders a day because there are that many good "
+    "ideas, never because a quota needs filling. A risk-off or choppy market changes WHICH trades to take (shorts and "
+    "puts on weak names, relative-strength longs, currency and commodity trends), not whether to trade. "
     "Use conviction honestly: 5-6 for a solid edge, 7-8 for strong setups, 9-10 for the best of the week. "
-    "Use options (calls or puts) for strong, fast views where the payoff can be several times the cost. "
+    "Use options for strong, fast views where the payoff can be several times the cost. "
     "The firm has a $100,000 bank credit line; trades at conviction 6+ may borrow from it."
+)
+THINK_LIKE_A_TRADER = (
+    "THINK LIKE AN EXPERIENCED HUMAN TRADER, not a checklist. Before deciding, actually work through: "
+    "(a) THE STORY: why is this moving, and is that news or flow already priced in? Who is on the other side of "
+    "this trade, and why might they be right? "
+    "(b) THE TREND: is this trade with or against the long-term trend (setup_history.long_term_trend, the 200-day "
+    "average)? Fighting a strong trend can work, but you need a specific reason the trend is about to turn, and the "
+    "setup's own track record on this symbol (setup_history) should back it up. Cheap, beaten-down stocks bounce "
+    "less reliably than they look. "
+    "(c) REALISM: price_behavior_in_atr shows how often this symbol has actually travelled 1, 1.5, 2 or 3 ATRs in a "
+    "day, a week and a month. Pick a target and holding time that history says is genuinely reachable. A target "
+    "2 ATRs away inside one trading day almost never happens; give it days, or pick a closer target. "
+    "(d) YOUR REAL ODDS: start from the desk's base rates (how often trades in this style and market have really "
+    "won) and the Kronos simulation, then adjust for what's special about this setup. Say how you got your number. "
+    "Stated confidence is checked against outcomes, and well-calibrated people get more weight over time. "
+    "(e) YOUR OWN HISTORY: look at desk_history_on_this_symbol and the journal of recent trades in this style. "
+    "If the desk keeps losing the same way, don't repeat it without a reason. "
+    "(f) WHAT WOULD CHANGE YOUR MIND: name the price or event that proves you wrong, and put the stop just beyond "
+    "normal noise for this symbol (at least about 1 ATR), not at a round number that gets tagged by an ordinary wiggle. "
+    "Then decide like a professional who has to live with the result."
 )
 DESK_RULES = (
     "FIRM RULES (the system enforces these, so don't fight them): "
@@ -246,7 +266,7 @@ DESK_RULES = (
     "(2) no more than 2 positions leaning the same way on one currency, 3 crypto longs, or 3 stock positions with the "
     "same direction and style, so look for a DIFFERENT bet instead of another copy of an existing one; "
     "(3) don't hold a stock through its earnings report unless the style is \"earnings play\"; "
-    "(4) bearish stock views are traded with puts, because this account can't short shares; "
+    "(4) bearish stock views can be traded by shorting shares (when the account allows it) or with puts; "
     "(5) stocks must trade above $10."
 )
 
@@ -256,8 +276,9 @@ def _decision_rules(dossier: dict, extra: dict) -> str:
     options_ok = dossier["asset_type"] in ("stock", "etf")
     return f"""Current price: {t['price']}. ATR (typical daily range): {t.get('atr14')} ({t.get('atr_pct')}%).
 {DESK_TARGET}
+{THINK_LIKE_A_TRADER}
 {DESK_RULES}
-{_team_record(extra)}{("EXIT TUNING FROM REAL RESULTS (stops and targets are adjusted to this automatically): " + " ".join(extra.get("exit_tuning")) + chr(10)) if extra.get("exit_tuning") else ""}{("WHAT THE RESULTS SAY: " + " ".join(extra.get("shadow_lessons") or []) + " Bet sizing: " + str(extra.get("edge_tilt") or "") + chr(10)) if extra.get("shadow_lessons") or extra.get("edge_tilt") else ""}
+{_team_record(extra)}{("THE DESK'S REAL RECORD (base rates; " + str((extra.get("base_rates") or {}).get("sample_note")) + "): " + _j(extra.get("base_rates")) + chr(10)) if extra.get("base_rates") else ""}{("EXIT TUNING FROM REAL RESULTS (stops and targets are adjusted to this automatically): " + " ".join(extra.get("exit_tuning")) + chr(10)) if extra.get("exit_tuning") else ""}{("WHAT THE RESULTS SAY: " + " ".join(extra.get("shadow_lessons") or []) + " Bet sizing: " + str(extra.get("edge_tilt") or "") + chr(10)) if extra.get("shadow_lessons") or extra.get("edge_tilt") else ""}
 SESSION: {extra.get('session_note', '')}
 STRATEGY TOURNAMENT (how each style has actually performed for this desk; lean toward what works): {_j(extra.get('tournament') or 'no history yet')}
 BACKTESTED EDGE OF CHART SETUPS (2 years of history): {_j(extra.get('backtest') or 'not available')}
@@ -276,7 +297,9 @@ Steps:
    - stop: where the thesis is wrong (use real levels from the data; typically 1-2.5 ATR away). For options this is
      the UNDERLYING price where you exit.
    - target: a realistic take-profit level (underlying price for options); reward must be at least {config.MIN_REWARD_TO_RISK}x the risk
-   - conviction 1-10; confidence_pct = your honest probability the target hits before the stop
+   - conviction 1-10; confidence_pct = your honest probability the target hits before the stop, anchored on the
+     base rates and the price history above (most real trading edges are 45-60%; above 65% needs a strong reason)
+   - odds_reasoning: one sentence on how you got confidence_pct (base rate, Kronos, what's special here)
    - horizon: "intraday", "1-5 days" or "1-4 weeks"
 4. EVIDENCE: list the 3-6 numbers from the dossier your decision relies on. "fact" must be the exact path
    "section.field" (e.g. "technicals.rsi14", "fundamentals.pe_ratio", "insiders_last_90d.open_market_buys") and
@@ -285,7 +308,7 @@ Steps:
 DECISION JSON: {{"premortem": {{"failure_story": str, "failure_more_likely": bool}},
 "decision": "long"|"short"|"pass", "reason": str, "bucket": str, "style": str, "expression": "shares"|"call_options"|"put_options",
 "order_type": "limit"|"market", "entry": number|null, "stop": number|null, "target": number|null, "conviction": int,
-"confidence_pct": int, "horizon": str, "thesis": str (3-5 plain-English sentences), "invalidation": str,
+"confidence_pct": int, "odds_reasoning": str, "horizon": str, "thesis": str (3-5 plain-English sentences), "invalidation": str,
 "plain_english": str (explain the decision to a complete beginner in 3-5 short sentences, defining any finance term
 you use in brackets, e.g. "RSI [a 0-100 gauge of how stretched a price is]"),
 "evidence": [{{"fact": str, "value": number}}]}}"""
@@ -352,6 +375,35 @@ Return JSON: {{"specialists": {{"technical": {{"score": int, "points": [str]}}, 
     out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.25, check=_good_quick)
     if not isinstance(out, dict) or not isinstance(out.get("decision"), dict):
         raise ValueError("quick desk returned an unexpected shape")
+    return out
+
+
+# ---- Pushback: a colleague questions the plan and the PM thinks again ------------------
+def reconsider(dossier: dict, decision: dict, odds: dict, macro: dict) -> dict:
+    """Sam (fact-checker) and Grace (risk) walk an unrealistic plan back to Elena, like colleagues would."""
+    prompt = f"""You are the PORTFOLIO MANAGER. You just proposed this trade on {dossier['symbol']} ({dossier['asset_type']}):
+{_j({k: decision.get(k) for k in ("decision", "entry", "stop", "target", "horizon", "conviction", "confidence_pct", "style", "thesis")})}
+
+Sam (fact-checker) and Grace (risk manager) pushed back: "Your target is {odds['target_distance_atr']} ATRs from the entry.
+Over the last two years, {dossier['symbol']} got that far within {odds['holding_days']} trading day(s) only
+{odds['reached_pct']}% of the time{' (and that is for full days; an intraday trade gets less)' if odds['holding_days'] == 1 else ''}.
+As planned, this mostly ends at the time limit after paying the spread. Is it really a trade?"
+
+Here is how far this symbol usually travels: {_j(dossier.get('price_behavior_in_atr'))}
+Market backdrop: {macro.get('regime')} | {macro.get('summary')}
+
+Think it through like a professional: maybe the idea is good but needs more time (a longer horizon), or a closer
+target (keep reward at least {config.MIN_REWARD_TO_RISK}x the risk, which may mean a tighter but still sensible stop),
+or maybe it isn't worth taking. Decide honestly; keeping the plan unchanged is allowed only if you can say why
+this time is different.
+
+Return the full DECISION JSON (same fields as before: premortem, decision, reason, bucket, style, expression,
+order_type, entry, stop, target, conviction, confidence_pct, odds_reasoning, horizon, thesis, invalidation,
+plain_english, evidence). Put what you changed and why in "reason"."""
+    out = ai.ask(prompt, system=DESK, want_json=True, temperature=0.2, check=_good_decision)
+    for k in ("evidence", "premortem", "plain_english", "bucket", "expression", "style", "order_type"):
+        if not out.get(k) and decision.get(k):
+            out[k] = decision[k]
     return out
 
 
@@ -434,6 +486,11 @@ def fact_check(decision: dict, facts: dict, dossier: dict) -> dict:
                 if rr < config.MIN_REWARD_TO_RISK - 0.01:   # small tolerance for rounded prices
                     problems.append(f"reward-to-risk is only {rr:.2f}")
         conf, rr = decision.get("confidence_pct"), decision.get("reward_to_risk")
+        base, n = decision.get("base_win_pct"), decision.get("base_trades") or 0
+        if isinstance(conf, (int, float)) and isinstance(base, (int, float)) and n >= 8:
+            # the AI's stated confidence is pulled toward the desk's real win rate as the record grows
+            conf = round((conf * 10 + base * n) / (10 + n), 1)
+            decision["confidence_used_pct"] = conf
         if isinstance(conf, (int, float)) and isinstance(rr, (int, float)) and 0 < conf < 100:
             ev = conf / 100 * rr - (1 - conf / 100)       # expected result in units of risk
             decision["expected_r"] = round(ev, 2)

@@ -261,3 +261,23 @@ Every source is cached and fails quietly. The health check tests all of them.
   when the day is behind pace). Max open positions 40, total open risk 40%, options 25%.
 - **More data**: VIX / VIX3M / VVIX / SKEW, options implied move and put/call volume per stock, market breadth and
   sector leadership, plus FRED yield curve, junk-bond spread, inflation expectations, dollar index and financial conditions.
+
+## Judgment over rules (Oct 16, afternoon)
+Research on the first 36 trades showed the losses came from how trades were managed, not from bad ideas. The fix is to
+give the agents what an experienced trader would look at, and let them reason, with only safety limits hard-coded.
+- **Trader's context** (`desk/research/context.py`), in every dossier: how far the symbol really travels in 1/5/20
+  days (in ATRs), the 2-year record of its momentum and mean-reversion signals and its long-term trend, the desk's
+  own past trades in it, and the desk's real win rates by style and asset (plus how stated confidence has held up).
+- **Think like a trader**: the PM works through the story, the trend, realism, real odds, its own history and what
+  would change its mind. Stated confidence must say how it was reached; as the record grows (8+ trades in a style),
+  the expected-value check blends it with the real win rate.
+- **Pushback**: if a target has historically been reached less than 15% of the time in the planned holding time, Sam
+  and Grace walk the plan back to Elena, who rethinks it (longer horizon, closer target, or pass).
+- **Emergency huddles**: triggered by moves that are big for that symbol (60% of its normal day), not a flat 3%.
+  The huddle sees the original thesis, the move vs a normal day, R so far and how its past huddle calls turned out
+  (`data/huddles.jsonl`). It can hold, close, trim or tighten, but Grace refuses any stop within half a normal day's
+  range of the price.
+- **Quant desk**: no daily-pace pressure; the meeting weighs signal history, Kronos agreement, trend and whether
+  the target is reachable. Kronos-only trades are stocks and ETFs only (its only backtested market).
+- **Safety limits (hard)**: $10 minimum price on every entry path, one currency trade at most 3x equity (was 6x),
+  and the engine now uses the size the desk actually chose (Kronos and quant sizing were being dropped at entry).

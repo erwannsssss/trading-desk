@@ -28,6 +28,7 @@ from desk.trading import guards, ledger, options
 NY = ZoneInfo(config.TIMEZONE)
 IDEA_LIFETIME_HOURS = {"crypto": 12, "forex": 12}
 HORIZON_DAYS = {"intraday": 0, "1-5 days": 7, "1-4 weeks": 30}
+MIN_STOCK_PRICE = 10.0         # same floor as the scanner, enforced on every way in (alerts, pitches, intraday movers)
 STOCK_LAST_ENTRY = (15, 45)    # no new stock entries after 3:45pm New York
 INTRADAY_EXIT = (15, 50)       # intraday trades are closed by 3:50pm
 
@@ -246,6 +247,9 @@ class Engine:
                 return self._record_skip(trade_id, plan_file, idea, why)
 
         price = current_price({"venue": idea["venue"], "symbol": idea["symbol"]})
+        if asset in ("stock", "etf") and price < MIN_STOCK_PRICE:
+            return self._record_skip(trade_id, plan_file, idea, f"price ${price:.2f} is under the ${MIN_STOCK_PRICE:.0f} minimum "
+                                     "(cheap stocks have wide spreads and jumpy prices)")
         entry, stop, target = float(d["entry"]), float(d["stop"]), float(d["target"])
         long = direction == "long"
         if (long and (price <= stop or price >= target)) or (not long and (price >= stop or price <= target)):
@@ -276,8 +280,11 @@ class Engine:
                 return self._record_skip(trade_id, plan_file, idea, "this Alpaca account can't short stocks, and no affordable put contract was found")
 
         from desk import learning
-        kw = {"multiplier": learning.risk_multiplier(d.get("style")) * ((idea.get("second_opinion") or {}).get("size_multiplier") or 1.0)
-              * (0.6 if idea.get("pair_id") else 1.0)}
+        # the size multiplier the research or quant desk settled on (style record, second opinion, Kronos, quant sizing)
+        mult = idea.get("size_multiplier")
+        if not isinstance(mult, (int, float)):
+            mult = learning.risk_multiplier(d.get("style")) * ((idea.get("second_opinion") or {}).get("size_multiplier") or 1.0)
+        kw = {"multiplier": mult * (0.6 if idea.get("pair_id") else 1.0)}
         if asset == "forex":
             kw.update(quote_to_usd=quote_to_usd(idea["symbol"]), unit_usd=oanda.usd_value_per_unit(idea["symbol"]))
         sizing = team.size({**d, "entry": entry}, self.book.equity, asset, **kw)
@@ -325,7 +332,9 @@ class Engine:
         t = {
             "id": trade_id, "plan_file": plan_file, "symbol": idea["symbol"], "venue": idea["venue"], "asset": asset,
             "direction": direction, "bucket": d.get("bucket"), "style": d.get("style"), "conviction": d.get("conviction"),
+            "confidence_pct": d.get("confidence_pct"),
             "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"), "thesis": d.get("thesis"),
+            "atr_pct": idea.get("atr_pct"), "invalidation": d.get("invalidation"),
             "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target, "qty": units,
             "notional_usd": round(notional, 2), "risk_usd": sizing["risk_usd"], "risk_pct": sizing["risk_pct"],
             "quote_to_usd": kw.get("quote_to_usd", 1.0), "created_at": self.iso, "industry": industry,
@@ -421,6 +430,7 @@ class Engine:
             "industry": _industry(idea["symbol"]), "pair_id": idea.get("pair_id"), "pair_with": idea.get("pair_with"),
             "conviction": d.get("conviction"), "confidence_pct": d.get("confidence_pct"), "horizon": d.get("horizon"),
             "thesis": d.get("thesis"), "entry_plan": entry, "initial_stop": stop, "stop": stop, "target": target,
+            "atr_pct": idea.get("atr_pct"), "invalidation": d.get("invalidation"),
             "qty": qty, "premium_limit": limit, "notional_usd": premium_total, "risk_usd": premium_total,
             "risk_pct": round(premium_total / self.book.equity * 100, 2), "quote_to_usd": 100.0,
             "created_at": self.iso, "expires_at": idea_expiry(plan, idea).isoformat(timespec="seconds"),

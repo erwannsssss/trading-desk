@@ -568,9 +568,9 @@
   "filled_qty": 26768.0,
   "filled_qty_initial": 26768.0,
   "opened_at": "2026-10-15T19:58:28-04:00",
-  "last_price": 0.8439049999999999,
+  "last_price": 0.84379,
   "max_r": 0.02,
-  "min_r": -0.29
+  "min_r": -0.32
  },
  {
   "id": "2026-10-15-overnight-2243-LTCUSD",
@@ -613,7 +613,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 60.64,
+  "last_price": 60.85,
   "max_r": 0.05,
   "min_r": -0.08,
   "fee_usd": 1.47
@@ -715,7 +715,7 @@
   "filled_qty": 55840.0,
   "filled_qty_initial": 55840.0,
   "opened_at": "2026-10-16T01:09:27-04:00",
-  "last_price": 1.41581,
+  "last_price": 1.4162050000000002,
   "max_r": 0.14,
   "min_r": -0.33
  },
@@ -838,7 +838,7 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.6375,
+  "last_price": 210.599,
   "max_r": 0,
   "min_r": -0.08
  },
@@ -860,6 +860,27 @@
   "conviction": 4,
   "thesis": "The Kronos model predicts a 5% probability of the price moving up, which is very low. However, the target-first percentage is only 20%, meaning the odds are not strongly in our favor for a quick win. We keep it because the expected value is positive and the trend is down, but we size it small. A strong kronos forecast on GBP_USD. No history for this signal. Kronos: target first in 20% of 20 simulated futures, stop first in 0%, expected +0.25R.",
   "created_at": "2026-10-16T04:41:26-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-16-quant-0516-BCHUSD",
+  "plan_file": "2026-10-16-quant-0516.json",
+  "symbol": "BCH/USD",
+  "venue": "alpaca",
+  "asset": "crypto",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "the firm's own cash is fully used, and only conviction 6+ trades can borrow from the bank",
+  "entry_plan": 281.55,
+  "initial_stop": 255.49,
+  "stop": 255.49,
+  "target": 324.97,
+  "bucket": "tactical",
+  "style": "kronos forecast",
+  "conviction": 4,
+  "thesis": "mlquant: Kronos shows a 70% chance of upside over the next 5 days with a modest 4.9% expected move and only a 5% chance of hitting the stop first. The technicals are neutral and the market is range\u2011bound, so the small edge is acceptable for a disciplined sized position. A strong kronos forecast on BCH/USD. No history for this signal. Kronos: target first in 25% of 20 simulated futures, stop first in 5%, expected +0.16R.",
+  "created_at": "2026-10-16T05:42:56-04:00",
   "pair_id": null,
   "pair_with": null
  }

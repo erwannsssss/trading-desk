@@ -158,6 +158,21 @@ class FirmTests(unittest.TestCase):
         self.assertAlmostEqual(d2["trading"], 0.0)
         self.assertAlmostEqual(d2["net"], 41.2)
 
+    def test_fees_and_errors_are_split_out_of_trading(self):
+        rows = [{"t": "2026-10-15T23:00-04:00", "equity": 9978.01, "spy": 1, "fin": 0.12, "opex": 0.25, "corr": 41.2}]
+        (config.DATA_DIR / "equity.jsonl").write_text(json.dumps(rows[0]))
+        (config.DATA_DIR / "corrections.json").write_text(json.dumps([{"date": "2026-10-15", "amount": 41.2, "reason": "test"}]))
+        trades = [{"status": "closed", "pnl_usd": 5.39, "asset": "forex", "closed_at": "2026-10-15T12:00:00-04:00"},
+                  {"status": "open", "asset": "crypto", "fee_usd": 5.96, "opened_at": "2026-10-15T20:00:00-04:00"}]
+        with mock.patch("desk.corrections.FILE", config.DATA_DIR / "corrections.json"):
+            d = pnl.statement(trades, {"payroll": {}, "bonuses": {"paid": []}})["days"][0]
+        self.assertAlmostEqual(d["net"], -21.99)
+        self.assertAlmostEqual(d["fees"], 5.96)
+        self.assertAlmostEqual(d["errors"], 41.2)
+        self.assertAlmostEqual(d["corrections"], 41.2)
+        self.assertAlmostEqual(d["trading"], -21.99 + 0.12 + 0.25 + 5.96)   # the test loss is not trading
+        self.assertAlmostEqual(d["trading"] - d["fees"] - d["interest"] - d["payroll"] - d["errors"] + d["corrections"], d["net"], places=2)
+
     def test_refund_adds_to_equity(self):
         b = Book(alpaca_equity=9958.8, oanda_nav=10_000, baseline_alpaca=10_000, baseline_oanda=10_000, corrections=41.2)
         self.assertAlmostEqual(b.equity, 10_000.0)

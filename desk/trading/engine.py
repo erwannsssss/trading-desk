@@ -164,6 +164,12 @@ class Engine:
                         continue
                     if t["status"] == "pending":
                         t["expires_at"] = self.iso   # cancel the unfilled leg on this check
+            if t.get("asset") == "crypto" and t["status"] == "open" and "fee_usd" not in t and t.get("entry_order_id"):
+                try:   # older crypto trades: work out the entry fee from the order vs the coins actually received
+                    o = alpaca.get_order(t["entry_order_id"])
+                    t["fee_usd"] = round(max(0.0, float(o.get("filled_qty") or 0) - (t.get("filled_qty_initial") or t["filled_qty"])) * t["entry_price"], 2)
+                except Exception as exc:
+                    print(f"fee backfill failed for {t['symbol']}: {exc}")
             if t.get("asset") in ("stock", "option") and "industry" not in t:
                 t["industry"] = _industry(t["symbol"])   # older trades, for the same-industry limit
             try:
@@ -573,7 +579,9 @@ class Engine:
         if t["asset"] == "crypto":  # Alpaca takes crypto fees out of the coins received
             pos = alpaca.position(t["symbol"])
             if pos:
-                qty = float(pos.get("qty_available") or pos["qty"])
+                held = float(pos.get("qty_available") or pos["qty"])
+                t["fee_usd"] = round(max(0.0, qty - held) * price, 2)   # the coins kept as the fee, in dollars
+                qty = held
         t.update(status="open", entry_price=price, filled_qty=qty, filled_qty_initial=qty, opened_at=self.iso)
         if t["asset"] == "option":
             t["premium_paid"] = price
@@ -898,6 +906,8 @@ class Engine:
             initial_risk = per * (t.get("filled_qty_initial") or t["qty"]) * 100
         else:
             initial_risk = abs(t["entry_price"] - t["initial_stop"]) * (t.get("filled_qty_initial") or t["qty"]) * t.get("quote_to_usd", 1.0)
+        if t["asset"] == "crypto":   # selling crypto: Alpaca's fee comes out of the dollars received (0.25% taker rate)
+            t["exit_fee_usd"] = round(price * qty * CRYPTO_SELL_FEE, 2)
         t.update(status="closed", exit_price=price, exit_reason=reason, closed_at=self.iso, pnl_usd=round(pnl, 2),
                  r_result=round(pnl / initial_risk, 2) if initial_risk else None)
         if t.get("loan_usd"):
@@ -911,6 +921,9 @@ class Engine:
         self.alert(f"<b>CLOSED {esc(t['symbol'])}: {verdict} ${pnl:+,.2f}</b> ({t['r_result']}R)\n"
                    f"{'Long' if long else 'Short'} {_p(t['entry_price'])} -> {_p(price)} | {esc(reason)}",
                    agent="options" if t["asset"] == "option" else "positions", symbol=t["symbol"])
+
+
+CRYPTO_SELL_FEE = 0.0025
 
 
 def _industry(symbol: str) -> str | None:

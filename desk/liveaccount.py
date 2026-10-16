@@ -68,11 +68,15 @@ def positions_from_brokers(trades: list[dict], alp_pos: list[dict], fx_trades: l
 def breakdown(equity: float, alpaca_pnl: float, oanda_pnl: float, trades: list[dict], live: dict[str, dict],
               financing: float, opex: float, corrections: float = 0.0) -> dict:
     realized = round(sum(t.get("pnl_usd") or 0 for t in trades if t.get("status") == "closed"), 2)
+    fees = round(sum((t.get("fee_usd") or 0) + (t.get("exit_fee_usd") or 0) for t in trades), 2)
     partials = round(sum(t.get("partial_pnl") or 0 for t in trades if t.get("status") in ("open", "closing")), 2)
     unrealized = round(sum(v["unrealized_usd"] for v in live.values()), 2)
-    other = round(alpaca_pnl + oanda_pnl - realized - partials - unrealized, 2)
+    # Known operational errors are the losses that the corrections file refunds (e.g. Claude's test order)
+    errors = round(-corrections, 2)
+    other = round(alpaca_pnl + oanda_pnl - realized - partials - unrealized + fees - errors, 2)
     return {"start": config.STARTING_CAPITAL, "closed_trades": realized, "partial_profits_taken": partials,
-            "open_positions": unrealized, "bank_interest": round(-financing, 2), "payroll_and_bonuses": round(-opex, 2),
+            "open_positions": unrealized, "trading_fees": round(-fees, 2), "bank_interest": round(-financing, 2),
+            "payroll_and_bonuses": round(-opex, 2), "operational_errors": errors,
             "other_account_activity": other, "corrections": round(corrections, 2),
             "correction_notes": _notes(), "equity": round(equity, 2)}
 

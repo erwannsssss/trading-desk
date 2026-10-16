@@ -543,9 +543,11 @@ function breakdownBlock(b) {
       ${row("Closed trades", b.closed_trades)}
       ${b.partial_profits_taken ? row("Partial profits already taken", b.partial_profits_taken) : ""}
       ${row("Open positions, at the brokers' prices", b.open_positions)}
+      ${b.trading_fees ? row("Trading fees", b.trading_fees, "Crypto fees: Alpaca keeps 0.15-0.25% of the coins bought, and of the dollars when selling.") : ""}
       ${row("Bank interest", b.bank_interest)}
       ${row("Staff payroll and bonuses", b.payroll_and_bonuses)}
-      ${Math.abs(b.other_account_activity) >= 0.01 ? row("Other account activity", b.other_account_activity, "Money that moved at the brokers outside the desk's trades: fees, rounding, or a manual order.") : ""}
+      ${b.operational_errors ? row("Operational error", b.operational_errors, (b.correction_notes || []).map(n => esc(n.replace("Refund for ", ""))).join("<br>")) : ""}
+      ${Math.abs(b.other_account_activity) >= 0.01 ? row("Other small broker fees and rounding", b.other_account_activity, "Anything at the brokers not explained by the lines above, such as tiny regulatory fees on options.") : ""}
       ${b.corrections ? row("Refund for an operational error", b.corrections, (b.correction_notes || []).map(esc).join("<br>")) : ""}
       <tr class="total"><td>Firm equity now</td><td class="num">${money(b.equity)}</td></tr>
     </tbody></table></div>`;
@@ -813,9 +815,11 @@ function renderFirm(d) {
       ${assetsIn(x.realized)}
       <tr><td>Change in open positions' value</td><td class="num ${cls(x.unrealized_change)}">${signed(x.unrealized_change)}</td></tr>
       <tr class="total"><td>Trading gains</td><td class="num ${cls(x.trading)}">${signed(x.trading)}</td></tr>
+      ${x.fees ? `<tr><td>Trading fees (crypto fees taken by the broker)</td><td class="num">${signed(-x.fees)}</td></tr>` : ""}
       <tr><td>Bank interest (${esc(d.bank?.bank || "the bank")})</td><td class="num">${signed(-x.interest)}</td></tr>
       <tr><td>Base payroll</td><td class="num">${signed(-x.payroll)}</td></tr>
       <tr><td>Bonuses</td><td class="num">${signed(-x.bonuses)}</td></tr>
+      ${x.errors ? `<tr><td>Operational errors (not trading; refunded below)</td><td class="num">${signed(-x.errors)}</td></tr>` : ""}
       ${x.corrections ? `<tr><td>Refunds for errors (not trading)</td><td class="num ${cls(x.corrections)}">${signed(x.corrections)}</td></tr>` : ""}
       <tr class="total"><td>Net income</td><td class="num ${cls(x.net)}">${signed(x.net)}</td></tr></tbody></table></div>`;
   const staffRows = Object.keys(F.levels).map(id => {
@@ -830,11 +834,12 @@ function renderFirm(d) {
   el.innerHTML = `<h2>Firm P&amp;L</h2>
     <p class="lede">The firm's income statement. Trading gains first, then everything the firm has to pay: interest to the bank, base pay for the staff, and bonuses. What's left is yours as managing partner.</p>
     <div class="verdict-big ${cls(T.net)}">${T.days ? (T.profitable ? "Yes, the firm is profitable" : "Not profitable yet") : "Too early to tell"}</div>
-    <p class="note">${T.days ? `After paying the bank and the staff, the firm is ${T.net >= 0 ? "up" : "down"} <b>${signed(T.net)}</b> since it opened. Trading made ${signed(T.trading)}; costs were ${money(T.costs)}${T.cost_share_pct != null ? `, or ${T.cost_share_pct}% of trading gains` : ""}. ${T.profitable_days} of ${T.days} days were profitable.` : "The first day's numbers arrive after today's checks."}</p>
+    <p class="note">${T.days ? `After paying the bank, the staff and the broker's fees, the firm is ${T.net >= 0 ? "up" : "down"} <b>${signed(T.net)}</b> since it opened. Trading made ${signed(T.trading)}; costs were ${money(T.costs)}${T.cost_share_pct != null ? `, or ${T.cost_share_pct}% of trading gains` : ""}. ${T.profitable_days} of ${T.days} days were profitable.` : "The first day's numbers arrive after today's checks."}</p>
     <div class="figures">
       <div class="fig"><div class="v ${cls(T.trading)}">${signed(T.trading)}</div><div class="k">Trading gains</div></div>
       <div class="fig"><div class="v">${money(T.interest)}</div><div class="k">Bank interest</div></div>
       <div class="fig"><div class="v">${money(T.payroll)}</div><div class="k">Base payroll</div></div>
+      <div class="fig"><div class="v">${money(T.fees || 0)}</div><div class="k">Trading fees</div></div>
       <div class="fig"><div class="v">${money(T.bonuses)}</div><div class="k">Bonuses</div></div>
       <div class="fig"><div class="v ${cls(T.net)}">${signed(T.net)}</div><div class="k">Net income</div></div>
       <div class="fig"><div class="v">${money(F.hwm)}</div><div class="k">High-water mark (bonuses only above this)</div></div>

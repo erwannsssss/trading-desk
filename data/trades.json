@@ -466,7 +466,7 @@
   "filled_qty_initial": 36699.288410938,
   "opened_at": "2026-10-15T19:12:20-04:00",
   "stop_order_id": "d21093e3-c8c1-4e97-b99c-174a22c3d3c3",
-  "last_price": 0.08141,
+  "last_price": 0.081341,
   "max_r": 0.0,
   "min_r": -0.26
  },
@@ -567,9 +567,9 @@
   "filled_qty": 26768.0,
   "filled_qty_initial": 26768.0,
   "opened_at": "2026-10-15T19:58:28-04:00",
-  "last_price": 0.844615,
+  "last_price": 0.8445400000000001,
   "max_r": 0.02,
-  "min_r": -0.08
+  "min_r": -0.1
  },
  {
   "id": "2026-10-15-overnight-2243-LTCUSD",
@@ -602,10 +602,19 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "4546bb70-5145-459e-ac6d-bed16143fc88",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-15T23:07 entry order placed"
-  ]
+   "2026-10-15T23:07 entry order placed",
+   "2026-10-15T23:38 filled 9.62614 @ 61.02"
+  ],
+  "entry_price": 61.02,
+  "filled_qty": 9.626135347,
+  "filled_qty_initial": 9.626135347,
+  "opened_at": "2026-10-15T23:38:37-04:00",
+  "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
+  "last_price": 61.1459,
+  "max_r": 0.03,
+  "min_r": 0
  },
  {
   "id": "2026-10-15-overnight-2243-USD_CHF",
@@ -638,9 +647,29 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "33",
-  "status": "pending",
+  "status": "closed",
   "notes": [
-   "2026-10-15T23:07 entry order placed"
-  ]
+   "2026-10-15T23:07 entry order placed",
+   "2026-10-15T23:38 filled 7086 @ 0.82739",
+   "2026-10-15T23:38 closed at 0.82762: time stop (intraday), P&L $+1.95"
+  ],
+  "oanda_trade_id": "34",
+  "entry_price": 0.82739,
+  "filled_qty": 7086.0,
+  "filled_qty_initial": 7086.0,
+  "opened_at": "2026-10-15T23:38:37-04:00",
+  "last_price": 0.827705,
+  "max_r": 0.03,
+  "min_r": 0,
+  "exit_price": 0.82762,
+  "exit_reason": "time stop (intraday)",
+  "closed_at": "2026-10-15T23:38:37-04:00",
+  "pnl_usd": 1.95,
+  "r_result": 0.02,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The pair nudged higher after the pull\u2011back entry, delivering a modest $1.95 profit before the intraday time stop forced an exit. The move was in the expected direction but fell far short of the 0.842 target.",
+   "lesson": "Align the trade horizon and exit criteria; if you plan an intraday trade, set a realistic profit target or a dynamic stop rather than a fixed time stop that may cut a winning trade too early."
+  }
  }
 ]

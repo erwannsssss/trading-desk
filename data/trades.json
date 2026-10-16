@@ -568,9 +568,9 @@
   "filled_qty": 26768.0,
   "filled_qty_initial": 26768.0,
   "opened_at": "2026-10-15T19:58:28-04:00",
-  "last_price": 0.84442,
+  "last_price": 0.844165,
   "max_r": 0.02,
-  "min_r": -0.14
+  "min_r": -0.21
  },
  {
   "id": "2026-10-15-overnight-2243-LTCUSD",
@@ -673,5 +673,62 @@
    "what_happened": "The pair nudged higher after the pull\u2011back entry, delivering a modest $1.95 profit before the intraday time stop forced an exit. The move was in the expected direction but fell far short of the 0.842 target.",
    "lesson": "Align the trade horizon and exit criteria; if you plan an intraday trade, set a realistic profit target or a dynamic stop rather than a fixed time stop that may cut a winning trade too early."
   }
+ },
+ {
+  "id": "2026-10-16-overnight-0011-USD_CAD",
+  "plan_file": "2026-10-16-overnight-0011.json",
+  "symbol": "USD_CAD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 7,
+  "confidence_pct": 55,
+  "horizon": "intraday",
+  "thesis": "USD/CAD is in an uptrend, and the current pullback to the 20-day SMA provides a low-risk entry. The target is the 52-week high, and the stop is set below the 20-day SMA to protect against a reversal. Smart money positioning and macro factors support the long bias.",
+  "entry_plan": 1.41815,
+  "initial_stop": 1.41205,
+  "stop": 1.41205,
+  "target": 1.42998,
+  "qty": 55840,
+  "notional_usd": 55840.0,
+  "risk_usd": 240.28,
+  "risk_pct": 2.4,
+  "quote_to_usd": 0.7054126311185729,
+  "created_at": "2026-10-16T00:39:29-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-16T12:11:18-04:00",
+  "loan_usd": 0.0,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "41",
+  "status": "pending",
+  "notes": [
+   "2026-10-16T00:39 entry order placed"
+  ]
+ },
+ {
+  "id": "2026-10-16-overnight-0011-GBP_AUD",
+  "plan_file": "2026-10-16-overnight-0011.json",
+  "symbol": "GBP_AUD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "blocked: total exposure would be $141,900, more than the firm's money plus the $100,000 credit line",
+  "entry_plan": 1.91513,
+  "initial_stop": 1.90541,
+  "stop": 1.90541,
+  "target": 1.93457,
+  "bucket": "tactical",
+  "style": "mean reversion",
+  "conviction": 7,
+  "thesis": "GBP_AUD is likely to rebound because both GBP and AUD are heavily shorted, creating a squeeze. The price is above short\u2011term moving averages and the market is range\u2011bound, so a mean\u2011reversion move up is expected.",
+  "created_at": "2026-10-16T00:39:29-04:00",
+  "pair_id": null,
+  "pair_with": null
  }
 ]

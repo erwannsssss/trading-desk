@@ -56,7 +56,7 @@ DATA_GUIDE = (
 
 
 def _j(obj) -> str:
-    return json.dumps(obj, indent=1, default=str)
+    return json.dumps(obj, default=str, separators=(",", ":"))   # compact: smaller prompts fit the backup models' limits
 
 
 def _style(*seats: str) -> str:

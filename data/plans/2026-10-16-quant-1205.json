@@ -1,0 +1,841 @@
+{
+ "date": "2026-10-16",
+ "session": "quant",
+ "created_at": "2026-10-16T12:05:45-04:00",
+ "dry_run": false,
+ "equity": 9774.82,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 45,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "mean reversion on extreme positioning extremes",
+    "forex short-squeeze bounces in oversold currencies",
+    "selective crypto momentum in relative strength leaders",
+    "range trading and tight stop-loss discipline"
+   ],
+   "avoid": [
+    "chasing extended tech breakouts",
+    "unhedged long duration bonds",
+    "broad crypto leverage without clear uptrends"
+   ]
+  },
+  "favored": [
+   "EUR/USD and GBP/USD mean-reversion longs (COT positioning at 2.0 and 1.0 three-year percentiles, EUR/GBP RSI at 25.64)",
+   "USD/MXN short mean reversion (RSI overbought at 69.48 after +6.96% 20-day rally)",
+   "Crypto relative strength leaders such as RENDER/USD (uptrend, RSI 54.31, 20-day return +0.76%) and AAVE/USD (uptrend, 20-day return +2.89%)"
+  ],
+  "avoid": [
+   "Nasdaq 100 index long additions (speculator net positioning maxed out at the 100.0 three-year percentile)",
+   "Treasuries and rate-sensitive duration plays (10-year yield elevated at 5.19% versus Fed funds at 3.75%)",
+   "Lagging altcoins under heavy selling pressure (DOGE 20-day return -17.73%, XRP 20-day return -14.31%)"
+  ],
+  "key_events": [
+   "2026-10-16: Industrial production data release; watch for macro slowdown risks under 5.19% 10-year yields.",
+   "2026-10-15: Digest aftermath of Retail Sales, PPI, and Weekly Jobless Claims print ahead of weekend flows.",
+   "Friday session position-squaring: Anticipate profit-taking and de-risking into the close."
+  ],
+  "overnight_read": "Markets are showing consolidation overnight with modest 1-day crypto relief led by UNI (+4.28%) and BCH (+4.17%) while BTC holds $82,377.29. Forex displays quiet price action against extreme positioning imbalances, indicating potential for sharp mean-reversion unwinds heading into Friday.",
+  "summary": "The macro backdrop remains tightly bound by elevated interest rates, with the 10-year Treasury yield at 5.19% and Fed funds at 3.75%, while equity volatility stays subdued at a VIX of 16.87. Speculative futures positioning is sitting at dramatic extremes, with Nasdaq longs crowded at the 100th percentile while Euro and British Pound positioning hover at the 2nd and 1st percentiles, setting up ripe mean-reversion squeeze conditions. Crypto sentiment has normalized to a neutral 53, favoring tactical momentum on strong individual tokens like RENDER and AAVE rather than broad index beta. The desk should maintain a disciplined 45 risk posture, prioritizing tactical currency mean-reversions and selective crypto setups into Friday's session."
+ },
+ "ideas": [
+  {
+   "symbol": "SPY",
+   "venue": "alpaca",
+   "asset": "etf",
+   "price_at_research": 766.69,
+   "atr_pct": 0.86,
+   "setups": [
+    "near 52-week high"
+   ],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 766.69,
+    "stop": 756.8,
+    "target": 783.17,
+    "conviction": 5,
+    "confidence_pct": 43,
+    "horizon": "1-5 days",
+    "reason": "The Kronos model suggests an 80% probability of an up move, but the technicals show a sideways trend with a volume ratio of only 0.42, indicating a lack of participation. In a choppy market with a VIX of 16.87, fading a low-volume sideways move on SPY is a low-conviction bet that risks getting chopped out. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 40% of 20 simulated futures, stop first in 10%, expected +0.26R.",
+    "thesis": "A strong kronos forecast on SPY. No history for this signal. Kronos: target first in 40% of 20 simulated futures, stop first in 10%, expected +0.26R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 0.66
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 47.119853
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 0.86
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.26
+     }
+    ],
+    "quant_edge_r": 0.14,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.14,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.26,
+     "model_expected_r": 0.87,
+     "target_first_pct": 40,
+     "stop_first_pct": 10,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": 4,
+     "points": [
+      "Kronos: target first in 40% of 20 simulated futures, stop first in 10%, expected +0.26R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "USO",
+   "venue": "alpaca",
+   "asset": "etf",
+   "price_at_research": 158.6,
+   "atr_pct": 2.92,
+   "setups": [
+    "breakout above 20-day high"
+   ],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "put_options",
+    "entry": 158.6,
+    "stop": 165.55,
+    "target": 147.02,
+    "conviction": 5,
+    "confidence_pct": 42,
+    "horizon": "1-5 days",
+    "reason": "Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 25% of 20 simulated futures, stop first in 0%, expected +0.25R.",
+    "thesis": "USO is in a strong uptrend with a 5-day return of 7.02% and RSI at 64, but the Kronos model sees a 15% probability of further upside, suggesting a mean-reversion short. The 0% stop-first rate in the simulation supports a tactical fade of the recent spike, aligning with the desk's preference for mean-reversion in a range-bound macro environment. A strong kronos forecast on USO. No history for this signal. Kronos: target first in 25% of 20 simulated futures, stop first in 0%, expected +0.25R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 3.11
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 64.159762
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.92
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.25
+     }
+    ],
+    "quant_edge_r": 0.13,
+    "plain_english": "Oil prices have jumped up recently, but our model thinks they are overextended and likely to drop back down. We are betting on a correction because the recent rise was too fast.",
+    "reward_to_risk": 1.67,
+    "expected_r": 0.12
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.13,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.25,
+     "model_expected_r": 0.85,
+     "target_first_pct": 25,
+     "stop_first_pct": 0,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -3,
+     "points": [
+      "Kronos: target first in 25% of 20 simulated futures, stop first in 0%, expected +0.25R"
+     ]
+    }
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 4,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 1.5,
+    "risk_usd": 146.62,
+    "units": 21.1,
+    "notional_usd": 3345.94
+   },
+   "status": "approved"
+  },
+  {
+   "symbol": "MS",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 182.61,
+   "atr_pct": 2.64,
+   "setups": [],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 182.61,
+    "stop": 175.38,
+    "target": 194.66,
+    "conviction": 5,
+    "confidence_pct": 42,
+    "horizon": "1-5 days",
+    "reason": "While the Kronos model shows a 95% probability of an up move, the technicals are deeply negative with a 60-day return of -14.67% and RSI at 28. The conflict between the model's bullish forecast and the persistent downtrend, combined with a low volume ratio of 0.32, makes this a poor risk-reward setup. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 5% of 20 simulated futures, stop first in 5%, expected +0.21R.",
+    "thesis": "A strong kronos forecast on MS. No history for this signal. Kronos: target first in 5% of 20 simulated futures, stop first in 5%, expected +0.21R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -9.86
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 28.158805
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.64
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.21
+     }
+    ],
+    "quant_edge_r": 0.11,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.11,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.21,
+     "model_expected_r": 0.7,
+     "target_first_pct": 5,
+     "stop_first_pct": 5,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: target first in 5% of 20 simulated futures, stop first in 5%, expected +0.21R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "EWZ",
+   "venue": "alpaca",
+   "asset": "etf",
+   "price_at_research": 41.64,
+   "atr_pct": 2.43,
+   "setups": [],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "put_options",
+    "entry": 41.64,
+    "stop": 43.16,
+    "target": 39.11,
+    "conviction": 6,
+    "confidence_pct": 41,
+    "horizon": "1-5 days",
+    "reason": "Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 5% of 20 simulated futures, stop first in 0%, expected +0.20R.",
+    "thesis": "EWZ is in an uptrend with a 60-day return of 15.12%, but the Kronos model predicts a 0% probability of further upside and a -2.43% expected move. The high signal strength of 2.29 and 0% stop-first rate indicate a strong mean-reversion short opportunity, fitting the desk's tactical currency strategy. A strong kronos forecast on EWZ. No history for this signal. Kronos: target first in 5% of 20 simulated futures, stop first in 0%, expected +0.20R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 10.98
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 60.802109
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.43
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.2
+     }
+    ],
+    "quant_edge_r": 0.11,
+    "plain_english": "Brazilian stocks have been rising, but our model thinks they have gone up too much and will fall back down. We are betting on a drop because the recent gains look unsustainable.",
+    "reward_to_risk": 1.66,
+    "expected_r": 0.09
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.11,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.2,
+     "model_expected_r": 0.66,
+     "target_first_pct": 5,
+     "stop_first_pct": 0,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -5,
+     "points": [
+      "Kronos: target first in 5% of 20 simulated futures, stop first in 0%, expected +0.20R"
+     ]
+    }
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 4,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 1.5,
+    "risk_usd": 146.62,
+    "units": 96.46,
+    "notional_usd": 4016.68
+   },
+   "status": "approved"
+  },
+  {
+   "symbol": "DE",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 641.12,
+   "atr_pct": 2.9,
+   "setups": [],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "put_options",
+    "entry": 641.12,
+    "stop": 669.01,
+    "target": 594.64,
+    "conviction": 5,
+    "confidence_pct": 41,
+    "horizon": "1-5 days",
+    "reason": "The Kronos model suggests a short with a 25% probability of an up move, but the technicals show a mixed trend with a 5-day return of 3.25%. The low signal strength of 0.69 and a stop-first rate of 15% indicate weak conviction, especially in a choppy market where directional bets on individual stocks are prone to noise. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 20% of 20 simulated futures, stop first in 15%, expected +0.19R.",
+    "thesis": "A strong kronos forecast on DE. No history for this signal. Kronos: target first in 20% of 20 simulated futures, stop first in 15%, expected +0.19R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -6.04
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 42.454909
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.9
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.19
+     }
+    ],
+    "quant_edge_r": 0.1,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.1,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.19,
+     "model_expected_r": 0.63,
+     "target_first_pct": 20,
+     "stop_first_pct": 15,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -3,
+     "points": [
+      "Kronos: target first in 20% of 20 simulated futures, stop first in 15%, expected +0.19R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "XBI",
+   "venue": "alpaca",
+   "asset": "etf",
+   "price_at_research": 145.22,
+   "atr_pct": 2.98,
+   "setups": [
+    "breakdown below 20-day low"
+   ],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 145.22,
+    "stop": 138.73,
+    "target": 156.04,
+    "conviction": 5,
+    "confidence_pct": 40,
+    "horizon": "1-5 days",
+    "reason": "XBI is in a downtrend with a 20-day return of -7.34% and RSI at 36, yet the Kronos model predicts an 80% probability of an up move. This conflict between the technical downtrend and the model's bullish forecast, combined with a low edge_r of 0.08, makes it a low-conviction bet in a range-bound market. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 10% of 20 simulated futures, stop first in 0%, expected +0.15R.",
+    "thesis": "A strong kronos forecast on XBI. No history for this signal. Kronos: target first in 10% of 20 simulated futures, stop first in 0%, expected +0.15R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -7.34
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 36.868919
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.98
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.15
+     }
+    ],
+    "quant_edge_r": 0.08,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.08,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.15,
+     "model_expected_r": 0.51,
+     "target_first_pct": 10,
+     "stop_first_pct": 0,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": 4,
+     "points": [
+      "Kronos: target first in 10% of 20 simulated futures, stop first in 0%, expected +0.15R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "SOFI",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 14.78,
+   "atr_pct": 4.46,
+   "setups": [],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 14.78,
+    "stop": 13.79,
+    "target": 16.43,
+    "conviction": 5,
+    "confidence_pct": 40,
+    "horizon": "1-5 days",
+    "reason": "SOFI is in a downtrend with a 20-day return of -12.85% and RSI at 36, but the Kronos model predicts a 90% probability of an up move. The high volatility (ATR 4.46%) and low volume ratio of 0.52 make this a risky counter-trend bet, especially with a low edge_r of 0.07. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.14R.",
+    "thesis": "A strong kronos forecast on SOFI. No history for this signal. Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.14R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -12.85
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 36.288219
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 4.46
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.14
+     }
+    ],
+    "quant_edge_r": 0.07,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.07,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.14,
+     "model_expected_r": 0.47,
+     "target_first_pct": 10,
+     "stop_first_pct": 10,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.14R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "NVDA",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 216.96,
+   "atr_pct": 2.69,
+   "setups": [],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "put_options",
+    "entry": 216.96,
+    "stop": 225.71,
+    "target": 202.37,
+    "conviction": 5,
+    "confidence_pct": 40,
+    "horizon": "1-5 days",
+    "reason": "NVDA is in a mixed trend with a 5-day return of -5.37%, and the Kronos model predicts a 30% probability of an up move. The low signal strength of 0.42 and a stop-first rate of 10% indicate weak conviction, making it a poor candidate for a short in a choppy market. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 30% of 20 simulated futures, stop first in 10%, expected +0.14R.",
+    "thesis": "A strong kronos forecast on NVDA. No history for this signal. Kronos: target first in 30% of 20 simulated futures, stop first in 10%, expected +0.14R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -2.39
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 39.957362
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.69
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.14
+     }
+    ],
+    "quant_edge_r": 0.07,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.07,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.14,
+     "model_expected_r": 0.46,
+     "target_first_pct": 30,
+     "stop_first_pct": 10,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -2,
+     "points": [
+      "Kronos: target first in 30% of 20 simulated futures, stop first in 10%, expected +0.14R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "NKE",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 37.44,
+   "atr_pct": 3.33,
+   "setups": [],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 37.44,
+    "stop": 35.57,
+    "target": 40.56,
+    "conviction": 5,
+    "confidence_pct": 40,
+    "horizon": "1-5 days",
+    "reason": "NKE is in a mixed trend with a 5-day return of 7.87%, but the Kronos model predicts a 70% probability of an up move with a low signal strength of 0.63. The high stop-first rate of 40% and low volume ratio of 0.25 indicate a high risk of being stopped out, making it a poor risk-reward setup. Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 50% of 20 simulated futures, stop first in 40%, expected +0.12R.",
+    "thesis": "A strong kronos forecast on NKE. No history for this signal. Kronos: target first in 50% of 20 simulated futures, stop first in 40%, expected +0.12R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 5.44
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 60.263227
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 3.33
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.12
+     }
+    ],
+    "quant_edge_r": 0.06,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.06,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.12,
+     "model_expected_r": 0.41,
+     "target_first_pct": 50,
+     "stop_first_pct": 40,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": 2,
+     "points": [
+      "Kronos: target first in 50% of 20 simulated futures, stop first in 40%, expected +0.12R"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "DOT/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 1.1707,
+   "atr_pct": 7.69,
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "why_scanned": [
+    "kronos forecast signal (mlquant)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "kronos forecast",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 1.1707,
+    "stop": 1.03566,
+    "target": 1.395767,
+    "conviction": 4,
+    "confidence_pct": 40,
+    "horizon": "1-5 days",
+    "reason": "Quant desk: a strong Kronos forecast. no history for this signal; Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.11R.",
+    "thesis": "DOT/USD is in an uptrend with a 60-day return of 53.87%, and the Kronos model predicts a 70% probability of an up move. The high ATR of 7.69% and volume ratio of 0.65 support a tactical momentum long, aligning with the desk's preference for selective crypto setups in a neutral sentiment environment. A strong kronos forecast on DOT/USD. No history for this signal. Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.11R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -5.77
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 51.42595
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 7.69
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.11
+     }
+    ],
+    "quant_edge_r": 0.06,
+    "plain_english": "Polkadot has been rising strongly over the last two months, and our model thinks it will keep going up. We are taking a small bet on this because the momentum is strong, but we are careful because crypto is volatile.",
+    "reward_to_risk": 1.67,
+    "expected_r": 0.07
+   },
+   "quant": {
+    "kind": "kronos",
+    "seat": "mlquant",
+    "edge_r": 0.06,
+    "history": null,
+    "kronos": {
+     "expected_r": 0.11,
+     "model_expected_r": 0.35,
+     "target_first_pct": 10,
+     "stop_first_pct": 10,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.11R"
+     ]
+    }
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 4,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 0.75,
+    "risk_usd": 73.31,
+    "units": 542.88469,
+    "notional_usd": 635.56
+   },
+   "status": "approved"
+  }
+ ],
+ "quant_summary": {
+  "markets": 153,
+  "signals": 14,
+  "kronos": 47,
+  "kronos_weight": 0.56,
+  "candidates_with_edge": 10,
+  "pace": {
+   "goal": 30,
+   "placed_today": 6,
+   "expected_by_now": 13,
+   "behind_by": 7
+  },
+  "desk_note": "The market is choppy with high interest rates, so we are focusing on mean-reversion trades where assets have moved too far in one direction. We are dropping most trades because the signals are weak or conflicting, but keeping a few high-conviction bets on oil and Brazilian stocks."
+ },
+ "ai_calls": 1,
+ "minutes": 2.6
+}

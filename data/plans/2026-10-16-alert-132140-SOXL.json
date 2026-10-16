@@ -1,0 +1,133 @@
+{
+ "date": "2026-10-16",
+ "session": "alert",
+ "created_at": "2026-10-16T13:21:40-04:00",
+ "dry_run": false,
+ "equity": 9770.28,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "SOXL",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 97.42,
+   "atr_pct": 13.04,
+   "why_scanned": [
+    "breaking move: -5.5% since research"
+   ],
+   "setups": [
+    "strong 20-day move (-21.2%)"
+   ],
+   "specialists": {
+    ":technical": {
+     "score": 3,
+     "points": [
+      "RSI is oversold at 31.11, indicating extreme short-term selling pressure.",
+      "Price is severely extended below the 20-day, 50-day, and 200-day moving averages.",
+      "5-day return is down -30.29% and 20-day return is -21.17%, presenting classic mean-reversion setup conditions."
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "Beta is extremely high at 5.962, indicating massive sensitivity to broader market moves.",
+      "52-week low is 28.1 and 52-week high is 301.8, showing extreme cyclical volatility.",
+      "Average 20-day dollar volume is massive at $9,368,923,060, ensuring high liquidity."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "SOXL remains one of Wall Street's most traded leveraged semiconductor ETFs.",
+      "Recent headlines show a 5% bounce after touching $120.29, though the stock has since pulled back significantly.",
+      "Short volume is elevated at 65.7% (with a 5-day average of 63.9%), indicating heavy bearish betting that could fuel a squeeze."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Insiders report 0 open-market buys and 0 open-market sells over the last 90 days.",
+      "Short volume percentage is exceptionally high at 65.7%, suggesting aggressive short-term positioning.",
+      "Average daily volume remains strong, though institutional sponsorship is obscured by heavy retail ETF trading."
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "SOXL has been hammered down by over -30% in the last 5 days and sits deeply oversold with an RSI of 31.11. With short volume elevated at 65.7%, the market is heavily overcrowded on the short side, creating a textbook spring-loaded bounce setup for aggressive tactical traders.",
+    "catalysts": [
+     "Extreme oversold readings across 5-day (-30.29%) and 20-day (-21.17%) horizons.",
+     "Short volume at 65.7% provides robust fuel for a sharp short-squeeze rally.",
+     "High beta (5.962) ensures explosive upside velocity if semiconductor sentiment turns intraday."
+    ]
+   },
+   "bear": {
+    "case": "Buying SOXL here is trying to catch a falling knife in a rising interest rate environment where the 10-year yield is at 5.19%. The long-term trend is decisively broken with price trading far below the 200-day moving average of 122.05, and heavy short selling reflects correct structural positioning, not just temporary panic.",
+    "risks": [
+     "10-year Treasury yields at an elevated 5.19% continue to pressure high-multiple tech and semiconductor assets.",
+     "Price is in a clear structural downtrend, trading well below its 200-day moving average of 122.05.",
+     "High beta of 5.962 cuts both ways, meaning downside velocity can accelerate violently if the broader market slips."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails if macro pressures from the 5.19% 10-year yield overwhelm the semiconductor sector, causing institutional selling to continue and driving SOXL through its recent 20-day low of 95.23, triggering our stop loss before any mean-reversion bounce occurs.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "SOXL is deeply oversold with an RSI near 31 and an extreme 5-day drop of -30.29%, paired with high short volume of 65.7%. This creates a high-conviction tactical mean-reversion opportunity to capture an oversold bounce.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 97.42,
+    "stop": 84.72,
+    "target": 115.0,
+    "conviction": 7,
+    "confidence_pct": 52,
+    "odds_reasoning": "Based on historical deeply oversold win rates near 68% for mean reversion setups and the heavy 65.7% short volume providing squeeze potential, adjusted down slightly for the macro headwind of 5.19% yields.",
+    "horizon": "1-5 days",
+    "thesis": "SOXL has experienced an aggressive capitulation move, dropping -30.29% over the last 5 days to $97.42. With an RSI [a 0-100 gauge of how stretched a price is] of 31.11 and short volume [the share of trading volume made up of short sales] reaching 65.7%, the asset is ripe for a sharp relief bounce. We will buy shares at the current level, targeting a recovery toward $115.00 while risking down to $84.72.",
+    "invalidation": "The thesis is completely invalidated if the stock breaks decisively below the recent 20-day low of 95.23 with sustained volume, showing that sellers remain completely in control.",
+    "plain_english": "We are buying shares of SOXL because it has crashed violently over the past five days and is heavily oversold. With so many traders betting against the stock through short selling [borrowing shares to sell them in hopes of buying them back cheaper], any small piece of good news or profit-taking can trigger a sharp upward spike. We will take our profit if it bounces back toward $115, and cut our losses if it drops below $84.72.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 97.42
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 31.11
+     },
+     {
+      "fact": "technicals.ret_5d",
+      "value": -30.29
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 65.7
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 95.23
+     }
+    ],
+    "reward_to_risk": 1.38,
+    "expected_r": 0.24
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 3.0,
+    "risk_usd": 293.11,
+    "units": 23.08,
+    "notional_usd": 2248.39
+   },
+   "status": "approved"
+  }
+ ]
+}

@@ -89,7 +89,7 @@ def idea_expiry(plan: dict, idea: dict) -> datetime:
     if idea["asset"] in ("stock", "etf"):
         last = created.replace(hour=STOCK_LAST_ENTRY[0], minute=STOCK_LAST_ENTRY[1], second=0, microsecond=0)
         if plan.get("session") in ("intraday", "alert"):
-            return min(created + timedelta(hours=2), last)  # intraday ideas go stale fast
+            return min(created + timedelta(hours=3), last)  # intraday ideas go stale fast
         if plan.get("session") == "pitch":
             return created + timedelta(hours=26)  # a pitch made after hours can still be placed the next day
         return last
@@ -260,9 +260,9 @@ class Engine:
             if tuned:
                 stop, target = new_stop, new_target
                 floor.event("positions", f"{idea['symbol']}: {tuned} (from how past trades in this style actually played out)", idea["symbol"])
-        # If the market already moved through our limit, chasing is only allowed within a quarter of the risk.
+        # If the market already moved through our limit, chasing is allowed up to half of the risk.
         risk = abs(entry - stop)
-        if (long and price > entry + 0.25 * risk) or (not long and price < entry - 0.25 * risk):
+        if (long and price > entry + 0.5 * risk) or (not long and price < entry - 0.5 * risk):
             return "price moved away from the entry; waiting for a pullback"
 
         short_blocked = asset in ("stock", "etf") and not long and not self.can_short_stocks()
@@ -297,7 +297,7 @@ class Engine:
         else:
             notional = units * entry
 
-        # The bank: forex only ties up its margin; other trades borrow only at conviction 7+.
+        # The bank: forex only ties up its margin; other trades borrow only at conviction 6+.
         cash_needed = notional * oanda.margin_rate(idea["symbol"]) if asset == "forex" else notional
         loan = bank.loan_needed(cash_needed, self.book.equity, self.book.cash_used)
         if loan > 0 and asset != "forex" and int(d.get("conviction") or 0) < bank.BORROW_MIN_CONVICTION:

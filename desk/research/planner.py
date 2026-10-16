@@ -271,7 +271,7 @@ def run(session: str = "morning") -> dict:
                                kind="blocked" if so["verdict"] == "strong_disagree" else "decision")
                 except Exception as exc:
                     floor.done("second", f"{sym}: couldn't review ({str(exc)[:80]}); trade goes ahead at normal size", sym)
-            if so and so.get("verdict") == "strong_disagree":
+            if so and so.get("verdict") == "strong_disagree" and not so.get("overruled"):
                 idea["status"] = "vetoed_by_second_opinion"
             elif pm.get("decision") in ("long", "short") and check["passed"]:
                 kw = {}

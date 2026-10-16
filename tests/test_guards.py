@@ -50,9 +50,9 @@ class GuardTests(unittest.TestCase):
         fri = datetime(2026, 10, 16, 15, 30, tzinfo=NY)
         self.assertIsNotNone(guards.must_exit_before_earnings(t, {"AAPL": {"date": "2026-10-19", "hour": "bmo"}}, fri))
 
-    def test_risk_off_needs_conviction_6(self):
-        self.assertIsNotNone(guards.risk_off_block("risk-off/defensive", "stock", "long", 5))
-        self.assertIsNone(guards.risk_off_block("risk-off/defensive", "stock", "long", 6))
+    def test_risk_off_needs_conviction_5(self):
+        self.assertIsNotNone(guards.risk_off_block("risk-off/defensive", "stock", "long", 4))
+        self.assertIsNone(guards.risk_off_block("risk-off/defensive", "stock", "long", 5))
         self.assertIsNone(guards.risk_off_block("risk-off/defensive", "forex", "long", 4))
         self.assertIsNone(guards.risk_off_block("strong uptrend", "stock", "long", 4))
 

@@ -4,7 +4,7 @@
                   with Bitcoin), and 3 stock positions with the same direction and style (e.g. "long mean reversion")
   earnings        no new stock trade that would be held through the company's earnings report, unless the trade
                   IS an earnings play; positions about to hit a report get closed the afternoon before
-  risk-off rule   when the macro read is risk-off or panic, buying stocks needs conviction 6+
+  risk-off rule   when the macro read is risk-off or panic, buying stocks needs conviction 5+
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ MAX_SAME_INDUSTRY = 2   # e.g. two long semiconductor stocks, not three
 EARNINGS_STYLE = "earnings play"
 HOLD_DAYS = {"intraday": 0, "1-5 days": 7, "1-4 weeks": 30}
 RISK_OFF = ("risk-off/defensive", "panic/high volatility")
-RISK_OFF_MIN_CONVICTION = 6
+RISK_OFF_MIN_CONVICTION = 5
 
 
 def _legs(symbol: str, direction: str) -> list[tuple[str, int]]:

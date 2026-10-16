@@ -151,7 +151,7 @@ def context(p: dict, question: str) -> dict:
         ctx["your_audit_findings"] = compliance.load()["findings"][-25:]
         ctx["what_you_check_on_every_trade"] = [
             "every position has a stop", "risk at the actual fill stays under the 5% per-trade cap",
-            "options premium under 6% per trade", "total open risk under 20% of the firm",
+            "options premium under 6% per trade", "total open risk under 30% of the firm",
             "positions within equity plus the bank line", "stops are never widened", "losses stay near 1R",
             "fills aren't much worse than planned", "reward at least 1.2x risk at the fill",
             "no stock fills in the first or last 5 minutes", "trades don't overstay their time frame"]

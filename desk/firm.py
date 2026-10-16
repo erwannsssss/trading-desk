@@ -84,6 +84,10 @@ def set_level(seat: str, new: str, reason: str, data: dict | None = None) -> Non
     data = data or load()
     old = level(seat, data)
     data["levels"][seat] = {"level": new, "since": now().date().isoformat()}
+    if old == new:          # not a promotion or demotion (e.g. a new hire starting at the default level)
+        if own:
+            save(data)
+        return
     data["level_log"].append({"date": now().date().isoformat(), "seat": seat, "from": old, "to": new, "reason": reason})
     data["level_log"] = data["level_log"][-200:]
     if own:
@@ -264,7 +268,7 @@ def summary(equity: float) -> dict:
     total_w = sum(weights.values()) or 1
     return {
         "levels": {seat: level(seat, data) for seat in weights},
-        "level_log": data["level_log"][-60:],
+        "level_log": [x for x in data["level_log"] if x.get("from") != x.get("to")][-60:],
         "salaries": {seat: round(equity * MGMT_FEE * w / total_w, 2) for seat, w in weights.items()},
         "payroll_total": round(data["payroll"]["total"], 2),
         "payroll_by_seat": {k: round(v, 2) for k, v in data["payroll"]["by_seat"].items()},

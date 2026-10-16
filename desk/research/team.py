@@ -65,7 +65,8 @@ DATA:
 
 Decide:
 - regime: one of "strong uptrend", "choppy/range-bound", "risk-off/defensive", "panic/high volatility", "recovery"
-- risk_appetite: 0-100 (how aggressive the desk should be today)
+- risk_appetite: 0-100 (how aggressive the desk should be today). This desk is aggressive: use 50-90 most days and
+  rarely go below 40 even in a sell-off, because a falling market is a trading opportunity (shorts, puts, havens)
 - bucket_weights: % of the account for "core" (multi-day swing trades on quality setups), "tactical" (short-term momentum, breakouts, news and earnings trades), "high_risk" (big-upside speculative bets, shorts on hype). Must add to 100. Typical: 50/35/15; shift it with the regime.
 - playbook: which trading styles should work today (momentum, mean reversion, breakouts, earnings plays, macro/forex, crypto) and which to avoid
 - favored and avoided sectors/assets, with reasons
@@ -214,15 +215,21 @@ Return JSON: {{"case": str (4-6 sentences), "risks": [str], "would_change_my_min
 
 
 DESK_TARGET = (
-    "DESK TARGET: the desk aims for roughly 20-30 trades a day across all sessions and markets, many of them small "
-    "tactical or intraday trades. Pass only when you see no edge at all. A modest edge with a clear stop deserves a "
-    "small, low-conviction position (conviction 4-5) rather than a pass; save conviction 8+ for the best setups. "
-    "The firm has a $100,000 bank credit line, but only conviction 7+ trades may borrow; lower-conviction trades are "
-    "sized to the firm's own free cash."
+    "DESK MANDATE: this is an aggressive trading desk that has to make money, not preserve it. Sitting in cash is a "
+    "losing strategy. Aim for roughly 20-30 trades a day across all sessions and markets, and approve most ideas that "
+    "have a real edge: a typical session should approve at least half of what it researches. "
+    "Judge each trade on EXPECTED VALUE, not on whether it is more likely to win than lose: a 40% chance to make 3x "
+    "the risk is a GOOD trade. Take calculated risks you believe can actually happen, with a clear stop. "
+    "A risk-off or choppy market is NOT a reason to pass: it changes WHICH trades to take (shorts and puts on weak "
+    "names, defensive or relative-strength longs, currency and commodity trends, crypto momentum), not whether to "
+    "trade. Pass only when the expected value is negative or there is genuinely no edge. "
+    "Use conviction honestly: 5-6 for a solid edge, 7-8 for strong setups, 9-10 for the best of the week. "
+    "Use options (calls or puts) for strong, fast views where the payoff can be several times the cost. "
+    "The firm has a $100,000 bank credit line; trades at conviction 6+ may borrow from it."
 )
 DESK_RULES = (
     "FIRM RULES (the system enforces these, so don't fight them): "
-    "(1) when the market regime is risk-off or panic, buying stocks needs conviction 6+; "
+    "(1) when the market regime is risk-off or panic, buying stocks needs conviction 5+; "
     "(2) no more than 2 positions leaning the same way on one currency, 3 crypto longs, or 3 stock positions with the "
     "same direction and style, so look for a DIFFERENT bet instead of another copy of an existing one; "
     "(3) don't hold a stock through its earnings report unless the style is \"earnings play\"; "
@@ -243,14 +250,15 @@ STRATEGY TOURNAMENT (how each style has actually performed for this desk; lean t
 BACKTESTED EDGE OF CHART SETUPS (2 years of history): {_j(extra.get('backtest') or 'not available')}
 
 Steps:
-1. PRE-MORTEM: imagine this trade lost money. Write the most likely story of how it failed.
-   Then judge honestly: is that failure story more likely than the success story?
-2. DECIDE: "long", "short" or "pass". Crypto can only be traded long. Pass if there is no edge, the failure
-   story is more likely, or it duplicates a bet that is already planned or held.
+1. PRE-MORTEM: imagine this trade lost money. Write the most likely story of how it failed, and use it to set a
+   smart stop. Then set "failure_more_likely" to true ONLY if the trade has NEGATIVE expected value (the chance of
+   losing times the loss outweighs the chance of winning times the gain), not merely because losing is possible.
+2. DECIDE: "long", "short" or "pass". Crypto can only be traded long. Pass only if the expected value is negative,
+   there is no edge, or it duplicates a bet that is already planned or held.
 3. If trading, build the plan:
    - bucket: "core", "tactical" or "high_risk"; style: one of momentum, breakout, mean reversion, earnings play,
      trend pullback, short/fade, macro
-   - expression: {'"shares", "call_options" or "put_options". Options are a levered high_risk bet where the most you can lose is the premium: use calls for a strong bullish view, puts for a strong bearish one, typically with conviction 7+ and a move expected within 1-4 weeks. Otherwise "shares".' if options_ok else '"shares" (options are only available on stocks and ETFs).'}
+   - expression: {'"shares", "call_options" or "put_options". Options are a levered high_risk bet where the most you can lose is the premium: use calls for a strong bullish view, puts for a strong bearish one, typically with conviction 6+ and a move expected within 1-4 weeks; the payoff can be several times the cost. Otherwise "shares".' if options_ok else '"shares" (options are only available on stocks and ETFs).'}
    - entry: a limit price near the current price (within about 1 ATR), or the current price for a market order
    - stop: where the thesis is wrong (use real levels from the data; typically 1-2.5 ATR away). For options this is
      the UNDERLYING price where you exit.
@@ -335,7 +343,7 @@ Return JSON: {{"specialists": {{"technical": {{"score": int, "points": [str]}}, 
 
 
 # ---- Second opinion (a different AI model that never saw the team's debate) -------------
-SECOND_OPINION_SIZE = {"agree": 1.15, "disagree": 0.6}
+SECOND_OPINION_SIZE = {"agree": 1.2, "disagree": 0.8, "strong_disagree": 0.6}
 
 
 def second_opinion(dossier: dict, decision: dict, macro: dict) -> dict:
@@ -366,7 +374,10 @@ Give your own view of the direction from -5 (strongly bearish) to +5 (strongly b
     # a "strong_disagree" only counts as a veto when the reviewer's own view points the other way
     if out["verdict"] == "strong_disagree" and not ((side == "long" and score <= -2) or (side == "short" and score >= 2)):
         out["verdict"] = "disagree"
-    out["size_multiplier"] = SECOND_OPINION_SIZE.get(out["verdict"], 0.0)
+    # a strong disagreement vetoes only a weak trade; a conviction 7+ trade goes ahead smaller
+    if out["verdict"] == "strong_disagree" and int(decision.get("conviction") or 0) >= 7:
+        out["overruled"] = True
+    out["size_multiplier"] = SECOND_OPINION_SIZE.get(out["verdict"], 1.0)
     return out
 
 
@@ -409,8 +420,14 @@ def fact_check(decision: dict, facts: dict, dossier: dict) -> dict:
                 decision["reward_to_risk"] = round(rr, 2)
                 if rr < config.MIN_REWARD_TO_RISK:
                     problems.append(f"reward-to-risk is only {rr:.2f}")
-        if decision.get("premortem", {}).get("failure_more_likely"):
-            problems.append("its own pre-mortem says failure is more likely")
+        conf, rr = decision.get("confidence_pct"), decision.get("reward_to_risk")
+        if isinstance(conf, (int, float)) and isinstance(rr, (int, float)) and 0 < conf < 100:
+            ev = conf / 100 * rr - (1 - conf / 100)       # expected result in units of risk
+            decision["expected_r"] = round(ev, 2)
+            if ev < -0.05:
+                problems.append(f"negative expected value ({ev:+.2f}R: {conf}% to make {rr}x the risk)")
+        elif decision.get("premortem", {}).get("failure_more_likely"):
+            problems.append("its own pre-mortem says the trade has negative expected value")
         if verified < 2:
             problems.append(f"only {verified} cited numbers checked out (need 2+)")
     return {"passed": not problems, "verified_facts": verified, "problems": problems}
@@ -422,7 +439,7 @@ def size(decision: dict, equity: float, asset: str, quote_to_usd: float = 1.0, u
     """Bet more on high conviction. Returns the dollar risk and position size; risk limits re-check it later.
     For forex, prices are in the quote currency: `quote_to_usd` converts them, `unit_usd` is one unit's $ value."""
     c = int(decision.get("conviction") or 0)
-    risk_pct = 4.0 if c >= 9 else 2.5 if c >= 7 else 1.5 if c >= 5 else 0.75
+    risk_pct = 4.5 if c >= 9 else 3.0 if c >= 7 else 2.0 if c >= 5 else 1.0
     # The strategy tournament and calibration scale bets up for styles that work, down for ones that don't.
     risk_pct = min(config.MAX_RISK_PER_TRADE_PCT, risk_pct * max(0.25, min(multiplier, 1.6)))
     entry, stop = float(decision["entry"]), float(decision["stop"])

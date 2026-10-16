@@ -198,10 +198,10 @@ Add these in **Settings → Secrets and variables → Actions**:
 
 ## Making it more profitable
 
-- **Realistic borrowing.** A forex position only ties up its margin (about 2 to 5% of its size), so that's all it borrows. Stock, crypto and options trades borrow from the bank only at conviction 7+; lower-conviction trades are sized to the firm's own free cash.
+- **Realistic borrowing.** A forex position only ties up its margin (about 2 to 5% of its size), so that's all it borrows. Stock, crypto and options trades borrow from the bank only at conviction 6+; lower-conviction trades are sized to the firm's own free cash.
 - **No doubled-up bets.** At most 2 positions leaning the same way on one currency, 3 crypto longs, or 3 stock positions with the same direction and style.
 - **Better stocks.** Stocks must trade above $10 with at least $50M traded a day.
-- **Risk-off rule.** When the market read is risk-off or panic, buying stocks needs conviction 6+.
+- **Risk-off rule.** When the market read is risk-off or panic, buying stocks needs conviction 5+.
 - **Earnings.** No new stock trade is held through an earnings report unless it's an earnings play. Positions are closed in the afternoon before a report.
 - **Debit spreads.** Options trades buy one option near the money and sell one at the target with the same expiry. That costs roughly 25 to 45% less than a single option, with the profit capped at the gap between the strikes.
 - **Puts instead of shorts.** Alpaca doesn't allow shorting stocks on this account, so bearish stock views are traded with puts.
@@ -233,3 +233,12 @@ Every source is cached and fails quietly. The health check tests all of them.
 - **Session budget.** Once there's enough data, research shifts toward the sessions whose ideas make money: 30% more ideas for the best session, 30% fewer for the worst.
 - **Employee of the month** (best hit rate, 10+ calls, named on the 1st) and the **bull vs. bear rivalry** (weekly trash talk and a monthly trophy) on the Trading floor tab.
 - **Bug fix.** P&L on bought puts was recorded with the wrong sign. Fixed before any put trade had closed.
+
+## More aggressive (Oct 16)
+
+- **Mandate.** Approve most ideas with a real edge and judge trades on expected value: a 40% chance to make 3x the risk is a good trade. A risk-off market changes which trades to take (shorts, puts, havens, currencies), not whether to trade. The macro strategist sets aggression between 50 and 90 most days.
+- **Bigger bets.** Risk per trade is now 1% at conviction 1-4, 2% at 5-6, 3% at 7-8 and 4.5% at 9-10 (up from 0.75 / 1.5 / 2.5 / 4%). The per-trade cap is still 5%.
+- **Fact-checker.** It now blocks only negative expected value, instead of anything the analysts think is more likely to lose than win.
+- **Second opinion.** Raj's agreement sizes a trade up 20%, and disagreement trims it to 80%. A strong disagreement vetoes only trades below conviction 7; stronger trades go ahead at 60% size.
+- **Loosened limits.** Total open risk is capped at 30% of equity (was 20%). Trades at conviction 6+ can borrow from the bank (was 7+). Stocks in a risk-off market need conviction 5+ (was 6+). Entries can chase up to half a stop's distance, and intraday ideas stay valid for 3 hours.
+- **Unchanged.** The 6% daily loss limit, 5% max risk per trade, mandatory stops and all compliance checks.

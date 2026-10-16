@@ -20,7 +20,7 @@ BANK_NAME = "First Hoosier Bank"
 ACTIVE = ("pending", "open", "closing")
 
 
-BORROW_MIN_CONVICTION = 7   # stock, crypto and options trades below this must fit in the firm's own cash
+BORROW_MIN_CONVICTION = 6   # stock, crypto and options trades below this must fit in the firm's own cash
 
 
 def loan_needed(cash_needed: float, equity: float, cash_used: float) -> float:

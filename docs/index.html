@@ -890,7 +890,7 @@ function renderFirm(d) {
 /* Compliance: Diane's audit of every trade */
 const COMPLIANCE_RULES = [
   ["Every position has a stop loss", "major"], ["Risk per trade stays under " + "5% of the firm", "major"], ["Options premium under 6% per trade", "major"],
-  ["If every stop hit at once, the firm loses under 20%", "major"], ["Positions stay within equity plus the bank line", "major"],
+  ["If every stop hit at once, the firm loses under 30%", "major"], ["Positions stay within equity plus the bank line", "major"],
   ["Stops only ever get tighter, never wider", "major"], ["Losses stay near the planned 1R (flagged past 1.25R)", "minor / major past 2R"],
   ["Fills land close to the planned price", "minor"], ["Reward is at least 1.2x the risk at the actual fill", "minor"],
   ["No stock fills in the first or last 5 minutes of the session", "minor"], ["Trades don't overstay their planned time frame", "minor"]];
@@ -951,7 +951,7 @@ function showMemo(m, trade) {
     ${trade && trade.postmortem ? `<h3>Post-mortem: ${esc(trade.postmortem.verdict)}</h3><p class="note">${esc(trade.postmortem.what_happened)}</p>${trade.postmortem.lesson ? `<p class="small"><b>Lesson:</b> ${esc(trade.postmortem.lesson)}</p>` : ""}` : ""}
     ${trade && trade.notes ? `<h3>What happened</h3><ul class="small">${trade.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
     ${m.second_opinion ? `<h3>Second opinion (${esc(personMap().second?.name || "independent reviewer")}): ${esc({agree: "Agrees", disagree: "Disagrees", strong_disagree: "Strongly disagrees"}[m.second_opinion.verdict] || "")}</h3>
-      <p class="note">${esc(m.second_opinion.reason || "")}</p><p class="small muted">Their own view: ${m.second_opinion.score > 0 ? "+" : ""}${m.second_opinion.score} on a -5 to +5 scale. ${m.second_opinion.verdict === "agree" ? "The bet was sized up 15%." : m.second_opinion.verdict === "disagree" ? "The bet was cut to 60% of its size." : "The trade was vetoed."}</p>` : ""}
+      <p class="note">${esc(m.second_opinion.reason || "")}</p><p class="small muted">Their own view: ${m.second_opinion.score > 0 ? "+" : ""}${m.second_opinion.score} on a -5 to +5 scale. ${m.second_opinion.verdict === "agree" ? "The bet was sized up 20%." : m.second_opinion.verdict === "disagree" ? "The bet was cut to 80% of its size." : m.second_opinion.overruled ? "Elena overruled the veto (conviction 7+); the bet was cut to 60% of its size." : "The trade was vetoed."}</p>` : ""}
     <h3>Pre-mortem</h3><p class="note">${esc(d.premortem?.failure_story || "")}</p>
     <p class="small">${d.premortem?.failure_more_likely ? "It judged failure more likely, so the trade was vetoed." : "It judged success more likely than this failure story."}</p>
     <h3>Bull case (${esc(m.bull?.direction || "")})</h3><p class="note">${esc(m.bull?.case || "")}</p>

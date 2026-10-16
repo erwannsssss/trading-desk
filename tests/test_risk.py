@@ -57,8 +57,8 @@ class RiskTests(unittest.TestCase):
         self.assertFalse(check_order(idea(), book(stock_gross_exposure=70_000, forex_gross_notional=40_000), STATE).ok)
 
     def test_total_open_risk_cap(self):
-        self.assertTrue(check_order(idea(), book(open_risk=1_900), STATE).ok)    # +$50 at risk -> $1,950
-        self.assertFalse(check_order(idea(notional=3_000, stop=90), book(open_risk=1_900), STATE).ok)  # +$300 -> over $2,000
+        self.assertTrue(check_order(idea(), book(open_risk=2_900), STATE).ok)    # +$50 at risk -> $2,950
+        self.assertFalse(check_order(idea(notional=3_000, stop=90), book(open_risk=2_900), STATE).ok)  # +$300 -> over $3,000 (30%)
 
     def test_interest_reduces_equity(self):
         self.assertEqual(book(financing_cost=25).equity, 9_975)

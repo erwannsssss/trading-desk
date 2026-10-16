@@ -49,7 +49,9 @@ class InternTests(unittest.TestCase):
 
 class StaffTests(unittest.TestCase):
     def test_fire_and_replace(self):
-        with tempfile.TemporaryDirectory() as d, mock.patch.object(staff, "FILE", Path(d) / "staff.json"):
+        from desk import firm
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(staff, "FILE", Path(d) / "staff.json"), \
+                mock.patch.object(firm, "FILE", Path(d) / "firm.json"):
             old, new = staff.fire_and_replace("technical", "38% hit rate", "Only trades with the trend.")
             self.assertEqual(old, "Priya Natarajan")
             self.assertEqual(staff.name("technical"), new)

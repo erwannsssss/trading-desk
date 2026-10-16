@@ -1,0 +1,147 @@
+{
+ "date": "2026-10-16",
+ "session": "alert",
+ "created_at": "2026-10-16T15:00:49-04:00",
+ "dry_run": false,
+ "equity": 9770.37,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "CRWV",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 60.19,
+   "atr_pct": 10.08,
+   "why_scanned": [
+    "breaking move: -6.7% since research"
+   ],
+   "setups": [
+    "strong 20-day move (-26.0%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "RSI at 28.81 indicates deep oversold conditions, historically a 68.1% win rate for long mean reversion.",
+      "Price is 27.5% below the 20-day SMA (82.90) and 35% below the 50-day SMA (87.01), signaling extreme deviation.",
+      "ATR is 10.08%, indicating high volatility; a 1-ATR stop is necessary to avoid noise.",
+      "Volume ratio of 1.93x suggests capitulation selling is occurring now."
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "Debt-to-Equity is 7.024, an extremely high leverage ratio for a tech company.",
+      "Net margin is -25.4% and ROE is -45.37%, indicating significant cash burn.",
+      "Revenue growth is strong at 115% YoY, but the market is punishing the capital structure.",
+      "Price-to-Sales of 5.06 is high for a company with negative margins and high debt."
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "Credit swaps are pricing in 60% default odds, a severe negative signal.",
+      "JPMorgan claims the selloff is overblown, but the market is currently disagreeing.",
+      "Sector-wide sell-off in AI debt names (CIFR, APLD) suggests a thematic de-rating, not just idiosyncratic news.",
+      "BofA comparison to Cisco post-dot-com burst implies a potential long-term value trap."
+     ]
+    },
+    "smart_money": {
+     "score": 1,
+     "points": [
+      "Short volume is 46.6% of latest volume, indicating heavy short interest.",
+      "Insider selling value is listed as 15.8 trillion USD, which is likely a data error or typo, but the 647 open market sells in 90 days is a red flag.",
+      "No hedge funds listed as holding, suggesting institutional exit or avoidance.",
+      "Whale activity alerts are present, but the direction is unclear without specific buy/sell data."
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "Next earnings date is not explicitly provided in the dossier, but the last quarter was 2026-06-30.",
+      "Past earnings surprises have been mixed: +16.3% in Q2 2026, -22.3% in Q1 2026.",
+      "Stock has already dropped 26% in 20 days, potentially front-running negative news.",
+      "High risk of a gap down if credit concerns worsen before the next report.",
+      "Recommendation: Do not hold through earnings unless it is a specific earnings play; the current move is credit-driven, not earnings-driven."
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "CRWV is statistically oversold with an RSI of 28.8 and a 26% drop in 20 days. The 'deeply oversold' setup has a 68.1% historical win rate for longs. The market is likely overreacting to credit concerns, as JPMorgan suggests, and the high revenue growth (115% YoY) provides a fundamental floor. A short-term bounce to the 20-day SMA is probable due to mean reversion forces.",
+    "catalysts": [
+     "RSI below 30 triggering algorithmic buy-backs.",
+     "JPMorgan Overweight rating providing a narrative for dip-buyers.",
+     "High short interest (46.6% of volume) creating squeeze potential if price stabilizes."
+    ]
+   },
+   "bear": {
+    "case": "The credit market is pricing a 60% default probability, which is a fundamental break in the business model. With a D/E of 7.02 and negative margins, the company is highly leveraged and vulnerable to rising rates (10Y at 5.19%). The 'value trap' argument from BofA suggests the stock could trade at much lower multiples for a long time. Shorting a falling knife is risky, but the trend is down and the fundamental risk is severe.",
+    "risks": [
+     "Short squeeze due to high short volume (46.6%).",
+     "Potential for a sharp bounce if credit spreads tighten unexpectedly.",
+     "Volatility (ATR 10%) makes shorting dangerous without tight stops."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails because the credit crisis deepens, causing a gap down below the stop loss. The 60% default probability priced in by credit swaps becomes reality, and the stock drops another 20% in a single day, bypassing the 1-ATR stop. The mean reversion bounce never comes because the fundamental solvency issue overrides technical oversold conditions.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "The 'deeply oversold' setup has a strong historical edge (68.1% win rate), and the current RSI of 28.8 is a clear signal. While the fundamental risk is high, the technical setup offers a favorable risk-reward for a short-term tactical bounce. The desk's mean reversion style has a positive PnL, and this is a high-conviction technical setup.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 60.19,
+    "stop": 54.12,
+    "target": 72.32,
+    "conviction": 7,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base rate for 'deeply oversold' long is 68.1% win rate. Adjusted down to 55% due to the severe fundamental credit risk (60% default odds) and high volatility (ATR 10%). The technical edge is strong, but the fundamental headwind is significant.",
+    "horizon": "1-5 days",
+    "thesis": "CRWV is in a deep oversold state with an RSI of 28.8 and a 26% drop in 20 days. The historical win rate for this setup is 68.1%, suggesting a high probability of a short-term bounce. The entry is at the current price of 60.19, with a stop at 54.12 (1 ATR below) and a target at 72.32 (2 ATRs above). The trade is a tactical mean reversion play, aiming to capture the bounce from the capitulation selling.",
+    "invalidation": "Price closes below 54.12, indicating that the credit crisis is worsening and the mean reversion bounce is not occurring. This would confirm the bearish fundamental thesis and require an immediate exit.",
+    "plain_english": "CoreWeave (CRWV) has dropped sharply, and its technical indicators suggest it is 'oversold,' meaning it has fallen too far too fast. Historically, when this happens, the stock tends to bounce back up in the short term. We are buying a small amount of the stock now, hoping for a quick rise. We will sell immediately if it drops further than expected, to limit our loss. This is a risky trade because the company has high debt, but the technical setup is strong.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 28.808431
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -26.02
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 6.067409
+     },
+     {
+      "fact": "news[3].summary",
+      "value": "CoreWeave stock falls 6% as credit swaps price a 60% default risk and bonds yield near 15%."
+     },
+     {
+      "fact": "fundamentals.debt_to_equity",
+      "value": 7.024
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 46.6
+     }
+    ],
+    "reward_to_risk": 2.0,
+    "expected_r": 0.65
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'news[3].summary', which isn't in the data"
+    ]
+   },
+   "status": "blocked_by_fact_check"
+  }
+ ]
+}

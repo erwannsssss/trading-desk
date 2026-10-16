@@ -1,0 +1,132 @@
+{
+ "date": "2026-10-16",
+ "session": "alert",
+ "created_at": "2026-10-16T15:00:49-04:00",
+ "dry_run": false,
+ "equity": 9770.37,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "ASTS",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 40.465,
+   "atr_pct": 11.29,
+   "why_scanned": [
+    "breaking move: -6.9% since research"
+   ],
+   "setups": [
+    "strong 20-day move (-30.9%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "RSI14 is deeply oversold at 28.93",
+      "Stock is in a severe downtrend with a 20-day return of -30.85%",
+      "Trading near its 52-week low of 39.87"
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "Massive revenue growth YoY of 2256.89%",
+      "Extremely high valuation with price-to-sales at 150.91",
+      "Negative net margin of -536.66%"
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "Downgraded by Piper Sandler from $98 to $54 target due to satellite launch delays and SpaceX competition",
+      "Whale activity detected in Communication Services sector",
+      "SpaceX pursuing an $8B wireless push creating competitive headwinds"
+     ]
+    },
+    "smart_money": {
+     "score": 5,
+     "points": [
+      "Insiders made 3 open market buys worth $619,200 in the last 90 days vs 2 sells",
+      "Short volume percentage is elevated at 54.3%"
+     ]
+    },
+    "event_desk": {
+     "score": 3,
+     "points": [
+      "Past earnings consistently missed expectations (e.g., -188.5% and -98.0% surprises)",
+      "High risk of gap down given continuous analyst downgrades and competitive pressure from SpaceX",
+      "Do not hold through earnings given high volatility and poor fundamental earnings predictability"
+     ]
+    },
+    "best_style": "mean reversion"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "ASTS is deeply oversold with an RSI of 28.93 and a 30.85% drop over the last 20 days, hitting its 52-week low of 39.87. Insider buying of over $619k provides a floor, and extreme short positioning (54.3% short volume) creates a coiled spring for a sharp relief bounce once sellers exhaust themselves.",
+    "catalysts": [
+     "Oversold bounce from 52-week lows",
+     "Insider open-market accumulation",
+     "High short interest setting up a short-squeeze potential"
+    ]
+   },
+   "bear": {
+    "case": "The bull case ignores fundamental reality and severe competitive headwinds. Piper Sandler just slashed their price target to $54 following satellite launch delays, while SpaceX is aggressively expanding its $8B wireless push. With negative net margins of -536.66% and persistent earnings misses, catching this falling knife is extremely dangerous.",
+    "risks": [
+     "Piper Sandler downgrade and SpaceX competitive threat",
+     "Consistent historical earnings misses",
+     "Strong prevailing downtrend below the 200-day moving average"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "Buying the oversold bounce at 40.46 fails because the structural selling pressure from the Piper Sandler downgrade and SpaceX competition overwhelms the technical support. The stock breaks below its 52-week low of 39.87, triggering heavy stop-losses and driving a rapid move down toward the mid-30s before any meaningful consolidation occurs.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Although the stock is deeply oversold with an RSI under 30, the fundamental headwinds, recent analyst downgrades, and strong downward momentum outweigh the statistical edge of a mean-reversion bounce. The desk avoids catching falling knives in structural downtrends when negative news flow is active.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 3,
+    "confidence_pct": 35,
+    "odds_reasoning": "Base rate for catching falling stocks against strong momentum is low, and the fundamental risks from competitor pressure outweigh the oversold technical reading.",
+    "horizon": "1-5 days",
+    "thesis": "ASTS is experiencing heavy selling pressure following a Piper Sandler downgrade and increased competition from SpaceX. Although the stock is technically oversold with an RSI of 28.93, fighting a strong downward trend without clear support or positive catalysts offers negative expected value. Therefore, we choose to pass on this setup.",
+    "invalidation": "A decisive reclaim of the 20-day moving average accompanied by heavy volume and positive fundamental news would invalidate the bearish stance.",
+    "plain_english": "We are passing on buying this stock because it is in a severe downward trend [a persistent movement of price in one direction] and facing heavy selling pressure due to bad news and competitor threats. Even though it looks cheap after dropping significantly, buying a falling stock without clear support is too risky.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 28.925552
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -30.85
+     },
+     {
+      "fact": "technicals.low_52w",
+      "value": 39.87
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 54.3
+     },
+     {
+      "fact": "insiders_last_90d.buy_value_usd",
+      "value": 619200
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ]
+}

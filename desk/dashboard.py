@@ -11,6 +11,11 @@ from desk.brokers import oanda
 from desk.portfolio import snapshot
 from desk.research.planner import PLANS_DIR
 from desk.risk import daily_loss_pct
+
+
+def _same_day(state: dict) -> bool:
+    from desk.state import now
+    return state.get("day") == now().date().isoformat()
 from desk.state import now
 from desk.trading import ledger
 
@@ -50,11 +55,11 @@ def build(state: dict) -> None:
             "equity": round(book.equity, 2),
             "start": config.STARTING_CAPITAL,
             "total_return_pct": round((book.equity / config.STARTING_CAPITAL - 1) * 100, 2),
-            "today_pct": round(-daily_loss_pct(book, state.get("day_start_equity") or book.equity), 2) + 0.0,
+            "today_pct": round(-daily_loss_pct(book, state.get("day_start_equity") or book.equity), 2) + 0.0 if _same_day(state) else 0.0,
             "stock_exposure": round(book.stock_gross_exposure, 2),
             "forex_exposure": round(book.forex_gross_notional, 2),
             "open_positions": book.open_positions,
-            "trades_today": state.get("trades_today", 0),
+            "trades_today": state.get("trades_today", 0) if _same_day(state) else 0,   # new day before the first tick resets it
             "max_trades": config.MAX_TRADES_PER_DAY,
             "since": state.get("created_at"),
             "breakdown": _safe(lambda: liveaccount.breakdown(book.equity, book.alpaca_equity - book.baseline_alpaca,

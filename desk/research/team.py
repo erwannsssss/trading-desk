@@ -418,7 +418,7 @@ def fact_check(decision: dict, facts: dict, dossier: dict) -> dict:
             else:
                 rr = abs(target - entry) / abs(entry - stop)
                 decision["reward_to_risk"] = round(rr, 2)
-                if rr < config.MIN_REWARD_TO_RISK:
+                if rr < config.MIN_REWARD_TO_RISK - 0.01:   # small tolerance for rounded prices
                     problems.append(f"reward-to-risk is only {rr:.2f}")
         conf, rr = decision.get("confidence_pct"), decision.get("reward_to_risk")
         if isinstance(conf, (int, float)) and isinstance(rr, (int, float)) and 0 < conf < 100:

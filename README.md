@@ -240,5 +240,5 @@ Every source is cached and fails quietly. The health check tests all of them.
 - **Bigger bets.** Risk per trade is now 1% at conviction 1-4, 2% at 5-6, 3% at 7-8 and 4.5% at 9-10 (up from 0.75 / 1.5 / 2.5 / 4%). The per-trade cap is still 5%.
 - **Fact-checker.** It now blocks only negative expected value, instead of anything the analysts think is more likely to lose than win.
 - **Second opinion.** Raj's agreement sizes a trade up 20%, and disagreement trims it to 80%. A strong disagreement vetoes only trades below conviction 7; stronger trades go ahead at 60% size.
-- **Loosened limits.** Total open risk is capped at 30% of equity (was 20%). Trades at conviction 6+ can borrow from the bank (was 7+). Stocks in a risk-off market need conviction 5+ (was 6+). Entries can chase up to half a stop's distance, and intraday ideas stay valid for 3 hours.
+- **Loosened limits.** Total open risk is capped at 30% of equity (was 20%). One currency position can be up to 6x equity in size (was 3x). Trades at conviction 6+ can borrow from the bank (was 7+). Stocks in a risk-off market need conviction 5+ (was 6+). Entries can chase up to half a stop's distance, and intraday ideas stay valid for 3 hours.
 - **Unchanged.** The 6% daily loss limit, 5% max risk per trade, mandatory stops and all compliance checks.

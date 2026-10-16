@@ -63,8 +63,8 @@ class SizingTests(unittest.TestCase):
         self.assertAlmostEqual(s["units"], 22_500, delta=1)
 
     def test_forex_cap(self):
-        d = decision(entry=150.0, stop=149.8, target=152.0, conviction=7)  # tight stop -> capped at 3x equity
-        self.assertLessEqual(size(d, 10_000, "forex", quote_to_usd=1 / 150, unit_usd=1.0)["notional_usd"], 30_000)
+        d = decision(entry=150.0, stop=149.8, target=152.0, conviction=7)  # tight stop -> capped at 6x equity
+        self.assertLessEqual(size(d, 10_000, "forex", quote_to_usd=1 / 150, unit_usd=1.0)["notional_usd"], 60_000)
 
 
 if __name__ == "__main__":

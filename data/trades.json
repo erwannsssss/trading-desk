@@ -232,7 +232,7 @@
   "opened_at": "2026-10-15T11:32:31-04:00",
   "target_order_id": "7a7e6ae0-ac6f-44c2-be29-369d85084d85",
   "stop_order_id": "ff761e0b-d6d3-4d5d-810e-37de1ec59346",
-  "last_price": 5.985,
+  "last_price": 6.04,
   "max_r": 0.43,
   "industry": "Networking & Communications Equipment",
   "min_r": -0.25,
@@ -388,9 +388,9 @@
   "opened_at": "2026-10-15T14:41:43-04:00",
   "premium_paid": 1.43,
   "underlying_entry": 32.885,
-  "last_price": 31.28,
-  "option_mark": 1.64,
-  "max_r": 0.56,
+  "last_price": 31.26,
+  "option_mark": 1.69,
+  "max_r": 0.57,
   "min_r": -0.6,
   "stop_history": [
    {
@@ -615,7 +615,7 @@
   "filled_qty": 26768.0,
   "filled_qty_initial": 26768.0,
   "opened_at": "2026-10-15T19:58:28-04:00",
-  "last_price": 0.8431649999999999,
+  "last_price": 0.8431949999999999,
   "max_r": 0.02,
   "min_r": -0.76
  },
@@ -752,19 +752,30 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "41",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-16T00:39 entry order placed",
-   "2026-10-16T01:09 filled 55840 @ 1.4177"
+   "2026-10-16T01:09 filled 55840 @ 1.4177",
+   "2026-10-16T16:01 closed at 1.41387: time stop (intraday), P&L $-152.77"
   ],
   "oanda_trade_id": "42",
   "entry_price": 1.4177,
   "filled_qty": 55840.0,
   "filled_qty_initial": 55840.0,
   "opened_at": "2026-10-16T01:09:27-04:00",
-  "last_price": 1.41451,
+  "last_price": 1.4139650000000001,
   "max_r": 0.14,
-  "min_r": -0.63
+  "min_r": -0.66,
+  "exit_price": 1.41387,
+  "exit_reason": "time stop (intraday)",
+  "closed_at": "2026-10-16T16:01:39-04:00",
+  "pnl_usd": -152.77,
+  "r_result": -0.69,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The price never rebounded off the 20\u2011day SMA after entry; it drifted lower and the trade was closed at the intraday time stop (1.41387), resulting in a \u20130.69\u202fR loss.",
+   "lesson": "Only enter pull\u2011back trades after price confirms support at the SMA (or another level) to avoid premature entries that can be stopped out by continued downside."
+  }
  },
  {
   "id": "2026-10-16-overnight-0011-GBP_AUD",
@@ -818,19 +829,32 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "45",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-16T03:27 entry order placed",
-   "2026-10-16T11:18 filled 11724 @ 18.45"
+   "2026-10-16T11:18 filled 11724 @ 18.45",
+   "2026-10-16T16:01 closed at 18.514: time stop (intraday), P&L $-40.94"
   ],
   "oanda_trade_id": "50",
   "entry_price": 18.45,
   "filled_qty": 11724.0,
   "filled_qty_initial": 11724.0,
   "opened_at": "2026-10-16T11:18:41-04:00",
-  "last_price": 18.510930000000002,
+  "last_price": 18.51125,
   "max_r": 0,
-  "min_r": -0.24
+  "min_r": -0.25,
+  "exit_price": 18.514,
+  "exit_reason": "time stop (intraday)",
+  "closed_at": "2026-10-16T16:01:39-04:00",
+  "pnl_usd": -40.94,
+  "r_result": -0.26,
+  "interest_usd": 0.05,
+  "pnl_after_interest": -40.99,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The mean reversion thesis failed as the pair continued to drift higher, reaching 18.514 before the intraday time stop triggered. The trade never moved in our favor (max_r = 0), indicating the initial momentum was stronger than the overbought signal suggested, and the position was closed at a loss due to lack of price action rather than a hard stop-out.",
+   "lesson": "Do not fade strong momentum (6.8% rally) with a tight intraday horizon; if the price does not immediately reverse, the 'overbought' condition can persist, making time stops a primary risk for tactical mean reversion trades."
+  }
  },
  {
   "id": "2026-10-16-overnight-0248-USD_JPY",
@@ -894,7 +918,7 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.527,
+  "last_price": 210.58800000000002,
   "max_r": 0.02,
   "min_r": -0.18
  },
@@ -1024,7 +1048,7 @@
   "opened_at": "2026-10-16T11:18:41-04:00",
   "target_order_id": "5ff6db3e-e373-4c8e-9234-2af85a90dfdc",
   "stop_order_id": "f81b8801-72c9-41f9-b7ea-76c61b86aa7d",
-  "last_price": 401.77,
+  "last_price": 402.66,
   "max_r": 0.3,
   "min_r": -0.03
  },
@@ -1141,7 +1165,7 @@
   "opened_at": "2026-10-16T11:18:41-04:00",
   "target_order_id": "8837d563-ac78-438e-a121-e805b8330fd1",
   "stop_order_id": "93263598-9aa6-4daa-a6d2-5da17a4651de",
-  "last_price": 990.29,
+  "last_price": 989.335,
   "max_r": 0,
   "min_r": -0.2
  },
@@ -1814,6 +1838,48 @@
   "conviction": 5,
   "thesis": "This is the only trade with a track record: 60% win rate and 0.27R average over 5 signals. Kronos agrees with a 75% probability of an up move, and the RSI at 36 confirms the dip is significant enough for a mean-reversion bounce. The 22.4% historical hit rate in 5 days is the highest on the board, making the target realistic. A stretched price likely to snap back on XBI. The same signal on xbi over 2 years: 5 trades, 60% winners, +0.27r on average. Kronos: target first in 30% of 20 simulated futures, stop first in 15%, expected +0.16R.",
   "created_at": "2026-10-16T15:37:08-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-16-quant-1559-IWM",
+  "plan_file": "2026-10-16-quant-1559.json",
+  "symbol": "IWM",
+  "venue": "alpaca",
+  "asset": "etf",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 270.42,
+  "initial_stop": 264.66,
+  "stop": 264.66,
+  "target": 280.01,
+  "bucket": "tactical",
+  "style": "kronos forecast",
+  "conviction": 4,
+  "thesis": "IWM\u2019s deep oversold RSI (32) and a 90% probability of an upward move align with a potential reversal despite the longer\u2011term downtrend. Kronos predicts a median +2.06% move, and the target is reachable (11.5% historic 5\u2011day hit rate). A strong kronos forecast on IWM. No history for this signal. Kronos: target first in 5% of 20 simulated futures, stop first in 0%, expected +0.24R.",
+  "created_at": "2026-10-16T16:01:39-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-16-quant-1559-PEP",
+  "plan_file": "2026-10-16-quant-1559.json",
+  "symbol": "PEP",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 131.49,
+  "initial_stop": 135.57,
+  "stop": 135.57,
+  "target": 124.68,
+  "bucket": "tactical",
+  "style": "kronos forecast",
+  "conviction": 4,
+  "thesis": "PEP is in a downtrend, and the short aligns with that bias. Kronos gives a 15% target\u2011first hit rate and a 0% stop\u2011first rate, while the 5\u2011day historical hit is 11.5%, supporting a modest but defensible edge. A strong kronos forecast on PEP. No history for this signal. Kronos: target first in 15% of 20 simulated futures, stop first in 0%, expected +0.24R.",
+  "created_at": "2026-10-16T16:01:39-04:00",
   "pair_id": null,
   "pair_with": null
  }

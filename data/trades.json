@@ -502,10 +502,11 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "2cdf2f55-ae81-493c-8438-f881d6a59dde",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-15T18:51 entry order placed",
-   "2026-10-15T19:12 filled 36699.3 @ 0.0814"
+   "2026-10-15T19:12 filled 36699.3 @ 0.0814",
+   "2026-10-17T12:01 closed at 0.078918: stopped out, P&L $-91.09"
   ],
   "entry_price": 0.0814,
   "filled_qty": 36699.288410938,
@@ -515,7 +516,18 @@
   "last_price": 0.0802547,
   "max_r": 0.57,
   "min_r": -0.65,
-  "fee_usd": 4.49
+  "fee_usd": 4.49,
+  "exit_fee_usd": 7.24,
+  "exit_price": 0.078918,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-17T12:01:34-04:00",
+  "pnl_usd": -91.09,
+  "r_result": -1.03,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "Dogecoin kept sliding through the 20\u2011day low, breaching the stop at $0.079 and closing at $0.0789, so the position was stopped out with a loss of about 1\u202fR. The trade only achieved a modest 0.57\u202fR upside before the price reversed lower.",
+   "lesson": "Avoid long mean\u2011reversion entries when the asset is below several key moving averages and broader macro sentiment is bearish; confirm that support is truly holding before risking capital."
+  }
  },
  {
   "id": "2026-10-15-evening-EUR_AUD",

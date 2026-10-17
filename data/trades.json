@@ -672,9 +672,9 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 59.3906,
+  "last_price": 57.59,
   "max_r": 0.05,
-  "min_r": -0.63,
+  "min_r": -0.76,
   "fee_usd": 1.47
  },
  {
@@ -1928,10 +1928,11 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "d48398c7-8d98-4674-8f69-92abda44544a",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-17T03:18 entry order placed",
-   "2026-10-17T03:52 filled 48.4439 @ 1.91979"
+   "2026-10-17T03:52 filled 48.4439 @ 1.91979",
+   "2026-10-17T17:38 closed at 1.864: stopped out, P&L $-2.70"
   ],
   "fee_usd": 0.23,
   "entry_price": 1.91979,
@@ -1941,7 +1942,18 @@
   "stop_order_id": "8e1f3aeb-b07a-4290-a394-3b51e0f9b559",
   "last_price": 1.8658,
   "max_r": 0.0,
-  "min_r": -0.34
+  "min_r": -0.34,
+  "exit_fee_usd": 0.23,
+  "exit_price": 1.864,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-17T17:38:55-04:00",
+  "pnl_usd": -2.7,
+  "r_result": -0.35,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The token kept falling after entry, breaking the 20\u2011day low (1.760) and hitting the stop at 1.7600, so the trade was stopped out at 1.864, losing 0.35\u202fR.",
+   "lesson": "In thin\u2011liquid crypto markets, treat support levels near very low volume with extra caution\u2014either widen the stop, reduce size, or skip the trade if liquidity cannot sustain the intended risk\u2011to\u2011reward."
+  }
  },
  {
   "id": "2026-10-16-overnight-2238-USD_JPY",

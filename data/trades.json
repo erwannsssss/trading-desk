@@ -616,12 +616,13 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "24",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-15T18:51 entry order placed",
    "2026-10-15T19:58 filled 26768 @ 0.84488",
    "2026-10-16T15:00 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}",
-   "2026-10-18T17:12 manage error: OANDA error 404: {\"lastTransactionID\":\"65\",\"errorMessage\":\"The trade ID specified does not exist\",\"errorCode\":\"NO_SUCH_TRADE\"}"
+   "2026-10-18T17:12 manage error: OANDA error 404: {\"lastTransactionID\":\"65\",\"errorMessage\":\"The trade ID specified does not exist\",\"errorCode\":\"NO_SUCH_TRADE\"}",
+   "2026-10-18T17:38 closed at 0.84036: stopped out, P&L $-162.88"
   ],
   "oanda_trade_id": "29",
   "entry_price": 0.84488,
@@ -630,7 +631,17 @@
   "opened_at": "2026-10-15T19:58:28-04:00",
   "last_price": 0.84324,
   "max_r": 0.02,
-  "min_r": -0.76
+  "min_r": -0.76,
+  "exit_price": 0.84036,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-18T17:38:44-04:00",
+  "pnl_usd": -162.88,
+  "r_result": -1.36,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The pair kept sliding lower, breaching the 52\u2011week low and hitting the stop at 0.8415, resulting in a -1.36R loss. The anticipated mean\u2011reversion bounce never materialised within the trade horizon.",
+   "lesson": "When a strong downtrend is present, extreme oversold signals alone are insufficient; combine mean\u2011reversion setups with trend\u2011bias filters or wider stops to avoid premature exits."
+  }
  },
  {
   "id": "2026-10-15-overnight-2243-LTCUSD",
@@ -931,8 +942,8 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.352,
-  "max_r": 0.06,
+  "last_price": 210.28750000000002,
+  "max_r": 0.09,
   "min_r": -0.18
  },
  {

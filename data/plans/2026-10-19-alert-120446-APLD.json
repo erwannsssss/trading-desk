@@ -1,0 +1,143 @@
+{
+ "date": "2026-10-19",
+ "session": "alert",
+ "created_at": "2026-10-19T12:04:46-04:00",
+ "dry_run": false,
+ "equity": 9660.37,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "APLD",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 19.885,
+   "atr_pct": 8.98,
+   "why_scanned": [
+    "breaking move: +10.2% since research"
+   ],
+   "setups": [
+    "strong 20-day move (-29.5%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "price 19.885 below SMA20 23.9325 and SMA50 25.9831 (downtrend)",
+      "RSI 35.35 indicates oversold condition",
+      "beta 5.571 shows extreme volatility",
+      "ATR 1.7866 (~9% of price)",
+      "short interest 54.8% very high"
+     ]
+    },
+    "fundamental": {
+     "score": 3,
+     "points": [
+      "revenue growth YoY 456.98% but net margin -54.17% (unprofitable)",
+      "return on equity -27.35% (poor)",
+      "debt to equity 3.6 (moderate)",
+      "market cap $5.458B (mid\u2011cap)",
+      "price\u2011to\u2011book 7.696 (expensive for fundamentals)"
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "recent headline \"Why Is Applied Digital Stock Surging on Monday?\" shows short\u2011term buying pressure",
+      "overall sector down and chip sell\u2011off context",
+      "analyst consensus 4 strong\u2011buy, 14 buy despite weak fundamentals"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "insider activity: 2 open\u2011market sells worth $3,018,750, no buys",
+      "short volume 54.8% suggests crowded short side",
+      "no hedge\u2011fund holdings listed"
+     ]
+    },
+    "event_desk": {
+     "score": 4,
+     "points": [
+      "earnings history shows large negative surprises (e.g., -168% Q3 2026)",
+      "no upcoming earnings date provided, but past gaps were sharp",
+      "risk of a gap down if earnings miss again"
+     ]
+    },
+    "best_style": "deeply oversold long"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The stock is deeply oversold (RSI 35, price 60% below 52\u2011week high) and carries a massive short interest that could fuel a short\u2011squeeze on any positive catalyst, while analyst sentiment is bullish (18 buy/strong\u2011buy votes).",
+    "catalysts": [
+     "recent news surge on Monday",
+     "potential earnings beat (though unlikely)",
+     "high short interest creating squeeze potential"
+    ]
+   },
+   "bear": {
+    "case": "APLD is in a strong downtrend, trading well below its 20\u2011day, 50\u2011day and 200\u2011day averages, with weak fundamentals (negative net margin, poor ROE) and a history of huge earnings misses, making further downside likely.",
+    "risks": [
+     "continued price decline toward 52\u2011week low 17.651",
+     "no insider buying to support price",
+     "high volatility (beta 5.57) may amplify losses"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If the stock continues its downtrend, the price could fall below the 20\u2011day SMA and approach the 52\u2011week low, triggering the stop and resulting in a loss; the expected negative earnings surprise and lack of insider support make a bounce unlikely, so the trade would lose money.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Given the risk\u2011off regime, the stock\u2019s weak fundamentals, strong downtrend, and lack of a clear catalyst, the expected value of a long or short position is negative. The desk\u2019s historical edge for mean\u2011reversion and trend\u2011pullback styles is poor, and the only promising edge (deeply oversold) is outweighed by the high short\u2011interest risk and earnings uncertainty.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": null,
+    "horizon": null,
+    "thesis": null,
+    "invalidation": null,
+    "plain_english": "We are not taking a trade on Applied Digital because the stock is falling fast, its fundamentals are weak, and there is no reliable catalyst. Even though it looks oversold, the high short interest and recent earnings misses make a bounce risky. In a defensive market we stay out of this high\u2011beta name.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 35.354296
+     },
+     {
+      "fact": "technicals.price",
+      "value": 19.885
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 23.9325
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 54.8
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -54.17
+     },
+     {
+      "fact": "earnings_history[0].surprise_pct",
+      "value": -168.0
+     }
+    ]
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'earnings_history[0].surprise_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  }
+ ]
+}

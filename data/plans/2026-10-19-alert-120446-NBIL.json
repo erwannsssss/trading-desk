@@ -1,0 +1,127 @@
+{
+ "date": "2026-10-19",
+ "session": "alert",
+ "created_at": "2026-10-19T12:04:46-04:00",
+ "dry_run": false,
+ "equity": 9660.37,
+ "macro": null,
+ "ideas": [
+  {
+   "symbol": "NBIL",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 13.09,
+   "atr_pct": 26.51,
+   "why_scanned": [
+    "breaking move: +7.2% since research"
+   ],
+   "setups": [
+    "strong 20-day move (-49.7%)"
+   ],
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "price far below SMA20 (13.09 vs 23.13)",
+      "price far below SMA50 (13.09 vs 24.41)",
+      "RSI 33.12 indicates oversold",
+      "5\u2011day return -35.96%"
+     ]
+    },
+    "fundamental": {
+     "score": 1,
+     "points": [
+      "no clear fundamental catalyst"
+     ]
+    },
+    "news_sentiment": {
+     "score": 0,
+     "points": [
+      "no news items"
+     ]
+    },
+    "smart_money": {
+     "score": 3,
+     "points": [
+      "short volume 58.5% latest",
+      "short volume 66.4% 5\u2011day avg"
+     ]
+    },
+    "best_style": "short/fade"
+   },
+   "bull": {
+    "direction": "long",
+    "case": "NBIL is deeply oversold with RSI below 35 and a recent 7% breakout, suggesting a potential short\u2011cover bounce.",
+    "catalysts": [
+     "short\u2011interest squeeze if any positive news appears",
+     "technical rebound off the 20\u2011day low"
+    ]
+   },
+   "bear": {
+    "case": "The stock trades far below all major moving averages, has no catalyst, and carries extreme short interest, indicating continued downside.",
+    "risks": [
+     "unexpected positive earnings or news",
+     "short\u2011squeeze rally breaking key resistance"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "A sudden positive catalyst (e.g., earnings beat or FDA approval) triggers a rapid short\u2011cover rally, pushing NBIL above the stop level and causing a loss.",
+     "failure_more_likely": false
+    },
+    "decision": "short",
+    "reason": "Risk\u2011off regime, heavy short interest, price far below SMA20/50/200 and no catalyst make further decline more probable than a rebound.",
+    "bucket": "tactical",
+    "style": "short/fade",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 13.0,
+    "stop": 15.5,
+    "target": 9.5,
+    "conviction": 6,
+    "confidence_pct": 45,
+    "odds_reasoning": "Base win rate for short breakdowns ~38%; added short\u2011interest bias and risk\u2011off context raise confidence to ~45%.",
+    "horizon": "1-5 days",
+    "thesis": "NBIL is heavily shorted (\u224860% of float) and trading well below its 20\u2011day (23.13) and 50\u2011day (24.41) SMAs. In a defensive market the lack of any fundamental catalyst makes a further slide toward its 20\u2011day low more likely than a bounce.",
+    "invalidation": "If price closes above $15.50 (\u22482\u202fATR) or a positive earnings/news surprise occurs, exit the short.",
+    "plain_english": "The stock is far under its average prices and most traders are betting it will go down. Because the market is cautious and there\u2019s no good news, we expect it to keep falling. We\u2019ll sell the stock at $13, set a stop at $15.50 to limit loss, and aim to buy it back near $9.50 for a profit.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 13.09
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 23.12525
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 33.1208
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 58.5
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 3.470633
+     }
+    ],
+    "reward_to_risk": 1.4,
+    "expected_r": 0.08
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "sizing": {
+    "risk_pct": 2.0,
+    "risk_usd": 193.21,
+    "units": 77.28,
+    "notional_usd": 1004.68
+   },
+   "status": "approved"
+  }
+ ]
+}

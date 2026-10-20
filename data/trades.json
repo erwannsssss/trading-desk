@@ -684,7 +684,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 60.01,
+  "last_price": 59.76,
   "max_r": 0.05,
   "min_r": -0.85,
   "fee_usd": 1.47
@@ -942,9 +942,9 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.9015,
+  "last_price": 211.098,
   "max_r": 0.09,
-  "min_r": -0.21
+  "min_r": -0.31
  },
  {
   "id": "2026-10-16-quant-0423-GBP_USD",
@@ -2094,7 +2094,7 @@
   "filled_qty": 20181.0,
   "filled_qty_initial": 20181.0,
   "opened_at": "2026-10-18T19:18:21-04:00",
-  "last_price": 1.411175,
+  "last_price": 1.4097,
   "max_r": 0,
   "min_r": -0.43
  },
@@ -2141,8 +2141,8 @@
   "filled_qty": 11490.0,
   "filled_qty_initial": 11490.0,
   "opened_at": "2026-10-18T19:18:21-04:00",
-  "last_price": 18.4331,
-  "max_r": 0.14,
+  "last_price": 18.422795,
+  "max_r": 0.19,
   "min_r": -0.43
  },
  {
@@ -2188,7 +2188,7 @@
   "filled_qty": 25499.0,
   "filled_qty_initial": 25499.0,
   "opened_at": "2026-10-18T19:18:21-04:00",
-  "last_price": 0.9268799999999999,
+  "last_price": 0.926725,
   "max_r": 0.56,
   "min_r": -0.42
  },
@@ -2235,7 +2235,7 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.8267249999999999,
+  "last_price": 0.82606,
   "max_r": 0.41,
   "min_r": -0.07
  },
@@ -2578,10 +2578,20 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "72eed128-913b-4236-a471-15e479fea55e",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-19T17:02 entry order placed"
-  ]
+   "2026-10-19T17:02 entry order placed",
+   "2026-10-19T20:18 filled 7107.07 @ 0.217367"
+  ],
+  "fee_usd": 3.87,
+  "entry_price": 0.217367,
+  "filled_qty": 7107.074062305,
+  "filled_qty_initial": 7107.074062305,
+  "opened_at": "2026-10-19T20:18:31-04:00",
+  "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
+  "last_price": 0.21782886,
+  "max_r": 0.03,
+  "min_r": 0
  },
  {
   "id": "2026-10-19-quant-1548-WMT",
@@ -2685,6 +2695,27 @@
   "conviction": 5,
   "thesis": "A stretched price likely to snap back on XLY. The same signal on xly over 2 years: 6 trades, 33% winners, -0.06r on average. Kronos: target first in 90% of 20 simulated futures, stop first in 5%, expected +0.42R.",
   "created_at": "2026-10-19T17:02:05-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-19-evening-GBP_AUD",
+  "plan_file": "2026-10-19-evening.json",
+  "symbol": "GBP_AUD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "blocked: total exposure would be $137,234, more than the firm's money plus the $100,000 credit line",
+  "entry_plan": 1.90636,
+  "initial_stop": 1.89902,
+  "stop": 1.89902,
+  "target": 1.923,
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 6,
+  "thesis": "We are initiating a long position in GBP_AUD capitalizing on a trend pullback to the 20-day moving average within a constructive short-term structure. GBP speculators are extremely net short at the 1st percentile, creating high potential for a short squeeze if upward momentum accelerates. The risk-reward ratio is favorable with a tight stop below the 20-day SMA and a target at the recent 20-day high.",
+  "created_at": "2026-10-19T20:18:31-04:00",
   "pair_id": null,
   "pair_with": null
  }

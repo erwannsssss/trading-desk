@@ -219,12 +219,13 @@
   "expires_at": "2026-10-15T12:53:54-04:00",
   "loan_usd": 1059.81,
   "entry_order_id": "a86965fe-28a6-4fc0-99b5-c97a8da9a6e7",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-15T10:59 entry order placed",
    "2026-10-15T11:32 filled 246 @ 6.09",
    "2026-10-16T11:57 stop moved to 5.90000 (trailing)",
-   "2026-10-16T11:57 emergency huddle (-3.4%): tighten. Price has moved above entry with no new news, so the mean\u2011reversion thesis remains valid; tightening the stop to 5.90 protects the recent gain while keeping upside potential."
+   "2026-10-16T11:57 emergency huddle (-3.4%): tighten. Price has moved above entry with no new news, so the mean\u2011reversion thesis remains valid; tightening the stop to 5.90 protects the recent gain while keeping upside potential.",
+   "2026-10-20T11:02 closed at 5.907276: stopped out, P&L $-44.95"
   ],
   "entry_price": 6.09,
   "filled_qty": 246.0,
@@ -246,7 +247,19 @@
     "stop": 5.9
    }
   ],
-  "last_huddle": "2026-10-16T11:57:09-04:00"
+  "last_huddle": "2026-10-16T11:57:09-04:00",
+  "exit_price": 5.907276,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-20T11:02:10-04:00",
+  "pnl_usd": -44.95,
+  "r_result": -0.3,
+  "interest_usd": 1.16,
+  "pnl_after_interest": -46.11,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "After entering at $6.09 the stock briefly rose, prompting a tighter stop at $5.90. The anticipated mean\u2011reversion bounce never materialized; price fell back and hit the stop, closing at $5.907 with a $44.95 loss (\u20110.3\u202fR).",
+   "lesson": "When trading high\u2011beta, mean\u2011reversion setups, factor in broader macro risk and avoid tightening stops too aggressively before the catalyst can play out."
+  }
  },
  {
   "id": "2026-10-15-intraday-1053-USD_CAD",
@@ -379,7 +392,8 @@
    "2026-10-15T14:10 bought to open IONQ261030P00033000 limit 1.43",
    "2026-10-15T14:41 filled 2 @ 1.43",
    "2026-10-15T15:27 emergency huddle (+3.1%): tighten. The underlying jumped 3% higher, improving the short put position, but the price is still well below the existing stop; tightening the stop to 34.5 locks in the recent gain while still giving room for upside.",
-   "2026-10-16T08:49 emergency huddle (-3.9%): tighten. The underlying fell sharply, moving toward the target and confirming the downtrend thesis; tightening the stop above the current price protects the accrued profit while keeping upside potential."
+   "2026-10-16T08:49 emergency huddle (-3.9%): tighten. The underlying fell sharply, moving toward the target and confirming the downtrend thesis; tightening the stop above the current price protects the accrued profit while keeping upside potential.",
+   "2026-10-20T11:03 emergency huddle (+3.3%): hold. No new information or invalidation; the price move is modest and the trade is still +0.38R, so we keep the original plan."
   ],
   "industry": "Computers & Hardware",
   "entry_price": 1.43,
@@ -388,8 +402,8 @@
   "opened_at": "2026-10-15T14:41:43-04:00",
   "premium_paid": 1.43,
   "underlying_entry": 32.885,
-  "last_price": 30.78,
-  "option_mark": 1.77,
+  "last_price": 31.91,
+  "option_mark": 1.38,
   "max_r": 0.74,
   "min_r": -0.6,
   "stop_history": [
@@ -406,7 +420,7 @@
     "stop": 33.5
    }
   ],
-  "last_huddle": "2026-10-16T08:49:13-04:00"
+  "last_huddle": "2026-10-20T11:03:20-04:00"
  },
  {
   "id": "2026-10-15-intraday-1529-RKLB",
@@ -684,7 +698,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 59.912,
+  "last_price": 60.0642,
   "max_r": 0.05,
   "min_r": -0.85,
   "fee_usd": 1.47
@@ -942,9 +956,9 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.95600000000002,
+  "last_price": 211.495,
   "max_r": 0.09,
-  "min_r": -0.31
+  "min_r": -0.5
  },
  {
   "id": "2026-10-16-quant-0423-GBP_USD",
@@ -1064,7 +1078,8 @@
   "status": "open",
   "notes": [
    "2026-10-16T10:12 entry order placed",
-   "2026-10-16T11:18 filled 2 @ 403.41"
+   "2026-10-16T11:18 filled 2 @ 403.41",
+   "2026-10-20T11:03 emergency huddle (+1.1%): hold. Price move is within normal range and no new information overturns the original short thesis, so we keep the trade as is."
   ],
   "entry_price": 403.41,
   "filled_qty": 2.0,
@@ -1072,9 +1087,10 @@
   "opened_at": "2026-10-16T11:18:41-04:00",
   "target_order_id": "5ff6db3e-e373-4c8e-9234-2af85a90dfdc",
   "stop_order_id": "f81b8801-72c9-41f9-b7ea-76c61b86aa7d",
-  "last_price": 403.12,
+  "last_price": 407.98,
   "max_r": 0.3,
-  "min_r": -0.03
+  "min_r": -0.44,
+  "last_huddle": "2026-10-20T11:03:20-04:00"
  },
  {
   "id": "2026-10-16-quant-0940-MA",
@@ -1189,9 +1205,9 @@
   "opened_at": "2026-10-16T11:18:41-04:00",
   "target_order_id": "8837d563-ac78-438e-a121-e805b8330fd1",
   "stop_order_id": "93263598-9aa6-4daa-a6d2-5da17a4651de",
-  "last_price": 995.75,
+  "last_price": 997.2,
   "max_r": 0,
-  "min_r": -0.33
+  "min_r": -0.39
  },
  {
   "id": "2026-10-16-quant-1034-RIVN",
@@ -2084,10 +2100,11 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "66",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-18T18:59 entry order placed",
-   "2026-10-18T19:18 filled 20181 @ 1.41291"
+   "2026-10-18T19:18 filled 20181 @ 1.41291",
+   "2026-10-20T11:02 closed at 1.40449: stopped out, P&L $-122.19"
   ],
   "oanda_trade_id": "75",
   "entry_price": 1.41291,
@@ -2096,7 +2113,17 @@
   "opened_at": "2026-10-18T19:18:21-04:00",
   "last_price": 1.4081199999999998,
   "max_r": 0,
-  "min_r": -0.57
+  "min_r": -0.57,
+  "exit_price": 1.40449,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-20T11:02:10-04:00",
+  "pnl_usd": -122.19,
+  "r_result": -1.02,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The pair kept falling after entry, breaking the 1.4100 support and hitting the stop at 1.4045, resulting in a -1.02\u202fR loss. The up\u2011trend pullback thesis never materialised within the 1\u20115\u2011day horizon.",
+   "lesson": "When speculative positioning is extremely crowded and volume is low, treat the setup as higher risk and wait for stronger confirmation before entering long."
+  }
  },
  {
   "id": "2026-10-18-evening-USD_MXN",
@@ -2141,7 +2168,7 @@
   "filled_qty": 11490.0,
   "filled_qty_initial": 11490.0,
   "opened_at": "2026-10-18T19:18:21-04:00",
-  "last_price": 18.399345,
+  "last_price": 18.416069999999998,
   "max_r": 0.31,
   "min_r": -0.43
  },
@@ -2188,8 +2215,8 @@
   "filled_qty": 25499.0,
   "filled_qty_initial": 25499.0,
   "opened_at": "2026-10-18T19:18:21-04:00",
-  "last_price": 0.92647,
-  "max_r": 0.56,
+  "last_price": 0.927915,
+  "max_r": 0.81,
   "min_r": -0.42
  },
  {
@@ -2235,7 +2262,7 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.82471,
+  "last_price": 0.825465,
   "max_r": 0.41,
   "min_r": -0.07
  },
@@ -2304,7 +2331,7 @@
   "opened_at": "2026-10-19T17:02:05-04:00",
   "target_order_id": "a7999f59-789c-4729-a40b-e5290b9d8274",
   "stop_order_id": "456f4339-f639-484f-9526-4adb83a6cb8b",
-  "last_price": 32.08,
+  "last_price": 32.37,
   "max_r": 0.31,
   "min_r": 0
  },
@@ -2352,7 +2379,7 @@
   "opened_at": "2026-10-19T17:02:05-04:00",
   "target_order_id": "890aaca4-764a-4ffb-86ce-e665363f1f7d",
   "stop_order_id": "69f8a148-8142-42b9-b2f7-e2a49bc7d58b",
-  "last_price": 548.35,
+  "last_price": 552.37,
   "max_r": 0.97,
   "min_r": 0
  },
@@ -2589,8 +2616,8 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.218559,
-  "max_r": 0.08,
+  "last_price": 0.22581,
+  "max_r": 0.56,
   "min_r": 0
  },
  {
@@ -2716,6 +2743,27 @@
   "conviction": 6,
   "thesis": "We are initiating a long position in GBP_AUD capitalizing on a trend pullback to the 20-day moving average within a constructive short-term structure. GBP speculators are extremely net short at the 1st percentile, creating high potential for a short squeeze if upward momentum accelerates. The risk-reward ratio is favorable with a tight stop below the 20-day SMA and a target at the recent 20-day high.",
   "created_at": "2026-10-19T20:18:31-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-20-overnight-0346-EUR_GBP",
+  "plan_file": "2026-10-20-overnight-0346.json",
+  "symbol": "EUR_GBP",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "blocked: total exposure would be $111,191, more than the firm's money plus the $100,000 credit line",
+  "entry_plan": 0.8415,
+  "initial_stop": 0.8375,
+  "stop": 0.8375,
+  "target": 0.847,
+  "bucket": "tactical",
+  "style": "mean reversion",
+  "conviction": 6,
+  "thesis": "EUR_GBP has reached maximum technical stretching with an RSI of 20.27 and is testing 52-week support at 0.84014. The pair's speculative short positioning sits at a multi-year extreme (1.0 percentile), making it highly sensitive to an upside short-covering squeeze. Kronos projects an expected move of +0.58% with high confidence (signal strength 4.95). We place our stop below 0.8400 noise at 0.8375 (1.47 ATRs) and target a reversion toward 0.8470 ahead of the 20-day SMA, yielding an attractive 1.38 reward-to-risk ratio.",
+  "created_at": "2026-10-20T11:02:10-04:00",
   "pair_id": null,
   "pair_with": null
  }

@@ -1,0 +1,171 @@
+{
+ "date": "2026-10-21",
+ "session": "quant",
+ "created_at": "2026-10-21T17:29:03-04:00",
+ "dry_run": false,
+ "equity": 8981.97,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "breakouts",
+    "crypto",
+    "macro/forex"
+   ],
+   "avoid": [
+    "mean reversion",
+    "earnings plays"
+   ]
+  },
+  "favored": [
+   "XLE",
+   "BTC/USD",
+   "USO"
+  ],
+  "avoid": [
+   "FXI",
+   "KWEB",
+   "UNG"
+  ],
+  "key_events": [
+   "Fed rate decision (FOMC) on 2026-10-28",
+   "Big earnings season ongoing next 3 days including AXP and SLB"
+  ],
+  "overnight_read": "Bitcoin is holding strong with upbeat crypto sentiment at 63 Greed, while energy and defensive sectors lead the 20-day trend. Global indices show mixed regional performance with Chinese equities lagging severely.",
+  "summary": "We are operating in a choppy, range-bound macro regime with a risk appetite of 65, balancing core multi-day swing positions with tactical momentum. We favor strong trending assets like energy (XLE) and crypto (BTC/USD) while actively avoiding weak Chinese equities and lagging tech. Keep powder dry ahead of next week's FOMC rate decision on October 28."
+ },
+ "ideas": [
+  {
+   "symbol": "GBP_USD",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 1.33928,
+   "atr_pct": 0.5,
+   "setups": [],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 1.33928,
+    "stop": 1.347651,
+    "target": 1.325887,
+    "conviction": 6,
+    "confidence_pct": 54,
+    "horizon": "1-5 days",
+    "reason": "Quant desk: a stretched price likely to snap back. the same signal on GBP_USD over 2 years: 5 trades, 100% winners, +0.78R on average; Kronos: target first in 75% of 20 simulated futures, stop first in 15%, expected +0.33R.",
+    "thesis": "StatArb says GBP/USD is primed for a short bounce: the 5\u2011day mean\u2011reversion signal has a perfect 100% win record (5 trades) and a solid avgR of +0.78, while Kronos simulates a 75% chance the target is hit before the stop and predicts a median move of -0.94% (target is -1.01%). The long\u2011term trend is down and the technicals show a downtrend, so the trade aligns with the macro bias. A stretched price likely to snap back on GBP_USD. The same signal on gbp_usd over 2 years: 5 trades, 100% winners, +0.78r on average. Kronos: target first in 75% of 20 simulated futures, stop first in 15%, expected +0.33R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 1.32
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 57.560682
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 0.5
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.78
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.33
+     }
+    ],
+    "quant_edge_r": 0.39,
+    "plain_english": "We expect the pound to fall back toward 1.326 in the next few days; the model and past data both suggest the move is likely, and the stop is set to limit loss if the price goes up.",
+    "reward_to_risk": 1.6,
+    "expected_r": 0.4
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.39,
+    "reach": {
+     "target_distance_atr": 1.91,
+     "holding_days": 5,
+     "reached_pct": 18.8,
+     "windows": 495
+    },
+    "history": {
+     "signals": 5,
+     "win_pct": 100,
+     "avg_r": 0.78,
+     "best_r": 1.6,
+     "worst_r": 0.0
+    },
+    "kronos": {
+     "expected_r": 0.33,
+     "model_expected_r": 1.09,
+     "target_first_pct": 75,
+     "stop_first_pct": 15,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -3,
+     "points": [
+      "Kronos: target first in 75% of 20 simulated futures, stop first in 15%, expected +0.33R"
+     ]
+    },
+    "quant_reversion": {
+     "score": -3,
+     "points": [
+      "the same signal on GBP_USD over 2 years: 5 trades, 100% winners, +0.78R on average"
+     ]
+    }
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "size_multiplier": 0.6,
+   "sizing": {
+    "risk_pct": 1.2,
+    "risk_usd": 107.78,
+    "units": 12875.84,
+    "notional_usd": 17243.52
+   },
+   "status": "approved"
+  }
+ ],
+ "quant_summary": {
+  "markets": 30,
+  "signals": 1,
+  "kronos": 15,
+  "kronos_weight": 0.56,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 1,
+   "expected_by_now": 28,
+   "behind_by": 27
+  },
+  "desk_note": "Arjun sees a choppy, range\u2011bound market and is trimming aggressive bets, keeping only high\u2011conviction, short\u2011term edges. Energy ETFs and BTC stay on the watchlist for momentum, while we stay defensive on forex until the FOMC outcome clarifies direction."
+ },
+ "ai_calls": 1,
+ "minutes": 0.9
+}

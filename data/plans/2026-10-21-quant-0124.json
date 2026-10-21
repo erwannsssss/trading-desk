@@ -1,0 +1,162 @@
+{
+ "date": "2026-10-21",
+ "session": "quant",
+ "created_at": "2026-10-21T01:24:06-04:00",
+ "dry_run": false,
+ "equity": 9223.93,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 45,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "mean reversion on extreme forex positioning (EUR and GBP at 1st percentile 3-year COT)",
+    "tactical momentum in select crypto uptrends (BTC, PEPE)",
+    "range fading in forex pairs with high RSI (USD/MXN at 67.0)",
+    "hedging equity long exposure against extreme tech positioning (NASDAQ 100 at 97th percentile COT)"
+   ],
+   "avoid": [
+    "unhedged long-duration plays while 10-year yield sits at 5.15%",
+    "chasing gold or PAXG/USD in an established downtrend (RSI 36.31)",
+    "buying unconfirmed altcoin bounces with weak 20-day returns"
+   ]
+  },
+  "favored": [
+   "BTC/USD (trending upward at 83,096.2 with neutral RSI 53.26 and Greed sentiment at 63)",
+   "EUR/GBP mean-reversion long (oversold RSI of 17.97 with extreme short EUR sentiment)",
+   "PEPE/USD (strong relative momentum, up 13.43% over 5 days with RSI 60.69)",
+   "USD cash / short-term yields (yielding 4.77% on 2Y and 5.15% on 10Y with broad dollar index at 121.4048)"
+  ],
+  "avoid": [
+   "PAXG/USD (firm downtrend with RSI 36.31 and -2.2% 20-day return under pressure from 5.15% yields)",
+   "Aggressive Nasdaq longs (speculator net positioning crowded at 97th 3-year percentile)",
+   "UNI/USD and LINK/USD (weak trends with -16.96% and -13.99% 20-day returns)"
+  ],
+  "key_events": [
+   "2026-10-22: Weekly jobless claims - monitor labor strength against 4.2% unemployment benchmark",
+   "2026-10-23: Consumer sentiment (UMich) - gauge consumer resilience amid 5.15% 10-year yields",
+   "2026-10-27: Durable goods orders - economic activity preview ahead of central bank meetings",
+   "2026-10-28: Fed rate decision (FOMC) - prime macro risk catalyst for current 3.75% benchmark rate",
+   "2026-10-29: GDP and PCE inflation data - high volatility expected on back-to-back macro prints"
+  ],
+  "overnight_read": "Global capital remains anchored by elevated yields, with the US 10-year yield at 5.15% and the broad dollar index strong at 121.4048. Crypto markets are moderately constructive with BTC holding $83,096.2 and Fear & Greed at 63, while extreme short positioning in EUR and GBP futures points to ripe squeeze conditions.",
+  "summary": "Macro conditions remain defined by elevated borrowing costs, with 10-year Treasuries yielding 5.15% and the yield curve spread positive at 0.33%. Speculative positioning has reached extremes, with European currencies heavily shorted at their 1st percentile while Nasdaq futures sit crowded near their 97th percentile. We are allocating 45% of risk to tactical plays to exploit oversold currency setups like EUR/GBP at 17.97 RSI and momentum in crypto leaders like BTC and PEPE. With the VIX calm at 17.31 and financial conditions loose at -0.499, we stay active while respecting key macro catalysts ahead of the October 28 FOMC meeting."
+ },
+ "ideas": [
+  {
+   "symbol": "GBP_USD",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 1.33735,
+   "atr_pct": 0.52,
+   "setups": [],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 1.33735,
+    "stop": 1.346043,
+    "target": 1.323442,
+    "conviction": 5,
+    "confidence_pct": 41,
+    "horizon": "1-5 days",
+    "reason": "Mateo: The GBP/USD short is built on a 4\u2011signal mean\u2011reversion history that looks perfect but is too thin to be reliable, and Kronos only adds a modest 0.12\u202fR edge with a 40% chance of hitting the target versus 35% for the stop. The 5\u2011day target (~\u20111%) is far beyond the median forecast (\u20110.22%) and the historical 5\u2011day hit rate is only 18.8%, while recent price action has been slightly bullish, making the downside case weak. Quant desk: a stretched price likely to snap back. the same signal on GBP_USD over 2 years: 4 trades, 100% winners, +0.97R on average; Kronos: target first in 40% of 20 simulated futures, stop first in 35%, expected +0.12R.",
+    "thesis": "A stretched price likely to snap back on GBP_USD. The same signal on gbp_usd over 2 years: 4 trades, 100% winners, +0.97r on average. Kronos: target first in 40% of 20 simulated futures, stop first in 35%, expected +0.12R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 1.0
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 55.911853
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 0.52
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.97
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.12
+     }
+    ],
+    "quant_edge_r": 0.06,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.06,
+    "reach": {
+     "target_distance_atr": 1.9,
+     "holding_days": 5,
+     "reached_pct": 18.8,
+     "windows": 495
+    },
+    "history": {
+     "signals": 4,
+     "win_pct": 100,
+     "avg_r": 0.97,
+     "best_r": 1.6,
+     "worst_r": 0.0
+    },
+    "kronos": {
+     "expected_r": 0.12,
+     "model_expected_r": 0.4,
+     "target_first_pct": 40,
+     "stop_first_pct": 35,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -1,
+     "points": [
+      "Kronos: target first in 40% of 20 simulated futures, stop first in 35%, expected +0.12R"
+     ]
+    },
+    "quant_reversion": {
+     "score": -3,
+     "points": [
+      "the same signal on GBP_USD over 2 years: 4 trades, 100% winners, +0.97R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 30,
+  "signals": 2,
+  "kronos": 23,
+  "kronos_weight": 0.56,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 1,
+   "behind_by": 1
+  },
+  "desk_note": "Arjun: The market is range\u2011bound with equity futures crowded at the upside and currencies oversold, so we\u2019re hunting high\u2011conviction setups that have both solid historical win rates and a strong Kronos signal. Any idea that leans on a tiny sample or a target that\u2019s unlikely to be reached in five days gets cut."
+ },
+ "ai_calls": 1,
+ "minutes": 1.6
+}

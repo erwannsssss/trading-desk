@@ -386,7 +386,7 @@
   "expires_at": "2026-10-15T15:45:00-04:00",
   "loan_usd": 0.0,
   "loan_apr": 0.08,
-  "status": "closing",
+  "status": "closed",
   "entry_order_id": "365d52d0-89af-431b-9023-9a2544400cf7",
   "notes": [
    "2026-10-15T14:10 bought to open IONQ261030P00033000 limit 1.43",
@@ -395,7 +395,8 @@
    "2026-10-16T08:49 emergency huddle (-3.9%): tighten. The underlying fell sharply, moving toward the target and confirming the downtrend thesis; tightening the stop above the current price protects the accrued profit while keeping upside potential.",
    "2026-10-20T11:03 emergency huddle (+3.3%): hold. No new information or invalidation; the price move is modest and the trade is still +0.38R, so we keep the original plan.",
    "2026-10-22T11:39 emergency huddle (-1.7%): tighten. Bullish coverage creates upside risk; tightening the stop protects the modest profit while still allowing the trade to work if the downtrend continues.",
-   "2026-10-22T15:29 closing the spread: time stop (1-5 days)"
+   "2026-10-22T15:29 closing the spread: time stop (1-5 days)",
+   "2026-10-22T18:38 closed at 1.51: time stop (1-5 days), P&L $+16.00"
   ],
   "industry": "Computers & Hardware",
   "entry_price": 1.43,
@@ -428,7 +429,16 @@
   ],
   "last_huddle": "2026-10-22T11:39:47-04:00",
   "exit_order_id": "de2683b7-3ed0-4311-96d9-301053ffbf67",
-  "exit_reason": "time stop (1-5 days)"
+  "exit_reason": "time stop (1-5 days)",
+  "exit_price": 1.51,
+  "closed_at": "2026-10-22T18:38:54-04:00",
+  "pnl_usd": 16.0,
+  "r_result": 0.06,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The stock continued its downtrend, lifting the long put's value from $1.43 to $1.51 and delivering a $16 profit. The trade was closed on a time\u2011stop after 1\u20115 days, capturing only a fraction of the potential upside.",
+   "lesson": "Align exit rules (time stops vs. price stops) with the trade's risk\u2011reward profile to avoid cutting a winning position prematurely."
+  }
  },
  {
   "id": "2026-10-15-intraday-1529-RKLB",
@@ -706,7 +716,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 58.262,
+  "last_price": 58.83,
   "max_r": 0.24,
   "min_r": -0.85,
   "fee_usd": 1.47
@@ -964,8 +974,8 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.13,
-  "max_r": 0.23,
+  "last_price": 209.9485,
+  "max_r": 0.26,
   "min_r": -0.7
  },
  {
@@ -2340,9 +2350,9 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.820525,
+  "last_price": 0.8200799999999999,
   "max_r": 0.41,
-  "min_r": -0.59
+  "min_r": -0.66
  },
  {
   "id": "2026-10-18-overnight-2243-NZD_USD",
@@ -2736,9 +2746,9 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.211506,
+  "last_price": 0.211377,
   "max_r": 0.72,
-  "min_r": -0.39
+  "min_r": -0.4
  },
  {
   "id": "2026-10-19-quant-1548-WMT",
@@ -2992,7 +3002,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56859,
+  "last_price": 0.568365,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3145,7 +3155,7 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.0186,
+  "last_price": 7.037,
   "max_r": 0.41,
   "min_r": -0.51
  },
@@ -3454,10 +3464,19 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "95",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-22T15:29 entry order placed"
-  ]
+   "2026-10-22T15:29 entry order placed",
+   "2026-10-22T18:38 filled 23227 @ 0.83722"
+  ],
+  "oanda_trade_id": "96",
+  "entry_price": 0.83722,
+  "filled_qty": 23227.0,
+  "filled_qty_initial": 23227.0,
+  "opened_at": "2026-10-22T18:38:54-04:00",
+  "last_price": 0.83723,
+  "max_r": 0.0,
+  "min_r": 0
  },
  {
   "id": "2026-10-22-quant-1358-MSFT",
@@ -3492,10 +3511,20 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "d83ec9b4-7ced-40c0-b6ce-c03a0037e01e",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-22T15:29 entry order placed"
-  ]
+   "2026-10-22T15:29 entry order placed",
+   "2026-10-22T18:38 filled 6 @ 521.475"
+  ],
+  "entry_price": 521.475,
+  "filled_qty": 6.0,
+  "filled_qty_initial": 6.0,
+  "opened_at": "2026-10-22T18:38:54-04:00",
+  "target_order_id": "7930589a-865d-41d7-a177-58af9a899333",
+  "stop_order_id": "ec9d4f59-d9fb-4693-bb51-98186d850dba",
+  "last_price": 521.6,
+  "max_r": 0.01,
+  "min_r": 0
  },
  {
   "id": "2026-10-22-quant-1358-BA",

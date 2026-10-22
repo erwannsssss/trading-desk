@@ -374,7 +374,7 @@
   "thesis": "IONQ is trading well below its 20\u2011day moving average and shows a strong 20\u2011day decline of \u201318%. RSI is in oversold territory, but the downtrend, high beta, and recent dilution suggest further downside. Buying puts gives a defined\u2011risk way to profit if the price falls toward the 20\u2011day low.",
   "entry_plan": 33.04,
   "initial_stop": 35.74,
-  "stop": 33.5,
+  "stop": 32.5,
   "target": 27.64,
   "qty": 2,
   "premium_limit": 1.43,
@@ -393,7 +393,8 @@
    "2026-10-15T14:41 filled 2 @ 1.43",
    "2026-10-15T15:27 emergency huddle (+3.1%): tighten. The underlying jumped 3% higher, improving the short put position, but the price is still well below the existing stop; tightening the stop to 34.5 locks in the recent gain while still giving room for upside.",
    "2026-10-16T08:49 emergency huddle (-3.9%): tighten. The underlying fell sharply, moving toward the target and confirming the downtrend thesis; tightening the stop above the current price protects the accrued profit while keeping upside potential.",
-   "2026-10-20T11:03 emergency huddle (+3.3%): hold. No new information or invalidation; the price move is modest and the trade is still +0.38R, so we keep the original plan."
+   "2026-10-20T11:03 emergency huddle (+3.3%): hold. No new information or invalidation; the price move is modest and the trade is still +0.38R, so we keep the original plan.",
+   "2026-10-22T11:39 emergency huddle (-1.7%): tighten. Bullish coverage creates upside risk; tightening the stop protects the modest profit while still allowing the trade to work if the downtrend continues."
   ],
   "industry": "Computers & Hardware",
   "entry_price": 1.43,
@@ -402,8 +403,8 @@
   "opened_at": "2026-10-15T14:41:43-04:00",
   "premium_paid": 1.43,
   "underlying_entry": 32.885,
-  "last_price": 32.34,
-  "option_mark": 1.3,
+  "last_price": 31.795,
+  "option_mark": 1.43,
   "max_r": 0.74,
   "min_r": -0.6,
   "stop_history": [
@@ -418,9 +419,13 @@
    {
     "t": "2026-10-16T08:49:15-04:00",
     "stop": 33.5
+   },
+   {
+    "t": "2026-10-22T11:39:51-04:00",
+    "stop": 32.5
    }
   ],
-  "last_huddle": "2026-10-20T11:03:20-04:00"
+  "last_huddle": "2026-10-22T11:39:47-04:00"
  },
  {
   "id": "2026-10-15-intraday-1529-RKLB",
@@ -698,7 +703,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 59.585,
+  "last_price": 58.9924,
   "max_r": 0.24,
   "min_r": -0.85,
   "fee_usd": 1.47
@@ -956,7 +961,7 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 209.993,
+  "last_price": 210.115,
   "max_r": 0.23,
   "min_r": -0.7
  },
@@ -1075,13 +1080,14 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "4633ed33-240e-4017-aa44-225f60c363dd",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-16T10:12 entry order placed",
    "2026-10-16T11:18 filled 2 @ 403.41",
    "2026-10-20T11:03 emergency huddle (+1.1%): hold. Price move is within normal range and no new information overturns the original short thesis, so we keep the trade as is.",
    "2026-10-21T20:54 stop moved to 410.00 (trailing)",
-   "2026-10-21T20:54 emergency huddle (+0.0%): tighten. Positive Visa news and the price moving above entry increase downside risk; tightening the stop limits loss while still allowing the model\u2019s target to play out."
+   "2026-10-21T20:54 emergency huddle (+0.0%): tighten. Positive Visa news and the price moving above entry increase downside risk; tightening the stop limits loss while still allowing the model\u2019s target to play out.",
+   "2026-10-22T11:39 closed at 409.94: stopped out, P&L $-13.06"
   ],
   "entry_price": 403.41,
   "filled_qty": 2.0,
@@ -1102,7 +1108,17 @@
     "t": "2026-10-21T20:54:12-04:00",
     "stop": 410.0
    }
-  ]
+  ],
+  "exit_price": 409.94,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-22T11:39:29-04:00",
+  "pnl_usd": -13.06,
+  "r_result": -0.63,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "Visa\u2019s positive news pushed the stock above entry, and after tightening the stop to 410 the price hit 409.94, triggering a stop\u2011out and a $13 loss.",
+   "lesson": "Incorporate emerging news and volatility when setting and adjusting stops; avoid tightening stops solely on short\u2011term moves that may prematurely cut a trade."
+  }
  },
  {
   "id": "2026-10-16-quant-0940-MA",
@@ -1206,13 +1222,14 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "267bef04-af35-4dcc-ae83-dc787e85299a",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-16T10:45 entry order placed",
    "2026-10-16T11:18 filled 1 @ 987.89",
    "2026-10-21T11:27 stop moved to 1,002.00 (trailing)",
    "2026-10-21T11:27 emergency huddle (+0.0%): tighten. Positive news and time decay have turned the short unfavorable; tightening the stop limits downside while still leaving room for a potential move toward the target.",
-   "2026-10-22T06:38 emergency huddle (+0.0%): close. The positive expansion news and price above entry invalidate the short thesis, and the trade is already at a loss; exiting now limits further downside risk."
+   "2026-10-22T06:38 emergency huddle (+0.0%): close. The positive expansion news and price above entry invalidate the short thesis, and the trade is already at a loss; exiting now limits further downside risk.",
+   "2026-10-22T11:39 closed at 1004.9: stopped out, P&L $-17.01"
   ],
   "entry_price": 987.89,
   "filled_qty": 1.0,
@@ -1233,7 +1250,17 @@
     "stop": 1002.0
    }
   ],
-  "last_huddle": "2026-10-22T06:38:40-04:00"
+  "last_huddle": "2026-10-22T06:38:40-04:00",
+  "exit_price": 1004.9,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-22T11:39:29-04:00",
+  "pnl_usd": -17.01,
+  "r_result": -0.71,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The short was entered at $987.89 expecting a pull\u2011back, but positive expansion news pushed COST higher. Even after moving the stop to $1,002, the price kept rising and the trade was stopped out at $1,004.90, resulting in a $17 loss.",
+   "lesson": "In short trades, always factor imminent positive catalysts and tighten stops when overbought signals coincide with potential news\u2011driven upside."
+  }
  },
  {
   "id": "2026-10-16-quant-1034-RIVN",
@@ -2310,7 +2337,7 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.821335,
+  "last_price": 0.823035,
   "max_r": 0.41,
   "min_r": -0.46
  },
@@ -2706,9 +2733,9 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.21712,
+  "last_price": 0.212852,
   "max_r": 0.72,
-  "min_r": -0.02
+  "min_r": -0.3
  },
  {
   "id": "2026-10-19-quant-1548-WMT",
@@ -2962,7 +2989,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.567985,
+  "last_price": 0.56755,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3115,7 +3142,7 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.1032,
+  "last_price": 7.15491679,
   "max_r": 0.41,
   "min_r": -0.38
  },

@@ -698,7 +698,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 60.389,
+  "last_price": 59.585,
   "max_r": 0.24,
   "min_r": -0.85,
   "fee_usd": 1.47
@@ -956,8 +956,8 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 211.11950000000002,
-  "max_r": 0.09,
+  "last_price": 209.993,
+  "max_r": 0.23,
   "min_r": -0.7
  },
  {
@@ -1211,7 +1211,8 @@
    "2026-10-16T10:45 entry order placed",
    "2026-10-16T11:18 filled 1 @ 987.89",
    "2026-10-21T11:27 stop moved to 1,002.00 (trailing)",
-   "2026-10-21T11:27 emergency huddle (+0.0%): tighten. Positive news and time decay have turned the short unfavorable; tightening the stop limits downside while still leaving room for a potential move toward the target."
+   "2026-10-21T11:27 emergency huddle (+0.0%): tighten. Positive news and time decay have turned the short unfavorable; tightening the stop limits downside while still leaving room for a potential move toward the target.",
+   "2026-10-22T06:38 emergency huddle (+0.0%): close. The positive expansion news and price above entry invalidate the short thesis, and the trade is already at a loss; exiting now limits further downside risk."
   ],
   "entry_price": 987.89,
   "filled_qty": 1.0,
@@ -1232,7 +1233,7 @@
     "stop": 1002.0
    }
   ],
-  "last_huddle": "2026-10-21T11:27:35-04:00"
+  "last_huddle": "2026-10-22T06:38:40-04:00"
  },
  {
   "id": "2026-10-16-quant-1034-RIVN",
@@ -2241,10 +2242,11 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "71",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-18T18:59 entry order placed",
-   "2026-10-18T19:18 filled 25499 @ 0.92459"
+   "2026-10-18T19:18 filled 25499 @ 0.92459",
+   "2026-10-22T06:38 closed at 0.9205: stopped out, P&L $-128.56"
   ],
   "oanda_trade_id": "72",
   "entry_price": 0.92459,
@@ -2253,7 +2255,17 @@
   "opened_at": "2026-10-18T19:18:21-04:00",
   "last_price": 0.92445,
   "max_r": 0.81,
-  "min_r": -0.42
+  "min_r": -0.42,
+  "exit_price": 0.9205,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-22T06:38:24-04:00",
+  "pnl_usd": -128.56,
+  "r_result": -1.02,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The euro kept weakening against the franc, breaking the 200\u2011day SMA and hitting the stop at 0.9205, resulting in a loss of roughly 1\u202fR. The mean\u2011reversion bounce never materialised.",
+   "lesson": "Add a macro\u2011regime filter (e.g., risk\u2011off sentiment) to mean\u2011reversion trades and consider tighter stops or smaller position sizes when the broader environment opposes the technical bias."
+  }
  },
  {
   "id": "2026-10-18-overnight-2243-USD_CHF",
@@ -2298,9 +2310,9 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.822295,
+  "last_price": 0.821335,
   "max_r": 0.41,
-  "min_r": -0.31
+  "min_r": -0.46
  },
  {
   "id": "2026-10-18-overnight-2243-NZD_USD",
@@ -2694,9 +2706,9 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.2191,
+  "last_price": 0.21712,
   "max_r": 0.72,
-  "min_r": 0
+  "min_r": -0.02
  },
  {
   "id": "2026-10-19-quant-1548-WMT",
@@ -2950,7 +2962,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56899,
+  "last_price": 0.567985,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3103,9 +3115,9 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.17809,
+  "last_price": 7.1032,
   "max_r": 0.41,
-  "min_r": -0.26
+  "min_r": -0.38
  },
  {
   "id": "2026-10-21-morning-CRWV",

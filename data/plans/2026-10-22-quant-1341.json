@@ -1,0 +1,161 @@
+{
+ "date": "2026-10-22",
+ "session": "quant",
+ "created_at": "2026-10-22T13:41:53-04:00",
+ "dry_run": false,
+ "equity": 8719.53,
+ "macro": {
+  "regime": "risk-off/defensive",
+  "risk_appetite": 55,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "mean reversion",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "momentum",
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "XLP",
+   "XLV",
+   "XLU",
+   "USO"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "XLC",
+   "SLV"
+  ],
+  "key_events": [
+   "Weekly jobless claims on 2026-10-22",
+   "Consumer sentiment (UMich) on 2026-10-23",
+   "Durable goods on 2026-10-27",
+   "Fed rate decision (FOMC) on 2026-10-28",
+   "GDP and PCE inflation on 2026-10-29"
+  ],
+  "overnight_read": "Global markets and crypto are seeing broad selling pressure with tech and semiconductor ETFs like SMH leading the downside, while defensive sectors like XLP and XLV continue to attract capital.",
+  "summary": "The market is leaning defensive as risk appetite cools amid a heavy upcoming macroeconomic calendar, led by the upcoming FOMC rate decision. Defensive sectors like consumer staples and healthcare are outperforming while technology and semiconductors face heavy selling pressure. We will prioritize conservative positioning, focus on defensive rotations, and keep risk appetite at 55 while preparing for volatility around next week's key data drops."
+ },
+ "ideas": [
+  {
+   "symbol": "GBP_USD",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 1.34012,
+   "atr_pct": 0.53,
+   "setups": [],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "short",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 1.34012,
+    "stop": 1.348998,
+    "target": 1.325915,
+    "conviction": 7,
+    "confidence_pct": 51,
+    "horizon": "1-5 days",
+    "reason": "StatArb sees a short mean\u2011reversion signal on GBP/USD with a 5\u2011trade history (80% win, avg\u202fR\u202f0.76) but the sample is tiny; Kronos only gives a modest 40% chance the target hits before the stop and a low 5\u2011day hit rate (18.8%). The technicals show mixed momentum (short\u2011term returns positive, longer\u2011term trend down) and the market is currently risk\u2011off, making a bearish forex play less compelling. Quant desk: a stretched price likely to snap back. the same signal on GBP_USD over 2 years: 5 trades, 80% winners, +0.76R on average; Kronos: target first in 40% of 20 simulated futures, stop first in 15%, expected +0.19R.",
+    "thesis": "A stretched price likely to snap back on GBP_USD. The same signal on gbp_usd over 2 years: 5 trades, 80% winners, +0.76r on average. Kronos: target first in 40% of 20 simulated futures, stop first in 15%, expected +0.19R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": 1.38
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 58.286361
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 0.53
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.76
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.19
+     }
+    ],
+    "quant_edge_r": 0.34,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.34,
+    "reach": {
+     "target_distance_atr": 1.91,
+     "holding_days": 5,
+     "reached_pct": 18.8,
+     "windows": 495
+    },
+    "history": {
+     "signals": 5,
+     "win_pct": 80,
+     "avg_r": 0.76,
+     "best_r": 1.6,
+     "worst_r": -0.08
+    },
+    "kronos": {
+     "expected_r": 0.19,
+     "model_expected_r": 0.62,
+     "target_first_pct": 40,
+     "stop_first_pct": 15,
+     "paths": 20
+    },
+    "kronos_weight": 0.56
+   },
+   "specialists": {
+    "kronos": {
+     "score": -2,
+     "points": [
+      "Kronos: target first in 40% of 20 simulated futures, stop first in 15%, expected +0.19R"
+     ]
+    },
+    "quant_reversion": {
+     "score": -3,
+     "points": [
+      "the same signal on GBP_USD over 2 years: 5 trades, 80% winners, +0.76R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 30,
+  "signals": 1,
+  "kronos": 17,
+  "kronos_weight": 0.56,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 19,
+   "behind_by": 19
+  },
+  "desk_note": "Arjun sees the market rotating into defensive assets and volatility ahead of the FOMC, so we\u2019re trimming aggressive bets. We\u2019ll stick to high\u2011conviction, well\u2011backed setups and avoid low\u2011sample, marginal\u2011edge trades like this one."
+ },
+ "ai_calls": 1,
+ "minutes": 1.3
+}

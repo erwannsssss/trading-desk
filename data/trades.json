@@ -698,7 +698,7 @@
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 61.829,
+  "last_price": 60.389,
   "max_r": 0.24,
   "min_r": -0.85,
   "fee_usd": 1.47
@@ -956,7 +956,7 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 211.911,
+  "last_price": 211.11950000000002,
   "max_r": 0.09,
   "min_r": -0.7
  },
@@ -2251,7 +2251,7 @@
   "filled_qty": 25499.0,
   "filled_qty_initial": 25499.0,
   "opened_at": "2026-10-18T19:18:21-04:00",
-  "last_price": 0.92614,
+  "last_price": 0.92445,
   "max_r": 0.81,
   "min_r": -0.42
  },
@@ -2298,9 +2298,9 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.824445,
+  "last_price": 0.822295,
   "max_r": 0.41,
-  "min_r": -0.07
+  "min_r": -0.31
  },
  {
   "id": "2026-10-18-overnight-2243-NZD_USD",
@@ -2694,7 +2694,7 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.2255,
+  "last_price": 0.2191,
   "max_r": 0.72,
   "min_r": 0
  },
@@ -2950,7 +2950,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.570805,
+  "last_price": 0.56899,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3103,9 +3103,9 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.509735689,
+  "last_price": 7.17809,
   "max_r": 0.41,
-  "min_r": 0
+  "min_r": -0.26
  },
  {
   "id": "2026-10-21-morning-CRWV",
@@ -3313,6 +3313,48 @@
   "conviction": 6,
   "thesis": "StatArb says GBP/USD is primed for a short bounce: the 5\u2011day mean\u2011reversion signal has a perfect 100% win record (5 trades) and a solid avgR of +0.78, while Kronos simulates a 75% chance the target is hit before the stop and predicts a median move of -0.94% (target is -1.01%). The long\u2011term trend is down and the technicals show a downtrend, so the trade aligns with the macro bias. A stretched price likely to snap back on GBP_USD. The same signal on gbp_usd over 2 years: 5 trades, 100% winners, +0.78r on average. Kronos: target first in 75% of 20 simulated futures, stop first in 15%, expected +0.33R.",
   "created_at": "2026-10-21T18:35:36-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-21-evening-RENDERUSD",
+  "plan_file": "2026-10-21-evening.json",
+  "symbol": "RENDER/USD",
+  "venue": "alpaca",
+  "asset": "crypto",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "same bet: already 3 crypto longs (LTC/USD, ADA/USD, UNI/USD); they all move with Bitcoin",
+  "entry_plan": 1.918,
+  "initial_stop": 1.777,
+  "stop": 1.777,
+  "target": 2.093,
+  "bucket": "high_risk",
+  "style": "trend pullback",
+  "conviction": 5,
+  "thesis": "RENDER is in a long-term uptrend (above 50d and 200d SMAs) and is pulling back to the 20-day SMA. The RSI is neutral at 52.68, leaving room for upside. The Kronos forecast suggests a 65% chance of a move up to $2.093. We are taking a small position to capture this potential bounce, acknowledging the high liquidity risk.",
+  "created_at": "2026-10-22T01:38:16-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-21-evening-BTCUSD",
+  "plan_file": "2026-10-21-evening.json",
+  "symbol": "BTC/USD",
+  "venue": "alpaca",
+  "asset": "crypto",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "same bet: already 3 crypto longs (LTC/USD, ADA/USD, UNI/USD); they all move with Bitcoin",
+  "entry_plan": 84228.1,
+  "initial_stop": 82000.0,
+  "stop": 82000.0,
+  "target": 87230.54,
+  "bucket": "core",
+  "style": "trend pullback",
+  "conviction": 6,
+  "thesis": "We are buying Bitcoin on a tactical pullback toward its 20-day moving average within a solid multi-month uptrend. Strong structural demand from recent ETF inflows and institutional preferred stock offerings provides a reliable floor. The RSI of 57.45 shows healthy momentum without being overbought, leaving room to run toward the 20-day high of $87,230.54. Risk is managed by placing a stop loss below key moving average support.",
+  "created_at": "2026-10-22T01:38:16-04:00",
   "pair_id": null,
   "pair_with": null
  }

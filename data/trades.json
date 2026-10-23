@@ -2377,7 +2377,7 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.823025,
+  "last_price": 0.8249500000000001,
   "max_r": 0.41,
   "min_r": -0.67
  },
@@ -2773,7 +2773,7 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.217126,
+  "last_price": 0.2145,
   "max_r": 0.72,
   "min_r": -0.4
  },
@@ -3029,7 +3029,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56857,
+  "last_price": 0.570345,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3182,7 +3182,7 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.18692,
+  "last_price": 7.0862,
   "max_r": 0.41,
   "min_r": -0.51
  },
@@ -3501,7 +3501,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.83706,
+  "last_price": 0.83707,
   "max_r": 0.01,
   "min_r": -0.05
  },
@@ -3542,7 +3542,8 @@
   "notes": [
    "2026-10-22T15:29 entry order placed",
    "2026-10-22T18:38 filled 6 @ 521.475",
-   "2026-10-23T06:31 emergency huddle (+0.0%): hold. No price movement, stop remains prudent, and news does not invalidate the original thesis."
+   "2026-10-23T06:31 emergency huddle (+0.0%): hold. No price movement, stop remains prudent, and news does not invalidate the original thesis.",
+   "2026-10-23T11:28 emergency huddle (+0.7%): hold. Thesis unchanged; price move is noise relative to daily range and stop remains comfortably distant."
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
@@ -3550,10 +3551,10 @@
   "opened_at": "2026-10-22T18:38:54-04:00",
   "target_order_id": "7930589a-865d-41d7-a177-58af9a899333",
   "stop_order_id": "ec9d4f59-d9fb-4693-bb51-98186d850dba",
-  "last_price": 521.6,
-  "max_r": 0.01,
+  "last_price": 525.21,
+  "max_r": 0.26,
   "min_r": 0,
-  "last_huddle": "2026-10-23T06:31:46-04:00"
+  "last_huddle": "2026-10-23T11:28:24-04:00"
  },
  {
   "id": "2026-10-22-quant-1358-BA",
@@ -3672,9 +3673,28 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "104",
-  "status": "pending",
+  "status": "closed",
   "notes": [
-   "2026-10-23T06:31 entry order placed"
-  ]
+   "2026-10-23T06:31 entry order placed",
+   "2026-10-23T11:28 filled 23672 @ 1.5955",
+   "2026-10-23T11:28 closed at 1.5925: stopped out, P&L $-50.44"
+  ],
+  "oanda_trade_id": "105",
+  "entry_price": 1.5955,
+  "filled_qty": 23672.0,
+  "filled_qty_initial": 23672.0,
+  "opened_at": "2026-10-23T11:28:00-04:00",
+  "exit_price": 1.5925,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-23T11:28:00-04:00",
+  "pnl_usd": -50.44,
+  "r_result": -1.01,
+  "interest_usd": 0.0,
+  "pnl_after_interest": -50.44,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "EUR/AUD failed to rebound after breaking its 20\u2011day low and slid to the stop at 1.5925, resulting in a ~1R loss.",
+   "lesson": "Confirm a reversal with additional momentum or trend\u2011strength signals before taking a mean\u2011reversion long in a down\u2011trend."
+  }
  }
 ]

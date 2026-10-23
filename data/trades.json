@@ -706,20 +706,23 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "4546bb70-5145-459e-ac6d-bed16143fc88",
-  "status": "open",
+  "status": "closing",
   "notes": [
    "2026-10-15T23:07 entry order placed",
-   "2026-10-15T23:38 filled 9.62614 @ 61.02"
+   "2026-10-15T23:38 filled 9.62614 @ 61.02",
+   "2026-10-23T01:41 closing: time stop (1-5 days)"
   ],
   "entry_price": 61.02,
   "filled_qty": 9.626135347,
   "filled_qty_initial": 9.626135347,
   "opened_at": "2026-10-15T23:38:37-04:00",
   "stop_order_id": "4c6abf99-d0ce-4b08-a904-3e79d62d6950",
-  "last_price": 58.1294,
+  "last_price": 59.29,
   "max_r": 0.24,
   "min_r": -0.85,
-  "fee_usd": 1.47
+  "fee_usd": 1.47,
+  "exit_order_id": "c5d7a295-010b-414b-8285-8b9e8202a8bf",
+  "exit_reason": "time stop (1-5 days)"
  },
  {
   "id": "2026-10-15-overnight-2243-USD_CHF",
@@ -974,7 +977,7 @@
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 209.656,
+  "last_price": 210.0695,
   "max_r": 0.4,
   "min_r": -0.7
  },
@@ -2350,7 +2353,7 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.82001,
+  "last_price": 0.8216399999999999,
   "max_r": 0.41,
   "min_r": -0.67
  },
@@ -2746,7 +2749,7 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.212,
+  "last_price": 0.215695,
   "max_r": 0.72,
   "min_r": -0.4
  },
@@ -3002,7 +3005,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56904,
+  "last_price": 0.569265,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3155,7 +3158,7 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.02169,
+  "last_price": 7.174,
   "max_r": 0.41,
   "min_r": -0.51
  },
@@ -3474,8 +3477,8 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.83722,
-  "max_r": 0.0,
+  "last_price": 0.837265,
+  "max_r": 0.01,
   "min_r": 0
  },
  {
@@ -3565,6 +3568,27 @@
   "conviction": 5,
   "thesis": "A strong kronos forecast on RKLB. No history for this signal. Kronos: target first in 5% of 20 simulated futures, stop first in 0%, expected +0.18R.",
   "created_at": "2026-10-22T15:29:59-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-22-evening-AUD_USD",
+  "plan_file": "2026-10-22-evening.json",
+  "symbol": "AUD_USD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "same bet: already 2 positions betting the USD goes up (USD_CHF, NZD_USD); one more would just be the same bet again",
+  "entry_plan": 0.70194,
+  "initial_stop": 0.706308,
+  "stop": 0.706308,
+  "target": 0.693222,
+  "bucket": "tactical",
+  "style": "short/fade",
+  "conviction": 6,
+  "thesis": "AUD/USD is trading near 0.70194 in a choppy regime while facing headwinds from a strong 5.13% US 10-year Treasury yield. The Kronos AI model projects a downward move of -0.92% over 5 days, and the low volume ratio of 0.09 suggests weak buying pressure. We fade the recent bounce and target a return toward support.",
+  "created_at": "2026-10-23T01:41:29-04:00",
   "pair_id": null,
   "pair_with": null
  }

@@ -706,11 +706,12 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "4546bb70-5145-459e-ac6d-bed16143fc88",
-  "status": "closing",
+  "status": "closed",
   "notes": [
    "2026-10-15T23:07 entry order placed",
    "2026-10-15T23:38 filled 9.62614 @ 61.02",
-   "2026-10-23T01:41 closing: time stop (1-5 days)"
+   "2026-10-23T01:41 closing: time stop (1-5 days)",
+   "2026-10-23T06:31 closed at 59.57: time stop (1-5 days), P&L $-13.96"
   ],
   "entry_price": 61.02,
   "filled_qty": 9.626135347,
@@ -722,7 +723,17 @@
   "min_r": -0.85,
   "fee_usd": 1.47,
   "exit_order_id": "c5d7a295-010b-414b-8285-8b9e8202a8bf",
-  "exit_reason": "time stop (1-5 days)"
+  "exit_reason": "time stop (1-5 days)",
+  "exit_fee_usd": 1.43,
+  "exit_price": 59.57,
+  "closed_at": "2026-10-23T06:31:32-04:00",
+  "pnl_usd": -13.96,
+  "r_result": -0.32,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The price never rebounded off the 50\u2011day SMA; instead it drifted lower and the trade was closed at the time\u2011stop with a \u20130.32\u202fR loss.",
+   "lesson": "Require clearer reversal signals (e.g., bullish candlestick pattern or price holding above the SMA) before entering a pull\u2011back trade, especially in low\u2011liquidity assets."
+  }
  },
  {
   "id": "2026-10-15-overnight-2243-USD_CHF",
@@ -967,19 +978,32 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "46",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-16T04:41 entry order placed",
-   "2026-10-16T05:12 filled 7675 @ 210.472"
+   "2026-10-16T05:12 filled 7675 @ 210.472",
+   "2026-10-23T06:31 closed at 209.516: time stop (1-5 days), P&L $+46.38"
   ],
   "oanda_trade_id": "47",
   "entry_price": 210.472,
   "filled_qty": 7675.0,
   "filled_qty_initial": 7675.0,
   "opened_at": "2026-10-16T05:12:43-04:00",
-  "last_price": 210.0695,
-  "max_r": 0.4,
-  "min_r": -0.7
+  "last_price": 209.49849999999998,
+  "max_r": 0.47,
+  "min_r": -0.7,
+  "exit_price": 209.516,
+  "exit_reason": "time stop (1-5 days)",
+  "closed_at": "2026-10-23T06:31:32-04:00",
+  "pnl_usd": 46.38,
+  "r_result": 0.47,
+  "interest_usd": 0.74,
+  "pnl_after_interest": 45.64,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The GBP/JPY fell from the entry of 210.472 to 209.516, delivering a modest profit before the 1\u20115\u2011day time stop forced an exit. The move was in the direction the thesis predicted, though the target was never reached.",
+   "lesson": "When a trade has a clear positive edge and a favorable risk\u2011reward, give it room to run to its target rather than exiting early on a time\u2011based stop."
+  }
  },
  {
   "id": "2026-10-16-quant-0423-GBP_USD",
@@ -2353,7 +2377,7 @@
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.8216399999999999,
+  "last_price": 0.823025,
   "max_r": 0.41,
   "min_r": -0.67
  },
@@ -2749,7 +2773,7 @@
   "filled_qty_initial": 7107.074062305,
   "opened_at": "2026-10-19T20:18:31-04:00",
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
-  "last_price": 0.215695,
+  "last_price": 0.217126,
   "max_r": 0.72,
   "min_r": -0.4
  },
@@ -3005,7 +3029,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.569265,
+  "last_price": 0.56857,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3158,7 +3182,7 @@
   "filled_qty_initial": 158.733833561,
   "opened_at": "2026-10-21T11:27:12-04:00",
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
-  "last_price": 7.174,
+  "last_price": 7.18692,
   "max_r": 0.41,
   "min_r": -0.51
  },
@@ -3477,9 +3501,9 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.837265,
+  "last_price": 0.83706,
   "max_r": 0.01,
-  "min_r": 0
+  "min_r": -0.05
  },
  {
   "id": "2026-10-22-quant-1358-MSFT",
@@ -3517,7 +3541,8 @@
   "status": "open",
   "notes": [
    "2026-10-22T15:29 entry order placed",
-   "2026-10-22T18:38 filled 6 @ 521.475"
+   "2026-10-22T18:38 filled 6 @ 521.475",
+   "2026-10-23T06:31 emergency huddle (+0.0%): hold. No price movement, stop remains prudent, and news does not invalidate the original thesis."
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
@@ -3527,7 +3552,8 @@
   "stop_order_id": "ec9d4f59-d9fb-4693-bb51-98186d850dba",
   "last_price": 521.6,
   "max_r": 0.01,
-  "min_r": 0
+  "min_r": 0,
+  "last_huddle": "2026-10-23T06:31:46-04:00"
  },
  {
   "id": "2026-10-22-quant-1358-BA",
@@ -3591,5 +3617,64 @@
   "created_at": "2026-10-23T01:41:29-04:00",
   "pair_id": null,
   "pair_with": null
+ },
+ {
+  "id": "2026-10-22-intraday-1811-GBP_AUD",
+  "plan_file": "2026-10-22-intraday-1811.json",
+  "symbol": "GBP_AUD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 1.903,
+  "initial_stop": 1.893,
+  "stop": 1.893,
+  "target": 1.923,
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 6,
+  "thesis": "We are playing a trend pullback to the 20-day SMA (1.9028). The trade is supported by a long-term uptrend and a massive contrarian opportunity as GBP speculators are at their most bearish levels in 3 years. We expect a bounce from the SMA20 toward the 20-day high of 1.923.",
+  "created_at": "2026-10-23T06:31:32-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-23-overnight-0348-EUR_AUD",
+  "plan_file": "2026-10-23-overnight-0348.json",
+  "symbol": "EUR_AUD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "bucket": "core",
+  "style": "mean reversion",
+  "conviction": 7,
+  "confidence_pct": 55,
+  "horizon": "1-5 days",
+  "thesis": "EUR/AUD has broken below its 20\u2011day low in a choppy range. The Kronos AI model forecasts an 80% chance of an upward move within the next few days, and the pair\u2019s own mean\u2011reversion signal has historically been 80% successful. A limit entry just above the low (1.5955) aims to catch the bounce back to the 20\u2011day SMA (1.6104), offering a >5R reward for a ~0.3R risk.",
+  "atr_pct": 0.56,
+  "invalidation": "Price closes below 1.5920 (more than 1.5\u202fATR down) or fails to bounce above 1.5970 within the next session.",
+  "entry_plan": 1.5955,
+  "initial_stop": 1.5925,
+  "stop": 1.5925,
+  "target": 1.6103,
+  "qty": 23672,
+  "notional_usd": 26504.12,
+  "risk_usd": 49.83,
+  "risk_pct": 0.56,
+  "quote_to_usd": 0.701615,
+  "created_at": "2026-10-23T06:31:32-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-23T15:48:07-04:00",
+  "loan_usd": 642.5,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "104",
+  "status": "pending",
+  "notes": [
+   "2026-10-23T06:31 entry order placed"
+  ]
  }
 ]

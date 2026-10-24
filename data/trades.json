@@ -2762,10 +2762,11 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "72eed128-913b-4236-a471-15e479fea55e",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-19T17:02 entry order placed",
-   "2026-10-19T20:18 filled 7107.07 @ 0.217367"
+   "2026-10-19T20:18 filled 7107.07 @ 0.217367",
+   "2026-10-24T12:57 closed at 0.20217: stopped out, P&L $-108.01"
   ],
   "fee_usd": 3.87,
   "entry_price": 0.217367,
@@ -2775,7 +2776,20 @@
   "stop_order_id": "f78be9eb-ed5a-46a0-9045-2e8520470e99",
   "last_price": 0.20721,
   "max_r": 0.72,
-  "min_r": -0.68
+  "min_r": -0.68,
+  "exit_fee_usd": 3.59,
+  "exit_price": 0.20217,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-24T12:57:16-04:00",
+  "pnl_usd": -108.01,
+  "r_result": -1.02,
+  "interest_usd": 1.59,
+  "pnl_after_interest": -109.6,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "ADA kept sliding below the 20\u2011day low, breaching the stop at 0.2024 and closing at 0.20217, so the anticipated bounce never materialized and the trade was stopped out.",
+   "lesson": "In risk\u2011off, high\u2011volatility environments, require extra confirmation beyond oversold signals before taking mean\u2011reversion positions."
+  }
  },
  {
   "id": "2026-10-19-quant-1548-WMT",
@@ -3171,10 +3185,11 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "f095cc77-9882-4d3a-95ae-27baf34ef9f3",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-20T18:18 entry order placed",
-   "2026-10-21T11:27 filled 158.734 @ 7.35"
+   "2026-10-21T11:27 filled 158.734 @ 7.35",
+   "2026-10-24T12:57 closed at 6.674035723: stopped out, P&L $-107.30"
   ],
   "fee_usd": 1.75,
   "entry_price": 7.35,
@@ -3184,7 +3199,20 @@
   "stop_order_id": "1fd7853e-aea6-4325-baf5-f120deea9356",
   "last_price": 6.811,
   "max_r": 0.41,
-  "min_r": -0.83
+  "min_r": -0.83,
+  "exit_fee_usd": 2.65,
+  "exit_price": 6.674035723,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-24T12:57:16-04:00",
+  "pnl_usd": -107.3,
+  "r_result": -1.04,
+  "interest_usd": 0.78,
+  "pnl_after_interest": -108.08,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "UNI kept sliding through the 20\u2011day low, breaching the stop at 6.70 and closing at 6.674, resulting in a -1.04R loss. The expected mean\u2011reversion bounce never materialized.",
+   "lesson": "In low\u2011volume, down\u2011trending crypto setups, require extra confirmation (e.g., volume surge or higher\u2011timeframe support) before entering a pull\u2011back trade, and size stops conservatively to avoid being stopped out by a weak support break."
+  }
  },
  {
   "id": "2026-10-21-morning-CRWV",

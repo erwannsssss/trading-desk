@@ -2367,19 +2367,30 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "78",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-18T23:09 entry order placed",
-   "2026-10-18T23:39 filled 23080 @ 0.82431"
+   "2026-10-18T23:39 filled 23080 @ 0.82431",
+   "2026-10-26T02:59 closed at 0.82401: time stop (1-5 days), P&L $-8.49"
   ],
   "oanda_trade_id": "79",
   "entry_price": 0.82431,
   "filled_qty": 23080.0,
   "filled_qty_initial": 23080.0,
   "opened_at": "2026-10-18T23:39:51-04:00",
-  "last_price": 0.824025,
+  "last_price": 0.824085,
   "max_r": 0.41,
-  "min_r": -0.67
+  "min_r": -0.67,
+  "exit_price": 0.82401,
+  "exit_reason": "time stop (1-5 days)",
+  "closed_at": "2026-10-26T02:59:44-04:00",
+  "pnl_usd": -8.49,
+  "r_result": -0.05,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "After entry the pair failed to rebound and drifted slightly lower, never reaching the projected mean\u2011reversion target. The trade was closed by the time\u2011stop, resulting in a small loss of \u20130.05R.",
+   "lesson": "When trading pullback reversals, confirm that macro risk\u2011off conditions aren\u2019t dominant; otherwise tighten the time horizon or add a conditional exit if the market stays flat."
+  }
  },
  {
   "id": "2026-10-18-overnight-2243-NZD_USD",
@@ -3043,7 +3054,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.5699449999999999,
+  "last_price": 0.56991,
   "max_r": 0.1,
   "min_r": -0.31
  },
@@ -3529,7 +3540,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.8383750000000001,
+  "last_price": 0.8387,
   "max_r": 0.65,
   "min_r": -0.05
  },

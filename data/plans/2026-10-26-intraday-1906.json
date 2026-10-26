@@ -1,0 +1,904 @@
+{
+ "earnings_season": true,
+ "date": "2026-10-26",
+ "session": "intraday",
+ "created_at": "2026-10-26T19:06:58-04:00",
+ "dry_run": false,
+ "equity": 8657.3,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "breakouts",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "mean reversion",
+    "crypto"
+   ]
+  },
+  "favored": [
+   "XLE",
+   "XLU",
+   "KRE",
+   "USO"
+  ],
+  "avoid": [
+   "GLD",
+   "SLV",
+   "URA",
+   "XLC"
+  ],
+  "key_events": [
+   "Durable goods on 2026-10-27",
+   "Fed rate decision (FOMC) on 2026-10-28",
+   "GDP on 2026-10-29",
+   "PCE inflation / spending on 2026-10-29",
+   "Weekly jobless claims on 2026-10-29"
+  ],
+  "overnight_read": "The VIX is sitting at 18.22 with a normal calm term structure of 0.92, while broader markets show mixed signals with leading 20-day sectors concentrated in energy (XLE +12.1%) and utilities (XLU +8.5%). Crypto sentiment remains neutral with a Fear & Greed index of 50, indicating quiet consolidation ahead of major macro catalysts.",
+  "summary": "We are operating in a choppy, range-bound regime ahead of a heavy data calendar featuring the FOMC rate decision and GDP releases. Risk appetite is set at a moderate 65, focusing capital on leading defensive and commodity sectors like XLE and XLU while avoiding lagging tech and precious metals. We will maintain standard bucket weights and utilize momentum and macro positioning to navigate the upcoming volatility."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.75",
+    "date": "2026-09-01"
+   },
+   "10-year Treasury yield": {
+    "value": "5",
+    "date": "2026-10-23"
+   },
+   "2-year Treasury yield": {
+    "value": "4.69",
+    "date": "2026-10-23"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.2",
+    "date": "2026-09-01"
+   },
+   "VIX (fear index)": {
+    "value": "19.45",
+    "date": "2026-10-23"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.32",
+    "date": "2026-10-26"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.38",
+    "date": "2026-10-23"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.34",
+    "date": "2026-10-26"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.3202",
+    "date": "2026-10-23"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.49600",
+    "date": "2026-10-16"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-10-27",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-10-28",
+    "event": "Fed rate decision (FOMC)"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "GDP"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "PCE inflation / spending"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-11-05",
+    "event": "Weekly jobless claims"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 81.82,
+    "ret_1d": -0.21,
+    "ret_5d": -0.6,
+    "ret_20d": -8.32,
+    "rsi14": 40.95205,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -13.71,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 39.39,
+    "ret_1d": 0.84,
+    "ret_5d": -0.45,
+    "ret_20d": -0.73,
+    "rsi14": 47.437851,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.13,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 522.92,
+    "ret_1d": 0.3,
+    "ret_5d": 0.77,
+    "ret_20d": 1.75,
+    "rsi14": 54.511463,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.04,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 61.79,
+    "ret_1d": -0.35,
+    "ret_5d": -2.4,
+    "ret_20d": -8.05,
+    "rsi14": 31.554803,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -13.66,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 102.915,
+    "ret_1d": 0.28,
+    "ret_5d": 0.04,
+    "ret_20d": -2.02,
+    "rsi14": 43.45155,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.49,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 41.235,
+    "ret_1d": 0.72,
+    "ret_5d": 0.48,
+    "ret_20d": -2.12,
+    "rsi14": 45.640326,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.06,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 94.27,
+    "ret_1d": 0.18,
+    "ret_5d": -0.76,
+    "ret_20d": -2.64,
+    "rsi14": 38.53131,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.71,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 75.28,
+    "ret_1d": 0.03,
+    "ret_5d": -0.11,
+    "ret_20d": 4.02,
+    "rsi14": 58.1176,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.45,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 34.1,
+    "ret_1d": -19.93,
+    "ret_5d": -18.67,
+    "ret_20d": -5.83,
+    "rsi14": 29.884398,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -22.32,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 32.48,
+    "ret_1d": 0.53,
+    "ret_5d": -3.13,
+    "ret_20d": -4.95,
+    "rsi14": 34.5094,
+    "trend": "downtrend",
+    "pct_from_52w_high": -20.51,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 367.84,
+    "ret_1d": 0.34,
+    "ret_5d": -3.12,
+    "ret_20d": -2.66,
+    "rsi14": 35.657399,
+    "trend": "downtrend",
+    "pct_from_52w_high": -27.83,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.185,
+    "ret_1d": 0.18,
+    "ret_5d": 0.46,
+    "ret_20d": -0.02,
+    "rsi14": 46.466571,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -2.52,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.11,
+    "ret_1d": 0.07,
+    "ret_5d": 1.14,
+    "ret_20d": 2.12,
+    "rsi14": 62.653068,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.57,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 46.6,
+    "ret_1d": 0.3,
+    "ret_5d": -1.69,
+    "ret_20d": -1.04,
+    "rsi14": 43.163305,
+    "trend": "downtrend",
+    "pct_from_52w_high": -15.43,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 89.89,
+    "ret_1d": -0.75,
+    "ret_5d": 5.83,
+    "ret_20d": 1.28,
+    "rsi14": 55.232519,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -21.07,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 276.78,
+    "ret_1d": 0.37,
+    "ret_5d": 2.03,
+    "ret_20d": -1.16,
+    "rsi14": 45.401798,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.07,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 72.7,
+    "ret_1d": 0.33,
+    "ret_5d": 4.97,
+    "ret_20d": 3.05,
+    "rsi14": 60.750731,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.69,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 23.205,
+    "ret_1d": 0.28,
+    "ret_5d": -4.43,
+    "ret_20d": -5.9,
+    "rsi14": 32.904617,
+    "trend": "downtrend",
+    "pct_from_52w_high": -40.82,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 25.84,
+    "ret_1d": -1.11,
+    "ret_5d": 0.94,
+    "ret_20d": 3.73,
+    "rsi14": 58.670641,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -21.29,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 712.42,
+    "ret_1d": 1.14,
+    "ret_5d": -0.83,
+    "ret_20d": -3.27,
+    "rsi14": 41.935451,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.61,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 217.31,
+    "ret_1d": 0.36,
+    "ret_5d": 1.83,
+    "ret_20d": 3.61,
+    "rsi14": 60.070727,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.38,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.43,
+    "ret_1d": -0.7,
+    "ret_5d": 0.34,
+    "ret_20d": 0.53,
+    "rsi14": 54.66559,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.7,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 48.67,
+    "ret_1d": -0.1,
+    "ret_5d": -5.57,
+    "ret_20d": -11.43,
+    "rsi14": 31.271166,
+    "trend": "downtrend",
+    "pct_from_52w_high": -55.69,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 541.56,
+    "ret_1d": 2.72,
+    "ret_5d": -1.26,
+    "ret_20d": -9.74,
+    "rsi14": 39.74466,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -19.39,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 765.225,
+    "ret_1d": 0.69,
+    "ret_5d": -0.16,
+    "ret_20d": -0.05,
+    "rsi14": 47.429437,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -2.1,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 40.71,
+    "ret_1d": -0.88,
+    "ret_5d": -1.45,
+    "ret_20d": -5.33,
+    "rsi14": 34.998518,
+    "trend": "downtrend",
+    "pct_from_52w_high": -46.15,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 81.685,
+    "ret_1d": 0.42,
+    "ret_5d": 2.8,
+    "ret_20d": 4.31,
+    "rsi14": 65.295351,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.31,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 9.57,
+    "ret_1d": -0.1,
+    "ret_5d": -8.51,
+    "ret_20d": -11.31,
+    "rsi14": 34.399511,
+    "trend": "downtrend",
+    "pct_from_52w_high": -43.79,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 34.36,
+    "ret_1d": 0.73,
+    "ret_5d": -2.58,
+    "ret_20d": -14.38,
+    "rsi14": 30.185067,
+    "trend": "downtrend",
+    "pct_from_52w_high": -44.83,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 166.26,
+    "ret_1d": -1.93,
+    "ret_5d": 3.39,
+    "ret_20d": 10.83,
+    "rsi14": 66.320834,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.18,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.02,
+    "ret_1d": 0.21,
+    "ret_5d": 0.07,
+    "ret_20d": 1.11,
+    "rsi14": 60.247155,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.77,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 150.51,
+    "ret_1d": 0.65,
+    "ret_5d": 1.79,
+    "ret_20d": -3.9,
+    "rsi14": 46.770398,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.41,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 51.4,
+    "ret_1d": 0.18,
+    "ret_5d": 0.88,
+    "ret_20d": 3.9,
+    "rsi14": 60.821159,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.71,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 103.845,
+    "ret_1d": -1.58,
+    "ret_5d": -5.67,
+    "ret_20d": -6.6,
+    "rsi14": 29.751092,
+    "trend": "downtrend",
+    "pct_from_52w_high": -12.97,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 69.64,
+    "ret_1d": 0.45,
+    "ret_5d": 2.71,
+    "ret_20d": 12.14,
+    "rsi14": 70.79087,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.31,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 56.04,
+    "ret_1d": 0.25,
+    "ret_5d": 1.78,
+    "ret_20d": 3.41,
+    "rsi14": 56.433688,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.02,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 166.96,
+    "ret_1d": 1.42,
+    "ret_5d": 0.17,
+    "ret_20d": -1.08,
+    "rsi14": 44.176581,
+    "trend": "downtrend",
+    "pct_from_52w_high": -11.04,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 186.33,
+    "ret_1d": 1.69,
+    "ret_5d": 0.2,
+    "ret_20d": -4.22,
+    "rsi14": 43.929567,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.32,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 87.99,
+    "ret_1d": -0.31,
+    "ret_5d": 0.89,
+    "ret_20d": 6.94,
+    "rsi14": 62.889981,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.22,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 42.79,
+    "ret_1d": 0.52,
+    "ret_5d": 2.69,
+    "ret_20d": 3.48,
+    "rsi14": 58.283094,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.12,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 42.565,
+    "ret_1d": 0.01,
+    "ret_5d": 2.91,
+    "ret_20d": 8.45,
+    "rsi14": 60.514145,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.55,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 179.29,
+    "ret_1d": 0.01,
+    "ret_5d": 2.07,
+    "ret_20d": 4.69,
+    "rsi14": 64.191546,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.62,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 114.27,
+    "ret_1d": 1.03,
+    "ret_5d": -0.17,
+    "ret_20d": 4.83,
+    "rsi14": 55.496631,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.02,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "SBUX",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 102.705,
+   "why_scanned": [
+    "earnings on 2026-10-29 (amc)",
+    "earnings 2026-10-29"
+   ],
+   "setups": [
+    "breakout above 20-day high"
+   ],
+   "atr_pct": 2.3,
+   "specialists": {
+    "technical": {
+     "score": 7,
+     "points": [
+      "price above SMA20 (102.705>96.0365)",
+      "breakout above 20\u2011day high (price 102.705>high_20 102.2)",
+      "RSI 65 indicating strong momentum"
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "PE 57.96 very high vs sector",
+      "EPS growth -24.99% YoY",
+      "ROE 115.68% strong but debt/equity 8.07 moderate"
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "BofA lowered price target to $136 (still buy)",
+      "put\u2011call volume ratio 1.71 (more puts)",
+      "short volume 61.7% (unusual selling pressure)"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "insider sells 4 trades worth $685,935",
+      "institutions own 86.9% (stable)",
+      "short interest only 4.1% (low)"
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "earnings AMC 2026\u201110\u201129 expected EPS 0.7303",
+      "past earnings: +26% surprise Q2, +14% Q1, -9.5% Q4",
+      "risk of gap around earnings",
+      "BofA maintains Buy rating"
+     ]
+    },
+    "best_style": "earnings play",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: -0.2% expected over 5 days, 50% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Momentum and breakout suggest price can continue higher toward analyst target $110.17, especially if earnings beat expectations.",
+    "catalysts": [
+     "breakout above 20\u2011day high",
+     "historical earnings beats",
+     "institutional ownership"
+    ]
+   },
+   "bear": {
+    "case": "Valuation is stretched (PE ~58), recent insider selling and heavy put\u2011call bias signal downside risk, plus earnings could miss and cause a gap.",
+    "risks": [
+     "high PE",
+     "insider sell activity",
+     "put\u2011call ratio 1.71 indicating bearish bets",
+     "potential earnings miss"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If SBUX drops sharply after earnings miss, the put position could be stopped out by a rapid move above the stop, or the call could be wiped out by a gap down, erasing the premium paid.",
+     "failure_more_likely": false
+    },
+    "decision": "pass",
+    "reason": "Both bullish and bearish signals are mixed and the expected value of any short\u2011term trade is near zero; with a choppy regime and an earnings event, the desk prefers to stay out rather than take a low\u2011conviction bet.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "",
+    "horizon": "",
+    "thesis": "No trade is taken on SBUX at this time; the upside potential is limited by a high valuation and the downside risk from an earnings gap outweighs the modest bullish momentum.",
+    "invalidation": "If SBUX breaks decisively above $108 with volume confirming, a long call could be reconsidered.",
+    "plain_english": "We decided not to trade Starbucks right now. The stock is near its recent high and looks a bit expensive, while the upcoming earnings could cause a big move either way. Because the chances of winning are not clearly better than losing, we stay in cash until the picture becomes clearer.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 102.705
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 96.0365
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 65.224137
+     },
+     {
+      "fact": "fundamentals.pe_ratio",
+      "value": 57.957
+     },
+     {
+      "fact": "options_market.put_call_volume_ratio",
+      "value": 1.71
+     },
+     {
+      "fact": "upcoming_earnings.date",
+      "value": "2026-10-29"
+     }
+    ],
+    "base_win_pct": 14,
+    "base_trades": 7
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'upcoming_earnings.date', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "INTC",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.8-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your curre"
+  },
+  {
+   "symbol": "PBR",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "'str' object has no attribute 'get'"
+  },
+  {
+   "symbol": "AMZN",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:qwen/qwen3.8-27b: Groq error 413: {\"error\":{\"message\":\"Request too large for model `qwen/qwen3.8-27b` in organization `org_01m50794gmebsrgzvym9p211h9` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Requested 8685, pl\ngroq:openai/gpt-oss-20b: Groq error 40"
+  },
+  {
+   "symbol": "F",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:qwen/qwen3.8-27b: Groq error 400: {\"error\":{\"message\":\"Failed to generate JSON. Please adjust your prompt. See 'failed_generation' for more details.\",\"type\":\"invalid_request_error\",\"code\":\"json_validate_failed\",\"failed_generation\":\"ma\ngemini-3.5-flash-lite: answer was miss"
+  },
+  {
+   "symbol": "LTC/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.5-flash-lite: Expecting value: line 50 column 5 (char 2214)"
+  },
+  {
+   "symbol": "CAD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 112.38,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 0.61,
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "Price (112.38) is testing the 50-day SMA (112.38) from above, acting as immediate resistance.",
+      "RSI at 56.25 suggests mild bullish momentum but not overbought, leaving room for upside.",
+      "20-day SMA (111.53) is below current price, providing a clear support level for a trend pullback setup.",
+      "ATR is 0.68, indicating moderate volatility suitable for a 1-5 day swing trade."
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "Goldman Sachs notes AI buildout adds to US core PCE, supporting a hawkish Fed stance which is negative for JPY (carry trade fuel) but positive for CAD (commodity link).",
+      "Interest rate gap favors USD/CAD and USD/JPY, but CAD_JPY is a cross; the net effect depends on relative strength of BoJ vs BoC.",
+      "No specific earnings or fundamental catalysts for CAD or JPY in the immediate term beyond macro data."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Market regime is choppy/range-bound with risk appetite at 65, favoring tactical moves over sustained trends.",
+      "Key events include FOMC on 2026-10-28 and GDP on 2026-10-29, creating potential volatility spikes.",
+      "News on AI and inflation supports a 'higher for longer' rate environment, which typically pressures JPY."
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "CAD speculators are net short (-19.5% of OI) at the 79th percentile, indicating a crowded short position that could reverse if CAD strengthens.",
+      "JPY speculators are net long (18.4% of OI) at the 72nd percentile, suggesting some bullish positioning in JPY that could be unwound.",
+      "The divergence in positioning suggests a potential squeeze if CAD breaks higher or JPY breaks lower."
+     ]
+    },
+    "fx_desk": {
+     "score": 6,
+     "points": [
+      "Interest rate gap: Fed hawkishness (AI/PCE) vs BoJ cautious stance favors USD, but CAD benefits from commodity strength (XLE favored).",
+      "Carry trade: JPY is the funding currency; if USD/JPY rises, CAD/JPY may follow if CAD holds firm.",
+      "Session: Asian and London sessions typically drive CAD/JPY moves; US data (FOMC) will be critical.",
+      "Key levels: 112.50 (psychological), 111.50 (20-day SMA), 110.00 (20-day low)."
+     ]
+    },
+    "best_style": "trend pullback",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: +0.0% expected over 5 days, 55% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "CAD is supported by commodity strength (XLE favored) and a crowded short position among speculators. JPY is under pressure from the hawkish Fed narrative, and the pair is testing the 50-day SMA, which could act as a springboard for a move back to the 20-day high.",
+    "catalysts": [
+     "FOMC decision on 2026-10-28",
+     "GDP release on 2026-10-29",
+     "Commodity strength in energy sector"
+    ]
+   },
+   "bear": {
+    "case": "The pair is in a choppy regime, and the 50-day SMA is acting as resistance. If the FOMC is less hawkish than expected, JPY could rally, pushing CAD/JPY lower. The 20-day SMA is below, but a break below 111.50 would signal weakness.",
+    "risks": [
+     "FOMC dovish surprise",
+     "Commodity price drop",
+     "Break below 20-day SMA"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The FOMC is less hawkish than expected, causing JPY to rally and CAD to weaken. The pair breaks below the 20-day SMA (111.53) and continues to fall to 110.00, hitting the stop.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "CAD is supported by commodity strength and a crowded short position, while JPY is under pressure from hawkish Fed expectations. The pair is at a key technical level (50-day SMA) with a clear support below (20-day SMA).",
+    "bucket": "tactical",
+    "style": "trend pullback",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 112.38,
+    "stop": 111.5,
+    "target": 113.5,
+    "conviction": 6,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base rate for trend pullback is 25% win rate, but the crowded short in CAD and hawkish Fed narrative improve the odds to 55%.",
+    "horizon": "1-5 days",
+    "thesis": "CAD/JPY is set to rally as CAD benefits from commodity strength and a crowded short position, while JPY is pressured by hawkish Fed expectations. The pair is testing the 50-day SMA, which could act as a springboard for a move to 113.50.",
+    "invalidation": "A break below 111.50 (20-day SMA) would invalidate the bullish thesis.",
+    "plain_english": "We are betting that the Canadian dollar will strengthen against the Japanese yen. The Canadian dollar is supported by strong energy prices, and many traders are currently betting against it, which could lead to a sudden rally. The Japanese yen is under pressure because the US Federal Reserve is expected to keep interest rates high. We will buy the pair at 112.38 and sell if it drops to 111.50 or rises to 113.50.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 112.38
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 111.52525
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 112.37638
+     },
+     {
+      "fact": "futures_positioning.CAD.spec_net_pct_of_open_interest",
+      "value": -19.5
+     },
+     {
+      "fact": "futures_positioning.JPY.spec_net_pct_of_open_interest",
+      "value": 18.4
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 0.680662
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.8,
+     "holding_days": 5,
+     "reached_pct": 16.0,
+     "windows": 495
+    },
+    "base_win_pct": 25,
+    "base_trades": 8,
+    "reward_to_risk": 1.27,
+    "confidence_used_pct": 41.7,
+    "expected_r": -0.05
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 6,
+    "problems": [
+     "negative expected value (-0.05R: 41.7% to make 1.27x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": -0.14,
+    "model_expected_r": -0.48,
+    "target_first_pct": 20,
+    "stop_first_pct": 70,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "EUR_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:qwen/qwen3.8-27b: Groq error 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m50794gmebsrgzvym9p211h9` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 4140, Reques"
+  }
+ ],
+ "ai_calls": 4,
+ "ai_attempts": 35,
+ "minutes": 12.5
+}

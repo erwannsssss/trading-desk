@@ -1,0 +1,1370 @@
+{
+ "earnings_season": true,
+ "date": "2026-10-27",
+ "session": "intraday",
+ "created_at": "2026-10-27T18:53:06-04:00",
+ "dry_run": false,
+ "equity": 8780.61,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "mean reversion",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "aggressive breakouts",
+    "chasing extended crypto momentum"
+   ]
+  },
+  "favored": [
+   "XLE",
+   "XLU",
+   "UUP",
+   "KRE"
+  ],
+  "avoid": [
+   "XLC",
+   "SMH",
+   "SLV"
+  ],
+  "key_events": [
+   "Durable goods on 2026-10-27",
+   "Fed rate decision (FOMC) on 2026-10-28",
+   "GDP on 2026-10-29",
+   "PCE inflation / spending on 2026-10-29",
+   "Weekly jobless claims on 2026-10-29"
+  ],
+  "overnight_read": "U.S. stocks mostly rose on Tuesday with the S&P 500 up 0.5% and Nasdaq up 1.1%, while crude oil moved lower by 1.5% and the Dollar index held firm near 121.32. Crypto sentiment remains neutral with Fear & Greed at 48, while upcoming FOMC and GDP data later this week are keeping overall market positioning cautious.",
+  "summary": "We are operating in a choppy, range-bound regime with a risk appetite of 65 ahead of a heavy macro calendar featuring the FOMC rate decision and GDP prints. We favor defensive and leading 20-day sectors like XLE, XLU, and KRE while avoiding lagging tech and communications names like SMH and XLC. Keep bucket weights at 50% core, 35% tactical, and 15% high-risk, focusing on mean reversion and strict risk management."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.75",
+    "date": "2026-09-01"
+   },
+   "10-year Treasury yield": {
+    "value": "5",
+    "date": "2026-10-26"
+   },
+   "2-year Treasury yield": {
+    "value": "4.68",
+    "date": "2026-10-26"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.2",
+    "date": "2026-09-01"
+   },
+   "VIX (fear index)": {
+    "value": "18.39",
+    "date": "2026-10-26"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.29",
+    "date": "2026-10-27"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.3",
+    "date": "2026-10-26"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.35",
+    "date": "2026-10-27"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.3202",
+    "date": "2026-10-23"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.49600",
+    "date": "2026-10-16"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-10-27",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-10-28",
+    "event": "Fed rate decision (FOMC)"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "GDP"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "PCE inflation / spending"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-11-05",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-06",
+    "event": "Jobs report"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 84.62,
+    "ret_1d": 3.4,
+    "ret_5d": 1.44,
+    "ret_20d": -5.4,
+    "rsi14": 48.163065,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -10.76,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 40.05,
+    "ret_1d": 1.68,
+    "ret_5d": 0.75,
+    "ret_20d": 0.3,
+    "rsi14": 53.354829,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.54,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 523.22,
+    "ret_1d": 0.05,
+    "ret_5d": -0.22,
+    "ret_20d": 2.04,
+    "rsi14": 54.885758,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.98,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 62.51,
+    "ret_1d": 1.12,
+    "ret_5d": -1.28,
+    "ret_20d": -7.26,
+    "rsi14": 36.687059,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.66,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 103.57,
+    "ret_1d": 0.64,
+    "ret_5d": -0.12,
+    "ret_20d": -0.93,
+    "rsi14": 47.718497,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.89,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 41.52,
+    "ret_1d": 0.68,
+    "ret_5d": 0.22,
+    "ret_20d": -0.91,
+    "rsi14": 49.145011,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.42,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 95.21,
+    "ret_1d": 0.99,
+    "ret_5d": -0.23,
+    "ret_20d": -1.35,
+    "rsi14": 44.701972,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.77,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 75,
+    "ret_1d": -0.4,
+    "ret_5d": -0.66,
+    "ret_20d": 4.09,
+    "rsi14": 56.017224,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.8,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 34.38,
+    "ret_1d": 0.67,
+    "ret_5d": -19.93,
+    "ret_20d": -5.73,
+    "rsi14": 31.018911,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -21.69,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 32.49,
+    "ret_1d": -0.06,
+    "ret_5d": -3.04,
+    "ret_20d": -4.05,
+    "rsi14": 34.795383,
+    "trend": "downtrend",
+    "pct_from_52w_high": -20.48,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 372.305,
+    "ret_1d": 1.22,
+    "ret_5d": -1.42,
+    "ret_20d": -2.76,
+    "rsi14": 41.129212,
+    "trend": "downtrend",
+    "pct_from_52w_high": -26.96,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.6,
+    "ret_1d": 0.52,
+    "ret_5d": 1.0,
+    "ret_20d": 0.75,
+    "rsi14": 56.677078,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.0,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.05,
+    "ret_1d": -0.08,
+    "ret_5d": 0.89,
+    "ret_20d": 2.14,
+    "rsi14": 61.44318,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.63,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 46.745,
+    "ret_1d": 0.33,
+    "ret_5d": -2.17,
+    "ret_20d": -0.42,
+    "rsi14": 44.741634,
+    "trend": "downtrend",
+    "pct_from_52w_high": -15.16,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 90.42,
+    "ret_1d": 0.61,
+    "ret_5d": 3.55,
+    "ret_20d": 2.31,
+    "rsi14": 56.482973,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -20.61,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 280.17,
+    "ret_1d": 1.15,
+    "ret_5d": 1.59,
+    "ret_20d": 0.42,
+    "rsi14": 51.92918,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.95,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 72.565,
+    "ret_1d": -0.23,
+    "ret_5d": 2.75,
+    "ret_20d": 3.92,
+    "rsi14": 59.647421,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.86,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 23.13,
+    "ret_1d": -0.3,
+    "ret_5d": -5.01,
+    "ret_20d": -5.09,
+    "rsi14": 32.148109,
+    "trend": "downtrend",
+    "pct_from_52w_high": -41.01,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 25.53,
+    "ret_1d": -1.24,
+    "ret_5d": -0.47,
+    "ret_20d": 2.7,
+    "rsi14": 53.356606,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -22.24,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 720.77,
+    "ret_1d": 1.2,
+    "ret_5d": 0.44,
+    "ret_20d": -2.33,
+    "rsi14": 46.955315,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.52,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 217.49,
+    "ret_1d": 0.09,
+    "ret_5d": 0.76,
+    "ret_20d": 3.81,
+    "rsi14": 60.527196,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.3,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.245,
+    "ret_1d": -0.57,
+    "ret_5d": 0.02,
+    "ret_20d": -0.17,
+    "rsi14": 50.687558,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.18,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 49.11,
+    "ret_1d": 0.92,
+    "ret_5d": -5.78,
+    "ret_20d": -11.48,
+    "rsi14": 33.588878,
+    "trend": "downtrend",
+    "pct_from_52w_high": -55.29,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 557.77,
+    "ret_1d": 2.98,
+    "ret_5d": 2.09,
+    "ret_20d": -8.1,
+    "rsi14": 45.991565,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.98,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 769.58,
+    "ret_1d": 0.55,
+    "ret_5d": 0.07,
+    "ret_20d": 0.7,
+    "rsi14": 51.254646,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.54,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 42.025,
+    "ret_1d": 3.1,
+    "ret_5d": 0.66,
+    "ret_20d": -3.24,
+    "rsi14": 43.061049,
+    "trend": "downtrend",
+    "pct_from_52w_high": -44.41,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 81.56,
+    "ret_1d": -0.15,
+    "ret_5d": 1.78,
+    "ret_20d": 4.67,
+    "rsi14": 64.013185,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.45,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 9.65,
+    "ret_1d": 0.94,
+    "ret_5d": -8.1,
+    "ret_20d": -6.76,
+    "rsi14": 36.298066,
+    "trend": "downtrend",
+    "pct_from_52w_high": -43.32,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 35.87,
+    "ret_1d": 4.39,
+    "ret_5d": 1.96,
+    "ret_20d": -10.41,
+    "rsi14": 39.92204,
+    "trend": "downtrend",
+    "pct_from_52w_high": -42.41,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 163.625,
+    "ret_1d": -1.57,
+    "ret_5d": 1.88,
+    "ret_20d": 14.14,
+    "rsi14": 61.954605,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.73,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.11,
+    "ret_1d": 0.34,
+    "ret_5d": 0.73,
+    "ret_20d": 1.25,
+    "rsi14": 63.658921,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.46,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 154.51,
+    "ret_1d": 2.68,
+    "ret_5d": 0.83,
+    "ret_20d": -1.47,
+    "rsi14": 52.948766,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.05,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 51.805,
+    "ret_1d": 0.83,
+    "ret_5d": 1.12,
+    "ret_20d": 5.51,
+    "rsi14": 64.367083,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.96,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 103.57,
+    "ret_1d": -0.27,
+    "ret_5d": -6.01,
+    "ret_20d": -7.09,
+    "rsi14": 29.226811,
+    "trend": "downtrend",
+    "pct_from_52w_high": -13.2,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 68.23,
+    "ret_1d": -2.02,
+    "ret_5d": 0.38,
+    "ret_20d": 10.87,
+    "rsi14": 61.325598,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.33,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 55.89,
+    "ret_1d": -0.23,
+    "ret_5d": 0.31,
+    "ret_20d": 3.48,
+    "rsi14": 54.900442,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.28,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 167.94,
+    "ret_1d": 0.59,
+    "ret_5d": 0.68,
+    "ret_20d": -0.7,
+    "rsi14": 47.382069,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.52,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 189.49,
+    "ret_1d": 1.7,
+    "ret_5d": 2.18,
+    "ret_20d": -2.58,
+    "rsi14": 49.12909,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.77,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 87.17,
+    "ret_1d": -0.9,
+    "ret_5d": -0.66,
+    "ret_20d": 6.5,
+    "rsi14": 58.451154,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.13,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 42.44,
+    "ret_1d": -0.84,
+    "ret_5d": 0.14,
+    "ret_20d": 2.66,
+    "rsi14": 53.760321,
+    "trend": "downtrend",
+    "pct_from_52w_high": -7.88,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 42.855,
+    "ret_1d": 0.72,
+    "ret_5d": 2.33,
+    "ret_20d": 7.92,
+    "rsi14": 62.873626,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.94,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 179.19,
+    "ret_1d": -0.05,
+    "ret_5d": -0.35,
+    "ret_20d": 4.96,
+    "rsi14": 63.897267,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.68,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 115.445,
+    "ret_1d": 1.04,
+    "ret_5d": -0.05,
+    "ret_20d": 5.77,
+    "rsi14": 59.423116,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.08,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "KO",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 91.185,
+   "why_scanned": [
+    "earnings on 2026-10-27 (bmo)",
+    "earnings 2026-10-27"
+   ],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 1.72,
+   "specialists": {
+    "technical": {
+     "score": 7,
+     "points": [
+      "price 91.185 above sma20 90.06275",
+      "trend uptrend",
+      "rsi14 53.24 neutral",
+      "atr14 1.570312 (~1.7% of price)"
+     ]
+    },
+    "fundamental": {
+     "score": 7,
+     "points": [
+      "dividend_yield_pct 3.142% attractive",
+      "beta 0.287 low volatility",
+      "eps_growth_yoy_pct 17.61% strong",
+      "return_on_equity_pct 42.99% high"
+     ]
+    },
+    "news_sentiment": {
+     "score": 8,
+     "points": [
+      "earnings beat and outlook raised",
+      "call_put_ratio 0.65 indicates bullish options flow",
+      "news headlines positive on earnings"
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "short_pct_of_float 1.2% very low",
+      "days_to_cover 3.4 low",
+      "insiders sold $46.8M in last 90d",
+      "Berkshire Hathaway holds 10.9% of fund"
+     ]
+    },
+    "event_desk": {
+     "score": 7,
+     "points": [
+      "upcoming earnings already released bmo 2026-10-27",
+      "past eps surprises modestly positive (0.3% to 2.9%)",
+      "stock rallied on earnings beat",
+      "gap risk low after price already moved",
+      "hold through post\u2011earnings reaction rather than trade gap"
+     ]
+    },
+    "best_style": "trend pullback",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: +0.1% expected over 5 days, 55% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Coca\u2011Cola beat Q3 estimates, raised full\u2011year EPS guidance and posted upbeat commentary, pushing the price above its 20\u2011day SMA in a low\u2011beta, dividend\u2011rich stock with strong ROE. The low short\u2011interest and bullish options flow suggest demand outweighs supply.",
+    "catalysts": [
+     "earnings beat & outlook raise",
+     "dividend yield 3.14%",
+     "low beta 0.287",
+     "Berkshire large stake"
+    ]
+   },
+   "bear": {
+    "case": "The market is choppy and macro data (FOMC, GDP) loom, which could trigger profit\u2011taking in defensive names. KO trades near its 52\u2011week high and at a 27.8\u00d7 PE, leaving limited upside. Any guidance miss for 2027 or broader risk\u2011off could spark a gap down.",
+    "risks": [
+     "macro risk from upcoming Fed/GDP data",
+     "valuation premium vs peers",
+     "price near 52\u2011week high (-4.39% from high)",
+     "potential profit\u2011taking"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If broader market risk\u2011off or a weaker-than\u2011expected 2027 guidance triggers profit\u2011taking, KO could fall below its 20\u2011day SMA and hit the stop at ~89.6, resulting in a loss.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "Positive earnings surprise, raised guidance, low short interest and bullish options flow create a short\u2011term upside bias despite a choppy backdrop.",
+    "bucket": "core",
+    "style": "trend pullback",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 91.2,
+    "stop": 89.6,
+    "target": 93.0,
+    "conviction": 7,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base win rate for trend\u2011pullback setups is 46.8%; earnings beat and bullish flow add ~8% confidence, yielding ~55% probability of hitting target before stop.",
+    "horizon": "1-5 days",
+    "thesis": "KO is trading above its 20\u2011day SMA in an uptrend with a neutral RSI. The earnings beat and raised outlook provide fresh bullish momentum, while low short interest and a call\u2011biased options market support a modest upside. A target of ~93.0 (\u22482% gain) balances reward\u2011to\u2011risk above 1:1. The stop at ~89.6 (\u22481\u202fATR below entry) protects against a sudden profit\u2011taking move.",
+    "invalidation": "Price closes below the 20\u2011day SMA (90.06) or breaks the 20\u2011day low (85.13) triggering a trend reversal.",
+    "plain_english": "Coca\u2011Cola just reported better\u2011than\u2011expected earnings and raised its outlook, so the stock is likely to climb a bit more. We\u2019ll buy shares near $91.20, set a stop just below $89.60 to limit loss, and aim for a $93 price target. The trade is low\u2011risk because the stock is stable, pays a good dividend, and not many traders are short it. If the price falls below its short\u2011term average, we\u2019ll exit the trade.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 91.185
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 90.06275
+     },
+     {
+      "fact": "fundamentals.dividend_yield_pct",
+      "value": 3.142
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 1.81
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 1.2
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.04,
+     "holding_days": 5,
+     "reached_pct": 51.9,
+     "windows": 495
+    },
+    "base_win_pct": 25,
+    "base_trades": 8,
+    "reward_to_risk": 1.12,
+    "confidence_used_pct": 41.7,
+    "expected_r": -0.12
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "reward-to-risk is only 1.12",
+     "negative expected value (-0.12R: 41.7% to make 1.12x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": -0.22,
+    "model_expected_r": -0.73,
+    "target_first_pct": 10,
+    "stop_first_pct": 85,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "AMZN",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 253.145,
+   "why_scanned": [
+    "trending on Reddit (#19)",
+    "earnings on 2026-10-29 (amc)",
+    "earnings 2026-10-29"
+   ],
+   "setups": [],
+   "atr_pct": 2.53,
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "Price is trading at 253.145, hovering right near the 20-day SMA of 254.90 and 50-day SMA of 255.21 in a sideways/mixed trend.",
+      "RSI is neutral at 48.62, showing neither overbought nor oversold extremes.",
+      "Daily ATR is 6.41 (2.53%), indicating normal volatility ahead of the upcoming earnings event."
+     ]
+    },
+    "fundamental": {
+     "score": 8,
+     "points": [
+      "Strong YoY revenue growth of 15.77% and robust EPS growth of 89.71%.",
+      "Reasonable P/E ratio of 19.98 with strong profitability (net margin 17.44%, ROE 30.5%).",
+      "Massive institutional backing with top hedge funds holding significant positions (e.g., Pershing Square, Tiger Global, Coatue)."
+     ]
+    },
+    "news_sentiment": {
+     "score": 7,
+     "points": [
+      "Reddit mentions are rising (#19 rank with 25 mentions), showing growing retail interest.",
+      "Recent positive developments include Amazon Business launching Value Intelligence and enhanced AI tools, alongside Anthropic's continued compute and partnership ties.",
+      "Sentiment is generally favorable regarding AI infrastructure and cloud demand."
+     ]
+    },
+    "smart_money": {
+     "score": 7,
+     "points": [
+      "Heavy institutional ownership at 68.8% with top-tier funds holding multi-billion dollar stakes.",
+      "Short interest is extremely low at 0.9% of float with a 2.5 days-to-cover ratio, indicating no crowded short pressure but clean institutional sponsorship.",
+      "Insider selling is routine preset 10b5-1 activity, presenting no alarming signals."
+     ]
+    },
+    "event_desk": {
+     "score": 8,
+     "points": [
+      "Upcoming Q3 earnings report scheduled for 2026-10-29 (AMC) with expected EPS of 2.001 and expected revenue of $206.29B.",
+      "Historical earnings reactions show mixed surprises (Beat by 6.1% in Q2, missed slightly by -3.5% and -3.0% prior, and beat by 21.5% a year ago).",
+      "Options market prices an implied move of 7.54% for the October 30 expiry, reflecting major event risk.",
+      "Recommendation: Given the desk rule not to hold stocks through earnings unless styled as an 'earnings play', and the strong calendar catalysts, this setup qualifies precisely as an earnings play."
+     ]
+    },
+    "best_style": "earnings play",
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: +2.0% expected over 5 days, 70% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Amazon enters its Q3 earnings report with exceptional fundamental momentum, high profitability, and robust cloud/AI positioning. Top-tier hedge funds maintain massive stakes, and recent product rollouts like Value Intelligence highlight continuing innovation. With an expected EPS of 2.001 and a strong history of beating expectations when sentiment aligns, pre-earnings accumulation offers a high-reward asymmetry.",
+    "catalysts": [
+     "Q3 Earnings release on 2026-10-29 (AMC)",
+     "Strong institutional backing and AWS/AI demand signals",
+     "Robust consumer discretionary resilience heading into holiday setup"
+    ]
+   },
+   "bear": {
+    "case": "The stock is trapped in a choppy, sideways trend right below its 20-day and 50-day moving averages, while the broader macro environment is extremely cautious ahead of FOMC and GDP prints. Furthermore, options are pricing a steep 7.54% implied move, meaning any minor guidance shortfall will be severely punished and could trigger an immediate gap-down through key supports.",
+    "risks": [
+     "Choppy macro regime with upcoming FOMC rate decision creating broad market headwind",
+     "High implied move (7.54%) increases the risk of premium crush or severe gap losses",
+     "Sideways technical momentum shows lack of immediate buying pressure prior to the print"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "AMZN reports earnings on October 29 after the close, but guidance disappoints due to macro headwinds or higher AI capital expenditure concerns. The stock gaps down past the 245.14 support level, breaking our stop loss and resulting in a loss on the options premium.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "We are executing an earnings play ahead of AMZN's Q3 report on October 29. Strong fundamentals, heavy institutional backing, and an attractive options-implied asymmetry create a solid tactical trade despite choppy macro conditions.",
+    "bucket": "tactical",
+    "style": "earnings play",
+    "expression": "call_options",
+    "order_type": "limit",
+    "entry": 253.145,
+    "stop": 242.0,
+    "target": 285.0,
+    "conviction": 7,
+    "confidence_pct": 52,
+    "odds_reasoning": "Anchored on base rates for earnings plays and Kronos forecast (70% probability up over 5 days, expected move 2.05%), adjusted for options volatility and fundamental strength.",
+    "horizon": "1-4 weeks",
+    "thesis": "Amazon is well-positioned to post solid Q3 earnings and guide favorably on cloud and AI integration. By entering via call options prior to the October 29 earnings release, we limit our downside strictly to the option premium while capturing the explosive upside of a post-earnings gap. Institutional sponsorship and robust revenue growth support a strong rebound toward analyst targets.",
+    "invalidation": "AMZN underlying stock price breaches below the 242.00 level before or immediately following the earnings release, invalidating the bullish technical structure.",
+    "plain_english": "We are buying call options [contracts that give us the right to buy stock at a set price, betting on an upward move] on Amazon ahead of their earnings report on October 29. Amazon has strong revenue growth and heavy backing from major investors. By using options, we cap our maximum possible loss at the cost of the trade while positioning for a strong upside move.",
+    "evidence": [
+     {
+      "fact": "upcoming_earnings.expected_eps",
+      "value": 2.001
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 7.54
+     },
+     {
+      "fact": "fundamentals.revenue_growth_yoy_pct",
+      "value": 15.77
+     },
+     {
+      "fact": "technicals.price",
+      "value": 253.145
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 0.9
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 4.64,
+     "holding_days": 20,
+     "reached_pct": 17.9,
+     "windows": 480
+    },
+    "base_win_pct": 25,
+    "base_trades": 8,
+    "reward_to_risk": 2.86,
+    "confidence_used_pct": 40.0,
+    "expected_r": 0.54
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'upcoming_earnings.expected_eps', which isn't in the data"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.05,
+    "model_expected_r": 0.18,
+    "target_first_pct": 0,
+    "stop_first_pct": 30,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "SBUX",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 103.04,
+   "why_scanned": [
+    "earnings on 2026-10-29 (amc)",
+    "earnings 2026-10-29"
+   ],
+   "setups": [],
+   "atr_pct": 2.25,
+   "specialists": {
+    "technical": {
+     "score": 6,
+     "points": [
+      "Price is in a clear uptrend, trading above the 20-day SMA (96.42) and 50-day SMA (99.31).",
+      "RSI is at 65.9, indicating bullish momentum but not yet in extreme overbought territory (>70).",
+      "Price is 6.22% below the 52-week high of 109.88, leaving room for upside before hitting resistance.",
+      "ATR is 2.32, providing a clear measure of daily volatility for stop-loss placement."
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "EPS growth is negative (-24.99% YoY), indicating deteriorating earnings power.",
+      "Revenue growth is slowing, with the last quarter showing -1.41% YoY decline.",
+      "Valuation is high with a P/E of 58.9 and P/S of 3.05, leaving little margin for error if growth stalls.",
+      "Debt-to-equity ratio is elevated at 8.07, increasing financial risk in a rising rate environment."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "BofA lowered its price target from $143 to $136, signaling some caution despite maintaining a Buy rating.",
+      "Stock is included in a list of names with big expected earnings moves, indicating high market attention.",
+      "No major negative news headlines, but the PT cut suggests analysts are trimming expectations."
+     ]
+    },
+    "smart_money": {
+     "score": 3,
+     "points": [
+      "Insiders have sold $685,935 worth of stock in the last 90 days with zero open-market buys.",
+      "Short interest is 4.1% of float, which is normal but not negligible.",
+      "Short volume is 68.7% of total volume, well above the 40-55% normal range, indicating unusual selling pressure.",
+      "Institutional ownership is high at 86.9%, but no recent hedge fund accumulation is noted."
+     ]
+    },
+    "event_desk": {
+     "score": 7,
+     "points": [
+      "Earnings are scheduled for 2026-10-29 (AMC), which is 3 days away.",
+      "Implied move is 6.19% with an IV of 74.1%, indicating high expected volatility.",
+      "Past two quarters showed positive EPS surprises (+26.1% and +14.2%), but the two before that were misses.",
+      "Put/Call volume ratio is 1.82, suggesting more bearish positioning in options ahead of the event.",
+      "Holding through earnings is high-risk; trading the reaction or using options is preferable."
+     ]
+    },
+    "best_style": "earnings play",
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: +0.4% expected over 5 days, 50% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "SBUX is in a strong uptrend with positive momentum, and the last two earnings reports beat expectations. The stock is 6% below its 52-week high, suggesting room to run if the earnings beat continues. The implied move of 6.19% offers a defined risk/reward opportunity for a long position if the stock gaps up.",
+    "catalysts": [
+     "Earnings beat on 2026-10-29",
+     "Continued uptrend above 20-day SMA",
+     "Potential for a gap up if EPS beats expectations"
+    ]
+   },
+   "bear": {
+    "case": "SBUX has deteriorating fundamentals with negative EPS growth and slowing revenue. Insiders are selling, and short volume is unusually high at 68.7%. The put/call ratio of 1.82 suggests bearish positioning. If earnings disappoint or guidance is weak, the stock could gap down significantly, especially with an IV of 74.1%.",
+    "risks": [
+     "Earnings miss or weak guidance",
+     "High short volume indicating selling pressure",
+     "Insider selling",
+     "Valuation is high relative to growth"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails if SBUX reports an earnings miss or weak guidance on 2026-10-29, causing the stock to gap down below the stop-loss. The high short volume and put/call ratio suggest bearish positioning, which could amplify the downside move. The stop-loss is set at 1.5 ATR below entry to account for normal volatility, but a gap down could bypass the stop, resulting in a larger loss.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "SBUX is in a strong uptrend with positive momentum, and the last two earnings reports beat expectations. The implied move of 6.19% offers a defined risk/reward opportunity for a long position if the stock gaps up. The earnings play style is favored in the current market regime, and the stock is not already held or planned.",
+    "bucket": "tactical",
+    "style": "earnings play",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 103.04,
+    "stop": 99.56,
+    "target": 109.0,
+    "conviction": 6,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base rate for earnings plays is not explicitly given, but the stock has beaten expectations in the last two quarters. The implied move of 6.19% suggests a 55% chance of hitting the target before the stop, given the uptrend and positive momentum.",
+    "horizon": "1-5 days",
+    "thesis": "SBUX is in a strong uptrend with positive momentum, and the last two earnings reports beat expectations. The implied move of 6.19% offers a defined risk/reward opportunity for a long position if the stock gaps up. The earnings play style is favored in the current market regime, and the stock is not already held or planned.",
+    "invalidation": "If SBUX reports an earnings miss or weak guidance on 2026-10-29, causing the stock to gap down below the stop-loss of 99.56.",
+    "plain_english": "We are buying Starbucks stock because it has been going up and the last two earnings reports were better than expected. We think it will go up more if the next earnings report is also good. We are setting a stop-loss to limit our losses if the stock goes down, and a target to take profits if it goes up. This is a risky trade because earnings can be unpredictable, but the potential reward is worth the risk.",
+    "evidence": [
+     {
+      "fact": "technicals.trend",
+      "value": "uptrend"
+     },
+     {
+      "fact": "earnings_history[0].surprise_pct",
+      "value": 26.1
+     },
+     {
+      "fact": "earnings_history[1].surprise_pct",
+      "value": 14.2
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 6.19
+     },
+     {
+      "fact": "technicals.price",
+      "value": 103.04
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 2.320996
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 2.31,
+     "holding_days": 5,
+     "reached_pct": 15.4,
+     "windows": 495
+    },
+    "base_win_pct": 25,
+    "base_trades": 8,
+    "reward_to_risk": 1.71,
+    "confidence_used_pct": 41.7,
+    "expected_r": 0.13
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 3,
+    "problems": [
+     "cited 'technicals.trend', which isn't in the data",
+     "cited 'earnings_history[0].surprise_pct', which isn't in the data",
+     "cited 'earnings_history[1].surprise_pct', which isn't in the data"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.0,
+    "model_expected_r": 0.02,
+    "target_first_pct": 10,
+    "stop_first_pct": 25,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "LMT",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:openai/gpt-oss-120b: Groq rate limit (retry in 2540s)\ngroq:qwen/qwen3.8-27b: Groq error 429: {\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m50794gmebsrgzvym9p211h9` service tier `on_demand` on tokens per minute (TPM): Limit 800"
+  },
+  {
+   "symbol": "CAT",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:qwen/qwen3.8-27b: Groq error 413: {\"error\":{\"message\":\"Request too large for model `qwen/qwen3.8-27b` in organization `org_01m50794gmebsrgzvym9p211h9` service tier `on_demand` on input tokens per minute (ITPM): Limit 7000, Requested 7\ngroq:openai/gpt-oss-20b: Groq error 41"
+  },
+  {
+   "symbol": "MRK",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 141.84,
+   "why_scanned": [
+    "earnings on 2026-10-29 (bmo)",
+    "earnings 2026-10-29"
+   ],
+   "setups": [],
+   "atr_pct": 3.08,
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "Price (141.84) is below both the 20-day SMA (144.419) and 50-day SMA (146.523)",
+      "Trend is sideways/mixed",
+      "RSI14 is neutral at 44.82"
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "Extremely high PE ratio of 109.514",
+      "Poor EPS growth YoY of -80.7%",
+      "Strong gross margin of 77.28%"
+     ]
+    },
+    "news_sentiment": {
+     "score": 9,
+     "points": [
+      "Multiple positive Phase 3 results for Keytruda combinations in NSCLC and endometrial cancer",
+      "FDA Priority Review accepted for TroFuse-005",
+      "New partnership with HKSTP to advance innovation"
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "Bullish put/call volume ratio of 0.61",
+      "Low short interest (1.1% of float)",
+      "Strong analyst consensus with 26 buys and 0 sells"
+     ]
+    },
+    "event_desk": {
+     "score": 7,
+     "points": [
+      "Earnings on 2026-10-29 (BMO)",
+      "Consistent history of EPS surprises: 52.3%, 16.0%, 3.0%, 13.1%",
+      "Implied move of 4.36% suggests a potential gap of +/- 6.18 points"
+     ]
+    },
+    "best_style": "earnings play",
+    "kronos": {
+     "score": -2,
+     "points": [
+      "Kronos: -1.2% expected over 5 days, 30% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The stock is pulling back toward its 20-day low (138.8) despite a torrent of positive clinical trial data for Keytruda. With a strong history of earnings beats and a bullish options skew, the risk-reward is skewed to the upside ahead of the 10-29 report.",
+    "catalysts": [
+     "Earnings beat on 2026-10-29",
+     "Market absorption of positive Phase 3 cancer trial data",
+     "Mean reversion toward the 20-day SMA (144.42)"
+    ]
+   },
+   "bear": {
+    "case": "The technicals are bearish, with price trading below the 20 and 50-day SMAs. The valuation is bloated (PE 109), and the positive news may already be priced in, leaving the stock vulnerable to a 'sell the news' reaction regardless of the earnings result.",
+    "risks": [
+     "Negative EPS growth (-80.7%) becoming the focus",
+     "Kronos forecast predicting a median move of -0.97%",
+     "Failure to hold the 20-day low of 138.8"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The stock reports a beat, but the market focuses on the high PE and negative YoY EPS growth, triggering a 'sell the news' event that gaps the price below the 20-day low of 138.8.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "Strong fundamental catalyst (clinical trials) and a history of earnings surprises outweigh the short-term technical weakness. The setup offers a high R-multiple near support.",
+    "bucket": "tactical",
+    "style": "earnings play",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 140.0,
+    "stop": 136.0,
+    "target": 148.0,
+    "conviction": 6,
+    "confidence_pct": 55,
+    "odds_reasoning": "Anchored on the 4.36% implied move and the 100% win rate of the last 4 earnings surprises, offset by the bearish Kronos forecast (30% prob up).",
+    "horizon": "1-5 days",
+    "thesis": "MRK is currently undervalued relative to its recent clinical breakthroughs in oncology. The price is approaching the 20-day low (138.8), providing a low-risk entry for an earnings play. Given the historical tendency to surprise to the upside, we expect a positive reaction to the 10-29 report that pushes price back above the 20-day SMA.",
+    "invalidation": "A daily close below the 20-day low of 138.8 would suggest the clinical news has failed to provide a floor.",
+    "plain_english": "We are buying Merck shares at 140.00 because they have a history of beating earnings expectations [reporting higher profits than analysts predicted] and just released very positive news about their cancer drugs. We are betting the price will rise to 148.00 after their report on Oct 29. If the price drops to 136.00, we will sell to limit our losses.",
+    "evidence": [
+     {
+      "fact": "technicals.low_20",
+      "value": 138.8
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 4.36
+     },
+     {
+      "fact": "earnings_history.surprise_pct",
+      "value": 52.3
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 144.419
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.66,
+     "holding_days": 5,
+     "reached_pct": 30.7,
+     "windows": 495
+    },
+    "base_win_pct": 25,
+    "base_trades": 8,
+    "reward_to_risk": 2.0,
+    "confidence_used_pct": 41.7,
+    "expected_r": 0.25
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 3,
+    "problems": [
+     "cited 'earnings_history.surprise_pct', which isn't in the data"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": -0.11,
+    "model_expected_r": -0.37,
+    "target_first_pct": 5,
+    "stop_first_pct": 65,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "RENDER/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemma-4-31b-it: Gemini error 500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"status\": \"INTERNAL\"\n  }\n}\n"
+  },
+  {
+   "symbol": "AVAX/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemma-4-31b-it: Gemini error 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
+  },
+  {
+   "symbol": "LTC/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemma-4-31b-it: Gemini error 500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"status\": \"INTERNAL\"\n  }\n}\n"
+  },
+  {
+   "symbol": "USD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 157.954,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 0.57,
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "Price (157.954) is pinned exactly on the 20-day SMA (157.9732), offering a textbook support test.",
+      "RSI is neutral at 51.86, indicating no momentum exhaustion in either direction.",
+      "ATR is 0.90, providing a tight risk parameter for a 1-5 day swing.",
+      "Price is below the 200-day SMA (158.55), confirming the long-term trend is still down."
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "No specific fundamental data provided for USD/JPY beyond macro context.",
+      "Carry trade dynamics are implied by the 'macro/forex' playbook favoring UUP.",
+      "Interest rate gap is the primary fundamental driver, but specific rates are not in the dossier."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "News is generic bond issuance commentary, not specific to USD/JPY.",
+      "Market sentiment is cautious ahead of FOMC and GDP data.",
+      "No immediate catalyst for a sharp move in the pair."
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "USD speculators are net long at 30.5% of OI, up 5.5 pts weekly, at the 82nd percentile (crowded but not extreme).",
+      "JPY speculators are net long at 18.4% of OI, up 5.0 pts weekly, at the 72nd percentile.",
+      "Both currencies show increasing speculative interest, suggesting a potential squeeze or trend continuation."
+     ]
+    },
+    "fx_desk": {
+     "score": 5,
+     "points": [
+      "Interest-rate gap: Not explicitly provided, but UUP is favored, implying USD strength.",
+      "Central-bank direction: FOMC decision on 2026-10-28 is the key event.",
+      "US dollar trend: Dollar index held firm near 121.32, supporting USD.",
+      "Carry: Favorable for USD/JPY if USD rates remain higher.",
+      "Trading session: Asian and London sessions typically drive JPY moves.",
+      "Key round-number levels: 158.00 (psychological), 157.50 (50-day SMA), 159.00 (20-day high)."
+     ]
+    },
+    "best_style": "trend pullback",
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: +0.1% expected over 5 days, 70% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "USD/JPY is testing the 20-day SMA (157.97) with neutral RSI. The Kronos forecast suggests a 70% probability of an upward move, with a median move of 0.32%. The 20-day high is 158.95, providing a clear target. The trend pullback setup has a 46.8% win rate and 0.101 avg R in backtests, which is positive expected value if we can get a better risk-reward ratio.",
+    "catalysts": [
+     "FOMC decision on 2026-10-28 could strengthen USD if hawkish.",
+     "GDP data on 2026-10-29 could support USD if strong.",
+     "Speculative positioning in USD is increasing, suggesting momentum."
+    ]
+   },
+   "bear": {
+    "case": "The long-term trend is down (price below 200-day SMA). The desk's history on trend pullbacks is poor (25% win rate, -0.41 avg R). The Kronos signal strength is low (0.3), and the trust weight is only 0.2. The 20-day SMA is a weak support in a downtrend. If the FOMC is dovish, USD could weaken, breaking the 20-day SMA and targeting the 50-day SMA at 157.50.",
+    "risks": [
+     "FOMC dovish surprise could weaken USD.",
+     "Weak GDP data could reduce USD demand.",
+     "Speculative positioning in JPY is also increasing, suggesting potential JPY strength."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails because the 20-day SMA breaks, and the price drops to the 50-day SMA at 157.50. The FOMC is dovish, weakening the USD, and the speculative positioning in USD reverses. The stop is hit at 157.05, resulting in a loss of 0.90 pips.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "The setup is a trend pullback to the 20-day SMA with a positive Kronos forecast and increasing speculative positioning in USD. The risk-reward ratio is 1.5:1, and the expected value is positive.",
+    "bucket": "tactical",
+    "style": "trend pullback",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 157.95,
+    "stop": 157.05,
+    "target": 158.95,
+    "conviction": 6,
+    "confidence_pct": 50,
+    "odds_reasoning": "Base rate for trend pullbacks is 46.8% win rate. Kronos suggests 70% probability of an upward move. Adjusting for the low signal strength and trust weight, I estimate a 50% chance of hitting the target before the stop.",
+    "horizon": "1-5 days",
+    "thesis": "USD/JPY is testing the 20-day SMA with neutral RSI. The Kronos forecast suggests a 70% probability of an upward move, and the 20-day high is 158.95. The FOMC decision on 2026-10-28 could strengthen USD if hawkish. The stop is set at 157.05, below the 20-day low, and the target is at 158.95, the 20-day high.",
+    "invalidation": "Price closes below 157.05, or the FOMC is dovish and USD weakens significantly.",
+    "plain_english": "We are buying USD/JPY because it is testing a support level (20-day SMA) and the AI forecast suggests it will go up. We will sell if it drops below 157.05, and we will take profit if it reaches 158.95. This is a short-term trade that we expect to last 1-5 days.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 157.954
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 157.9732
+     },
+     {
+      "fact": "technicals.high_20",
+      "value": 158.951
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 70
+     },
+     {
+      "fact": "futures_positioning.USD.spec_net_pct_of_open_interest",
+      "value": 30.5
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.27,
+     "holding_days": 5,
+     "reached_pct": 35.6,
+     "windows": 495
+    },
+    "base_win_pct": 25,
+    "base_trades": 8,
+    "reward_to_risk": 1.11,
+    "confidence_used_pct": 38.9,
+    "expected_r": -0.18
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "reward-to-risk is only 1.11",
+     "negative expected value (-0.18R: 38.9% to make 1.11x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.01,
+    "model_expected_r": 0.05,
+    "target_first_pct": 45,
+    "stop_first_pct": 45,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  }
+ ],
+ "ai_calls": 5,
+ "ai_attempts": 36,
+ "minutes": 13.7
+}

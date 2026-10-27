@@ -3054,7 +3054,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56853,
+  "last_price": 0.56974,
   "max_r": 0.12,
   "min_r": -0.31
  },
@@ -3540,7 +3540,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.837395,
+  "last_price": 0.837295,
   "max_r": 0.65,
   "min_r": -0.05
  },
@@ -3587,7 +3587,8 @@
    "2026-10-25T12:24 emergency huddle (+0.0%): hold. Thesis unchanged and stop distance remains adequate; price action is within normal range and no news invalidates the trade.",
    "2026-10-26T10:03 emergency huddle (-0.2%): hold. Thesis remains intact; price action is noise and supportive news confirms the original outlook, so we let the plan run.",
    "2026-10-26T15:55 emergency huddle (+1.7%): hold. Thesis unchanged and price move is modest relative to normal range; positive news supports staying in the trade.",
-   "2026-10-26T19:29 emergency huddle (+0.0%): hold. Thesis remains intact; price movement is noise and stop distance is sufficient."
+   "2026-10-26T19:29 emergency huddle (+0.0%): hold. Thesis remains intact; price movement is noise and stop distance is sufficient.",
+   "2026-10-26T22:20 emergency huddle (+0.0%): hold. Thesis unchanged and price movement is within normal volatility; stop remains comfortably distant."
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
@@ -3598,7 +3599,7 @@
   "last_price": 532.54,
   "max_r": 0.78,
   "min_r": 0,
-  "last_huddle": "2026-10-26T19:29:33-04:00"
+  "last_huddle": "2026-10-26T22:20:49-04:00"
  },
  {
   "id": "2026-10-22-quant-1358-BA",
@@ -4212,10 +4213,19 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "118",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-26T19:29 entry order placed"
-  ]
+   "2026-10-26T19:29 entry order placed",
+   "2026-10-26T22:20 filled 17383 @ 1.40138"
+  ],
+  "oanda_trade_id": "119",
+  "entry_price": 1.40138,
+  "filled_qty": 17383.0,
+  "filled_qty_initial": 17383.0,
+  "opened_at": "2026-10-26T22:20:40-04:00",
+  "last_price": 1.4014199999999999,
+  "max_r": 0.01,
+  "min_r": 0
  },
  {
   "id": "2026-10-26-intraday-1648-T",
@@ -4235,6 +4245,48 @@
   "conviction": 6,
   "thesis": "T is deeply oversold and likely to rebound toward its 20\u2011day SMA (~$23). The dividend yield and low beta make it a defensive play in a choppy market, while short\u2011sale pressure could add a short\u2011cover bounce. Entry near $20.80 targets a realistic 8.5% gain to $22.50 before the next data releases.",
   "created_at": "2026-10-26T19:29:25-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-26-evening-USD_JPY",
+  "plan_file": "2026-10-26-evening.json",
+  "symbol": "USD_JPY",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "same bet: already 2 positions betting the USD goes up (NZD_USD, USD_CAD); one more would just be the same bet again",
+  "entry_plan": 157.71,
+  "initial_stop": 156.76,
+  "stop": 156.76,
+  "target": 159.61,
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 6,
+  "thesis": "We are going long USD/JPY on a pullback to its 20-day moving average. The broader dollar trend remains firm and positioning supports continued upside after minor consolidation. We manage risk with a stop placed below recent swing lows and target the upper end of the recent range.",
+  "created_at": "2026-10-26T22:20:40-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-26-evening-EUR_USD",
+  "plan_file": "2026-10-26-evening.json",
+  "symbol": "EUR_USD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "same bet: already 2 positions betting the USD goes up (NZD_USD, USD_CAD); one more would just be the same bet again",
+  "entry_plan": 1.11712,
+  "initial_stop": 1.1235,
+  "stop": 1.1235,
+  "target": 1.107,
+  "bucket": "tactical",
+  "style": "short/fade",
+  "conviction": 6,
+  "thesis": "EUR_USD remains in a persistent downtrend, trading well below its 20-day, 50-day, and 200-day moving averages. With the US Dollar index holding strong at 121.3 and speculators net short at -15.3%, momentum favors further downside toward the 1.1100 round number and 20-day low. We enter short at the current price with a stop just above the 20-day average to protect against choppy pre-Fed noise.",
+  "created_at": "2026-10-26T22:20:40-04:00",
   "pair_id": null,
   "pair_with": null
  }

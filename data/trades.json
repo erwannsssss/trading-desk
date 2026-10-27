@@ -3054,7 +3054,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.5686100000000001,
+  "last_price": 0.568215,
   "max_r": 0.12,
   "min_r": -0.31
  },
@@ -3540,7 +3540,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.836335,
+  "last_price": 0.83647,
   "max_r": 0.65,
   "min_r": -0.27
  },
@@ -3598,7 +3598,7 @@
   "opened_at": "2026-10-22T18:38:54-04:00",
   "target_order_id": "7930589a-865d-41d7-a177-58af9a899333",
   "stop_order_id": "ec9d4f59-d9fb-4693-bb51-98186d850dba",
-  "last_price": 532.42,
+  "last_price": 531.58,
   "max_r": 0.78,
   "min_r": 0,
   "last_huddle": "2026-10-27T15:32:32-04:00"
@@ -3856,8 +3856,8 @@
   "opened_at": "2026-10-23T18:29:29-04:00",
   "target_order_id": "e638e5bb-05ff-49f8-88c8-466dba25d912",
   "stop_order_id": "fa1fff1f-6760-4bce-9b7b-43ed3e51e9d5",
-  "last_price": 27.275,
-  "max_r": 1.21,
+  "last_price": 27.49,
+  "max_r": 1.33,
   "min_r": -0.64,
   "last_huddle": "2026-10-27T10:26:21-04:00",
   "stop_history": [
@@ -4252,7 +4252,7 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.405,
+  "last_price": 1.4050150000000001,
   "max_r": 0.49,
   "min_r": 0
  },
@@ -4373,10 +4373,20 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "20982e3d-3502-4628-8963-4f45191eac4f",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-27T15:32 entry order placed"
-  ]
+   "2026-10-27T15:32 entry order placed",
+   "2026-10-27T19:10 filled 23 @ 95.31087"
+  ],
+  "entry_price": 95.31087,
+  "filled_qty": 23.0,
+  "filled_qty_initial": 23.0,
+  "opened_at": "2026-10-27T19:10:45-04:00",
+  "target_order_id": "286e6fc1-2a8c-466e-a430-418d33536fc7",
+  "stop_order_id": "f67a9475-438b-4e47-b3b7-79f03db6a192",
+  "last_price": 89.96,
+  "max_r": 0,
+  "min_r": -1.11
  },
  {
   "id": "2026-10-27-morning-SNDK",
@@ -4411,10 +4421,20 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "9d1715fa-43c2-4915-9274-035129eb70c2",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-27T15:32 entry order placed"
-  ]
+   "2026-10-27T15:32 entry order placed",
+   "2026-10-27T19:10 filled 1 @ 1301.71"
+  ],
+  "entry_price": 1301.71,
+  "filled_qty": 1.0,
+  "filled_qty_initial": 1.0,
+  "opened_at": "2026-10-27T19:10:45-04:00",
+  "target_order_id": "cf5d700f-ac2b-428d-bde4-1bac72c0754d",
+  "stop_order_id": "274ba9d4-32b8-4ab6-a93f-cba0f35cfa97",
+  "last_price": 1304.935,
+  "max_r": 0.04,
+  "min_r": 0
  },
  {
   "id": "2026-10-27-morning-INTC",
@@ -4449,9 +4469,57 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "1690d7d0-5a23-4e05-b8aa-db299b859cb4",
+  "status": "open",
+  "notes": [
+   "2026-10-27T15:32 entry order placed",
+   "2026-10-27T19:10 filled 18 @ 93.57"
+  ],
+  "entry_price": 93.57,
+  "filled_qty": 18.0,
+  "filled_qty_initial": 18.0,
+  "opened_at": "2026-10-27T19:10:45-04:00",
+  "target_order_id": "c4d830a8-90f8-4f99-acb7-f6b1c0ecb5b3",
+  "stop_order_id": "b7f898e8-dad8-42cc-a89b-bbbead4ce8fa",
+  "last_price": 93.39,
+  "max_r": 0,
+  "min_r": -0.03
+ },
+ {
+  "id": "2026-10-27-intraday-1619-USD_MXN",
+  "plan_file": "2026-10-27-intraday-1619.json",
+  "symbol": "USD_MXN",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "short",
+  "bucket": "tactical",
+  "style": "short/fade",
+  "conviction": 6,
+  "confidence_pct": 45,
+  "horizon": "1-5 days",
+  "thesis": "USD_MXN is overextended near 52-week highs, and crowded USD long positioning suggests a potential reversal. The strong US dollar and potential for further USD strength ahead of FOMC could push the pair higher, but the technical setup and macro factors favor a pullback.",
+  "atr_pct": 1.08,
+  "invalidation": "If USD_MXN breaks above 18.879573, the thesis is invalid, and the trade should be exited.",
+  "entry_plan": 18.67854,
+  "initial_stop": 18.879573,
+  "stop": 18.879573,
+  "target": 18.276474,
+  "qty": 8171,
+  "notional_usd": 8171.0,
+  "risk_usd": 87.95,
+  "risk_pct": 1.0,
+  "quote_to_usd": 0.053536056534075706,
+  "created_at": "2026-10-27T19:10:45-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-28T04:19:56-04:00",
+  "loan_usd": 817.1,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "123",
   "status": "pending",
   "notes": [
-   "2026-10-27T15:32 entry order placed"
+   "2026-10-27T19:10 entry order placed"
   ]
  }
 ]

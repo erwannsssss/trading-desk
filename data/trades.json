@@ -3047,16 +3047,18 @@
   "status": "open",
   "notes": [
    "2026-10-20T15:12 entry order placed",
-   "2026-10-20T18:18 filled 22529 @ 0.56815"
+   "2026-10-20T18:18 filled 22529 @ 0.56815",
+   "2026-10-27T22:13 emergency huddle (-1.2%): hold. Price remains comfortably below the stop and invalidation level, and the move supports the original downtrend thesis."
   ],
   "oanda_trade_id": "86",
   "entry_price": 0.56815,
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.568215,
-  "max_r": 0.12,
-  "min_r": -0.31
+  "last_price": 0.56146,
+  "max_r": 0.78,
+  "min_r": -0.31,
+  "last_huddle": "2026-10-27T22:13:00-04:00"
  },
  {
   "id": "2026-10-20-morning-BRZE",
@@ -3540,9 +3542,9 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.83647,
+  "last_price": 0.8362499999999999,
   "max_r": 0.65,
-  "min_r": -0.27
+  "min_r": -0.3
  },
  {
   "id": "2026-10-22-quant-1358-MSFT",
@@ -4252,8 +4254,8 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.4050150000000001,
-  "max_r": 0.49,
+  "last_price": 1.4060199999999998,
+  "max_r": 0.63,
   "min_r": 0
  },
  {
@@ -4517,9 +4519,94 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "123",
+  "status": "open",
+  "notes": [
+   "2026-10-27T19:10 entry order placed",
+   "2026-10-27T22:12 filled 8171 @ 18.67859"
+  ],
+  "oanda_trade_id": "124",
+  "entry_price": 18.67859,
+  "filled_qty": 8171.0,
+  "filled_qty_initial": 8171.0,
+  "opened_at": "2026-10-27T22:12:43-04:00",
+  "last_price": 18.682645,
+  "max_r": 0,
+  "min_r": -0.02
+ },
+ {
+  "id": "2026-10-27-evening-BCHUSD",
+  "plan_file": "2026-10-27-evening.json",
+  "symbol": "BCH/USD",
+  "venue": "alpaca",
+  "asset": "crypto",
+  "direction": "long",
+  "bucket": "tactical",
+  "style": "trend pullback",
+  "conviction": 6,
+  "confidence_pct": 52,
+  "horizon": "1-5 days",
+  "thesis": "BCH/USD is trading above its 200-day SMA ($286.91) and 20-day SMA ($279.39), indicating a structural uptrend. The RSI is neutral at 55.45, leaving room for upside before overbought conditions. The Kronos model projects an 80% probability of an upward move over 5 days, targeting the 20-day high of $325.30. The stop-loss is placed below the 20-day SMA at $279.39, capping risk at 4.7% and offering a 2.3:1 reward-to-risk ratio.",
+  "atr_pct": 5.54,
+  "invalidation": "Price closes below the 20-day SMA ($279.39) or fails to breach the 20-day high ($325.30) within 5 days.",
+  "entry_plan": 293.1,
+  "initial_stop": 279.39,
+  "stop": 279.39,
+  "target": 325.22,
+  "qty": 7.598425,
+  "notional_usd": 2227.1,
+  "risk_usd": 104.17,
+  "risk_pct": 1.16,
+  "quote_to_usd": 1.0,
+  "created_at": "2026-10-27T22:12:43-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-28T09:35:16-04:00",
+  "loan_usd": 2227.1,
+  "loan_apr": 0.08,
+  "loan_basis": "cash",
+  "entry_order_id": "eec0339a-489c-4a6c-9831-caad4d0a5eba",
   "status": "pending",
   "notes": [
-   "2026-10-27T19:10 entry order placed"
+   "2026-10-27T22:12 entry order placed"
+  ]
+ },
+ {
+  "id": "2026-10-27-evening-EUR_JPY",
+  "plan_file": "2026-10-27-evening.json",
+  "symbol": "EUR_JPY",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "short",
+  "bucket": "tactical",
+  "style": "short/fade",
+  "conviction": 6,
+  "confidence_pct": 55,
+  "horizon": "1-5 days",
+  "thesis": "EUR/JPY is in a downtrend with USD strength supporting JPY. The pair is near 52-week low, and Kronos forecast is bearish. The setup is a short/fade on a weak currency pair.",
+  "atr_pct": 0.6,
+  "invalidation": "Price closes above 176.70 (1 ATR above entry) or breaks above SMA20 (176.99).",
+  "entry_plan": 175.642,
+  "initial_stop": 176.7,
+  "stop": 176.7,
+  "target": 174.0,
+  "qty": 13167,
+  "notional_usd": 14645.39,
+  "risk_usd": 88.19,
+  "risk_pct": 0.98,
+  "quote_to_usd": 0.006330496215945886,
+  "created_at": "2026-10-27T22:12:43-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-28T09:35:16-04:00",
+  "loan_usd": 732.27,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "127",
+  "status": "pending",
+  "notes": [
+   "2026-10-27T22:12 entry order placed"
   ]
  }
 ]

@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.561245,
+  "last_price": 0.561975,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -3542,7 +3542,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.83684,
+  "last_price": 0.837075,
   "max_r": 0.65,
   "min_r": -0.3
  },
@@ -3593,7 +3593,8 @@
    "2026-10-26T22:20 emergency huddle (+0.0%): hold. Thesis unchanged and price movement is within normal volatility; stop remains comfortably distant.",
    "2026-10-27T10:26 emergency huddle (-0.5%): hold. Thesis unchanged; price wobble is noise and stop remains comfortably distant.",
    "2026-10-27T15:32 emergency huddle (+0.5%): hold. Neither the price action nor the news materially changes the original thesis, and the stop remains comfortably distant.",
-   "2026-10-28T04:31 emergency huddle (+0.0%): hold. Thesis unchanged and stop remains at a safe distance; price movement is within normal noise levels."
+   "2026-10-28T04:31 emergency huddle (+0.0%): hold. Thesis unchanged and stop remains at a safe distance; price movement is within normal noise levels.",
+   "2026-10-28T11:26 emergency huddle (-0.6%): hold. The price move is within normal noise and the thesis and risk parameters are unchanged, so we let the original plan run."
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
@@ -3601,10 +3602,10 @@
   "opened_at": "2026-10-22T18:38:54-04:00",
   "target_order_id": "7930589a-865d-41d7-a177-58af9a899333",
   "stop_order_id": "ec9d4f59-d9fb-4693-bb51-98186d850dba",
-  "last_price": 531.58,
+  "last_price": 528.585,
   "max_r": 0.78,
   "min_r": 0,
-  "last_huddle": "2026-10-28T04:31:27-04:00"
+  "last_huddle": "2026-10-28T11:26:51-04:00"
  },
  {
   "id": "2026-10-22-quant-1358-BA",
@@ -3859,7 +3860,7 @@
   "opened_at": "2026-10-23T18:29:29-04:00",
   "target_order_id": "e638e5bb-05ff-49f8-88c8-466dba25d912",
   "stop_order_id": "fa1fff1f-6760-4bce-9b7b-43ed3e51e9d5",
-  "last_price": 27.49,
+  "last_price": 27.445,
   "max_r": 1.33,
   "min_r": -0.64,
   "last_huddle": "2026-10-27T10:26:21-04:00",
@@ -4255,7 +4256,7 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.40585,
+  "last_price": 1.404175,
   "max_r": 0.63,
   "min_r": 0
  },
@@ -4376,11 +4377,12 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "20982e3d-3502-4628-8963-4f45191eac4f",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-27T15:32 entry order placed",
    "2026-10-27T19:10 filled 23 @ 95.31087",
-   "2026-10-28T04:31 emergency huddle (+0.0%): close. Stop was hit and price is below the 200\u2011day moving\u2011average support, invalidating the bullish thesis."
+   "2026-10-28T04:31 emergency huddle (+0.0%): close. Stop was hit and price is below the 200\u2011day moving\u2011average support, invalidating the bullish thesis.",
+   "2026-10-28T11:26 closed at 90.016957: stopped out, P&L $-121.76"
   ],
   "entry_price": 95.31087,
   "filled_qty": 23.0,
@@ -4391,7 +4393,17 @@
   "last_price": 89.96,
   "max_r": 0,
   "min_r": -1.11,
-  "last_huddle": "2026-10-28T04:31:27-04:00"
+  "last_huddle": "2026-10-28T04:31:27-04:00",
+  "exit_price": 90.016957,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-28T11:26:32-04:00",
+  "pnl_usd": -121.76,
+  "r_result": -1.1,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "Robinhood\u2019s earnings missed expectations and the stock slid below the 200\u2011day moving\u2011average support, triggering the stop\u2011loss at $90.02. The bullish catalysts (partnership, call\u2011skew) failed to materialize into price upside, resulting in a -1.1R loss.",
+   "lesson": "When trading earnings plays, treat the earnings outcome as a binary risk and size stops to reflect the potential gap\u2011down; avoid relying on optionality skew alone as confirmation of upside."
+  }
  },
  {
   "id": "2026-10-27-morning-SNDK",
@@ -4429,7 +4441,8 @@
   "status": "open",
   "notes": [
    "2026-10-27T15:32 entry order placed",
-   "2026-10-27T19:10 filled 1 @ 1301.71"
+   "2026-10-27T19:10 filled 1 @ 1301.71",
+   "2026-10-28T11:26 emergency huddle (+5.6%): hold. Thesis unchanged and stop distance remains safe; no need to adjust."
   ],
   "entry_price": 1301.71,
   "filled_qty": 1.0,
@@ -4437,9 +4450,10 @@
   "opened_at": "2026-10-27T19:10:45-04:00",
   "target_order_id": "cf5d700f-ac2b-428d-bde4-1bac72c0754d",
   "stop_order_id": "274ba9d4-32b8-4ab6-a93f-cba0f35cfa97",
-  "last_price": 1304.935,
-  "max_r": 0.04,
-  "min_r": 0
+  "last_price": 1379.99,
+  "max_r": 0.9,
+  "min_r": 0,
+  "last_huddle": "2026-10-28T11:26:51-04:00"
  },
  {
   "id": "2026-10-27-morning-INTC",
@@ -4477,7 +4491,8 @@
   "status": "open",
   "notes": [
    "2026-10-27T15:32 entry order placed",
-   "2026-10-27T19:10 filled 18 @ 93.57"
+   "2026-10-27T19:10 filled 18 @ 93.57",
+   "2026-10-28T11:26 emergency huddle (+0.7%): hold. Thesis remains intact; price move is noise and stop remains well\u2011outside normal volatility, so we let the original plan run."
   ],
   "entry_price": 93.57,
   "filled_qty": 18.0,
@@ -4485,9 +4500,10 @@
   "opened_at": "2026-10-27T19:10:45-04:00",
   "target_order_id": "c4d830a8-90f8-4f99-acb7-f6b1c0ecb5b3",
   "stop_order_id": "b7f898e8-dad8-42cc-a89b-bbbead4ce8fa",
-  "last_price": 93.39,
-  "max_r": 0,
-  "min_r": -0.03
+  "last_price": 94.08,
+  "max_r": 0.08,
+  "min_r": -0.03,
+  "last_huddle": "2026-10-28T11:26:51-04:00"
  },
  {
   "id": "2026-10-27-intraday-1619-USD_MXN",
@@ -4532,7 +4548,7 @@
   "filled_qty": 8171.0,
   "filled_qty_initial": 8171.0,
   "opened_at": "2026-10-27T22:12:43-04:00",
-  "last_price": 18.65685,
+  "last_price": 18.682364999999997,
   "max_r": 0.11,
   "min_r": -0.02
  },
@@ -4580,7 +4596,7 @@
   "filled_qty_initial": 7.58702736,
   "opened_at": "2026-10-28T04:31:07-04:00",
   "stop_order_id": "544300b6-a0ca-4b9b-8c26-2c7af4dd64a3",
-  "last_price": 298.58,
+  "last_price": 294.08,
   "max_r": 0.4,
   "min_r": 0
  },
@@ -4627,8 +4643,46 @@
   "filled_qty": 13167.0,
   "filled_qty_initial": 13167.0,
   "opened_at": "2026-10-28T04:31:07-04:00",
-  "last_price": 175.4605,
+  "last_price": 176.16899999999998,
   "max_r": 0.23,
-  "min_r": 0
+  "min_r": -0.47
+ },
+ {
+  "id": "2026-10-28-overnight-0446-EUR_AUD",
+  "plan_file": "2026-10-28-overnight-0446.json",
+  "symbol": "EUR_AUD",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "short",
+  "bucket": "tactical",
+  "style": "short/fade",
+  "conviction": 5,
+  "confidence_pct": 45,
+  "horizon": "1-5 days",
+  "thesis": "EUR_AUD is in a downtrend, and EUR weakness due to Germany's trade struggles and USD strength will drive the pair lower. The breakdown below the 20-day low confirms the trend, and the target is the 52-week low. The stop is set above the 20-day SMA to avoid being stopped out by noise.",
+  "atr_pct": 0.57,
+  "invalidation": "Price closes above 1.6043 (20-day SMA) or breaks above 1.5900.",
+  "entry_plan": 1.5811,
+  "initial_stop": 1.59,
+  "stop": 1.59,
+  "target": 1.57,
+  "qty": 13571,
+  "notional_usd": 15110.97,
+  "risk_usd": 85.03,
+  "risk_pct": 0.94,
+  "quote_to_usd": 0.70397,
+  "created_at": "2026-10-28T11:26:32-04:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-10-28T16:46:49-04:00",
+  "loan_usd": 453.33,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "131",
+  "status": "pending",
+  "notes": [
+   "2026-10-28T11:26 entry order placed"
+  ]
  }
 ]

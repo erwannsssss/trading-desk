@@ -1,0 +1,62 @@
+{
+ "date": "2026-10-28",
+ "session": "quant",
+ "created_at": "2026-10-28T02:22:07-04:00",
+ "dry_run": false,
+ "equity": 9099.11,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 45,
+   "tactical": 40,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "macro/forex",
+    "crypto mean reversion",
+    "momentum (selective)"
+   ],
+   "avoid": [
+    "equity breakouts",
+    "earnings plays"
+   ]
+  },
+  "favored": [
+   "USD (strong dollar index 121.32, positive yield curve 0.29)",
+   "Short EUR (RSI 30.3, downtrend, crowded short at 1st percentile)",
+   "Long AUD (RSI 53.8, uptrend vs USD, positive 20d return)",
+   "BTC (RSI 44.3, neutral sentiment 51, stablecoin supply stable)"
+  ],
+  "avoid": [
+   "Long EUR (oversold but downtrend, crowded short)",
+   "Long GBP (RSI 47.3, downtrend, crowded short at 5th percentile)",
+   "Equity longs (VIX 18.39, pre-FOMC uncertainty, weak breadth implied by choppy regime)"
+  ],
+  "key_events": [
+   "Fed rate decision (FOMC) on 2026-10-28: Position light in equities, favor FX volatility plays",
+   "GDP and PCE inflation on 2026-10-29: Watch for USD reaction, potential volatility spike",
+   "Jobs report on 2026-11-06: Keep core positions flexible for macro shift"
+  ],
+  "overnight_read": "USD strength (index 121.32) and positive yield curve (0.29) support risk-on in USD pairs. Crypto is neutral (Fear/Greed 51) with BTC flat, suggesting no directional bias. EUR and GBP are weak (RSI < 35 for EUR) but crowded shorts suggest limited further downside without a catalyst. AUD is relatively strong vs USD, offering a long opportunity.",
+  "summary": "The market is choppy with the Fed meeting tomorrow, so we're keeping equity exposure low. The dollar is strong and the yield curve is positive, which favors USD pairs. We're looking to short weak currencies like EUR and GBP, and long AUD which is holding up better. Crypto is neutral, so we'll stick to mean reversion trades there."
+ },
+ "ideas": [],
+ "quant_summary": {
+  "markets": 30,
+  "signals": 1,
+  "kronos": 24,
+  "kronos_weight": 0.2,
+  "candidates_with_edge": 0,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 1,
+   "behind_by": 1
+  },
+  "desk_note": ""
+ },
+ "ai_calls": 0,
+ "minutes": 0.9
+}

@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.561975,
+  "last_price": 0.56235,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -3542,7 +3542,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.837075,
+  "last_price": 0.837055,
   "max_r": 0.65,
   "min_r": -0.3
  },
@@ -3563,7 +3563,7 @@
   "invalidation": null,
   "entry_plan": 524.04,
   "initial_stop": 507.22,
-  "stop": 507.22,
+  "stop": 543.745,
   "target": 557.68,
   "qty": 6,
   "notional_usd": 3144.24,
@@ -3594,18 +3594,30 @@
    "2026-10-27T10:26 emergency huddle (-0.5%): hold. Thesis unchanged; price wobble is noise and stop remains comfortably distant.",
    "2026-10-27T15:32 emergency huddle (+0.5%): hold. Neither the price action nor the news materially changes the original thesis, and the stop remains comfortably distant.",
    "2026-10-28T04:31 emergency huddle (+0.0%): hold. Thesis unchanged and stop remains at a safe distance; price movement is within normal noise levels.",
-   "2026-10-28T11:26 emergency huddle (-0.6%): hold. The price move is within normal noise and the thesis and risk parameters are unchanged, so we let the original plan run."
+   "2026-10-28T11:26 emergency huddle (-0.6%): hold. The price move is within normal noise and the thesis and risk parameters are unchanged, so we let the original plan run.",
+   "2026-10-28T16:26 stop moved to 543.75 (trailing)",
+   "2026-10-28T16:27 emergency huddle (+5.6%): close. Target was hit and the trade is deep in profit; closing locks the +2.56R gain before any potential reversal."
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
   "filled_qty_initial": 6.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
   "target_order_id": "7930589a-865d-41d7-a177-58af9a899333",
-  "stop_order_id": "ec9d4f59-d9fb-4693-bb51-98186d850dba",
-  "last_price": 528.585,
-  "max_r": 0.78,
+  "stop_order_id": "a199d3c7-fc7b-4a02-8500-d56f0741ee9f",
+  "last_price": 558.0,
+  "max_r": 2.56,
   "min_r": 0,
-  "last_huddle": "2026-10-28T11:26:51-04:00"
+  "last_huddle": "2026-10-28T16:27:24-04:00",
+  "stop_history": [
+   {
+    "t": "2026-10-22T18:38:54-04:00",
+    "stop": 507.22
+   },
+   {
+    "t": "2026-10-28T16:26:58-04:00",
+    "stop": 543.745
+   }
+  ]
  },
  {
   "id": "2026-10-22-quant-1358-BA",
@@ -3830,7 +3842,7 @@
   "invalidation": "A close below 23.50, which is roughly 0.5 ATR below the 52-week low, proving the floor has collapsed.",
   "entry_plan": 25.225,
   "initial_stop": 23.5,
-  "stop": 25.210577,
+  "stop": 27.119422999999998,
   "target": 31.0,
   "qty": 52,
   "notional_usd": 1311.7,
@@ -3852,16 +3864,17 @@
    "2026-10-23T18:29 filled 52 @ 25.210577",
    "2026-10-26T10:03 emergency huddle (-3.0%): hold (stop refused). Negative neocloud debt news raises downside risk, so we tighten the stop to limit loss while keeping the trade alive.",
    "2026-10-27T10:26 stop moved to breakeven",
-   "2026-10-27T10:26 emergency huddle (+6.9%): hold (stop refused). Tighten stop to protect the realized 1\u202fR profit while leaving room for the target as the news provides a fresh bullish catalyst."
+   "2026-10-27T10:26 emergency huddle (+6.9%): hold (stop refused). Tighten stop to protect the realized 1\u202fR profit while leaving room for the target as the news provides a fresh bullish catalyst.",
+   "2026-10-28T16:26 stop moved to 27.12 (trailing)"
   ],
   "entry_price": 25.210577,
   "filled_qty": 52.0,
   "filled_qty_initial": 52.0,
   "opened_at": "2026-10-23T18:29:29-04:00",
   "target_order_id": "e638e5bb-05ff-49f8-88c8-466dba25d912",
-  "stop_order_id": "fa1fff1f-6760-4bce-9b7b-43ed3e51e9d5",
-  "last_price": 27.445,
-  "max_r": 1.33,
+  "stop_order_id": "78d0430f-4216-4e48-b0df-6754a618850f",
+  "last_price": 28.83,
+  "max_r": 2.12,
   "min_r": -0.64,
   "last_huddle": "2026-10-27T10:26:21-04:00",
   "stop_history": [
@@ -3872,6 +3885,10 @@
    {
     "t": "2026-10-27T10:26:01-04:00",
     "stop": 25.210577
+   },
+   {
+    "t": "2026-10-28T16:26:58-04:00",
+    "stop": 27.119422999999998
    }
   ]
  },
@@ -4256,9 +4273,9 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.404175,
+  "last_price": 1.3996650000000002,
   "max_r": 0.63,
-  "min_r": 0
+  "min_r": -0.23
  },
  {
   "id": "2026-10-26-intraday-1648-T",
@@ -4442,7 +4459,8 @@
   "notes": [
    "2026-10-27T15:32 entry order placed",
    "2026-10-27T19:10 filled 1 @ 1301.71",
-   "2026-10-28T11:26 emergency huddle (+5.6%): hold. Thesis unchanged and stop distance remains safe; no need to adjust."
+   "2026-10-28T11:26 emergency huddle (+5.6%): hold. Thesis unchanged and stop distance remains safe; no need to adjust.",
+   "2026-10-28T16:27 emergency huddle (+0.4%): hold. Price move is tiny relative to normal volatility and no new information invalidates the earnings\u2011play thesis; the existing stop remains appropriately placed."
   ],
   "entry_price": 1301.71,
   "filled_qty": 1.0,
@@ -4450,10 +4468,10 @@
   "opened_at": "2026-10-27T19:10:45-04:00",
   "target_order_id": "cf5d700f-ac2b-428d-bde4-1bac72c0754d",
   "stop_order_id": "274ba9d4-32b8-4ab6-a93f-cba0f35cfa97",
-  "last_price": 1379.99,
-  "max_r": 0.9,
+  "last_price": 1383.46,
+  "max_r": 0.94,
   "min_r": 0,
-  "last_huddle": "2026-10-28T11:26:51-04:00"
+  "last_huddle": "2026-10-28T16:27:24-04:00"
  },
  {
   "id": "2026-10-27-morning-INTC",
@@ -4492,7 +4510,8 @@
   "notes": [
    "2026-10-27T15:32 entry order placed",
    "2026-10-27T19:10 filled 18 @ 93.57",
-   "2026-10-28T11:26 emergency huddle (+0.7%): hold. Thesis remains intact; price move is noise and stop remains well\u2011outside normal volatility, so we let the original plan run."
+   "2026-10-28T11:26 emergency huddle (+0.7%): hold. Thesis remains intact; price move is noise and stop remains well\u2011outside normal volatility, so we let the original plan run.",
+   "2026-10-28T16:27 emergency huddle (+0.5%): hold. The price movement is insignificant relative to the normal daily range, and the earnings catalyst remains upcoming and unpriced, so the original thesis and stop levels are still valid."
   ],
   "entry_price": 93.57,
   "filled_qty": 18.0,
@@ -4500,10 +4519,10 @@
   "opened_at": "2026-10-27T19:10:45-04:00",
   "target_order_id": "c4d830a8-90f8-4f99-acb7-f6b1c0ecb5b3",
   "stop_order_id": "b7f898e8-dad8-42cc-a89b-bbbead4ce8fa",
-  "last_price": 94.08,
-  "max_r": 0.08,
+  "last_price": 94.54,
+  "max_r": 0.15,
   "min_r": -0.03,
-  "last_huddle": "2026-10-28T11:26:51-04:00"
+  "last_huddle": "2026-10-28T16:27:24-04:00"
  },
  {
   "id": "2026-10-27-intraday-1619-USD_MXN",
@@ -4548,8 +4567,8 @@
   "filled_qty": 8171.0,
   "filled_qty_initial": 8171.0,
   "opened_at": "2026-10-27T22:12:43-04:00",
-  "last_price": 18.682364999999997,
-  "max_r": 0.11,
+  "last_price": 18.627940000000002,
+  "max_r": 0.25,
   "min_r": -0.02
  },
  {
@@ -4596,9 +4615,9 @@
   "filled_qty_initial": 7.58702736,
   "opened_at": "2026-10-28T04:31:07-04:00",
   "stop_order_id": "544300b6-a0ca-4b9b-8c26-2c7af4dd64a3",
-  "last_price": 294.08,
+  "last_price": 288.003,
   "max_r": 0.4,
-  "min_r": 0
+  "min_r": -0.37
  },
  {
   "id": "2026-10-27-evening-EUR_JPY",
@@ -4643,7 +4662,7 @@
   "filled_qty": 13167.0,
   "filled_qty_initial": 13167.0,
   "opened_at": "2026-10-28T04:31:07-04:00",
-  "last_price": 176.16899999999998,
+  "last_price": 176.08749999999998,
   "max_r": 0.23,
   "min_r": -0.47
  },
@@ -4680,9 +4699,102 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "131",
-  "status": "pending",
+  "status": "open",
   "notes": [
-   "2026-10-28T11:26 entry order placed"
-  ]
+   "2026-10-28T11:26 entry order placed",
+   "2026-10-28T16:26 filled 13571 @ 1.58159"
+  ],
+  "oanda_trade_id": "132",
+  "entry_price": 1.58159,
+  "filled_qty": 13571.0,
+  "filled_qty_initial": 13571.0,
+  "opened_at": "2026-10-28T16:26:58-04:00",
+  "last_price": 1.58149,
+  "max_r": 0.01,
+  "min_r": 0
+ },
+ {
+  "id": "2026-10-28-morning-SBUX",
+  "plan_file": "2026-10-28-morning.json",
+  "symbol": "SBUX",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 104.24,
+  "initial_stop": 102.5,
+  "stop": 102.5,
+  "target": 108.0,
+  "bucket": "tactical",
+  "style": "earnings play",
+  "conviction": 5,
+  "thesis": "Starbucks is approaching its fourth-quarter earnings release with strong technical momentum, trading above all major moving averages at $104.24. The company has a history of beating earnings expectations significantly in recent quarters (+26.1% and +14.2%), and the options market implies a major move. Buying call options allows us to participate in an upside gap while capping downside risk ahead of the binary catalyst.",
+  "created_at": "2026-10-28T16:26:58-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-28-morning-AXGN",
+  "plan_file": "2026-10-28-morning.json",
+  "symbol": "AXGN",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 47.785,
+  "initial_stop": 44.5,
+  "stop": 44.5,
+  "target": 53.09,
+  "bucket": "tactical",
+  "style": "earnings play",
+  "conviction": 7,
+  "thesis": "Axogen crushed Q3 earnings with $75.8 million in revenue, beating expectations, and raised full-year guidance to at least $290 million. The stock surged 27.56% on massive volume, breaking out to new highs. With strong payer coverage at 96% and a 10% short interest, momentum favors continuation toward the analyst target mean of $53.09.",
+  "created_at": "2026-10-28T16:26:58-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-28-morning-BSX",
+  "plan_file": "2026-10-28-morning.json",
+  "symbol": "BSX",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "short",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 43.335,
+  "initial_stop": 45.15,
+  "stop": 45.15,
+  "target": 39.57,
+  "bucket": "tactical",
+  "style": "short/fade",
+  "conviction": 7,
+  "thesis": "Boston Scientific reported a damaging Q3 update featuring cyber fallout, organic revenue declines, and lowered full-year guidance that completely overshadows the minor EPS beat. With the stock trading below its 20-day and 50-day moving averages and experiencing a 2.54x volume surge on selling, momentum heavily favors further downside. We will buy put options to express a bearish view while capping our maximum risk.",
+  "created_at": "2026-10-28T16:26:58-04:00",
+  "pair_id": null,
+  "pair_with": null
+ },
+ {
+  "id": "2026-10-28-quant-1447-NFLX",
+  "plan_file": "2026-10-28-quant-1447.json",
+  "symbol": "NFLX",
+  "venue": "alpaca",
+  "asset": "stock",
+  "direction": "long",
+  "status": "skipped",
+  "skip_reason": "idea expired before an entry was possible",
+  "entry_plan": 61.74,
+  "initial_stop": 58.66,
+  "stop": 58.66,
+  "target": 66.88,
+  "bucket": "tactical",
+  "style": "kronos forecast",
+  "conviction": 4,
+  "thesis": "Kronos gives a 100% probability of hitting the upside within five days, the stock is oversold (RSI\u202f\u2248\u202f30) after a sharp downtrend, and the 2:1 reward\u2011to\u2011risk fits our tight\u2011risk mandate despite a low historical hit rate. A strong kronos forecast on NFLX. No history for this signal. Kronos: target first in 15% of 20 simulated futures, stop first in 15%, expected +0.24R.",
+  "created_at": "2026-10-28T16:26:58-04:00",
+  "pair_id": null,
+  "pair_with": null
  }
 ]

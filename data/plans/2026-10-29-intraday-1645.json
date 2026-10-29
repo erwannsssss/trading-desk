@@ -1,0 +1,843 @@
+{
+ "earnings_season": true,
+ "date": "2026-10-29",
+ "session": "intraday",
+ "created_at": "2026-10-29T16:45:31-04:00",
+ "dry_run": false,
+ "equity": 8269.91,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "mean reversion",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "XLV",
+   "XLP",
+   "XLE",
+   "USO"
+  ],
+  "avoid": [
+   "SMH",
+   "XLC",
+   "XLK"
+  ],
+  "key_events": [
+   "GDP release",
+   "PCE inflation / spending",
+   "Weekly jobless claims",
+   "Big earnings releases (ABBV, CVX, etc.)"
+  ],
+  "overnight_read": "Markets are digesting key macroeconomic data releases including GDP and PCE inflation alongside steady VIX levels (16.52), indicating a calm yet selective risk environment for equities and currencies.",
+  "summary": "We are maintaining a moderately aggressive posture with a risk appetite of 65 in a choppy regime. Core swing trades focus on defensive and leading sectors like healthcare (XLV) and energy (USO/XLE), while tactical plays lean into earnings and macro catalysts. We continue to avoid lagging tech subsectors like semiconductors (SMH) and communication services (XLC) ahead of major economic reports."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.75",
+    "date": "2026-09-01"
+   },
+   "10-year Treasury yield": {
+    "value": "5.05",
+    "date": "2026-10-28"
+   },
+   "2-year Treasury yield": {
+    "value": "4.67",
+    "date": "2026-10-28"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.2",
+    "date": "2026-09-01"
+   },
+   "VIX (fear index)": {
+    "value": "16.91",
+    "date": "2026-10-28"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.38",
+    "date": "2026-10-28"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.14",
+    "date": "2026-10-28"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.38",
+    "date": "2026-10-28"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.3202",
+    "date": "2026-10-23"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.487",
+    "date": "2026-10-23"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-10-29",
+    "event": "GDP"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "PCE inflation / spending"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-11-05",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-06",
+    "event": "Jobs report"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 85.91,
+    "ret_1d": -0.24,
+    "ret_5d": 4.95,
+    "ret_20d": -3.01,
+    "rsi14": 51.050566,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.4,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 39.76,
+    "ret_1d": -1.41,
+    "ret_5d": 3.35,
+    "ret_20d": 0.63,
+    "rsi14": 50.248024,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.24,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 522.76,
+    "ret_1d": -0.37,
+    "ret_5d": -0.97,
+    "ret_20d": 2.8,
+    "rsi14": 53.592649,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.07,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 62.22,
+    "ret_1d": -2.05,
+    "ret_5d": 0.81,
+    "ret_20d": -6.87,
+    "rsi14": 37.815367,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -13.06,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 104.34,
+    "ret_1d": 0.64,
+    "ret_5d": 1.15,
+    "ret_20d": 1.48,
+    "rsi14": 52.54013,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.18,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 42.415,
+    "ret_1d": 1.47,
+    "ret_5d": 2.58,
+    "ret_20d": 3.91,
+    "rsi14": 58.649522,
+    "trend": "uptrend",
+    "pct_from_52w_high": -5.43,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 94.9,
+    "ret_1d": -0.09,
+    "ret_5d": 0.32,
+    "ret_20d": -2.55,
+    "rsi14": 43.171399,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.08,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 74.5,
+    "ret_1d": -0.17,
+    "ret_5d": -0.6,
+    "ret_20d": 6.78,
+    "rsi14": 52.389086,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.42,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 33.12,
+    "ret_1d": -1.49,
+    "ret_5d": -20.86,
+    "ret_20d": -10.82,
+    "rsi14": 28.246149,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -24.56,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 32.55,
+    "ret_1d": 0.28,
+    "ret_5d": 0.31,
+    "ret_20d": -4.04,
+    "rsi14": 36.173524,
+    "trend": "downtrend",
+    "pct_from_52w_high": -20.34,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 368.6,
+    "ret_1d": -1.31,
+    "ret_5d": -0.11,
+    "ret_20d": -3.7,
+    "rsi14": 38.479462,
+    "trend": "downtrend",
+    "pct_from_52w_high": -27.68,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.585,
+    "ret_1d": -0.01,
+    "ret_5d": 0.63,
+    "ret_20d": 0.89,
+    "rsi14": 56.247668,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.01,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.235,
+    "ret_1d": 0.42,
+    "ret_5d": 0.04,
+    "ret_20d": 2.17,
+    "rsi14": 62.378676,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.44,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 47.42,
+    "ret_1d": 1.35,
+    "ret_5d": 0.13,
+    "ret_20d": 2.29,
+    "rsi14": 51.888706,
+    "trend": "downtrend",
+    "pct_from_52w_high": -13.94,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 92.13,
+    "ret_1d": 3.53,
+    "ret_5d": 0.98,
+    "ret_20d": 5.45,
+    "rsi14": 59.524069,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -19.11,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 284.01,
+    "ret_1d": 0.97,
+    "ret_5d": 2.65,
+    "ret_20d": 1.79,
+    "rsi14": 58.360151,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.69,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 72.87,
+    "ret_1d": 1.05,
+    "ret_5d": 0.64,
+    "ret_20d": 4.17,
+    "rsi14": 60.309892,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.47,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 22.805,
+    "ret_1d": -0.8,
+    "ret_5d": -1.74,
+    "ret_20d": -6.27,
+    "rsi14": 29.075062,
+    "trend": "downtrend",
+    "pct_from_52w_high": -41.71,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 26.01,
+    "ret_1d": 2.56,
+    "ret_5d": -0.34,
+    "ret_20d": 5.13,
+    "rsi14": 59.181344,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -20.77,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 705.67,
+    "ret_1d": -2.75,
+    "ret_5d": 0.17,
+    "ret_20d": -4.9,
+    "rsi14": 40.468012,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.5,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 220.04,
+    "ret_1d": 1.2,
+    "ret_5d": 0.83,
+    "ret_20d": 5.28,
+    "rsi14": 66.561658,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.15,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.265,
+    "ret_1d": 0.42,
+    "ret_5d": -0.6,
+    "ret_20d": -0.2,
+    "rsi14": 51.20586,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.13,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 47.27,
+    "ret_1d": -3.65,
+    "ret_5d": -4.2,
+    "ret_20d": -14.09,
+    "rsi14": 29.057176,
+    "trend": "downtrend",
+    "pct_from_52w_high": -56.96,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 548.75,
+    "ret_1d": -3.33,
+    "ret_5d": 4.85,
+    "ret_20d": -11.18,
+    "rsi14": 43.692815,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -18.32,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 766.42,
+    "ret_1d": -0.76,
+    "ret_5d": 0.32,
+    "ret_20d": 0.32,
+    "rsi14": 48.273543,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -1.94,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 41.17,
+    "ret_1d": 0.46,
+    "ret_5d": -0.44,
+    "ret_20d": -4.41,
+    "rsi14": 39.996317,
+    "trend": "downtrend",
+    "pct_from_52w_high": -45.54,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 81.48,
+    "ret_1d": 0.61,
+    "ret_5d": -0.32,
+    "ret_20d": 4.85,
+    "rsi14": 61.428667,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.55,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 9.11,
+    "ret_1d": -4.11,
+    "ret_5d": -7.89,
+    "ret_20d": -10.33,
+    "rsi14": 29.924607,
+    "trend": "downtrend",
+    "pct_from_52w_high": -46.49,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 35.74,
+    "ret_1d": -2.22,
+    "ret_5d": 4.84,
+    "ret_20d": -9.72,
+    "rsi14": 40.445163,
+    "trend": "downtrend",
+    "pct_from_52w_high": -42.61,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 168.32,
+    "ret_1d": 1.05,
+    "ret_5d": 3.58,
+    "ret_20d": 12.2,
+    "rsi14": 66.504861,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.96,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.035,
+    "ret_1d": -0.09,
+    "ret_5d": 0.47,
+    "ret_20d": 0.26,
+    "rsi14": 58.837499,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.72,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 157.805,
+    "ret_1d": 0.19,
+    "ret_5d": 4.07,
+    "ret_20d": 2.13,
+    "rsi14": 57.337332,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.11,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 52.52,
+    "ret_1d": 1.27,
+    "ret_5d": 1.61,
+    "ret_20d": 8.2,
+    "rsi14": 69.906461,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.63,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 101.21,
+    "ret_1d": -1.87,
+    "ret_5d": -5.78,
+    "ret_20d": -7.94,
+    "rsi14": 24.917693,
+    "trend": "downtrend",
+    "pct_from_52w_high": -15.18,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 68.715,
+    "ret_1d": 0.39,
+    "ret_5d": 1.69,
+    "ret_20d": 9.59,
+    "rsi14": 63.18123,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.64,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 56.935,
+    "ret_1d": 1.43,
+    "ret_5d": 0.5,
+    "ret_20d": 6.5,
+    "rsi14": 63.129596,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.49,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 170.11,
+    "ret_1d": 0.96,
+    "ret_5d": 2.03,
+    "ret_20d": 0.87,
+    "rsi14": 54.040765,
+    "trend": "downtrend",
+    "pct_from_52w_high": -9.37,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 188.755,
+    "ret_1d": -1.18,
+    "ret_5d": 3.52,
+    "ret_20d": -4.58,
+    "rsi14": 47.949582,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.13,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 88.14,
+    "ret_1d": 1.5,
+    "ret_5d": -2.06,
+    "ret_20d": 9.72,
+    "rsi14": 61.571086,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.06,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 43.055,
+    "ret_1d": 2.2,
+    "ret_5d": 1.26,
+    "ret_20d": 5.84,
+    "rsi14": 59.071829,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.54,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.145,
+    "ret_1d": 1.54,
+    "ret_5d": 0.64,
+    "ret_20d": 8.73,
+    "rsi14": 63.487658,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.32,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 184.06,
+    "ret_1d": 2.41,
+    "ret_5d": 1.52,
+    "ret_20d": 10.75,
+    "rsi14": 71.555481,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.43,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 116.18,
+    "ret_1d": 0.74,
+    "ret_5d": 1.02,
+    "ret_20d": 6.77,
+    "rsi14": 61.67459,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.49,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "MRVL",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 213.12,
+   "why_scanned": [
+    "trending on Reddit (#18)"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "volume surge (2.01x normal)",
+    "strong 20-day move (-20.5%)"
+   ],
+   "atr_pct": 7.91,
+   "specialists": {
+    "technical": {
+     "score": 6,
+     "points": [
+      "price 213.12 below SMA20 251.51 and SMA50 243.56",
+      "RSI 38.33 indicates oversold",
+      "breakdown below 20\u2011day low 220.21 confirmed",
+      "ATR 16.86 (~7.9%) shows volatility"
+     ]
+    },
+    "fundamental": {
+     "score": 7,
+     "points": [
+      "PE 83.59 reflects growth expectations",
+      "Revenue growth YoY 30.62% and Q/Q 36.55%",
+      "Analyst mean target 340.56 implies 59.8% upside",
+      "Beta 2.28 high but debt/equity low 0.268"
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Marvell tumbles on Lumentum bid talk",
+      "Lumentum news positive but Marvell reaction negative",
+      "Volume surge 2.01x normal"
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "D.E. Shaw holds $1.2B (0.6% of fund)",
+      "Short interest 3.3% normal but short\u2011volume 41% high",
+      "Insider sells 8 trades worth $12.8M"
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "Last earnings Q3 miss -0.2% surprise",
+      "No upcoming earnings within next 5 days",
+      "Potential acquisition catalyst could drive reaction"
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +9.5% expected over 5 days, 90% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Price is deeply oversold and below key moving averages, creating a mean\u2011reversion upside potential. The announced Lumentum acquisition provides a clear fundamental catalyst that can lift sentiment. Kronos AI model forecasts a 90% chance of price moving up ~9\u201111% in the next 5 days, reinforcing the bullish view.",
+    "catalysts": [
+     "Oversold technicals (RSI, SMA breach)",
+     "Acquisition of Lumentum",
+     "Kronos forecast up 9\u201111%"
+    ]
+   },
+   "bear": {
+    "case": "The stock has already broken below its 20\u2011day low, indicating a bearish breakdown. High beta (2.28) and elevated short\u2011volume (41%) suggest volatility and potential for further downside or a short\u2011squeeze if news turns negative. Recent news shows the market reacting negatively to the acquisition talk, and the price could gap lower on a failed deal.",
+    "risks": [
+     "Breakdown confirmation below 20\u2011day low",
+     "High short\u2011volume pressure",
+     "Acquisition could fall through causing further sell\u2011off"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If the acquisition stalls or market sentiment stays negative, MRVL could continue sliding below the 20\u2011day low, hitting the stop at ~200 and eroding the trade. A sudden negative earnings surprise would also invalidate the upside thesis.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "Oversold price, clear acquisition catalyst, and a strong Kronos upside forecast give a positive expected value for a mean\u2011reversion long.",
+    "bucket": "core",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 213.12,
+    "stop": 200.0,
+    "target": 230.0,
+    "conviction": 6,
+    "confidence_pct": 60,
+    "odds_reasoning": "Oversold long setups win 66% historically; Kronos predicts 90% up move; acquisition catalyst adds edge, yielding ~60% confidence.",
+    "horizon": "1-5 days",
+    "thesis": "MRVL is trading well below its 20\u2011day and 50\u2011day averages with RSI indicating oversold conditions. The Lumentum acquisition talk provides a fundamental catalyst that could reverse the recent decline. A limit buy near the current price targets a modest 8% rise to $230, with a stop at $200 to limit loss. The trade aligns with the desk's core bucket and mean\u2011reversion style.",
+    "invalidation": "Price falls below $200 or breaks lower than 2\u202fATR from entry (\u2248$179)",
+    "plain_english": "The stock looks cheap and has been falling too fast, so it may bounce back. A possible buy\u2011out of Lumentum could push it higher. We\u2019ll buy at about $213, aim for $230, and sell if it drops to $200. This is a low\u2011risk, short\u2011term trade.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 38.327622
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 251.50875
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 220.21
+     },
+     {
+      "fact": "fundamentals.pe_ratio",
+      "value": 83.591
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 2.282
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 8.66
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 0.94,
+     "holding_days": 5,
+     "reached_pct": 57.4,
+     "windows": 495
+    },
+    "base_win_pct": 18,
+    "base_trades": 11,
+    "reward_to_risk": 1.29,
+    "confidence_used_pct": 38.0,
+    "expected_r": -0.13
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 6,
+    "problems": [
+     "negative expected value (-0.13R: 38.0% to make 1.29x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.25,
+    "model_expected_r": 0.83,
+    "target_first_pct": 80,
+    "stop_first_pct": 20,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "AVAX/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 8.705,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-15.7%)"
+   ],
+   "atr_pct": 6.19,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "Price (8.705) is below both the 20-day SMA (9.589) and 50-day SMA (9.750), indicating a short-term downtrend.",
+      "RSI is 34.16, approaching oversold territory but not yet at extreme levels (<30).",
+      "The 20-day return is -15.67%, a significant drop that suggests strong recent selling pressure.",
+      "ATR is 6.19%, indicating high volatility which increases risk for short-term trades."
+     ]
+    },
+    "fundamental": {
+     "score": 3,
+     "points": [
+      "DeFi Value Locked has dropped 7.07% over 30 days, suggesting weakening on-chain activity.",
+      "Stablecoin supply (BUSD) has decreased by 1.98% over 30 days, indicating less dry powder for new buying.",
+      "No specific fundamental catalysts or news events are listed to support a reversal."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Crypto Fear & Greed Index is at 51 (Neutral), showing no extreme fear or greed.",
+      "The 7-day average Fear & Greed is 51, consistent with the current neutral sentiment.",
+      "The 30-day average is 61, suggesting sentiment has cooled from a more bullish state."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Volume ratio is 0.58, indicating lower than average trading volume, which can lead to choppy price action.",
+      "Kronos forecast has a low trust weight of 0.2 and signal strength of 0.26, suggesting low confidence in the model's prediction.",
+      "The desk's historical performance in crypto is poor (0% win rate, -0.79 avg R), suggesting smart money is not favoring this asset class recently."
+     ]
+    },
+    "crypto_desk": {
+     "score": 4,
+     "points": [
+      "AVAX is underperforming the broader market, with a -15.67% 20-day return.",
+      "Volatility is high (6.19% ATR), making it difficult to predict short-term moves.",
+      "Liquidity is moderate, with an average dollar volume of $7.2M over 20 days.",
+      "Hype is neutral, with no significant news or social media buzz to drive a rally."
+     ]
+    },
+    "best_style": "pass",
+    "kronos": {
+     "score": -1,
+     "points": [
+      "Kronos: -1.2% expected over 5 days, 20% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "AVAX is approaching oversold levels (RSI 34) and has fallen significantly from its 52-week high, which could set up a mean reversion bounce. The 200-day SMA is at 8.17, providing a potential support level below the current price.",
+    "catalysts": [
+     "Potential bounce from oversold conditions",
+     "Support at the 200-day SMA"
+    ]
+   },
+   "bear": {
+    "case": "AVAX is in a clear downtrend, trading below both its 20-day and 50-day SMAs. The recent 20-day drop of -15.67% indicates strong selling pressure, and the lack of volume (0.58 ratio) suggests weak buying interest. The desk's poor historical performance in crypto further supports avoiding this trade.",
+    "risks": [
+     "Continued downtrend",
+     "Low volume leading to choppy price action",
+     "Poor desk performance in crypto"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails because AVAX continues its downtrend, breaking below the 200-day SMA and hitting the stop loss. The lack of volume and weak buying interest prevent a meaningful bounce, and the high volatility leads to a rapid decline.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "AVAX is in a downtrend with weak volume and poor desk performance in crypto. The expected value is negative due to the high risk of continued decline and the lack of a clear catalyst for a reversal.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "The desk's historical performance in crypto is 0% win rate, and the current technicals show a downtrend with weak volume, making the expected value negative.",
+    "horizon": null,
+    "thesis": "AVAX is in a downtrend with weak volume and poor desk performance in crypto. The expected value is negative due to the high risk of continued decline and the lack of a clear catalyst for a reversal.",
+    "invalidation": "A significant increase in volume and a break above the 20-day SMA would invalidate the bearish thesis.",
+    "plain_english": "AVAX is falling and not showing signs of a strong bounce. The desk has had poor results in crypto trades, so it's safer to pass on this one.",
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -15.67
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.58
+     },
+     {
+      "fact": "desk_record.crypto.win_pct",
+      "value": 0
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 6
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 2,
+    "problems": [
+     "cited 'desk_record.crypto.win_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 2,
+ "ai_attempts": 9,
+ "minutes": 5.5
+}

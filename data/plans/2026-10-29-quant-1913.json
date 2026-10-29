@@ -1,0 +1,259 @@
+{
+ "date": "2026-10-29",
+ "session": "quant",
+ "created_at": "2026-10-29T19:13:16-04:00",
+ "dry_run": false,
+ "equity": 8049.4,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "mean reversion",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "XLV",
+   "XLP",
+   "XLE",
+   "USO"
+  ],
+  "avoid": [
+   "SMH",
+   "XLC",
+   "XLK"
+  ],
+  "key_events": [
+   "GDP release",
+   "PCE inflation / spending",
+   "Weekly jobless claims",
+   "Big earnings releases (ABBV, CVX, etc.)"
+  ],
+  "overnight_read": "Markets are digesting key macroeconomic data releases including GDP and PCE inflation alongside steady VIX levels (16.52), indicating a calm yet selective risk environment for equities and currencies.",
+  "summary": "We are maintaining a moderately aggressive posture with a risk appetite of 65 in a choppy regime. Core swing trades focus on defensive and leading sectors like healthcare (XLV) and energy (USO/XLE), while tactical plays lean into earnings and macro catalysts. We continue to avoid lagging tech subsectors like semiconductors (SMH) and communication services (XLC) ahead of major economic reports."
+ },
+ "ideas": [
+  {
+   "symbol": "ETH/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 2259.69,
+   "atr_pct": 3.97,
+   "setups": [
+    "breakdown below 20-day low",
+    "oversold pullback in a long-term uptrend"
+   ],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 2259.69,
+    "stop": 2147.55,
+    "target": 2439.11,
+    "conviction": 6,
+    "confidence_pct": 44,
+    "horizon": "1-5 days",
+    "reason": "Mateo here. While the history shows 12 signals with a 58 percent win rate and 0.19 average R, crypto is a brutal asset class for us right now where our desk sits at 0 percent wins and -0.79 average R. Kronos target_first_pct is only 10 percent and target_reached_in_5_days_historically_pct is just 17.6 percent, making this a poor mean reversion setup. Quant desk: a stretched price likely to snap back. the same signal on ETH/USD over 2 years: 12 trades, 58% winners, +0.19R on average; Kronos: target first in 10% of 20 simulated futures, stop first in 0%, expected +0.21R.",
+    "thesis": "A stretched price likely to snap back on ETH/USD. The same signal on eth/usd over 2 years: 12 trades, 58% winners, +0.19r on average. Kronos: target first in 10% of 20 simulated futures, stop first in 0%, expected +0.21R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -9.11
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 31.346068
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 3.97
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.19
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.21
+     }
+    ],
+    "quant_edge_r": 0.14,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.14,
+    "reach": {
+     "target_distance_atr": 2.07,
+     "holding_days": 5,
+     "reached_pct": 17.6,
+     "windows": 495
+    },
+    "history": {
+     "signals": 12,
+     "win_pct": 58,
+     "avg_r": 0.19,
+     "best_r": 1.6,
+     "worst_r": -1.0
+    },
+    "kronos": {
+     "expected_r": 0.21,
+     "model_expected_r": 0.72,
+     "target_first_pct": 10,
+     "stop_first_pct": 0,
+     "paths": 20
+    },
+    "kronos_weight": 0.2
+   },
+   "specialists": {
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: target first in 10% of 20 simulated futures, stop first in 0%, expected +0.21R"
+     ]
+    },
+    "quant_reversion": {
+     "score": 3,
+     "points": [
+      "the same signal on ETH/USD over 2 years: 12 trades, 58% winners, +0.19R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "BTC/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 78636.147,
+   "atr_pct": 2.69,
+   "setups": [
+    "breakdown below 20-day low"
+   ],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 78636.15,
+    "stop": 75992.01,
+    "target": 82866.77,
+    "conviction": 5,
+    "confidence_pct": 41,
+    "horizon": "1-5 days",
+    "reason": "Mateo here again. The history has 11 signals with a 55 percent win rate, but Kronos gives an expected_r of -0.05 with stop_first_pct at 25 percent and target_first_pct at a meager 5 percent. Coupled with our zero percent win rate in crypto assets so far, taking this long would be fighting our own desk's poor empirical results in coins. Quant desk: a stretched price likely to snap back. the same signal on BTC/USD over 2 years: 11 trades, 55% winners, +0.18R on average; Kronos: target first in 5% of 20 simulated futures, stop first in 25%, expected -0.05R.",
+    "thesis": "A stretched price likely to snap back on BTC/USD. The same signal on btc/usd over 2 years: 11 trades, 55% winners, +0.18r on average. Kronos: target first in 5% of 20 simulated futures, stop first in 25%, expected -0.05R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -4.74
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 38.187246
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.69
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.18
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": -0.05
+     }
+    ],
+    "quant_edge_r": 0.08,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.08,
+    "reach": {
+     "target_distance_atr": 2.15,
+     "holding_days": 5,
+     "reached_pct": 9.9,
+     "windows": 495
+    },
+    "history": {
+     "signals": 11,
+     "win_pct": 55,
+     "avg_r": 0.18,
+     "best_r": 1.6,
+     "worst_r": -1.0
+    },
+    "kronos": {
+     "expected_r": -0.05,
+     "model_expected_r": -0.15,
+     "target_first_pct": 5,
+     "stop_first_pct": 25,
+     "paths": 20
+    },
+    "kronos_weight": 0.2
+   },
+   "specialists": {
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: target first in 5% of 20 simulated futures, stop first in 25%, expected -0.05R"
+     ]
+    },
+    "quant_reversion": {
+     "score": 3,
+     "points": [
+      "the same signal on BTC/USD over 2 years: 11 trades, 55% winners, +0.18R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 31,
+  "signals": 3,
+  "kronos": 16,
+  "kronos_weight": 0.2,
+  "candidates_with_edge": 2,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 28,
+   "behind_by": 28
+  },
+  "desk_note": "Arjun here: our desk is sitting at a -0.42 average R across 33 trades with crypto particularly punishing us at a zero percent win rate, so we are ruthlessly cutting these marginal coin mean-reversion setups. In this choppy market regime, we refuse to force trades where the history and Kronos odds fail to give us a robust, high-conviction edge."
+ },
+ "ai_calls": 1,
+ "minutes": 1.8
+}

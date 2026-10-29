@@ -1,13 +1,13 @@
 {
- "updated": "2026-10-29T01:43-04:00",
+ "updated": "2026-10-29T13:51-04:00",
  "window_days": 45,
  "board": [
   {
    "style": "quant momentum",
-   "trades": 1,
+   "trades": 2,
    "win_rate": 100,
-   "avg_r": 2.23,
-   "pnl": 219.34,
+   "avg_r": 1.59,
+   "pnl": 300.43,
    "weight": 1.0
   },
   {
@@ -44,20 +44,27 @@
   },
   {
    "style": "mean reversion",
-   "trades": 10,
-   "win_rate": 10,
-   "avg_r": -0.59,
-   "pnl": -601.29,
-   "weight": 0.82
+   "trades": 11,
+   "win_rate": 18,
+   "avg_r": -0.44,
+   "pnl": -500.44,
+   "weight": 0.87
   }
  ],
  "calibration": {
-  "trades": 29,
+  "trades": 31,
   "factor": 0.8,
-  "predicted": 53,
-  "actual": 21
+  "predicted": 52,
+  "actual": 26
  },
- "exit_tuning": {},
+ "exit_tuning": {
+  "_all": {
+   "n": 29,
+   "planned_target_r": 1.68,
+   "p75_max_r": 0.57,
+   "advice": []
+  }
+ },
  "session_budget": {
   "sessions": {
    "overnight": {
@@ -76,21 +83,24 @@
     "win_rate": 0
    },
    "quant": {
-    "trades": 4,
-    "avg_r": 0.34,
-    "win_rate": 50
+    "trades": 5,
+    "avg_r": 0.462,
+    "win_rate": 60
    },
    "morning": {
-    "trades": 3,
-    "avg_r": -1.05,
-    "win_rate": 0
+    "trades": 4,
+    "avg_r": -0.505,
+    "win_rate": 25
    }
   },
   "multipliers": {}
  },
  "edge_tilt": {
-  "factor": 1.0,
-  "reason": "29 of 30 closed trades needed before results change bet sizes"
+  "factor": 0.7,
+  "reason": "losing record: -0.38R a trade over the last 31; betting smaller until it turns",
+  "n": 31,
+  "avg_r": -0.381,
+  "p_value": 0.9924
  },
  "shadow_lessons": []
 }

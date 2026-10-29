@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.5617650000000001,
+  "last_price": 0.56307,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -3542,9 +3542,9 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.836305,
+  "last_price": 0.835515,
   "max_r": 0.65,
-  "min_r": -0.3
+  "min_r": -0.53
  },
  {
   "id": "2026-10-22-quant-1358-MSFT",
@@ -3579,7 +3579,7 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "d83ec9b4-7ced-40c0-b6ce-c03a0037e01e",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-22T15:29 entry order placed",
    "2026-10-22T18:38 filled 6 @ 521.475",
@@ -3599,7 +3599,8 @@
    "2026-10-28T16:27 emergency huddle (+5.6%): close. Target was hit and the trade is deep in profit; closing locks the +2.56R gain before any potential reversal.",
    "2026-10-28T20:11 emergency huddle (-2.6%): hold. Positive earnings guidance and no breach of the invalidation level keep the original thesis valid; the stop is already at breakeven, so we hold.",
    "2026-10-29T01:43 emergency huddle (+0.0%): hold. Thesis unchanged and news remains favorable; we keep the trade despite the overly tight stop.",
-   "2026-10-29T07:47 emergency huddle (+0.0%): hold. Thesis remains intact and price is well above stop; tightening further would be premature given the stop is already too tight."
+   "2026-10-29T07:47 emergency huddle (+0.0%): hold. Thesis remains intact and price is well above stop; tightening further would be premature given the stop is already too tight.",
+   "2026-10-29T13:50 closed at 534.99: stopped out, P&L $+81.09"
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
@@ -3620,7 +3621,19 @@
     "t": "2026-10-28T16:26:58-04:00",
     "stop": 543.745
    }
-  ]
+  ],
+  "exit_price": 534.99,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-29T13:50:54-04:00",
+  "pnl_usd": 81.09,
+  "r_result": 0.95,
+  "interest_usd": 1.76,
+  "pnl_after_interest": 79.33,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The momentum signal was correct \u2013 MSFT rose after entry, reaching a peak of about 2.56\u202fR before a trailing stop was hit. The trade was exited at $534.99, yielding +0.95\u202fR and a modest profit.",
+   "lesson": "Give momentum trades a wider stop\u2011loss buffer to let the expected move fully develop and avoid cutting winners prematurely."
+  }
  },
  {
   "id": "2026-10-22-quant-1358-BA",
@@ -3861,14 +3874,15 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "e86c5f07-0d45-4f2c-8faa-25a5506218f0",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-23T15:27 entry order placed",
    "2026-10-23T18:29 filled 52 @ 25.210577",
    "2026-10-26T10:03 emergency huddle (-3.0%): hold (stop refused). Negative neocloud debt news raises downside risk, so we tighten the stop to limit loss while keeping the trade alive.",
    "2026-10-27T10:26 stop moved to breakeven",
    "2026-10-27T10:26 emergency huddle (+6.9%): hold (stop refused). Tighten stop to protect the realized 1\u202fR profit while leaving room for the target as the news provides a fresh bullish catalyst.",
-   "2026-10-28T16:26 stop moved to 27.12 (trailing)"
+   "2026-10-28T16:26 stop moved to 27.12 (trailing)",
+   "2026-10-29T13:50 closed at 27.15: stopped out, P&L $+100.85"
   ],
   "entry_price": 25.210577,
   "filled_qty": 52.0,
@@ -3893,7 +3907,19 @@
     "t": "2026-10-28T16:26:58-04:00",
     "stop": 27.119422999999998
    }
-  ]
+  ],
+  "exit_price": 27.15,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-29T13:50:54-04:00",
+  "pnl_usd": 100.85,
+  "r_result": 1.13,
+  "interest_usd": 1.67,
+  "pnl_after_interest": 99.18,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The mean-reversion thesis played out as intended, with the stock bouncing from the 52-week low to a max of 2.12R before trailing stop mechanics locked in a 1.13R profit. The trade successfully captured the technical snap-back driven by oversold conditions and short interest, avoiding the fundamental downside risks identified in the bear case.",
+   "lesson": "In high-volatility mean reversion trades, trailing stops are superior to fixed targets for capturing the full extent of a squeeze, as they allow the trade to run while protecting realized gains."
+  }
  },
  {
   "id": "2026-10-23-morning-AUD_USD",
@@ -4276,9 +4302,9 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.3975149999999998,
+  "last_price": 1.397055,
   "max_r": 0.63,
-  "min_r": -0.52
+  "min_r": -0.59
  },
  {
   "id": "2026-10-26-intraday-1648-T",
@@ -4463,7 +4489,8 @@
    "2026-10-27T15:32 entry order placed",
    "2026-10-27T19:10 filled 1 @ 1301.71",
    "2026-10-28T11:26 emergency huddle (+5.6%): hold. Thesis unchanged and stop distance remains safe; no need to adjust.",
-   "2026-10-28T16:27 emergency huddle (+0.4%): hold. Price move is tiny relative to normal volatility and no new information invalidates the earnings\u2011play thesis; the existing stop remains appropriately placed."
+   "2026-10-28T16:27 emergency huddle (+0.4%): hold. Price move is tiny relative to normal volatility and no new information invalidates the earnings\u2011play thesis; the existing stop remains appropriately placed.",
+   "2026-10-29T13:51 emergency huddle (-2.8%): hold. The price move is insignificant relative to the stock's normal volatility, and the fundamental thesis for the earnings play remains unbroken."
   ],
   "entry_price": 1301.71,
   "filled_qty": 1.0,
@@ -4471,10 +4498,10 @@
   "opened_at": "2026-10-27T19:10:45-04:00",
   "target_order_id": "cf5d700f-ac2b-428d-bde4-1bac72c0754d",
   "stop_order_id": "274ba9d4-32b8-4ab6-a93f-cba0f35cfa97",
-  "last_price": 1378.03,
+  "last_price": 1340.97,
   "max_r": 0.94,
   "min_r": 0,
-  "last_huddle": "2026-10-28T16:27:24-04:00"
+  "last_huddle": "2026-10-29T13:51:19-04:00"
  },
  {
   "id": "2026-10-27-morning-INTC",
@@ -4515,7 +4542,8 @@
    "2026-10-27T19:10 filled 18 @ 93.57",
    "2026-10-28T11:26 emergency huddle (+0.7%): hold. Thesis remains intact; price move is noise and stop remains well\u2011outside normal volatility, so we let the original plan run.",
    "2026-10-28T16:27 emergency huddle (+0.5%): hold. The price movement is insignificant relative to the normal daily range, and the earnings catalyst remains upcoming and unpriced, so the original thesis and stop levels are still valid.",
-   "2026-10-29T07:47 emergency huddle (+0.0%): hold. Thesis unchanged and risk parameters remain comfortable; no adverse news or price action justifies closing or tightening."
+   "2026-10-29T07:47 emergency huddle (+0.0%): hold. Thesis unchanged and risk parameters remain comfortable; no adverse news or price action justifies closing or tightening.",
+   "2026-10-29T13:51 emergency huddle (-1.6%): hold. The price movement is insignificant relative to the normal daily range, and the core thesis of an earnings-driven volatility play has not been invalidated by the current headlines."
   ],
   "entry_price": 93.57,
   "filled_qty": 18.0,
@@ -4523,10 +4551,10 @@
   "opened_at": "2026-10-27T19:10:45-04:00",
   "target_order_id": "c4d830a8-90f8-4f99-acb7-f6b1c0ecb5b3",
   "stop_order_id": "b7f898e8-dad8-42cc-a89b-bbbead4ce8fa",
-  "last_price": 93.22,
+  "last_price": 91.68,
   "max_r": 0.15,
-  "min_r": -0.05,
-  "last_huddle": "2026-10-29T07:47:22-04:00"
+  "min_r": -0.29,
+  "last_huddle": "2026-10-29T13:51:19-04:00"
  },
  {
   "id": "2026-10-27-intraday-1619-USD_MXN",
@@ -4571,9 +4599,9 @@
   "filled_qty": 8171.0,
   "filled_qty_initial": 8171.0,
   "opened_at": "2026-10-27T22:12:43-04:00",
-  "last_price": 18.744135,
+  "last_price": 18.856065,
   "max_r": 0.25,
-  "min_r": -0.33
+  "min_r": -0.88
  },
  {
   "id": "2026-10-27-evening-BCHUSD",
@@ -4680,9 +4708,9 @@
   "filled_qty": 13167.0,
   "filled_qty_initial": 13167.0,
   "opened_at": "2026-10-28T04:31:07-04:00",
-  "last_price": 176.109,
+  "last_price": 176.359,
   "max_r": 0.23,
-  "min_r": -0.47
+  "min_r": -0.66
  },
  {
   "id": "2026-10-28-overnight-0446-EUR_AUD",
@@ -4727,9 +4755,9 @@
   "filled_qty": 13571.0,
   "filled_qty_initial": 13571.0,
   "opened_at": "2026-10-28T16:26:58-04:00",
-  "last_price": 1.58441,
+  "last_price": 1.58796,
   "max_r": 0.24,
-  "min_r": -0.34
+  "min_r": -0.76
  },
  {
   "id": "2026-10-28-morning-SBUX",

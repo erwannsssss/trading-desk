@@ -1,0 +1,950 @@
+{
+ "earnings_season": true,
+ "date": "2026-10-29",
+ "session": "intraday",
+ "created_at": "2026-10-29T15:45:25-04:00",
+ "dry_run": false,
+ "equity": 8511.36,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "mean reversion",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "XLV",
+   "XLP",
+   "XLE",
+   "USO"
+  ],
+  "avoid": [
+   "SMH",
+   "XLC",
+   "XLK"
+  ],
+  "key_events": [
+   "GDP release",
+   "PCE inflation / spending",
+   "Weekly jobless claims",
+   "Big earnings releases (ABBV, CVX, etc.)"
+  ],
+  "overnight_read": "Markets are digesting key macroeconomic data releases including GDP and PCE inflation alongside steady VIX levels (16.52), indicating a calm yet selective risk environment for equities and currencies.",
+  "summary": "We are maintaining a moderately aggressive posture with a risk appetite of 65 in a choppy regime. Core swing trades focus on defensive and leading sectors like healthcare (XLV) and energy (USO/XLE), while tactical plays lean into earnings and macro catalysts. We continue to avoid lagging tech subsectors like semiconductors (SMH) and communication services (XLC) ahead of major economic reports."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.75",
+    "date": "2026-09-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.99",
+    "date": "2026-10-27"
+   },
+   "2-year Treasury yield": {
+    "value": "4.7",
+    "date": "2026-10-27"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.2",
+    "date": "2026-09-01"
+   },
+   "VIX (fear index)": {
+    "value": "16.91",
+    "date": "2026-10-28"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.38",
+    "date": "2026-10-28"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.14",
+    "date": "2026-10-28"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.38",
+    "date": "2026-10-28"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.3202",
+    "date": "2026-10-23"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.487",
+    "date": "2026-10-23"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-10-29",
+    "event": "GDP"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "PCE inflation / spending"
+   },
+   {
+    "date": "2026-10-29",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-11-05",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-06",
+    "event": "Jobs report"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 85.62,
+    "ret_1d": -0.58,
+    "ret_5d": 4.59,
+    "ret_20d": -3.34,
+    "rsi14": 50.365214,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.7,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 39.75,
+    "ret_1d": -1.44,
+    "ret_5d": 3.33,
+    "ret_20d": 0.61,
+    "rsi14": 50.16279,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.26,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 522.235,
+    "ret_1d": -0.47,
+    "ret_5d": -1.07,
+    "ret_20d": 2.7,
+    "rsi14": 52.785517,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.16,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 62.58,
+    "ret_1d": -1.48,
+    "ret_5d": 1.39,
+    "ret_20d": -6.33,
+    "rsi14": 39.182286,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.56,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 104.285,
+    "ret_1d": 0.58,
+    "ret_5d": 1.1,
+    "ret_20d": 1.42,
+    "rsi14": 52.221592,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.23,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 42.395,
+    "ret_1d": 1.42,
+    "ret_5d": 2.53,
+    "ret_20d": 3.86,
+    "rsi14": 58.47212,
+    "trend": "uptrend",
+    "pct_from_52w_high": -5.47,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 94.84,
+    "ret_1d": -0.16,
+    "ret_5d": 0.25,
+    "ret_20d": -2.61,
+    "rsi14": 42.866431,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.14,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 74.385,
+    "ret_1d": -0.33,
+    "ret_5d": -0.75,
+    "ret_20d": 6.61,
+    "rsi14": 51.577867,
+    "trend": "downtrend",
+    "pct_from_52w_high": -7.56,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 33.165,
+    "ret_1d": -1.35,
+    "ret_5d": -20.75,
+    "ret_20d": -10.7,
+    "rsi14": 28.334859,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -24.45,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 32.65,
+    "ret_1d": 0.59,
+    "ret_5d": 0.62,
+    "ret_20d": -3.74,
+    "rsi14": 37.927902,
+    "trend": "downtrend",
+    "pct_from_52w_high": -20.09,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 368.32,
+    "ret_1d": -1.39,
+    "ret_5d": -0.18,
+    "ret_20d": -3.77,
+    "rsi14": 38.270642,
+    "trend": "downtrend",
+    "pct_from_52w_high": -27.74,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.515,
+    "ret_1d": -0.1,
+    "ret_5d": 0.54,
+    "ret_20d": 0.8,
+    "rsi14": 54.234245,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.1,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.28,
+    "ret_1d": 0.47,
+    "ret_5d": 0.09,
+    "ret_20d": 2.22,
+    "rsi14": 62.862735,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.39,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 47.435,
+    "ret_1d": 1.38,
+    "ret_5d": 0.16,
+    "ret_20d": 2.32,
+    "rsi14": 52.027181,
+    "trend": "downtrend",
+    "pct_from_52w_high": -13.91,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 91.59,
+    "ret_1d": 2.92,
+    "ret_5d": 0.38,
+    "ret_20d": 4.83,
+    "rsi14": 58.435209,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -19.58,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 283.595,
+    "ret_1d": 0.82,
+    "ret_5d": 2.5,
+    "ret_20d": 1.64,
+    "rsi14": 57.735982,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.83,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 72.8,
+    "ret_1d": 0.96,
+    "ret_5d": 0.54,
+    "ret_20d": 4.07,
+    "rsi14": 59.966583,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.56,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 22.765,
+    "ret_1d": -0.98,
+    "ret_5d": -1.92,
+    "ret_20d": -6.43,
+    "rsi14": 28.726368,
+    "trend": "downtrend",
+    "pct_from_52w_high": -41.81,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 25.79,
+    "ret_1d": 1.7,
+    "ret_5d": -1.19,
+    "ret_20d": 4.24,
+    "rsi14": 56.648259,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -21.44,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 713.48,
+    "ret_1d": -1.67,
+    "ret_5d": 1.28,
+    "ret_20d": -3.85,
+    "rsi14": 43.627669,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.47,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 219.595,
+    "ret_1d": 1.0,
+    "ret_5d": 0.63,
+    "ret_20d": 5.07,
+    "rsi14": 65.62924,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.35,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.315,
+    "ret_1d": 0.58,
+    "ret_5d": -0.45,
+    "ret_20d": -0.05,
+    "rsi14": 52.188229,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.0,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 47.08,
+    "ret_1d": -4.04,
+    "ret_5d": -4.58,
+    "ret_20d": -14.43,
+    "rsi14": 28.648643,
+    "trend": "downtrend",
+    "pct_from_52w_high": -57.13,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 559.475,
+    "ret_1d": -1.44,
+    "ret_5d": 6.9,
+    "ret_20d": -9.44,
+    "rsi14": 46.772601,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.72,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 768.28,
+    "ret_1d": -0.52,
+    "ret_5d": 0.57,
+    "ret_20d": 0.56,
+    "rsi14": 49.820461,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.71,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 41.26,
+    "ret_1d": 0.68,
+    "ret_5d": -0.22,
+    "ret_20d": -4.2,
+    "rsi14": 40.525299,
+    "trend": "downtrend",
+    "pct_from_52w_high": -45.42,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 81.54,
+    "ret_1d": 0.68,
+    "ret_5d": -0.24,
+    "ret_20d": 4.93,
+    "rsi14": 61.786828,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.48,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 9.19,
+    "ret_1d": -3.26,
+    "ret_5d": -7.08,
+    "ret_20d": -9.55,
+    "rsi14": 30.731288,
+    "trend": "downtrend",
+    "pct_from_52w_high": -46.02,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 35.63,
+    "ret_1d": -2.52,
+    "ret_5d": 4.52,
+    "ret_20d": -10.0,
+    "rsi14": 40.036531,
+    "trend": "downtrend",
+    "pct_from_52w_high": -42.79,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 167.44,
+    "ret_1d": 0.52,
+    "ret_5d": 3.03,
+    "ret_20d": 11.61,
+    "rsi14": 65.721571,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.48,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.035,
+    "ret_1d": -0.09,
+    "ret_5d": 0.47,
+    "ret_20d": 0.26,
+    "rsi14": 58.837499,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.72,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 157.62,
+    "ret_1d": 0.07,
+    "ret_5d": 3.94,
+    "ret_20d": 2.01,
+    "rsi14": 57.0953,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.22,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 52.425,
+    "ret_1d": 1.09,
+    "ret_5d": 1.42,
+    "ret_20d": 8.0,
+    "rsi14": 69.269702,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.81,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 101.14,
+    "ret_1d": -1.94,
+    "ret_5d": -5.85,
+    "ret_20d": -8.0,
+    "rsi14": 24.807806,
+    "trend": "downtrend",
+    "pct_from_52w_high": -15.24,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 68.4,
+    "ret_1d": -0.07,
+    "ret_5d": 1.23,
+    "ret_20d": 9.09,
+    "rsi14": 61.804669,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.09,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 56.92,
+    "ret_1d": 1.41,
+    "ret_5d": 0.48,
+    "ret_20d": 6.47,
+    "rsi14": 63.031038,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.52,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 169.72,
+    "ret_1d": 0.73,
+    "ret_5d": 1.79,
+    "ret_20d": 0.64,
+    "rsi14": 52.951663,
+    "trend": "downtrend",
+    "pct_from_52w_high": -9.57,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 188.05,
+    "ret_1d": -1.54,
+    "ret_5d": 3.13,
+    "ret_20d": -4.93,
+    "rsi14": 46.947708,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.48,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 88.12,
+    "ret_1d": 1.47,
+    "ret_5d": -2.08,
+    "ret_20d": 9.7,
+    "rsi14": 61.504694,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.08,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 43.055,
+    "ret_1d": 2.2,
+    "ret_5d": 1.26,
+    "ret_20d": 5.84,
+    "rsi14": 59.071829,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.54,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.125,
+    "ret_1d": 1.49,
+    "ret_5d": 0.59,
+    "ret_20d": 8.68,
+    "rsi14": 63.344295,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.36,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 183.88,
+    "ret_1d": 2.31,
+    "ret_5d": 1.42,
+    "ret_20d": 10.64,
+    "rsi14": 71.328648,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.52,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 116.27,
+    "ret_1d": 0.82,
+    "ret_5d": 1.1,
+    "ret_20d": 6.86,
+    "rsi14": 61.949526,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.42,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "COIN",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 159.545,
+   "why_scanned": [
+    "earnings on 2026-10-29 (amc)",
+    "earnings 2026-10-29"
+   ],
+   "setups": [
+    "strong 20-day move (-15.7%)"
+   ],
+   "atr_pct": 5.89,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "price 159.545 below sma20 173.566",
+      "price below sma50 180.297",
+      "rsi14 39.61 (oversold)",
+      "20\u2011day move -15.71% strong down",
+      "no breakdown below 20\u2011day low 155.31"
+     ]
+    },
+    "fundamental": {
+     "score": 3,
+     "points": [
+      "revenue_growth_yoy_pct -10.35%",
+      "net_margin_pct -15.72% (loss)",
+      "beta 3.34 (high volatility)",
+      "short_pct_of_float 10.8% moderate short pressure",
+      "insiders_last_90d open_market_sells 31 (no buys)"
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Ripple partnership adds RLUSD stablecoin on Coinbase (potential catalyst)",
+      "multiple crypto\u2011related headlines keep COIN in focus",
+      "no major positive earnings news yet"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "short_volume_pct_latest 44.5% (high short sales)",
+      "days_to_cover 2.5 (shorts can be covered quickly)",
+      "insiders sold $23.0M in last 90d",
+      "no hedge fund holdings listed"
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "upcoming earnings 2026\u201110\u201129 amc",
+      "past earnings surprises huge negative (\u2011574% Q2, \u2011560% Q1)",
+      "risk of a gap down if earnings miss expectations",
+      "no clear guidance that earnings will beat"
+     ]
+    },
+    "best_style": "earnings play",
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: +0.9% expected over 5 days, 55% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "COIN is heavily oversold (RSI 39) and sits below its 20\u2011day SMA, suggesting a technical bounce. The new Ripple RLUSD partnership could provide a fresh revenue stream and improve sentiment, giving a short\u2011term upside catalyst.",
+    "catalysts": [
+     "Ripple RLUSD integration announced Oct\u202f28",
+     "oversold technical condition",
+     "potential short\u2011cover rally if earnings surprise less negative"
+    ]
+   },
+   "bear": {
+    "case": "Fundamentals are weak: revenue is falling, net margin is negative, and earnings have missed expectations by hundreds of percent. High beta and elevated short\u2011interest indicate market skepticism. The stock is still below key moving averages and has no confirmed breakdown, limiting a clean short entry, but the earnings\u2011play risk of a gap down remains high.",
+    "risks": [
+     "Continued negative earnings could trigger a deeper sell\u2011off",
+     "High implied move (10.5% by next week) points to volatility",
+     "Potential short\u2011squeeze if positive news emerges"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we bought puts (or shorted shares) expecting a drop, a better\u2011than\u2011expected earnings beat or a strong rally on the Ripple partnership could send COIN sharply higher, wiping out the premium and causing a loss. The loss would be limited to the option premium, but the probability of a modest rally is higher than the probability of a >10% drop, making the trade negative EV.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Given the choppy regime, the lack of a clean technical breakdown, and the desk's poor historical edge on earnings\u2011play trades, the expected value of a short or put position is negative. The safest action is to stay out of COIN for now.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": null,
+    "horizon": null,
+    "thesis": "No trade is taken because the setup fails the desk's rules for a mean\u2011reversion long (price below both SMA20/50) and for a short (no confirmed breakdown). The earnings\u2011play style has a 0% win record for the desk, leading to negative expected value.",
+    "invalidation": "If COIN breaks below its 20\u2011day low of 155.31 with volume confirming, a short could be reconsidered.",
+    "plain_english": "We decided not to trade COIN today. The stock is down and looks oversold, but it hasn't broken any key support levels, and the desk has lost money on similar earnings\u2011play bets before. Because the odds of making money are low, we stay in cash instead of buying or selling.",
+    "base_win_pct": 36,
+    "base_trades": 11
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 0,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "ABBV",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.8-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your curre"
+  },
+  {
+   "symbol": "AMZN",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.8-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your curre"
+  },
+  {
+   "symbol": "ADA/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 0.20203,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-16.8%)"
+   ],
+   "atr_pct": 6.23,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "Price (0.20203) is below the 20-day SMA (0.220799) and 50-day SMA (0.229473), indicating a weak short-term trend.",
+      "RSI is 34.46, which is approaching oversold territory but not yet at the extreme levels (<30) that often signal a bounce.",
+      "The 20-day return is -16.83%, a significant drop that suggests strong downward momentum rather than a stable base.",
+      "ATR is 6.23%, indicating high volatility which increases the risk of stop-outs on mean reversion trades."
+     ]
+    },
+    "fundamental": {
+     "score": 3,
+     "points": [
+      "No specific fundamental data (earnings, user growth) is provided in the dossier for ADA.",
+      "DeFi Value Locked has dropped -6.89% over 30 days, suggesting weakening on-chain utility or interest.",
+      "Stablecoin supply (proxy for dry powder) has decreased by -1.98% over 30 days, indicating less new capital entering the crypto market."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Fear & Greed Index is at 51 (Neutral), which is neither extreme fear (potential bottom) nor extreme greed (potential top).",
+      "No specific news catalysts are listed in the dossier, making the trade purely technical/flow-based.",
+      "Sentiment is flat compared to the 30-day average of 61, suggesting a cooling of bullish enthusiasm."
+     ]
+    },
+    "smart_money": {
+     "score": 3,
+     "points": [
+      "Desk history on ADA/USD shows a previous mean reversion long trade resulted in -1.02R loss.",
+      "The desk's overall crypto record is 0% win rate over 6 trades with an average R of -0.79.",
+      "Kronos forecast has a very low signal strength (0.02) and trust weight (0.2), indicating the model sees no clear edge."
+     ]
+    },
+    "crypto_desk": {
+     "score": 4,
+     "points": [
+      "ADA is underperforming the broader crypto market given the neutral sentiment and lack of specific hype.",
+      "Volatility regime is high (ATR 6.23%), which is unfavorable for mean reversion strategies that rely on tight ranges.",
+      "Liquidity appears thin relative to majors, as evidenced by the high ATR percentage and lack of volume surge signals.",
+      "The 'strong 20-day move' setup is a negative momentum signal in this context, not a positive one, as the move is downward."
+     ]
+    },
+    "best_style": "pass",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: +0.2% expected over 5 days, 40% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "ADA is down 16.8% in 20 days and RSI is 34.46, suggesting it is statistically oversold. If Bitcoin stabilizes, ADA could snap back to the 20-day SMA at 0.2208, offering a ~9% upside move.",
+    "catalysts": [
+     "Technical bounce from oversold RSI",
+     "Potential stabilization of Bitcoin price"
+    ]
+   },
+   "bear": {
+    "case": "The trend is clearly down (below 20/50/200-day SMAs). The desk has a 0% win rate on crypto and a specific history of losing on ADA mean reversion. The Kronos model has near-zero confidence. Buying a falling knife in a choppy regime with high volatility is a negative expected value trade.",
+    "risks": [
+     "Continued downtrend to 52-week low (0.138)",
+     "High volatility causing stop-outs before any bounce",
+     "Lack of new capital inflow (stablecoin supply down)"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We enter a long position hoping for a bounce. However, the broader crypto market remains weak, and ADA continues its downtrend, breaking below the 20-day low of 0.20025. The high volatility (6.23% ATR) causes the price to wick down, hitting our stop loss at 0.1900 before any meaningful reversal occurs. We lose the full risk amount, adding to the desk's poor crypto track record.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Negative expected value. The desk has a 0% win rate on crypto, a specific history of losing on ADA mean reversion, and the technical setup (falling knife, high volatility) contradicts the mean reversion style's requirements for a confirmed higher-low. The Kronos model provides no edge (signal strength 0.02).",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "Base rate for desk crypto trades is 0% win rate. Kronos signal strength is 0.02 (no edge). Technicals show a strong downtrend with no confirmed reversal signal (higher-low).",
+    "horizon": null,
+    "thesis": "ADA is in a strong downtrend with high volatility. While RSI is approaching oversold levels, the desk's historical performance on crypto and specifically on ADA mean reversion trades is poor. The lack of a confirmed reversal signal and the negative expected value based on base rates and model confidence makes this a pass.",
+    "invalidation": "N/A (Pass)",
+    "plain_english": "We are not trading Cardano (ADA) today. Although the price has dropped a lot recently, which might look like a cheap opportunity, our past trades in crypto have lost money. The technical charts show the price is still falling and there is no clear sign it has stopped. The risk of losing money is higher than the potential reward, so we stay in cash.",
+    "evidence": [
+     {
+      "fact": "desk_history_on_this_symbol[0].result_r",
+      "value": -1.02
+     },
+     {
+      "fact": "kronos_forecast.signal_strength",
+      "value": 0.02
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -16.83
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 34.462443
+     },
+     {
+      "fact": "crypto_sentiment.stablecoin_supply_change_30d_pct",
+      "value": -1.98
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 6
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'desk_history_on_this_symbol[0].result_r', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "AAVE/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 134.617,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-19.5%)"
+   ],
+   "atr_pct": 6.88,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "RSI14 is at 35.13, approaching oversold territory but not deeply oversold yet.",
+      "Price is well below both the 20-day SMA (149.40) and 50-day SMA (150.00), showing clear short-term weakness.",
+      "Down 19.49% over the last 20 days, confirming a strong downward momentum phase."
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "DeFi value locked stands at 88.8B USD, though down 6.89% over the last 30 days.",
+      "Stablecoin supply on BUSD is 300.3B USD, contracting 1.98% over 30 days, indicating reduced liquidity in the ecosystem."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Crypto Fear & Greed index is at 51, marking a neutral sentiment regime.",
+      "7-day average sentiment is 51.0, showing a steady flat sentiment without extreme panic or FOMO."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Volume ratio is exceptionally low at 0.24, showing a lack of institutional participation or conviction at current levels.",
+      "20-day average dollar volume is 3499, pointing to very thin liquidity conditions."
+     ]
+    },
+    "crypto_desk": {
+     "score": 4,
+     "points": [
+      "AAVE/USD has dropped -19.49% over 20 days, underperforming broader crypto major trends.",
+      "Trading below key moving averages with low volume ratio (0.24) suggests a lack of aggressive buying pressure.",
+      "Long-term trend remains up relative to the 200-day average (107.80), but near-term momentum is strongly negative."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 2,
+     "points": [
+      "Kronos: +4.0% expected over 5 days, 55% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "AAVE is sitting well above its 200-day average at 134.62 against 107.80, with an RSI of 35.13 indicating it is nearing oversold levels. Historically, pullbacks of nearly 20% in an asset with a positive 60-day return (9.93%) present a solid mean-reversion opportunity as value buyers step in near support.",
+    "catalysts": [
+     "RSI approaching oversold levels at 35.13",
+     "Price remains comfortably above the 200-day moving average (107.80)",
+     "Kronos forecast indicates a 55% probability of moving upward over the next 5 days"
+    ]
+   },
+   "bear": {
+    "case": "The desk's track record in crypto is abysmal (0 wins out of 6 trades, avg R -0.79), and AAVE is currently bleeding with a -19.49% 20-day return. With volume drying up (vol ratio 0.24) and the price trapped below both the 20-day and 50-day moving averages, any attempt to catch this falling knife will likely lead to further losses.",
+    "risks": [
+     "Desks crypto hit rate is 0% across 6 historical trades",
+     "Price is firmly below both the 20-day (149.40) and 50-day (150.00) SMAs",
+     "DeFi TVL is dropping (-6.89% over 30 days) and stablecoin supply is contracting (-1.98%), showing a negative liquidity outflow"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy AAVE at 134.62 expecting a mean-reversion bounce from its oversold RSI of 35.13. However, with thin volume (vol ratio 0.24) and contracting DeFi TVL, sellers easily push the price lower. The price drifts down past our stop at 125.00, resulting in another loss for our poor crypto track record.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "The desk has a 0% win rate on crypto trades with an average R of -0.79, and the asset is trading below both its 20-day and 50-day moving averages without a confirmed higher-low candle close or fundamental catalyst. The negative expected value and high historical failure rate dictate a pass.",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 2,
+    "confidence_pct": 30,
+    "odds_reasoning": "Based on the desk's 0% historical win rate in crypto assets and the asset trading below major moving averages with weak volume.",
+    "horizon": "1-5 days",
+    "thesis": "We are passing on AAVE/USD because the desk's historical performance in crypto is poor, and the technical setup lacks the required confirmation rules such as a confirmed higher-low candle close below the 20-day SMA. Furthermore, declining DeFi value locked and low volume ratios indicate insufficient buying pressure to sustain a mean-reversion rally.",
+    "invalidation": "A daily close above the 20-day moving average with a surge in volume and a confirmed higher-low daily candle close.",
+    "plain_english": "We are choosing not to trade AAVE today. Our trading desk has a poor history of trading cryptocurrencies, and the coin is currently trending downwards below its short-term [20-day moving average, the average price over the last 20 sessions]. Without clear proof that buyers are stepping back in, it is safer to stay out.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 35.128044
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 149.4033
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 149.9996
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.24
+     },
+     {
+      "fact": "crypto_sentiment.defi_value_locked_change_30d_pct",
+      "value": -6.89
+     }
+    ],
+    "base_win_pct": 18,
+    "base_trades": 11
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 3,
+ "ai_attempts": 25,
+ "minutes": 5.8
+}

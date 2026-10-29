@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56241,
+  "last_price": 0.561875,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -3542,7 +3542,7 @@
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.83708,
+  "last_price": 0.836645,
   "max_r": 0.65,
   "min_r": -0.3
  },
@@ -3597,7 +3597,8 @@
    "2026-10-28T11:26 emergency huddle (-0.6%): hold. The price move is within normal noise and the thesis and risk parameters are unchanged, so we let the original plan run.",
    "2026-10-28T16:26 stop moved to 543.75 (trailing)",
    "2026-10-28T16:27 emergency huddle (+5.6%): close. Target was hit and the trade is deep in profit; closing locks the +2.56R gain before any potential reversal.",
-   "2026-10-28T20:11 emergency huddle (-2.6%): hold. Positive earnings guidance and no breach of the invalidation level keep the original thesis valid; the stop is already at breakeven, so we hold."
+   "2026-10-28T20:11 emergency huddle (-2.6%): hold. Positive earnings guidance and no breach of the invalidation level keep the original thesis valid; the stop is already at breakeven, so we hold.",
+   "2026-10-29T01:43 emergency huddle (+0.0%): hold. Thesis unchanged and news remains favorable; we keep the trade despite the overly tight stop."
   ],
   "entry_price": 521.475,
   "filled_qty": 6.0,
@@ -3608,7 +3609,7 @@
   "last_price": 543.64,
   "max_r": 2.56,
   "min_r": 0,
-  "last_huddle": "2026-10-28T20:11:11-04:00",
+  "last_huddle": "2026-10-29T01:43:48-04:00",
   "stop_history": [
    {
     "t": "2026-10-22T18:38:54-04:00",
@@ -4274,9 +4275,9 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.399095,
+  "last_price": 1.398825,
   "max_r": 0.63,
-  "min_r": -0.31
+  "min_r": -0.35
  },
  {
   "id": "2026-10-26-intraday-1648-T",
@@ -4568,7 +4569,7 @@
   "filled_qty": 8171.0,
   "filled_qty_initial": 8171.0,
   "opened_at": "2026-10-27T22:12:43-04:00",
-  "last_price": 18.63507,
+  "last_price": 18.68255,
   "max_r": 0.25,
   "min_r": -0.02
  },
@@ -4605,10 +4606,11 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "eec0339a-489c-4a6c-9831-caad4d0a5eba",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-27T22:12 entry order placed",
-   "2026-10-28T04:31 filled 7.58703 @ 293.1"
+   "2026-10-28T04:31 filled 7.58703 @ 293.1",
+   "2026-10-29T01:43 closed at 279.337: stopped out, P&L $-104.42"
   ],
   "fee_usd": 3.34,
   "entry_price": 293.1,
@@ -4618,7 +4620,20 @@
   "stop_order_id": "544300b6-a0ca-4b9b-8c26-2c7af4dd64a3",
   "last_price": 289.8,
   "max_r": 0.4,
-  "min_r": -0.37
+  "min_r": -0.37,
+  "exit_fee_usd": 5.3,
+  "exit_price": 279.337,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-29T01:43:26-04:00",
+  "pnl_usd": -104.42,
+  "r_result": -1.0,
+  "interest_usd": 0.43,
+  "pnl_after_interest": -104.85,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The price slipped below the 20\u2011day SMA and hit the stop at $279.39, exiting at $279.34 for a full\u2011risk loss.",
+   "lesson": "Enter pullback longs only after a clear reversal signal (e.g., bullish candlestick or volume surge) rather than relying solely on moving\u2011average support."
+  }
  },
  {
   "id": "2026-10-27-evening-EUR_JPY",
@@ -4663,7 +4678,7 @@
   "filled_qty": 13167.0,
   "filled_qty_initial": 13167.0,
   "opened_at": "2026-10-28T04:31:07-04:00",
-  "last_price": 176.14249999999998,
+  "last_price": 175.85750000000002,
   "max_r": 0.23,
   "min_r": -0.47
  },
@@ -4710,8 +4725,8 @@
   "filled_qty": 13571.0,
   "filled_qty_initial": 13571.0,
   "opened_at": "2026-10-28T16:26:58-04:00",
-  "last_price": 1.5803500000000001,
-  "max_r": 0.15,
+  "last_price": 1.579535,
+  "max_r": 0.24,
   "min_r": 0
  },
  {

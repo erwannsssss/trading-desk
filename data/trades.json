@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56378,
+  "last_price": 0.563655,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -4313,9 +4313,9 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.39629,
+  "last_price": 1.3954900000000001,
   "max_r": 0.63,
-  "min_r": -0.69
+  "min_r": -0.8
  },
  {
   "id": "2026-10-26-intraday-1648-T",
@@ -4495,7 +4495,7 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "9d1715fa-43c2-4915-9274-035129eb70c2",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-27T15:32 entry order placed",
    "2026-10-27T19:10 filled 1 @ 1301.71",
@@ -4503,7 +4503,8 @@
    "2026-10-28T16:27 emergency huddle (+0.4%): hold. Price move is tiny relative to normal volatility and no new information invalidates the earnings\u2011play thesis; the existing stop remains appropriately placed.",
    "2026-10-29T13:51 emergency huddle (-2.8%): hold. The price move is insignificant relative to the stock's normal volatility, and the fundamental thesis for the earnings play remains unbroken.",
    "2026-10-29T18:15 emergency huddle (-0.3%): hold. The earnings beat and stock split announcement strengthen the original thesis, and the current price action is negligible noise relative to the wide stop distance.",
-   "2026-10-29T21:58 emergency huddle (+0.0%): hold. The thesis remains intact and the stop remains appropriately placed; no reason to adjust or exit the trade."
+   "2026-10-29T21:58 emergency huddle (+0.0%): hold. The thesis remains intact and the stop remains appropriately placed; no reason to adjust or exit the trade.",
+   "2026-10-30T11:01 closed at 1207.06: stopped out, P&L $-94.65"
   ],
   "entry_price": 1301.71,
   "filled_qty": 1.0,
@@ -4514,7 +4515,19 @@
   "last_price": 1335.89,
   "max_r": 0.94,
   "min_r": 0,
-  "last_huddle": "2026-10-29T21:58:27-04:00"
+  "last_huddle": "2026-10-29T21:58:27-04:00",
+  "exit_price": 1207.06,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-30T11:01:37-04:00",
+  "pnl_usd": -94.65,
+  "r_result": -1.09,
+  "interest_usd": 0.7,
+  "pnl_after_interest": -95.35,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The stock nudged up after the earnings beat, reaching about 0.94\u202fR, but then reversed and fell below the stop, exiting at $1,207. The anticipated large post\u2011earnings rally never materialised.",
+   "lesson": "Size targets and stops to reflect realistic post\u2011earnings move and the stock's volatility rather than an optimistic upside projection."
+  }
  },
  {
   "id": "2026-10-27-morning-INTC",
@@ -4549,7 +4562,7 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "1690d7d0-5a23-4e05-b8aa-db299b859cb4",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-27T15:32 entry order placed",
    "2026-10-27T19:10 filled 18 @ 93.57",
@@ -4557,7 +4570,8 @@
    "2026-10-28T16:27 emergency huddle (+0.5%): hold. The price movement is insignificant relative to the normal daily range, and the earnings catalyst remains upcoming and unpriced, so the original thesis and stop levels are still valid.",
    "2026-10-29T07:47 emergency huddle (+0.0%): hold. Thesis unchanged and risk parameters remain comfortable; no adverse news or price action justifies closing or tightening.",
    "2026-10-29T13:51 emergency huddle (-1.6%): hold. The price movement is insignificant relative to the normal daily range, and the core thesis of an earnings-driven volatility play has not been invalidated by the current headlines.",
-   "2026-10-29T18:15 emergency huddle (-16.6%): close. The price has decisively broken below the invalidation level of $84.65 and the initial stop of $87.00, and the news confirms negative cash flow expectations, invalidating the earnings play thesis."
+   "2026-10-29T18:15 emergency huddle (-16.6%): close. The price has decisively broken below the invalidation level of $84.65 and the initial stop of $87.00, and the news confirms negative cash flow expectations, invalidating the earnings play thesis.",
+   "2026-10-30T11:01 closed at 66.107222: stopped out, P&L $-494.33"
   ],
   "entry_price": 93.57,
   "filled_qty": 18.0,
@@ -4568,7 +4582,19 @@
   "last_price": 76.43,
   "max_r": 0.15,
   "min_r": -2.61,
-  "last_huddle": "2026-10-29T18:14:57-04:00"
+  "last_huddle": "2026-10-29T18:14:57-04:00",
+  "exit_price": 66.107222,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-10-30T11:01:37-04:00",
+  "pnl_usd": -494.33,
+  "r_result": -4.18,
+  "interest_usd": 0.98,
+  "pnl_after_interest": -495.31,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The earnings surprise was negative, with cash\u2011flow guidance disappointing, causing Intel to gap down past the stop and keep falling to $66. The trade never saw any upside and the stop was far exceeded, leading to a large loss.",
+   "lesson": "Align earnings\u2011play theses with concrete earnings expectations and use tighter, adaptive stop\u2011losses to limit downside when the catalyst fails."
+  }
  },
  {
   "id": "2026-10-27-intraday-1619-USD_MXN",
@@ -4735,8 +4761,8 @@
   "filled_qty": 13167.0,
   "filled_qty_initial": 13167.0,
   "opened_at": "2026-10-28T04:31:07-04:00",
-  "last_price": 176.375,
-  "max_r": 0.23,
+  "last_price": 175.4475,
+  "max_r": 0.24,
   "min_r": -0.68
  },
  {

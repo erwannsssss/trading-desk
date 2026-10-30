@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.56345,
+  "last_price": 0.56385,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -3532,19 +3532,30 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "95",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-22T15:29 entry order placed",
-   "2026-10-22T18:38 filled 23227 @ 0.83722"
+   "2026-10-22T18:38 filled 23227 @ 0.83722",
+   "2026-10-29T21:58 closed at 0.83583: time stop (1-5 days), P&L $-43.67"
   ],
   "oanda_trade_id": "96",
   "entry_price": 0.83722,
   "filled_qty": 23227.0,
   "filled_qty_initial": 23227.0,
   "opened_at": "2026-10-22T18:38:54-04:00",
-  "last_price": 0.83556,
+  "last_price": 0.8359049999999999,
   "max_r": 0.65,
-  "min_r": -0.53
+  "min_r": -0.53,
+  "exit_price": 0.83583,
+  "exit_reason": "time stop (1-5 days)",
+  "closed_at": "2026-10-29T21:58:16-04:00",
+  "pnl_usd": -43.67,
+  "r_result": -0.44,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The EUR/GBP pair failed to rebound after hitting the 52\u2011week low, drifting lower to 0.83583 and triggering the time\u2011stop. The trade closed with a -0.44R loss, never reaching the target.",
+   "lesson": "In a strong downtrend, oversold/mean\u2011reversion signals require extra confirmation or a longer horizon; otherwise the trade may be premature."
+  }
  },
  {
   "id": "2026-10-22-quant-1358-MSFT",
@@ -4302,9 +4313,9 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.39815,
+  "last_price": 1.39675,
   "max_r": 0.63,
-  "min_r": -0.59
+  "min_r": -0.63
  },
  {
   "id": "2026-10-26-intraday-1648-T",
@@ -4491,7 +4502,8 @@
    "2026-10-28T11:26 emergency huddle (+5.6%): hold. Thesis unchanged and stop distance remains safe; no need to adjust.",
    "2026-10-28T16:27 emergency huddle (+0.4%): hold. Price move is tiny relative to normal volatility and no new information invalidates the earnings\u2011play thesis; the existing stop remains appropriately placed.",
    "2026-10-29T13:51 emergency huddle (-2.8%): hold. The price move is insignificant relative to the stock's normal volatility, and the fundamental thesis for the earnings play remains unbroken.",
-   "2026-10-29T18:15 emergency huddle (-0.3%): hold. The earnings beat and stock split announcement strengthen the original thesis, and the current price action is negligible noise relative to the wide stop distance."
+   "2026-10-29T18:15 emergency huddle (-0.3%): hold. The earnings beat and stock split announcement strengthen the original thesis, and the current price action is negligible noise relative to the wide stop distance.",
+   "2026-10-29T21:58 emergency huddle (+0.0%): hold. The thesis remains intact and the stop remains appropriately placed; no reason to adjust or exit the trade."
   ],
   "entry_price": 1301.71,
   "filled_qty": 1.0,
@@ -4502,7 +4514,7 @@
   "last_price": 1335.89,
   "max_r": 0.94,
   "min_r": 0,
-  "last_huddle": "2026-10-29T18:14:57-04:00"
+  "last_huddle": "2026-10-29T21:58:27-04:00"
  },
  {
   "id": "2026-10-27-morning-INTC",
@@ -4723,7 +4735,7 @@
   "filled_qty": 13167.0,
   "filled_qty_initial": 13167.0,
   "opened_at": "2026-10-28T04:31:07-04:00",
-  "last_price": 176.3125,
+  "last_price": 176.2535,
   "max_r": 0.23,
   "min_r": -0.66
  },

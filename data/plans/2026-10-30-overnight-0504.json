@@ -1,0 +1,1164 @@
+{
+ "earnings_season": false,
+ "date": "2026-10-30",
+ "session": "overnight",
+ "created_at": "2026-10-30T05:04:36-04:00",
+ "dry_run": false,
+ "equity": 7978.29,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 70,
+  "bucket_weights": {
+   "core": 45,
+   "tactical": 40,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "mean reversion",
+    "macro/forex",
+    "crypto"
+   ],
+   "avoid": [
+    "breakout-only equity trades",
+    "high\u2011beta earnings plays"
+   ]
+  },
+  "favored": [
+   "Long USD (e.g., USD/JPY short, EUR/USD long)",
+   "Long Gold (XAU)",
+   "Long Crude Oil (WTI)",
+   "Long Bitcoin (BTC/USD) \u2013 short\u2011term bounce",
+   "Long Ethereum (ETH/USD) \u2013 short\u2011term bounce",
+   "Short SP500 (or SPY) \u2013 equity risk\u2011off",
+   "Short Nasdaq100 (or QQQ) \u2013 equity risk\u2011off"
+  ],
+  "avoid": [
+   "Highly speculative alt\u2011coins (PEPE, HYPE, etc.)",
+   "Equity breakout trades without clear catalyst",
+   "Long high\u2011beta tech stocks ahead of earnings"
+  ],
+  "key_events": [
+   "Nov 3 \u2013 JOLTS job openings",
+   "Nov 3 \u2013 Durable goods orders",
+   "Nov 5 \u2013 Weekly jobless claims",
+   "Nov 6 \u2013 US non\u2011farm payrolls (Jobs report)",
+   "Monitor any further news on the Binance hack"
+  ],
+  "overnight_read": "Crypto markets are in a fear\u2011driven dip after the Binance hack, with BTC and ETH RSI in the low\u201130s, suggesting a potential short\u2011term rebound. The USD is modestly strong (spec net long 30.5%) while the VIX is low (16.9) and the yield curve is only slightly positive, pointing to a calm but range\u2011bound opening. Forex pairs show USD strength versus JPY and modest upside for EUR/USD.",
+  "summary": "The market is in a choppy, range\u2011bound mode with low volatility, so we stay aggressive but focus on short\u2011term momentum and mean\u2011reversion plays. Go long the USD, gold, oil and the dip\u2011buy BTC/ETH, while short broad equity indices. Keep high\u2011risk bets limited to crypto bounce trades and avoid speculative alt\u2011coins and pure breakout equity bets. Watch the upcoming labor data and any further Binance fallout for quick pivots."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.75",
+    "date": "2026-09-01"
+   },
+   "10-year Treasury yield": {
+    "value": "5.05",
+    "date": "2026-10-28"
+   },
+   "2-year Treasury yield": {
+    "value": "4.67",
+    "date": "2026-10-28"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.2",
+    "date": "2026-09-01"
+   },
+   "VIX (fear index)": {
+    "value": "16.91",
+    "date": "2026-10-28"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.37",
+    "date": "2026-10-29"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.14",
+    "date": "2026-10-28"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.35",
+    "date": "2026-10-29"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.3202",
+    "date": "2026-10-23"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.487",
+    "date": "2026-10-23"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-11-03",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-11-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-11-05",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-06",
+    "event": "Jobs report"
+   }
+  ],
+  "etfs": {}
+ },
+ "ideas": [
+  {
+   "symbol": "LINK/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 10.9951,
+   "why_scanned": [],
+   "setups": [
+    "volume surge (2.25x normal)",
+    "strong 20-day move (-15.4%)"
+   ],
+   "atr_pct": 6.37,
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price at 10.9951 is well below both the 20-day SMA (12.0026) and 50-day SMA (12.6154), showing persistent intermediate-term downtrend.",
+      "RSI14 is at 37.53, showing weak momentum; while ret_1d bounced 3.75%, the 20-day return is down -15.45%.",
+      "Direct violation of Desk Rule: long mean-reversion entries are prohibited when price is below both 20-day and 50-day SMAs without a fundamental catalyst."
+     ]
+    },
+    "fundamental": {
+     "score": -2,
+     "points": [
+      "No news catalysts present in the dossier to justify an exception to the moving average rule.",
+      "DeFi total value locked is down -11.43% over the past 30 days to 84.4B USD, indicating structural headwinds for oracle networks like Chainlink.",
+      "Stablecoin supply contracted -2.2% over 30 days to 299.6B USD, showing ongoing capital outflows from the crypto ecosystem."
+     ]
+    },
+    "news_sentiment": {
+     "score": -1,
+     "points": [
+      "Crypto Fear & Greed index sits at 30 ('Fear'), down significantly from the 30-day average of 59.0.",
+      "Market game plan highlights fear-driven sentiment following the Binance hack, favoring majors (BTC/ETH) over alt-coins."
+     ]
+    },
+    "smart_money": {
+     "score": -1,
+     "points": [
+      "20-day average dollar volume is thin at $4,948, creating liquidity slippage risk.",
+      "DeFi TVL reduction (-11.43%) confirms institutional liquidity is draining rather than accumulating in middleware protocols."
+     ]
+    },
+    "crypto_desk": {
+     "score": -2,
+     "points": [
+      "Relative trend: LINK is underperforming majors, lagging the broader market with a -15.45% 20-day drop and negative 60-day trajectory (-2.85%).",
+      "Volatility & Liquidity: Daily ATR is elevated at 6.37% ($0.70) while 20-day dollar volume is severely depressed ($4,948), making any overnight liquidity shallow.",
+      "Hype vs Real Buying: Volume surge of 2.25x was primarily driven by panic selling into the 20-day low (10.5128); lack of stablecoin expansion (-2.2%) confirms no fresh fiat inflows."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 2,
+     "points": [
+      "Kronos: +2.0% expected over 5 days, 75% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "LINK has held above its 200-day SMA of 10.0020 (price is 10.4% above it), Kronos projects a 75% probability of an upward move with a 5-day horizon to 11.81, and RSI at 37.53 offers oversold bounce potential off the 20-day low of 10.5128.",
+    "catalysts": [
+     "Oversold rebound towards the 20-day SMA at 12.0026",
+     "Broad crypto relief rally if fear from the Binance hack subsides"
+    ]
+   },
+   "bear": {
+    "case": "The bull is ignoring desk rules and structural decay. Desk rules explicitly ban buying mean-reversions below both the 20-day and 50-day SMAs without catalysts, which do not exist here. Chainlink's primary driver, DeFi TVL, has dropped -11.43%, stablecoins are shrinking (-2.2%), and desk crypto trades are 0-for-6 (-0.79R). Reversion signal history on LINK itself shows a negative average return of -0.08R.",
+    "risks": [
+     "Break of the 20-day low (10.5128) accelerating toward the 200-day SMA at 10.0020",
+     "Continued alt-coin liquidity drain as capital consolidates solely into BTC or exits to USD"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy the 3.75% 1-day bounce expecting a mean reversion to the 20-day SMA. Instead, without fresh DeFi inflows or catalysts, the post-hack panic resumes, selling overwhelms thin overnight liquidity, and the price breaks the 20-day low of 10.5128 towards the 200-day SMA at 10.0020, stopping us out for another crypto loss.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Explicit rulebook violation (cannot buy mean-reversion long below 20-day and 50-day SMAs without a fundamental catalyst), negative historical EV on LINK reversions (-0.08R), and the market game plan mandates avoiding alt-coins while prioritizing BTC/ETH.",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 2,
+    "confidence_pct": 35,
+    "odds_reasoning": "Historical reversion setup on this coin wins only 46% of the time with a -0.08R average outcome, desk crypto base rate is 0% win rate across 6 trades, and Kronos trust weight is weak at 0.20.",
+    "horizon": "1-5 days",
+    "thesis": "LINK is in a clear medium-term downtrend, trading at 10.9951, well below its 20-day SMA (12.0026) and 50-day SMA (12.6154). The desk rulebook strictly prohibits long mean-reversion entries under both moving averages unless supported by clear fundamental catalysts, which are completely absent. Furthermore, DeFi TVL is contracting -11.43% and stablecoin supply is shrinking -2.2%, indicating no real capital support. The firm game plan explicitly directs capital away from alt-coins, making this an undisciplined, negative expected-value gamble.",
+    "invalidation": "Would reconsider only if LINK reclaims the 20-day SMA ($12.00) on confirmed volume accompanied by positive DeFi growth catalysts.",
+    "plain_english": "We are passing on buying Chainlink (LINK) today. Even though the price went up 3.75% over the last day, it is still trading below its key short-term trendlines (the 20-day and 50-day moving averages [lines that show average prices over time]). Our desk rules strictly forbid buying bouncing coins when they are below these trendlines unless there is major positive news, which there is not. In addition, the money deposited into decentralized finance apps is shrinking, meaning there is no real cash flowing in to sustain a rally.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 10.9951
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 12.00264
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 12.615412
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -15.45
+     },
+     {
+      "fact": "crypto_sentiment.defi_value_locked_change_30d_pct",
+      "value": -11.43
+     },
+     {
+      "fact": "crypto_sentiment.fear_greed_now_0_100",
+      "value": 30
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "DOT/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 0.9398,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-25.3%)"
+   ],
+   "atr_pct": 8.76,
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price of 0.9398 is trading well below the 20-day SMA (1.0937), 50-day SMA (1.1245), and 200-day SMA (1.0335).",
+      "RSI14 sits at 33.79, reflecting downward momentum rather than a confirmed reversal, despite a 1-day pop of 3.57%.",
+      "The asset has dropped -25.26% over 20 days and is -48.56% off its 52-week high of 1.8271."
+     ]
+    },
+    "fundamental": {
+     "score": -1,
+     "points": [
+      "DeFi total value locked across crypto has contracted -11.43% over the past 30 days to 84.4 billion USD.",
+      "Stablecoin supply has shrunk -2.2% over 30 days to 299.6 billion USD, signaling persistent liquidity withdrawal from the ecosystem.",
+      "No specific network or adoption catalysts are reported in the dossier."
+     ]
+    },
+    "news_sentiment": {
+     "score": -2,
+     "points": [
+      "Crypto Fear & Greed Index sits at 30 (Fear), dropping from a 30-day average of 59.0.",
+      "Overnight market read highlights broader market fear following the Binance hack.",
+      "No idiosyncratic news catalysts present for DOT."
+     ]
+    },
+    "smart_money": {
+     "score": -2,
+     "points": [
+      "Average 20-day dollar volume is critically low at only 4,822 USD, showing an acute absence of institutional participation.",
+      "Long-term trend is classified as down with a z-score versus the 20-day average of -1.8."
+     ]
+    },
+    "crypto_desk": {
+     "score": -2,
+     "points": [
+      "DOT is severely lagging Bitcoin and Ethereum; desk mandate restricts crypto bounce plays to BTC and ETH while advising to avoid speculative altcoins.",
+      "With a 20-day dollar volume of only 4,822 USD, liquidity is extremely thin, exposing entries to prohibitive slippage during overnight sessions.",
+      "Kronos forecast provides zero directional edge with expected move of -0.11% and 50% probability up."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: -0.1% expected over 5 days, 50% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "DOT is bouncing off its 20-day low of 0.8921 with a 1-day gain of 3.57%, and the RSI14 of 33.79 indicates deeply oversold conditions that could spark a mean-reversion snapback.",
+    "catalysts": [
+     "Short squeeze from oversold levels",
+     "Broad crypto sentiment recovery from Fear level 30"
+    ]
+   },
+   "bear": {
+    "case": "DOT is below its 20-day (1.0937), 50-day (1.1245), and 200-day (1.0335) SMAs, in a confirmed downtrend (-25.26% in 20 days), with virtually zero liquidity (4,822 USD average daily dollar volume). Buying violates desk rules forbidding long mean-reversion below both 20- and 50-day SMAs without catalysts.",
+    "risks": [
+     "Rulebook violation on sub-SMA mean-reversion entries",
+     "Severe illiquidity and slippage risk"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "Buying a beaten-down altcoin with under $5,000 in average daily volume leads to instant slippage on entry, followed by continuation of the broader crypto sell-off driven by the Binance hack fallout, triggering the stop without any organic buyer support.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Violates desk rule prohibiting long mean-reversion trades on assets below both the 20-day and 50-day SMA without a clear fundamental catalyst; additionally, 20-day dollar volume is critically thin at 4,822 USD.",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "market",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 20,
+    "odds_reasoning": "Desk win rate on crypto is 0% over 6 trades, Kronos probability of an upward move is only 50% with an expected move of -0.11%, and the asset violates core technical rulebook filters.",
+    "horizon": "1-5 days",
+    "thesis": "DOT/USD remains trapped in an aggressive medium-term downtrend, down -25.26% over 20 days and trading below its 20-day, 50-day, and 200-day moving averages. Desk rules explicitly forbid buying mean-reversion setups when the asset sits below both the 20-day and 50-day SMAs without a strong fundamental catalyst. With average daily dollar volume at an uninvestable 4,822 USD and the market playbook warning against speculative altcoins, capital is far better deployed elsewhere.",
+    "invalidation": "A daily candle close above the 20-day SMA (1.0937) accompanied by a surge in volume would warrant re-evaluating.",
+    "plain_english": "We are passing on buying Polkadot (DOT/USD). The coin is in a deep downtrend, down over 25% in the last 20 days, and sits below its key moving averages [trendline indicators that smooth out past prices]. Our strict desk rules forbid buying falling assets below these levels unless there is major positive news, which DOT currently lacks. Furthermore, trading volume is almost nonexistent at less than $5,000 per day, meaning we could get trapped in the position.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 0.9398
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 1.093683
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 1.124513
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -25.26
+     },
+     {
+      "fact": "technicals.avg_dollar_vol_20d",
+      "value": 4822
+     },
+     {
+      "fact": "kronos_forecast.expected_move_pct",
+      "value": -0.11
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "AAVE/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 125.05,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-25.7%)"
+   ],
+   "atr_pct": 8.13,
+   "specialists": {
+    "technical": {
+     "score": 7,
+     "points": [
+      "price 125.05 below SMA20 146.466975 and SMA50 149.77816",
+      "RSI 32.925939 indicates oversold",
+      "ATR 10.171874 (~8.13% of price) shows moderate volatility",
+      "price has fallen 25.66% over 20d",
+      "vol_ratio 1.31 suggests slightly higher than avg volume"
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "no fundamental data provided"
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "crypto_sentiment.fear_greed_now_0_100 30 (fear)",
+      "crypto_sentiment.stablecoin_supply_change_30d_pct -2.2 (outflow)",
+      "crypto_sentiment.defi_value_locked_change_30d_pct -11.43 (decline)"
+     ]
+    },
+    "smart_money": {
+     "score": 0,
+     "points": [
+      "no smart money data"
+     ]
+    },
+    "crypto_desk": {
+     "score": 4,
+     "points": [
+      "trend sideways/mixed",
+      "RSI low, indicating potential bounce but fear dominates",
+      "ATR 8.13% moderate volatility",
+      "vol_ratio 1.31 slight liquidity boost",
+      "weekend effect not quantified"
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: +3.8% expected over 5 days, 70% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "AAVE shows oversold RSI, Kronos forecast 70% upside, mean\u2011reversion signal win 62% and avg R 0.49 suggest a bounce potential.",
+    "catalysts": [
+     "RSI 32.9 (oversold)",
+     "Kronos forecast prob_up_pct 70%",
+     "Mean\u2011reversion win_pct 62%"
+    ]
+   },
+   "bear": {
+    "case": "Price is below both 20\u2011day and 50\u2011day SMAs, momentum is weak, sentiment is fearful, and the desk\u2019s crypto track record is -0.79R per trade. The rule forbids a long mean\u2011reversion without a fundamental catalyst.",
+    "risks": [
+     "price could keep falling below SMA20",
+     "negative crypto sentiment (fear)",
+     "desk\u2019s historical crypto loss record",
+     "blocked by rule"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we entered a long, price could continue sliding below SMA20, hitting the stop as volatility spikes and sentiment stays fearful, leading to a loss.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "No viable long edge; mean\u2011reversion long blocked by rule and momentum is weak; expected value negative.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "none",
+    "horizon": null,
+    "thesis": "",
+    "invalidation": "",
+    "plain_english": "We are not taking a trade on AAVE because the price is below its key moving averages and the desk\u2019s rules forbid a long mean\u2011reversion without a fundamental catalyst. The odds of a profitable move are low, so we stay in cash.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 125.05
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 146.466975
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 32.925939
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 70
+     },
+     {
+      "fact": "setup_history.reversion_signal_record.win_pct",
+      "value": 62
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 6
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'setup_history.reversion_signal_record.win_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "RENDER/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 1.56223,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-19.1%)"
+   ],
+   "atr_pct": 8.79,
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price ($1.56223) trades below the 20-day SMA ($1.8133), 50-day SMA ($1.7914), and 200-day SMA ($1.6747), establishing a clear bearish trend structure across all standard moving averages.",
+      "RSI14 is depressed at 34.54, but not deeply oversold, while 20-day momentum is -19.05% and the price sits barely above its 20-day low of $1.5259.",
+      "Trading volume is anemic with a volume ratio of 0.12 and 20-day average dollar volume of just $3,305."
+     ]
+    },
+    "fundamental": {
+     "score": -1,
+     "points": [
+      "No fundamental news or protocol upgrades present in the dossier to justify an independent rerating.",
+      "DeFi total value locked is down -11.43% over the last 30 days to $84.4B, indicating sector-wide capital contraction.",
+      "Stablecoin supply has shrunk 2.2% over 30 days to $299.6B, reflecting net liquidity outflows from the digital asset space."
+     ]
+    },
+    "news_sentiment": {
+     "score": -2,
+     "points": [
+      "Crypto Fear & Greed index sits at 30 ('Fear'), down significantly from the 30-day average of 59.0.",
+      "Overnight market read highlights broader market skittishness following the Binance hack news.",
+      "No token-specific catalysts or news events reported for RENDER."
+     ]
+    },
+    "smart_money": {
+     "score": -2,
+     "points": [
+      "Average 20-day dollar volume is severely depleted at $3,305, showing complete absence of institutional or smart-money participation.",
+      "Volume ratio of 0.12 confirms extreme liquidity dry-up, leaving bids susceptible to severe slippage."
+     ]
+    },
+    "crypto_desk": {
+     "score": -2,
+     "points": [
+      "RENDER is drastically lagging BTC and ETH, failing to show any relative strength amidst fear-driven sector volatility.",
+      "Market game plan explicitly restricts crypto longs to BTC/USD and ETH/USD dip bounces while mandating avoiding speculative alt-coins.",
+      "Extreme liquidity shortage ($3,305 20-day dollar volume) exposes any position to severe weekend gap risk and unviable execution spreads.",
+      "Past desk trade in RENDER was stopped out with a specific lesson noting support levels on very thin volume cannot sustain risk-reward."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": -1,
+     "points": [
+      "Kronos: -0.9% expected over 5 days, 35% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "RENDER has shed 19.05% over 20 days and is hovering near its 20-day low ($1.5259) with RSI at 34.54, presenting an oversold rebound opportunity if broader crypto sentiment stabilizes around BTC/ETH support.",
+    "catalysts": [
+     "Broad crypto relief rally from Fear & Greed 30 extreme fear levels",
+     "Mean reversion squeeze toward the 200-day SMA at $1.6747"
+    ]
+   },
+   "bear": {
+    "case": "RENDER is trapped in a confirmed downtrend below its 20, 50, and 200 SMAs with virtually nonexistent liquidity ($3,305 daily volume). Kronos predicts further downside with only a 35% probability of an upward move. Buying an illiquid alt-coin into a market-wide risk-off backdrop directly violates desk rules.",
+    "risks": [
+     "Severe slippage and order execution risk on micro-liquidity volume",
+     "Continued alt-coin capitulation breaking below 20-day support of $1.5259 toward 52-week low of $1.2255",
+     "Explicit violation of rulebook restriction against mean-reversion longs below both 20-day and 50-day SMAs without a fundamental catalyst"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "Entering a long position into a thin alt-coin book resulted in immediate slippage; when Bitcoin wobbled, RENDER bids vanished and the price sliced cleanly through the 20-day low ($1.5259) down toward $1.40 without any liquidity to exit cleanly.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Violates desk rule prohibiting mean-reversion longs below both 20-day and 50-day SMAs without a catalyst; also violates game plan directive to avoid speculative alt-coins, compounded by unviable liquidity ($3,305 daily volume).",
+    "bucket": "high_risk",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 25,
+    "odds_reasoning": "Kronos forecasts only a 35% probability of upward movement over 5 days with an expected move of -0.94%, while the desk's crypto base rate is 0% wins across 6 trades.",
+    "horizon": "1-5 days",
+    "thesis": "RENDER is technically broken, trading below its 20-day ($1.8133), 50-day ($1.7914), and 200-day ($1.6747) moving averages with negative momentum (-19.05% over 20 days). Desk rulebook strictly forbids entering long mean-reversion trades on assets trading below both their 20-day and 50-day SMAs without a clear fundamental catalyst, which does not exist here. Furthermore, 20-day average dollar volume of $3,305 makes this market functionally untradable for disciplined risk management. The desk's strategic mandate instructs avoiding speculative alt-coins and reserving crypto capital exclusively for major bounces (BTC/ETH). Because shorting crypto is disallowed and going long carries deeply negative expected value, a pass is mandatory.",
+    "invalidation": "A decisive multi-day close above the 50-day SMA ($1.7914) accompanied by a tenfold increase in dollar volume would invalidate the bearish thesis.",
+    "plain_english": "We are passing on trading RENDER. The token is trading well below its key trendlines, including its 20-day and 50-day simple moving averages [the average closing price over those days], which our trading rules forbid buying without major positive news. Additionally, trading volume is dangerously low at just $3,305 per day, meaning getting in or out without losing money to wide spreads [the gap between what buyers offer and sellers demand] is nearly impossible. Since desk rules do not allow short selling cryptocurrencies and buying here is statistically unfavorable, the smartest trade is no trade.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 1.56223
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 1.813343
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 1.79142
+     },
+     {
+      "fact": "technicals.avg_dollar_vol_20d",
+      "value": 3305
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 35
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "EUR_GBP",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 0.83472,
+   "why_scanned": [],
+   "setups": [
+    "deeply oversold (bounce candidate)"
+   ],
+   "atr_pct": 0.32,
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price 0.83472 trades below the 20-day SMA (0.841924), 50-day SMA (0.851159), and 200-day SMA (0.860744), confirming an entrenched long-term downtrend.",
+      "RSI-14 is deeply oversold at 17.70, but 1-day return (-0.12%) and proximity to the 20-day low (0.83450) and 52-week low (0.83422) show persistent downward momentum with zero basing."
+     ]
+    },
+    "fundamental": {
+     "score": -1,
+     "points": [
+      "Eurozone inflation reports (France, Spain, Germany) and GDP are imminent, presenting asymmetric downside risk if disinflation accelerates.",
+      "Specific central bank policy rates are omitted in the dossier, but European growth continues to lag UK macro expectations."
+     ]
+    },
+    "news_sentiment": {
+     "score": 0,
+     "points": [
+      "European session news docket is packed with French, Spanish, and German inflation data alongside Eurozone GDP.",
+      "Sentiment remains on edge ahead of key European morning releases with no positive catalyst currently in place."
+     ]
+    },
+    "smart_money": {
+     "score": 0,
+     "points": [
+      "EUR CFTC speculative net positioning sits at -15.3% of open interest (1st percentile over 3 years), showing heavy short positioning.",
+      "GBP speculative net positioning is -31.7% of open interest (5th percentile), but experienced a sharp +8.2 point weekly increase, signaling smart money short-covering into sterling."
+     ]
+    },
+    "fx_desk": {
+     "score": -1,
+     "points": [
+      "Interest rate gap and central bank trajectory: Specific policy rate levels are missing from dossier data, but market expects ECB easing bias amid soft inflation prints.",
+      "US Dollar trend: USD is modestly strong with spec net long at 30.5%, keeping cross-currency liquidity tight.",
+      "Carry: Structurally negative or unfavorable to long EUR against GBP.",
+      "Trading session: European/London session (07:00\u201316:00 GMT) drives majority of volume and volatility via EZ inflation data.",
+      "Key round-number levels: 0.8300 major psychological floor, 0.8350 immediate intraday pivot, 0.8400 first resistance, 0.8500 major structural ceiling."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: +0.6% expected over 5 days, 100% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "RSI-14 is pinned at an extreme 17.70, right on the 52-week low of 0.83422. Kronos AI model forecasts a 5-day move of +0.60% with a 100% probability of an upside bounce toward 0.8418.",
+    "catalysts": [
+     "Upside surprise in Eurozone GDP or French/German inflation reports",
+     "Short squeeze triggered by stretched CFTC EUR short positioning (1st percentile)"
+    ]
+   },
+   "bear": {
+    "case": "EUR_GBP is in a persistent downtrend (-2.56% 60-day return) trading below all key daily moving averages (20d SMA 0.8419, 50d SMA 0.8512). Mean-reversion signals on this pair have a 33% historical win rate (-0.26R avg), and the desk has lost money on its last two attempts (-0.44R and -1.36R) trying to catch falling knives here. Desk rules strictly prohibit buying mean-reversion setups below both the 20-day and 50-day SMAs without a confirmed higher-low candle close and a fundamental catalyst.",
+    "risks": [
+     "Breaching 52-week low (0.83422) triggering cascade stop-outs",
+     "Soft Eurozone inflation data prompting further ECB rate cut expectations"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The desk stepped in front of a relentless downtrend to catch an oversold bounce ahead of European inflation numbers. A soft German inflation print triggered immediate stops below the 52-week low of 0.83422, mirroring the desk's past two EUR_GBP losses.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Violates explicit desk rules requiring a confirmed higher-low daily close and a clear fundamental catalyst before buying an asset trading below both its 20-day and 50-day SMAs; shorting into an RSI of 17.70 at the 52-week low also offers negative expected value.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 20,
+    "odds_reasoning": "Forex mean reversion on this desk has only a 17% win rate (-0.44R avg) and EUR_GBP specific setup history shows a 33% win rate (-0.26R avg).",
+    "horizon": "1-5 days",
+    "thesis": "EUR_GBP is deeply oversold at 0.83472 with RSI-14 at 17.70, but it is pressing against its 52-week low of 0.83422 in an established downtrend below all major moving averages. Bidding now violates mandatory risk rules requiring a confirmed higher-low daily close. Meanwhile, shorting into RSI 17.70 directly above major psychological support at 0.8300 yields poor risk-reward. We stand aside until a definitive reversal structure prints post-inflation data.",
+    "invalidation": "A daily close above the 20-day SMA (0.841924) with a confirmed higher low following the Eurozone inflation prints.",
+    "plain_english": "We are passing on EUR_GBP. Although the pair looks very cheap with an RSI [a 0-100 gauge of whether an asset has fallen too fast] of 17.70, it is falling toward its lowest level in a year. Our firm rules forbid buying falling assets that trade below their 20-day and 50-day moving averages [average prices over time] until the market proves it can bounce and form a higher low. Shorting it here is also dangerous because it is already stretched to the downside right ahead of major European inflation data.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 0.83472
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 17.695685
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 0.841924
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 0.851159
+     },
+     {
+      "fact": "technicals.low_52w",
+      "value": 0.83422
+     },
+     {
+      "fact": "setup_history.reversion_signal_record.win_pct",
+      "value": 33
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'setup_history.reversion_signal_record.win_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "USD_MXN",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 18.87005,
+   "why_scanned": [],
+   "setups": [
+    "near 52-week high"
+   ],
+   "atr_pct": 1.01,
+   "specialists": {
+    "technical": {
+     "score": 6,
+     "points": [
+      "Strong multi-month uptrend with price (18.87005) trading well above 20-day SMA (18.459706), 50-day SMA (17.749657), and 200-day SMA (17.487946).",
+      "RSI14 is overbought at 71.801445 and price is sitting right at the 52-week high of 18.90285 (pct_from_52w_high is -0.17%).",
+      "Setup history shows price is 7.9% above its 200-day average with a 60-day return of 10.12% and z-score vs 20-day average of 1.6."
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "US Dollar continues to exhibit broad macro strength backed by resilient US yields and positive spec positioning.",
+      "Banxico maintains high nominal policy rates relative to the Federal Reserve, creating an ongoing negative carry penalty for long USD_MXN spot holders.",
+      "Upcoming US macroeconomic releases (JOLTS, durable goods, payrolls) represent event risk that could trigger two-way volatility."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Global risk sentiment is mixed with low VIX (16.9) but crypto reeling from the Binance exploit.",
+      "Focus in foreign exchange is centered around European inflation prints and upcoming US employment figures.",
+      "Overnight news flow lacks direct idiosyncratic Mexican economic drivers."
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "USD spec net positioning is long at 30.5% of open interest, rising 5.5 points week-over-week, positioned at the 82.0 percentile over 3 years.",
+      "MXN spec net positioning sits low at 6.1% of open interest, up only 0.7 points, at the 7.0 three-year percentile, indicating speculators have largely abandoned MXN longs."
+     ]
+    },
+    "fx_desk": {
+     "score": 5,
+     "points": [
+      "Interest-rate gap & central bank trajectory: Banxico holds a substantial policy rate premium over the US Fed Funds rate, though both central banks are navigating easing expectations; the rate gap heavily penalizes holding long USD_MXN via negative carry.",
+      "US Dollar trend: Modestly strong macro backdrop with USD spec net positioning at 30.5% (82.0 percentile), driving USD_MXN up 10.12% over 60 days.",
+      "Carry profile: Long USD_MXN incurs negative carry due to Mexican interest rate differentials, creating a persistent drag on momentum buyers.",
+      "Session dynamics: USD_MXN liquidity and peak volatility occur during the North American (New York/Mexico City) trading window (8:00 AM to 2:00 PM CST); overnight Asian/early European session action is historically illiquid with wide spreads.",
+      "Key round-number levels: Immediate ceiling resistance at psychological 19.00 and 52-week high 18.90285; support sits at the 18.50 handle and 20-day SMA 18.459706."
+     ]
+    },
+    "best_style": "momentum",
+    "kronos": {
+     "score": -5,
+     "points": [
+      "Kronos: -1.4% expected over 5 days, 5% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "USD_MXN is riding a potent macro uptrend up 10.12% over 60 days, sitting just 0.17% below its 52-week high of 18.90285. USD speculative positioning is surging at the 82nd percentile, and MXN speculative positioning has collapsed to the 7th percentile, creating conditions for a continuation breakout through the 19.00 psychological level.",
+    "catalysts": [
+     "Breakout above the 52-week high of 18.90285 toward 19.00",
+     "Continued US Dollar strength into upcoming US labor market releases"
+    ]
+   },
+   "bear": {
+    "case": "Buying USD_MXN here means chasing an extreme overbought print (RSI 71.801445) right into massive technical resistance at 18.90285 while paying steep negative carry during the low-liquidity overnight session. Kronos forecasts a -1.39% drop over 5 days with only a 5% probability of closing higher. Meanwhile, our desk history shows fading this pair has failed 3 times (-2.26R total), meaning neither chasing the top nor counter-trend shorting provides a positive expected value.",
+    "risks": [
+     "Sharp mean reversion towards the 20-day SMA of 18.459706",
+     "Steep negative swap carry bleeding positions overnight"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "A long trade initiated at 18.87 right into the 52-week high failed when buyers failed to clear 18.90285 during the illiquid overnight session. Thin order books and high negative carry triggered rapid profit-taking down toward the 20-day moving average at 18.459706, confirming Kronos's 95% downside probability.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Negative expected value on both long and short entries. Longing is blocked by severe overextension (RSI 71.80), immediate 52-week high resistance at 18.90285, punitive negative carry, and a Kronos model forecasting -1.39% with only 5% upside probability. Shorting is precluded by a powerful multi-month uptrend (ret_60d 10.12%) and the desk's repeated losses (-2.26R across 3 trades) trying to fade this symbol.",
+    "bucket": "tactical",
+    "style": "momentum",
+    "expression": "shares",
+    "order_type": "market",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 4,
+    "confidence_pct": 35,
+    "odds_reasoning": "Base rate for overbought momentum longs near 52-week highs without pullback is sub-45%, Kronos gives only a 5% probability of upward movement over 5 days, and short/fade attempts on this desk carry a 14% win rate.",
+    "horizon": "1-5 days",
+    "thesis": "USD_MXN is squeezed between an unstoppable macro trend and an imminent technical brick wall. Price is 0.17% below the 52-week high of 18.90285 with an RSI of 71.801445 and significant negative carry against the Mexican Peso. Chasing long here during the overnight session when the primary trading window is closed violates discipline, while shorting against USD strength at the 82nd percentile of spec positioning directly repeats past desk mistakes. We pass and wait for a retest of the 20-day SMA (18.459706) or a clean breakout during liquid New York hours.",
+    "invalidation": "A decisive break and daily close above 19.00 on heavy volume during the New York session would invalidate the pass and open a trend-continuation long setup.",
+    "plain_english": "We are passing on USD_MXN right now because the price is right at its 52-week high and is overextended. The RSI [a gauge that measures whether an asset is overbought from 0 to 100] is elevated at 71.8, and holding long USD against the Mexican Peso incurs negative carry [interest rate penalties for holding a lower-yielding currency against a higher-yielding one]. Shorting is equally dangerous because the pair has rallied over 10% in 60 days and our desk has lost money three times trying to bet against it. We will wait for a pullback to a better support level during normal trading hours.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 18.87005
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 71.801445
+     },
+     {
+      "fact": "technicals.pct_from_52w_high",
+      "value": -0.17
+     },
+     {
+      "fact": "technicals.ret_60d",
+      "value": 10.12
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 5
+     }
+    ],
+    "base_win_pct": 20,
+    "base_trades": 15
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "EUR_CHF",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 0.9188,
+   "why_scanned": [],
+   "setups": [
+    "breakdown below 20-day low"
+   ],
+   "atr_pct": 0.45,
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price 0.9188 has cleanly broken down below the 20-day low of 0.91953 and sits below the 20-day SMA (0.927416), 50-day SMA (0.935761), and 200-day SMA (0.923667).",
+      "RSI14 is at 31.78, reaching near-oversold territory but showing no bullish divergence or reversal candle close.",
+      "ATR14 is 0.004154 (0.45%), with downward momentum showing ret_5d of -0.59% and ret_20d of -1.47%."
+     ]
+    },
+    "fundamental": {
+     "score": -1,
+     "points": [
+      "Upcoming Eurozone CPI releases across France, Germany, and Spain and Eurozone GDP present near-term headline risk for the Euro.",
+      "Swiss National Bank monetary posture remains vigilant against inflation, keeping the franc structurally supported against the euro.",
+      "Macro trend setup_history shows long-term trend is firmly 'down' with 60-day return at -1.6%."
+     ]
+    },
+    "news_sentiment": {
+     "score": 0,
+     "points": [
+      "News agenda highlights impending Eurozone inflation prints (France, Spain, Germany) and Eurozone GDP, which will dictate European session flows.",
+      "Market regime is currently range-bound/choppy with low overall risk volatility (VIX 16.9)."
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "CFTC positioning shows EUR speculators at -15.3% net open interest, sitting at the 1.0 percentile (extreme 3-year multi-year bearishness).",
+      "CHF speculators sit at the 95.0 percentile (extremely crowded Swiss franc long posture).",
+      "Extreme crowded positioning in futures historically warns against initiating fresh EUR/CHF shorts at the bottom of the range."
+     ]
+    },
+    "fx_desk": {
+     "score": 0,
+     "points": [
+      "Interest-rate gap and central-bank direction: The ECB is managing disinflation with rate cuts already underway or priced, while the Swiss National Bank maintains low benchmark rates but historically intervenes to manage excessive CHF appreciation.",
+      "US dollar trend: Modestly strong USD trend (spec net long 30.5%) keeps cross-currency European pairs under pressure.",
+      "Carry: EUR/CHF offers negligible to negative net carry, eliminating any structural yield incentive for holding long positions.",
+      "Trading session: EUR/CHF is predominantly driven during the European session (07:00\u201316:00 GMT) around Eurozone and Swiss macroeconomic releases.",
+      "Key round-number levels: Immediate psychological support lies at 0.9150 and 0.9100; major resistance sits at 0.9200, 0.9250, and 0.9300."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 4,
+     "points": [
+      "Kronos: +0.8% expected over 5 days, 100% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "EUR positioning is washed out at the 1st percentile of 3-year positioning while CHF is stretched at the 95th percentile. Kronos models a 5-day rebound (+0.75% expected move, prob_up 100%), and RSI14 at 31.78 suggests seller exhaustion near 0.9188.",
+    "catalysts": [
+     "Hotter-than-expected German or French inflation prints forcing ECB rate cut repricing",
+     "Short squeeze triggered by extreme multi-year speculative positioning unwind"
+    ]
+   },
+   "bear": {
+    "case": "The breakdown below the 20-day low of 0.91953 confirms the prevailing multi-month downtrend beneath all key moving averages. Bidding into falling European cross prices ahead of heavy inflation releases is a classic trap.",
+    "risks": [
+     "Desk rule explicitly prohibits long mean-reversion trades below both 20-day and 50-day SMAs without a confirmed higher-low daily close",
+     "Shorting the 20-day breakdown setup has a backtested win rate of only 38.4% and an average R of -0.128"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "Entering short on the 20-day breakdown leads to getting trapped at extreme COT sentiment lows (EUR at 1st percentile, CHF at 95th percentile), causing a sharp squeeze back toward the 200-day SMA at 0.9237. Conversely, entering long violates desk rules by catching a falling knife below the 20-day and 50-day SMAs with negative EV.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Shorting the 20-day breakdown carries negative backtested expectancy (-0.128R, 38.4% win rate) into extreme COT positioning (EUR at 1st percentile, CHF at 95th percentile). Going long violates desk rulebook constraints requiring price above moving averages or a confirmed daily higher-low candle.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "market",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 35,
+    "odds_reasoning": "Quantitative backtests show breakdown shorts on this setup lose -0.128R on average with only a 38.4% win rate, while long mean reversion is blocked by desk rules and a 33% historical win rate on this pair.",
+    "horizon": "1-5 days",
+    "thesis": "EUR_CHF is breaking down to new 20-day lows at 0.9188 beneath its 20-day, 50-day, and 200-day moving averages. However, speculative futures positioning is heavily skewed, with EUR at its lowest 3-year percentile (1.0) and CHF near its peak (95.0), making shorting here structurally dangerous. Long trades are strictly forbidden by our desk rules until a daily higher-low close forms above support. Consequently, the edge is negative in both directions and capital must be preserved.",
+    "invalidation": "A decisive daily close above the 20-day SMA (0.9274) with a higher-low structure would enable a long mean-reversion setup, whereas a retest and rejection of 0.9200 with institutional volume could allow a disciplined trend-following short.",
+    "plain_english": "We are passing on EUR/CHF today because there is no good mathematical advantage to taking a trade. The currency pair has dropped below its recent lows, but smart money data shows traders are already holding record bets against the euro, meaning a sudden snapback is likely. At the same time, desk rules prevent us from buying falling prices until the market proves it has found a bottom. Waiting on the sidelines protects our paper capital until a cleaner setup appears.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 0.9188
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 0.91953
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 31.777041
+     },
+     {
+      "fact": "futures_positioning.EUR.three_year_percentile",
+      "value": 1.0
+     },
+     {
+      "fact": "futures_positioning.CHF.three_year_percentile",
+      "value": 95.0
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "CAD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 112.602,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 0.59,
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "price above sma20 (111.80585) but below sma50 (112.23174)",
+      "rsi14 57.67 (neutral)",
+      "down moves slightly more frequent in 1\u2011day atr stats (down 0.5\u2011atr 43 vs up 36)",
+      "trend labelled sideways/mixed"
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "interest\u2011rate gap data not provided",
+      "no macro catalyst for CAD strengthening"
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "only generic euro\u2011zone inflation news, no direct impact on CAD_JPY"
+     ]
+    },
+    "smart_money": {
+     "score": 3,
+     "points": [
+      "cad spec net -19.5% (net short)",
+      "jpy spec net +18.4% (net long)",
+      "both indicate bearish pressure on CAD_JPY"
+     ]
+    },
+    "fx_desk": {
+     "score": 4,
+     "points": [
+      "interest\u2011rate gap missing",
+      "central\u2011bank direction for CAD and JPY not given",
+      "usd strength vs jpy noted in overnight read but not directly CAD_JPY",
+      "pair most active in European/Asian session",
+      "key round numbers 112.0, 113.0, 114.0"
+     ]
+    },
+    "best_style": "macro",
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: +0.7% expected over 5 days, 75% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Kronos forecast shows 75% probability of an upside move, price is already above the 20\u2011day SMA and RSI is not overbought, giving room for a modest pull\u2011back bounce higher.",
+    "catalysts": [
+     "kronos signal_strength 0.76",
+     "price above sma20",
+     "rsi14 57.7 (room to rise)"
+    ]
+   },
+   "bear": {
+    "case": "Speculators are net short CAD (-19.5%) and net long JPY (+18.4%), down\u2011move ATR frequencies are higher, and the desk's historical forex win rate is only 20% with negative avg R, suggesting the upside edge is weak.",
+    "risks": [
+     "spec net short CAD pressure",
+     "down\u2011move more common in 1\u2011day atr stats",
+     "overall forex track record negative"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If CAD_JPY falls below the 20\u2011day SMA (111.80585) and breaks the 112.0 support, the stop at ~111.5 would be hit as speculators push CAD lower, wiping out the modest gain.",
+     "failure_more_likely": false
+    },
+    "decision": "pass",
+    "reason": "Conflicting signals and a weak historical edge in forex outweigh the modest Kronos upside; the trade does not meet the required risk\u2011reward or confidence thresholds.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": null,
+    "horizon": null,
+    "thesis": "The upside from the Kronos model is small and contradicted by net short positioning in CAD and the desk's poor forex win rate. With a reward\u2011to\u2011risk below 1.2 and confidence below 60%, the expected value is not positive enough to justify a trade.",
+    "invalidation": "If price breaks clearly above 113.5 and holds, the bullish case could be revisited.",
+    "plain_english": "We decided not to trade CAD/JPY right now. The model says it might go up a little, but most traders are betting the Canadian dollar will fall, and our past trades in currencies have lost money. The possible profit isn\u2019t big enough compared to the risk, so we stay out.",
+    "evidence": [
+     {
+      "fact": "technicals.sma20",
+      "value": 111.80585
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 112.23174
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 57.672566
+     },
+     {
+      "fact": "futures_positioning.CAD.spec_net_pct_of_open_interest",
+      "value": -19.5
+     },
+     {
+      "fact": "futures_positioning.JPY.spec_net_pct_of_open_interest",
+      "value": 18.4
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 75
+     }
+    ],
+    "base_win_pct": 20,
+    "base_trades": 15
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 8,
+ "ai_attempts": 18,
+ "minutes": 31.9
+}

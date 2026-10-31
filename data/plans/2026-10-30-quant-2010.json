@@ -1,0 +1,162 @@
+{
+ "date": "2026-10-30",
+ "session": "quant",
+ "created_at": "2026-10-30T20:10:17-04:00",
+ "dry_run": false,
+ "equity": 7929.3,
+ "macro": {
+  "regime": "panic/high volatility",
+  "risk_appetite": 45,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 40,
+   "high_risk": 20
+  },
+  "playbook": {
+   "use": [
+    "mean reversion",
+    "momentum shorts",
+    "macro/forex"
+   ],
+   "avoid": [
+    "breakouts",
+    "long-only tech"
+   ]
+  },
+  "favored": [
+   "XLV",
+   "XLP",
+   "XLE",
+   "PSQ",
+   "SH"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "XLC",
+   "SLV",
+   "GLD"
+  ],
+  "key_events": [
+   "JOLTS job openings on 2026-11-03",
+   "Durable goods on 2026-11-03",
+   "Weekly jobless claims on 2026-11-05",
+   "Jobs report on 2026-11-06"
+  ],
+  "overnight_read": "Equity markets are under heavy distribution following weak chip guidance and a 7% plunge in SMH, dragging the Nasdaq 100 down 3.2% and pushing the VIX to 20.6. Crypto sentiment remains entrenched in fear at 30, while defensive sectors like healthcare (XLV) and consumer staples (XLP) continue to lead on a 20-day basis.",
+  "summary": "Growth and semiconductor shares are suffering heavy liquidation, led by a 7% collapse in chip stocks and tumbling tech indices. We are shifting toward a defensive posture, prioritizing inverse equity ETFs and high-performing defensive sectors while keeping dry powder for mean-reversion setups. Macro focus turns squarely to next week's employment and durable goods data."
+ },
+ "ideas": [
+  {
+   "symbol": "BTC/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 77230.452,
+   "atr_pct": 2.65,
+   "setups": [],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 77230.45,
+    "stop": 74672.19,
+    "target": 81323.67,
+    "conviction": 5,
+    "confidence_pct": 41,
+    "horizon": "1-5 days",
+    "reason": "Long BTC/USD at 77,230, targeting 81,324 with stop 74,672. While our mean\u2011reversion stats show a modest 0.15\u202fR avg and 50\u202f% win rate over 12 signals, Kronos predicts a -0.09\u202fR expectancy and a 35\u202f% chance the stop hits before the target. With only an 11\u202f% historic 5\u2011day target\u2011hit rate and a sideways technical backdrop, the upside isn\u2019t compelling. Quant desk: a stretched price likely to snap back. the same signal on BTC/USD over 2 years: 12 trades, 50% winners, +0.15R on average; Kronos: target first in 0% of 20 simulated futures, stop first in 35%, expected -0.09R.",
+    "thesis": "A stretched price likely to snap back on BTC/USD. The same signal on btc/usd over 2 years: 12 trades, 50% winners, +0.15r on average. Kronos: target first in 0% of 20 simulated futures, stop first in 35%, expected -0.09R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -7.71
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 34.515669
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 2.65
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.15
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": -0.09
+     }
+    ],
+    "quant_edge_r": 0.08,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.08,
+    "reach": {
+     "target_distance_atr": 2.05,
+     "holding_days": 5,
+     "reached_pct": 11.3,
+     "windows": 495
+    },
+    "history": {
+     "signals": 12,
+     "win_pct": 50,
+     "avg_r": 0.15,
+     "best_r": 1.6,
+     "worst_r": -1.0
+    },
+    "kronos": {
+     "expected_r": -0.09,
+     "model_expected_r": -0.3,
+     "target_first_pct": 0,
+     "stop_first_pct": 35,
+     "paths": 20
+    },
+    "kronos_weight": 0.2
+   },
+   "specialists": {
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: target first in 0% of 20 simulated futures, stop first in 35%, expected -0.09R"
+     ]
+    },
+    "quant_reversion": {
+     "score": 3,
+     "points": [
+      "the same signal on BTC/USD over 2 years: 12 trades, 50% winners, +0.15R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 32,
+  "signals": 2,
+  "kronos": 29,
+  "kronos_weight": 0.2,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 29,
+   "behind_by": 29
+  },
+  "desk_note": "Arjun: The market is in panic mode with a 7\u202f% collapse in chip stocks, pushing us toward defensive plays and inverse ETFs. We\u2019ll keep dry powder for high\u2011conviction mean\u2011reversion setups while avoiding risky directional bets."
+ },
+ "ai_calls": 1,
+ "minutes": 1.0
+}

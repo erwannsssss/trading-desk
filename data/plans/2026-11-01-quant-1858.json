@@ -1,0 +1,162 @@
+{
+ "date": "2026-11-01",
+ "session": "quant",
+ "created_at": "2026-11-01T18:58:06-05:00",
+ "dry_run": false,
+ "equity": 7946.79,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 60,
+  "bucket_weights": {
+   "core": 45,
+   "tactical": 40,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "mean reversion on extreme oversold FX pairs",
+    "momentum shorting on high-beta crypto laggards",
+    "tactical scalping in outperforming meme tokens",
+    "range-trading major currency pairs against the dollar"
+   ],
+   "avoid": [
+    "holding unhedged high-duration long positions into 4.98% 10-year yields",
+    "aggressive breakout buying in crowded speculative assets",
+    "blindly dip-buying low-liquidity altcoins"
+   ]
+  },
+  "favored": [
+   "USD longs and USD/MXN momentum (spec positioning at 7.0th percentile for MXN, USD index firm at 121.3202)",
+   "EUR/GBP mean-reversion bounce setups (RSI14 deeply washed out at 16.27 with EUR spec positioning at the 1.0 percentile)",
+   "Select crypto momentum leaders (PEPE/USD up 28.72% over 20d with RSI 61.49)"
+  ],
+  "avoid": [
+   "Crowded long tech/crypto exposure (Nasdaq spec percentile at 96.0, Bitcoin spec percentile at 93.0)",
+   "Weak altcoins with persistent capital outflows (DOT/USD down 19.15% over 20d, RENDER/USD down 22.98% over 20d)",
+   "Unhedged rate-sensitive assets facing 10-year Treasury yields at 4.98%"
+  ],
+  "key_events": [
+   "2026-11-03: JOLTS job openings and Durable goods (watch labor demand impact on 4.98% benchmark yields)",
+   "2026-11-05: Weekly jobless claims (initial pulse on labor market stability)",
+   "2026-11-06: Nonfarm Jobs report (primary catalyst for rates and broader market direction)",
+   "2026-11-10: CPI inflation report (determines medium-term rate cut expectations)"
+  ],
+  "overnight_read": "Weekend crypto trading reflects cautious risk appetite with the Crypto Fear & Greed Index lingering at 34 (Fear) and Bitcoin consolidating at 77,551.22 after a 4.03% 5-day decline. FX markets into the weekend closed with broad dollar strength as USD/MXN pushed to 18.788, while European currencies remain heavily depressed (EUR spec positioning near 3-year lows at the 1.0 percentile).",
+  "summary": "Macro conditions remain trapped between high interest rates, with the 10-year Treasury yield pressing 4.98%, and generally loose broader financial conditions at -0.487. Speculative positioning in Nasdaq and Bitcoin futures is near three-year highs, making crowded longs vulnerable to sharp flushes when data hits. We are operating with a flexible 60 risk appetite, allocating capital toward tactical momentum trades, oversold mean-reversions in forex, and selective relative-strength setups while keeping tight stops ahead of upcoming jobs data."
+ },
+ "ideas": [
+  {
+   "symbol": "SOL/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 94.79,
+   "atr_pct": 4.6,
+   "setups": [
+    "oversold pullback in a long-term uptrend"
+   ],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 94.79,
+    "stop": 89.34,
+    "target": 103.51,
+    "conviction": 5,
+    "confidence_pct": 41,
+    "horizon": "1-5 days",
+    "reason": "The SOL/USD mean\u2011reversion signal has a decent 12\u2011trade history (67% win, +0.11\u202fR) and Kronos forecasts a high 95% upside probability, but the 9.2% target is far beyond the 3.2% 5\u2011day move the model expects and only 11.7% of past moves of this size occurred in five days. In a crowded long crypto market with a choppy macro backdrop, the upside is limited and the stop\u2011loss is relatively tight, making the edge too thin to risk. Quant desk: a stretched price likely to snap back. the same signal on SOL/USD over 2 years: 12 trades, 67% winners, +0.11R on average; Kronos: target first in 5% of 20 simulated futures, stop first in 5%, expected +0.11R.",
+    "thesis": "A stretched price likely to snap back on SOL/USD. The same signal on sol/usd over 2 years: 12 trades, 67% winners, +0.11r on average. Kronos: target first in 5% of 20 simulated futures, stop first in 5%, expected +0.11R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -10.23
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 29.598578
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 4.6
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.11
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.11
+     }
+    ],
+    "quant_edge_r": 0.08,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.08,
+    "reach": {
+     "target_distance_atr": 2.26,
+     "holding_days": 5,
+     "reached_pct": 11.7,
+     "windows": 495
+    },
+    "history": {
+     "signals": 12,
+     "win_pct": 67,
+     "avg_r": 0.11,
+     "best_r": 1.6,
+     "worst_r": -1.0
+    },
+    "kronos": {
+     "expected_r": 0.11,
+     "model_expected_r": 0.38,
+     "target_first_pct": 5,
+     "stop_first_pct": 5,
+     "paths": 20
+    },
+    "kronos_weight": 0.2
+   },
+   "specialists": {
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: target first in 5% of 20 simulated futures, stop first in 5%, expected +0.11R"
+     ]
+    },
+    "quant_reversion": {
+     "score": 3,
+     "points": [
+      "the same signal on SOL/USD over 2 years: 12 trades, 67% winners, +0.11R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 32,
+  "signals": 2,
+  "kronos": 29,
+  "kronos_weight": 0.2,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 28,
+   "behind_by": 28
+  },
+  "desk_note": "Arjun sees the market stuck in a range with high\u2011interest rates keeping momentum muted, so we\u2019re hunting tight, high\u2011conviction setups. The current macro stress and crowded long bets mean we\u2019ll only keep trades that show a clear, statistically\u2011backed edge and realistic short\u2011term targets."
+ },
+ "ai_calls": 1,
+ "minutes": 1.8
+}

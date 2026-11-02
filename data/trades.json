@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.562085,
+  "last_price": 0.564135,
   "max_r": 0.81,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -4313,7 +4313,7 @@
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.3972449999999998,
+  "last_price": 1.3955899999999999,
   "max_r": 0.63,
   "min_r": -0.8
  },
@@ -4751,10 +4751,11 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "127",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-27T22:12 entry order placed",
-   "2026-10-28T04:31 filled 13167 @ 175.69"
+   "2026-10-28T04:31 filled 13167 @ 175.69",
+   "2026-11-02T04:07 closed at 176.703: stopped out, P&L $-85.42"
   ],
   "oanda_trade_id": "128",
   "entry_price": 175.69,
@@ -4763,7 +4764,19 @@
   "opened_at": "2026-10-28T04:31:07-04:00",
   "last_price": 176.2645,
   "max_r": 0.24,
-  "min_r": -0.68
+  "min_r": -0.68,
+  "exit_price": 176.703,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-11-02T04:07:12-05:00",
+  "pnl_usd": -85.42,
+  "r_result": -1.01,
+  "interest_usd": 0.81,
+  "pnl_after_interest": -86.23,
+  "postmortem": {
+   "verdict": "right but lost",
+   "what_happened": "The EUR/JPY rallied above the entry level, hitting the 176.70 stop loss and closing the trade with a $85 loss. A short\u2011term bounce against the downtrend reversed the position before the broader bearish thesis could play out.",
+   "lesson": "Place stops with enough buffer for normal ATR volatility; overly tight stops can turn a sound downtrend thesis into a premature loss."
+  }
  },
  {
   "id": "2026-10-28-overnight-0446-EUR_AUD",

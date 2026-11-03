@@ -3055,7 +3055,7 @@
   "filled_qty": 22529.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.5607800000000001,
+  "last_price": 0.5614399999999999,
   "max_r": 0.86,
   "min_r": -0.31,
   "last_huddle": "2026-10-27T22:13:00-04:00"
@@ -4303,19 +4303,32 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "118",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-26T19:29 entry order placed",
-   "2026-10-26T22:20 filled 17383 @ 1.40138"
+   "2026-10-26T22:20 filled 17383 @ 1.40138",
+   "2026-11-03T03:36 closed at 1.39642: time stop (1-5 days), P&L $-62.36"
   ],
   "oanda_trade_id": "119",
   "entry_price": 1.40138,
   "filled_qty": 17383.0,
   "filled_qty_initial": 17383.0,
   "opened_at": "2026-10-26T22:20:40-04:00",
-  "last_price": 1.3989699999999998,
+  "last_price": 1.3965100000000001,
   "max_r": 0.63,
-  "min_r": -0.8
+  "min_r": -0.8,
+  "exit_price": 1.39642,
+  "exit_reason": "time stop (1-5 days)",
+  "closed_at": "2026-11-03T03:36:20-05:00",
+  "pnl_usd": -62.36,
+  "r_result": -0.68,
+  "interest_usd": 0.55,
+  "pnl_after_interest": -62.91,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The pair failed to rebound off the 50\u2011day SMA and kept sliding lower, hitting the time\u2011stop before the stop\u2011loss was triggered, resulting in a 0.68\u202fR loss. The anticipated short\u2011covering bounce never materialised, likely due to adverse macro news and weak momentum.",
+   "lesson": "When trading pull\u2011back entries, factor in upcoming macro events and ensure the trade horizon aligns with potential news\u2011driven volatility, rather than relying solely on positioning data and AI forecasts."
+  }
  },
  {
   "id": "2026-10-26-intraday-1648-T",

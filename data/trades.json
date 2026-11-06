@@ -3028,7 +3028,7 @@
   "invalidation": "A daily close above the 50-day simple moving average at 0.576687 would invalidate the structural downtrend thesis.",
   "entry_plan": 0.568155,
   "initial_stop": 0.57668,
-  "stop": 0.56815,
+  "stop": 0.5565,
   "target": 0.552,
   "qty": 22529,
   "notional_usd": 12799.96,
@@ -3051,17 +3051,20 @@
    "2026-10-27T22:13 emergency huddle (-1.2%): hold. Price remains comfortably below the stop and invalidation level, and the move supports the original downtrend thesis.",
    "2026-11-03T16:59 stop moved to breakeven",
    "2026-11-05T17:51 emergency huddle (-0.9%): hold. The trade is still aligned with the macro thesis, the stop is already at breakeven, and no invalidation or news has occurred.",
-   "2026-11-05T21:59 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}"
+   "2026-11-05T21:59 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}",
+   "2026-11-06T05:37 took half off at 0.554115 (+$156.79)",
+   "2026-11-06T05:38 stop moved to 0.55650 (trailing)",
+   "2026-11-06T05:38 emergency huddle (-0.7%): tighten. Price is near the target and we have captured ~1.64R; moving the stop to 0.5565 protects gains while maintaining a safe distance from normal noise."
   ],
   "oanda_trade_id": "86",
   "entry_price": 0.56815,
-  "filled_qty": 22529.0,
+  "filled_qty": 11265.0,
   "filled_qty_initial": 22529.0,
   "opened_at": "2026-10-20T18:18:02-04:00",
-  "last_price": 0.55935,
-  "max_r": 1.11,
+  "last_price": 0.554115,
+  "max_r": 1.65,
   "min_r": -0.31,
-  "last_huddle": "2026-11-05T17:51:31-05:00",
+  "last_huddle": "2026-11-06T05:38:00-05:00",
   "stop_history": [
    {
     "t": "2026-10-20T18:18:02-04:00",
@@ -3070,8 +3073,14 @@
    {
     "t": "2026-11-03T16:59:33-05:00",
     "stop": 0.56815
+   },
+   {
+    "t": "2026-11-06T05:38:00-05:00",
+    "stop": 0.5565
    }
-  ]
+  ],
+  "partial_pnl": 156.79,
+  "partial_taken": true
  },
  {
   "id": "2026-10-20-morning-BRZE",
@@ -5924,10 +5933,13 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "162",
-  "status": "pending",
+  "status": "cancelled",
   "notes": [
-   "2026-11-05T17:51 entry order placed"
-  ]
+   "2026-11-05T17:51 entry order placed",
+   "2026-11-06T05:37 entry never filled before the idea expired"
+  ],
+  "closed_at": "2026-11-06T05:37:43-05:00",
+  "exit_reason": "entry never filled before the idea expired"
  },
  {
   "id": "2026-11-05-quant-1536-SPY",

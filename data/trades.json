@@ -3050,7 +3050,8 @@
    "2026-10-20T18:18 filled 22529 @ 0.56815",
    "2026-10-27T22:13 emergency huddle (-1.2%): hold. Price remains comfortably below the stop and invalidation level, and the move supports the original downtrend thesis.",
    "2026-11-03T16:59 stop moved to breakeven",
-   "2026-11-05T17:51 emergency huddle (-0.9%): hold. The trade is still aligned with the macro thesis, the stop is already at breakeven, and no invalidation or news has occurred."
+   "2026-11-05T17:51 emergency huddle (-0.9%): hold. The trade is still aligned with the macro thesis, the stop is already at breakeven, and no invalidation or news has occurred.",
+   "2026-11-05T21:59 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}"
   ],
   "oanda_trade_id": "86",
   "entry_price": 0.56815,
@@ -5649,12 +5650,13 @@
   "loan_apr": 0.08,
   "loan_basis": "cash",
   "entry_order_id": "ece64558-bd60-43da-b8f2-0d16d8c2808c",
-  "status": "closing",
+  "status": "closed",
   "notes": [
    "2026-11-04T17:13 entry order placed",
    "2026-11-04T21:29 filled 70.3348 @ 11.481214777",
    "2026-11-05T17:51 closing: emergency huddle: The price move is larger than a normal day, opposite the long thesis, and the stop is dangerously close, so the trade\u2019s premise is effectively invalidated.",
-   "2026-11-05T17:51 emergency huddle (-6.5%): close. The price move is larger than a normal day, opposite the long thesis, and the stop is dangerously close, so the trade\u2019s premise is effectively invalidated."
+   "2026-11-05T17:51 emergency huddle (-6.5%): close. The price move is larger than a normal day, opposite the long thesis, and the stop is dangerously close, so the trade\u2019s premise is effectively invalidated.",
+   "2026-11-05T21:59 closed at 10.64: emergency huddle: The price move is larger than a normal day, opposite the long thesis, and the stop is dangerously close, so the trade\u2019s premise is effectively invalidated., P&L $-59.17"
   ],
   "fee_usd": 2.02,
   "entry_price": 11.481214777,
@@ -5667,7 +5669,17 @@
   "min_r": -0.83,
   "exit_order_id": "785f1790-a35a-46f5-a5ce-5a9f8ae4cafa",
   "exit_reason": "emergency huddle: The price move is larger than a normal day, opposite the long thesis, and the stop is dangerously close, so the trade\u2019s premise is effectively invalidated.",
-  "last_huddle": "2026-11-05T17:51:31-05:00"
+  "last_huddle": "2026-11-05T17:51:31-05:00",
+  "exit_fee_usd": 1.87,
+  "exit_price": 10.64,
+  "closed_at": "2026-11-05T21:59:52-05:00",
+  "pnl_usd": -59.17,
+  "r_result": -0.86,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The 7x volume spike proved to be a transient sell\u2011off rather than sustained buying pressure, and LINK fell below the 200\u2011day average, triggering an emergency exit just above the stop. The trade closed at $10.64, a loss of -0.86\u202fR.",
+   "lesson": "Validate volume\u2011surge signals with broader market sentiment and additional confirmation filters before committing long positions, especially in a fearful crypto environment."
+  }
  },
  {
   "id": "2026-11-04-morning-KD",

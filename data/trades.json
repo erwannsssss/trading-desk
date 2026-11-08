@@ -3044,7 +3044,7 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "85",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-10-20T15:12 entry order placed",
    "2026-10-20T18:18 filled 22529 @ 0.56815",
@@ -3054,7 +3054,8 @@
    "2026-11-05T21:59 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}",
    "2026-11-06T05:37 took half off at 0.554115 (+$156.79)",
    "2026-11-06T05:38 stop moved to 0.55650 (trailing)",
-   "2026-11-06T05:38 emergency huddle (-0.7%): tighten. Price is near the target and we have captured ~1.64R; moving the stop to 0.5565 protects gains while maintaining a safe distance from normal noise."
+   "2026-11-06T05:38 emergency huddle (-0.7%): tighten. Price is near the target and we have captured ~1.64R; moving the stop to 0.5565 protects gains while maintaining a safe distance from normal noise.",
+   "2026-11-08T18:26 closed at 0.5558: stopped out, P&L $+278.23"
   ],
   "oanda_trade_id": "86",
   "entry_price": 0.56815,
@@ -3080,7 +3081,19 @@
    }
   ],
   "partial_pnl": 156.79,
-  "partial_taken": true
+  "partial_taken": true,
+  "exit_price": 0.5558,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-11-08T18:26:22-05:00",
+  "pnl_usd": 278.23,
+  "r_result": 1.45,
+  "interest_usd": 1.6,
+  "pnl_after_interest": 276.63,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The NZD/USD fell from the entry of 0.56815 to 0.5558, confirming the macro downtrend thesis. By moving the stop to breakeven and then trailing it to 0.5565, the trade stayed profitable and was closed with a +$278 P&L, though the original 0.552 target was not reached.",
+   "lesson": "Use a disciplined trailing\u2011stop/scale\u2011out approach once a trade is in profit to protect gains and avoid letting a winning position turn into a breakeven or loss."
+  }
  },
  {
   "id": "2026-10-20-morning-BRZE",

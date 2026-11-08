@@ -1,7 +1,15 @@
 {
- "updated": "2026-11-08T03:38-05:00",
+ "updated": "2026-11-08T18:26-05:00",
  "window_days": 45,
  "board": [
+  {
+   "style": "macro",
+   "trades": 1,
+   "win_rate": 100,
+   "avg_r": 1.45,
+   "pnl": 278.23,
+   "weight": 1.0
+  },
   {
    "style": "quant momentum",
    "trades": 3,
@@ -52,17 +60,18 @@
   }
  ],
  "calibration": {
-  "trades": 39,
+  "trades": 40,
   "factor": 0.8,
   "predicted": 52,
-  "actual": 21
+  "actual": 22
  },
  "exit_tuning": {
   "_all": {
-   "n": 37,
-   "planned_target_r": 1.68,
+   "n": 38,
+   "planned_target_r": 1.74,
    "p75_max_r": 0.63,
-   "advice": []
+   "advice": [],
+   "winners_deepest_dip_r": 0.66
   }
  },
  "session_budget": {
@@ -88,19 +97,19 @@
     "win_rate": 60
    },
    "morning": {
-    "trades": 8,
-    "avg_r": -1.074,
-    "win_rate": 12
+    "trades": 9,
+    "avg_r": -0.793,
+    "win_rate": 22
    }
   },
   "multipliers": {}
  },
  "edge_tilt": {
   "factor": 0.7,
-  "reason": "losing record: -0.57R a trade over the last 39; betting smaller until it turns",
-  "n": 39,
-  "avg_r": -0.566,
-  "p_value": 0.9996
+  "reason": "losing record: -0.52R a trade over the last 40; betting smaller until it turns",
+  "n": 40,
+  "avg_r": -0.516,
+  "p_value": 0.9988
  },
  "shadow_lessons": [
   "The simple rule \"Scanner's top pick\" has beaten the desk's own picks by 0.24R a trade over 142 ideas. Ask why before overruling what it would do."

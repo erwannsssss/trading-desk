@@ -1,0 +1,694 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-09",
+ "session": "intraday",
+ "created_at": "2026-11-09T18:53:21-05:00",
+ "dry_run": false,
+ "equity": 7963.77,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "breakouts",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "crypto",
+    "mean reversion"
+   ]
+  },
+  "favored": [
+   "ITB",
+   "XLV",
+   "XLY",
+   "USD"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "XLE",
+   "Crypto"
+  ],
+  "key_events": [
+   "CPI inflation on 2026-11-10",
+   "Weekly jobless claims on 2026-11-12",
+   "PPI producer inflation on 2026-11-13"
+  ],
+  "overnight_read": "The dollar index sits high at 121.88, while crypto remains pressured with low fear-and-greed readings (29). Global indices show positive one-day moves, but upcoming CPI inflation data will dictate market direction.",
+  "summary": "Markets are consolidating in a choppy range ahead of tomorrow's critical CPI inflation print. We maintain a moderate risk appetite of 65, favoring leading sectors like homebuilders and healthcare while avoiding lagging tech and crypto. Expect tactical setups to perform well as breadth improves temporarily."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.86",
+    "date": "2026-11-06"
+   },
+   "2-year Treasury yield": {
+    "value": "4.51",
+    "date": "2026-11-06"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "25.64",
+    "date": "2026-11-06"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.32",
+    "date": "2026-11-09"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.42",
+    "date": "2026-11-06"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.22",
+    "date": "2026-11-09"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.8803",
+    "date": "2026-11-06"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.459",
+    "date": "2026-10-30"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-11-10",
+    "event": "CPI inflation"
+   },
+   {
+    "date": "2026-11-12",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-13",
+    "event": "PPI producer inflation"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Retail sales"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Industrial production"
+   },
+   {
+    "date": "2026-11-19",
+    "event": "Weekly jobless claims"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 78.98,
+    "ret_1d": 4.66,
+    "ret_5d": 0.03,
+    "ret_20d": -10.27,
+    "rsi14": 43.721329,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.71,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 38.425,
+    "ret_1d": 2.0,
+    "ret_5d": -2.4,
+    "ret_20d": -5.43,
+    "rsi14": 44.298767,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.45,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 523.3,
+    "ret_1d": 2.16,
+    "ret_5d": 0.76,
+    "ret_20d": 1.06,
+    "rsi14": 52.504603,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.97,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 60.96,
+    "ret_1d": 2.75,
+    "ret_5d": -0.25,
+    "ret_20d": -7.85,
+    "rsi14": 42.180104,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.82,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 104.97,
+    "ret_1d": 3.02,
+    "ret_5d": 1.22,
+    "ret_20d": 1.86,
+    "rsi14": 54.165725,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.6,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 43.01,
+    "ret_1d": 3.44,
+    "ret_5d": 2.02,
+    "ret_20d": 5.0,
+    "rsi14": 57.188955,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.1,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 91.47,
+    "ret_1d": 3.64,
+    "ret_5d": -1.48,
+    "ret_20d": -6.01,
+    "rsi14": 41.021323,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.51,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 77.53,
+    "ret_1d": 1.03,
+    "ret_5d": 2.17,
+    "ret_20d": 5.86,
+    "rsi14": 65.146217,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.65,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 32.67,
+    "ret_1d": 2.16,
+    "ret_5d": 1.59,
+    "ret_20d": -24.97,
+    "rsi14": 33.161864,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -25.58,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 34.61,
+    "ret_1d": -0.97,
+    "ret_5d": 4.22,
+    "ret_20d": 1.38,
+    "rsi14": 60.632528,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.3,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 379.56,
+    "ret_1d": 1.89,
+    "ret_5d": 4.95,
+    "ret_20d": -0.68,
+    "rsi14": 53.316557,
+    "trend": "downtrend",
+    "pct_from_52w_high": -25.53,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.5,
+    "ret_1d": 0.35,
+    "ret_5d": 0.79,
+    "ret_20d": 0.79,
+    "rsi14": 59.848563,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -1.61,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.79,
+    "ret_1d": -0.08,
+    "ret_5d": 0.32,
+    "ret_20d": 2.98,
+    "rsi14": 65.949499,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.53,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 51.41,
+    "ret_1d": 1.02,
+    "ret_5d": 6.11,
+    "ret_20d": 10.89,
+    "rsi14": 76.528313,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.7,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 99.49,
+    "ret_1d": 3.07,
+    "ret_5d": 2.6,
+    "ret_20d": 18.45,
+    "rsi14": 63.505595,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.64,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 282.3,
+    "ret_1d": 3.15,
+    "ret_5d": 1.13,
+    "ret_20d": 1.58,
+    "rsi14": 53.709072,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.25,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 73.425,
+    "ret_1d": 1.7,
+    "ret_5d": -0.41,
+    "ret_20d": 5.56,
+    "rsi14": 57.022028,
+    "trend": "uptrend",
+    "pct_from_52w_high": -5.76,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 24.305,
+    "ret_1d": -2.31,
+    "ret_5d": 4.09,
+    "ret_20d": -1.8,
+    "rsi14": 52.922584,
+    "trend": "downtrend",
+    "pct_from_52w_high": -35.58,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 26.98,
+    "ret_1d": -3.47,
+    "ret_5d": -0.04,
+    "ret_20d": 9.41,
+    "rsi14": 57.920805,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -17.82,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 679.76,
+    "ret_1d": 3.61,
+    "ret_5d": -0.2,
+    "ret_20d": -8.88,
+    "rsi14": 41.537033,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -10.89,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 220.935,
+    "ret_1d": 2.26,
+    "ret_5d": 0.43,
+    "ret_20d": 3.63,
+    "rsi14": 58.423743,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.46,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.95,
+    "ret_1d": -2.34,
+    "ret_5d": -0.24,
+    "ret_20d": 3.55,
+    "rsi14": 54.336839,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.35,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 48.13,
+    "ret_1d": 2.69,
+    "ret_5d": 5.62,
+    "ret_20d": -11.44,
+    "rsi14": 42.817692,
+    "trend": "downtrend",
+    "pct_from_52w_high": -56.18,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 487.3,
+    "ret_1d": 5.03,
+    "ret_5d": -4.13,
+    "ret_20d": -17.55,
+    "rsi14": 38.363712,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -27.47,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 752.72,
+    "ret_1d": 2.37,
+    "ret_5d": 0.08,
+    "ret_20d": -3.26,
+    "rsi14": 45.89073,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.7,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 45.2,
+    "ret_1d": -0.83,
+    "ret_5d": 7.44,
+    "ret_20d": 3.96,
+    "rsi14": 56.770724,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -40.21,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 81.96,
+    "ret_1d": 0.05,
+    "ret_5d": 0.28,
+    "ret_20d": 5.46,
+    "rsi14": 63.932861,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.61,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 10.11,
+    "ret_1d": 8.13,
+    "ret_5d": 12.33,
+    "ret_20d": -7.42,
+    "rsi14": 54.037016,
+    "trend": "downtrend",
+    "pct_from_52w_high": -40.62,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 34.33,
+    "ret_1d": 6.15,
+    "ret_5d": 4.25,
+    "ret_20d": -8.99,
+    "rsi14": 44.43491,
+    "trend": "downtrend",
+    "pct_from_52w_high": -44.88,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 142.64,
+    "ret_1d": -3.89,
+    "ret_5d": -9.07,
+    "ret_20d": -5.56,
+    "rsi14": 37.490224,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.98,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 28.97,
+    "ret_1d": -0.55,
+    "ret_5d": 0.03,
+    "ret_20d": -0.55,
+    "rsi14": 52.464147,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.94,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 156.88,
+    "ret_1d": 3.07,
+    "ret_5d": 3.18,
+    "ret_20d": 3.62,
+    "rsi14": 53.717072,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.66,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 52.955,
+    "ret_1d": 1.93,
+    "ret_5d": -1.33,
+    "ret_20d": 7.11,
+    "rsi14": 58.752109,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.07,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 107.32,
+    "ret_1d": 2.41,
+    "ret_5d": 7.04,
+    "ret_20d": -3.71,
+    "rsi14": 52.259579,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.06,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 61.93,
+    "ret_1d": 0.5,
+    "ret_5d": -7.91,
+    "ret_20d": -6.18,
+    "rsi14": 35.588804,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.72,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 57.98,
+    "ret_1d": 1.43,
+    "ret_5d": 0.73,
+    "ret_20d": 5.32,
+    "rsi14": 59.641671,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.43,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 168.85,
+    "ret_1d": 3.8,
+    "ret_5d": -0.51,
+    "ret_20d": -0.18,
+    "rsi14": 51.253201,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.04,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 170.85,
+    "ret_1d": 3.71,
+    "ret_5d": -1.93,
+    "ret_20d": -12.99,
+    "rsi14": 37.786082,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.94,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 90.89,
+    "ret_1d": 0.9,
+    "ret_5d": 0.07,
+    "ret_20d": 7.68,
+    "rsi14": 61.732048,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.69,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 44.65,
+    "ret_1d": 1.48,
+    "ret_5d": 2.31,
+    "ret_20d": 6.51,
+    "rsi14": 64.345576,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.08,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.81,
+    "ret_1d": 1.58,
+    "ret_5d": 0.32,
+    "ret_20d": 5.24,
+    "rsi14": 64.380876,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.91,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 188.38,
+    "ret_1d": 1.94,
+    "ret_5d": 2.05,
+    "ret_20d": 9.53,
+    "rsi14": 67.866994,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.05,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 120.97,
+    "ret_1d": 2.88,
+    "ret_5d": 2.38,
+    "ret_20d": 7.75,
+    "rsi14": 63.223158,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -2.63,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "FIGR",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 24.5,
+   "why_scanned": [
+    "trending on Reddit (#30)",
+    "earnings 2026-11-12"
+   ],
+   "setups": [],
+   "atr_pct": 7.79,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "price 24.5 above 20\u2011day SMA 23.97 but below 50\u2011day SMA 29.16 and 200\u2011day SMA 32.94 indicating bearish long\u2011term bias",
+      "RSI 47.8 neutral, momentum signal now short",
+      "20\u2011day return -13.9% and 60\u2011day return -22% show downtrend"
+     ]
+    },
+    "fundamental": {
+     "score": 6,
+     "points": [
+      "PE 21.4 reasonable, revenue growth Q trailing 112% and net margin 33% strong",
+      "analyst mean target 50.1 implying 104% upside",
+      "beta 0.31 low volatility, debt/equity 0.68 moderate"
+     ]
+    },
+    "news_sentiment": {
+     "score": 6,
+     "points": [
+      "KBW maintains Outperform, raises price target to $37 (bullish)",
+      "Reddit rank 30 with 19 mentions and 18 upvotes",
+      "put/call volume ratio 0.32 (more calls)"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "insider sells $1.925M, no insider buys",
+      "short volume 75.6% latest, 70% 5\u2011day avg (high short pressure)",
+      "short interest 12.2% of float, days to cover 4.3"
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "upcoming earnings 2026\u201111\u201112 bmo, expected EPS 0.2834",
+      "past EPS surprises: +41.3%, -4.5%, -58.6%, +103% (mixed)",
+      "KBW price target $37 suggests upside but earnings play historically 0% win for desk",
+      "risk of gap up or down on earnings, recommendation: avoid holding through event, trade reaction if high conviction"
+     ]
+    },
+    "best_style": "pass",
+    "kronos": {
+     "score": -1,
+     "points": [
+      "Kronos: -1.9% expected over 5 days, 30% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "FIGR shows strong fundamental upside and bullish sentiment from analysts and news, price still far below 52\u2011week low and target, could rally on earnings beat",
+    "catalysts": [
+     "KBW price target $37",
+     "potential earnings beat",
+     "positive Reddit buzz"
+    ]
+   },
+   "bear": {
+    "case": "Stock is in a clear downtrend, trading below key moving averages, short\u2011interest high and short\u2011fade edge weak; momentum signal short",
+    "risks": [
+     "Earnings surprise could trigger a gap up",
+     "Calls volume dominates, could spark buying pressure",
+     "Low volatility may limit upside moves"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If FIGR misses earnings or market stays range\u2011bound, price could stay near $24\u2011$25 and the short position would be stopped out as volatility spikes, eroding capital",
+     "failure_more_likely": false
+    },
+    "decision": "pass",
+    "reason": "Both technical and smart\u2011money indicators are bearish while fundamentals and sentiment are bullish, creating a conflicted picture; the desk's earnings\u2011play track record is zero wins and the implied move is already priced in, so no edge with acceptable risk",
+    "bucket": null,
+    "style": null,
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": "No clear edge after weighing bearish technicals and short\u2011interest against bullish fundamentals and sentiment; expected value negative or near zero",
+    "horizon": "1-5 days",
+    "thesis": "We choose not to enter a position on FIGR at this time because the conflicting signals do not provide a high\u2011confidence trade. The downtrend and high short volume suggest downside risk, but the strong fundamentals and analyst upside mean the move could be muted. With the upcoming earnings and high implied volatility, the risk\u2011reward does not meet our criteria.",
+    "invalidation": "If price breaks decisively above the 50\u2011day SMA (29.16) with strong volume, the bias would flip to long",
+    "plain_english": "The stock is falling and many traders are short it, but the company looks solid and analysts think it could double. Because the upcoming earnings could cause a big jump and we have no reliable way to profit, we stay out of the trade for now. This avoids risking money on a move that isn\u2019t clearly in one direction.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 24.5
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 29.1626
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 47.76081
+     },
+     {
+      "fact": "fundamentals.pe_ratio",
+      "value": 21.425
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 12.2
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 12.96
+     }
+    ],
+    "base_win_pct": 31,
+    "base_trades": 13
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 1,
+ "ai_attempts": 4,
+ "minutes": 1.0
+}

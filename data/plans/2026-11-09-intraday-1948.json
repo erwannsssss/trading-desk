@@ -1,0 +1,855 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-09",
+ "session": "intraday",
+ "created_at": "2026-11-09T19:48:25-05:00",
+ "dry_run": false,
+ "equity": 7971.25,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 65,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "breakouts",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "crypto",
+    "mean reversion"
+   ]
+  },
+  "favored": [
+   "ITB",
+   "XLV",
+   "XLY",
+   "USD"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "XLE",
+   "Crypto"
+  ],
+  "key_events": [
+   "CPI inflation on 2026-11-10",
+   "Weekly jobless claims on 2026-11-12",
+   "PPI producer inflation on 2026-11-13"
+  ],
+  "overnight_read": "The dollar index sits high at 121.88, while crypto remains pressured with low fear-and-greed readings (29). Global indices show positive one-day moves, but upcoming CPI inflation data will dictate market direction.",
+  "summary": "Markets are consolidating in a choppy range ahead of tomorrow's critical CPI inflation print. We maintain a moderate risk appetite of 65, favoring leading sectors like homebuilders and healthcare while avoiding lagging tech and crypto. Expect tactical setups to perform well as breadth improves temporarily."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.86",
+    "date": "2026-11-06"
+   },
+   "2-year Treasury yield": {
+    "value": "4.51",
+    "date": "2026-11-06"
+   },
+   "CPI (inflation index)": {
+    "value": "336.298",
+    "date": "2026-09-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "25.64",
+    "date": "2026-11-06"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.32",
+    "date": "2026-11-09"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.42",
+    "date": "2026-11-06"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.22",
+    "date": "2026-11-09"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.8803",
+    "date": "2026-11-06"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.459",
+    "date": "2026-10-30"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-11-10",
+    "event": "CPI inflation"
+   },
+   {
+    "date": "2026-11-12",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-13",
+    "event": "PPI producer inflation"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Retail sales"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Industrial production"
+   },
+   {
+    "date": "2026-11-19",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-20",
+    "event": "Consumer sentiment (UMich)"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 78.98,
+    "ret_1d": 4.66,
+    "ret_5d": 0.03,
+    "ret_20d": -10.27,
+    "rsi14": 43.721329,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.71,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 38.425,
+    "ret_1d": 2.0,
+    "ret_5d": -2.4,
+    "ret_20d": -5.43,
+    "rsi14": 44.298767,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.45,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 523.3,
+    "ret_1d": 2.16,
+    "ret_5d": 0.76,
+    "ret_20d": 1.06,
+    "rsi14": 52.504603,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.97,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 60.96,
+    "ret_1d": 2.75,
+    "ret_5d": -0.25,
+    "ret_20d": -7.85,
+    "rsi14": 42.180104,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.82,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 104.97,
+    "ret_1d": 3.02,
+    "ret_5d": 1.22,
+    "ret_20d": 1.86,
+    "rsi14": 54.165725,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.6,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 43.01,
+    "ret_1d": 3.44,
+    "ret_5d": 2.02,
+    "ret_20d": 5.0,
+    "rsi14": 57.188955,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.1,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 91.47,
+    "ret_1d": 3.64,
+    "ret_5d": -1.48,
+    "ret_20d": -6.01,
+    "rsi14": 41.021323,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.51,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 77.53,
+    "ret_1d": 1.03,
+    "ret_5d": 2.17,
+    "ret_20d": 5.86,
+    "rsi14": 65.146217,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.65,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 32.67,
+    "ret_1d": 2.16,
+    "ret_5d": 1.59,
+    "ret_20d": -24.97,
+    "rsi14": 33.161864,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -25.58,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 34.61,
+    "ret_1d": -0.97,
+    "ret_5d": 4.22,
+    "ret_20d": 1.38,
+    "rsi14": 60.632528,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.3,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 379.56,
+    "ret_1d": 1.89,
+    "ret_5d": 4.95,
+    "ret_20d": -0.68,
+    "rsi14": 53.316557,
+    "trend": "downtrend",
+    "pct_from_52w_high": -25.53,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.5,
+    "ret_1d": 0.35,
+    "ret_5d": 0.79,
+    "ret_20d": 0.79,
+    "rsi14": 59.848563,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -1.61,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.79,
+    "ret_1d": -0.08,
+    "ret_5d": 0.32,
+    "ret_20d": 2.98,
+    "rsi14": 65.949499,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.53,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 51.41,
+    "ret_1d": 1.02,
+    "ret_5d": 6.11,
+    "ret_20d": 10.89,
+    "rsi14": 76.528313,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.7,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 99.49,
+    "ret_1d": 3.07,
+    "ret_5d": 2.6,
+    "ret_20d": 18.45,
+    "rsi14": 63.505595,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.64,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 282.3,
+    "ret_1d": 3.15,
+    "ret_5d": 1.13,
+    "ret_20d": 1.58,
+    "rsi14": 53.709072,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.25,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 73.425,
+    "ret_1d": 1.7,
+    "ret_5d": -0.41,
+    "ret_20d": 5.56,
+    "rsi14": 57.022028,
+    "trend": "uptrend",
+    "pct_from_52w_high": -5.76,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 24.305,
+    "ret_1d": -2.31,
+    "ret_5d": 4.09,
+    "ret_20d": -1.8,
+    "rsi14": 52.922584,
+    "trend": "downtrend",
+    "pct_from_52w_high": -35.58,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 26.98,
+    "ret_1d": -3.47,
+    "ret_5d": -0.04,
+    "ret_20d": 9.41,
+    "rsi14": 57.920805,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -17.82,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 679.76,
+    "ret_1d": 3.61,
+    "ret_5d": -0.2,
+    "ret_20d": -8.88,
+    "rsi14": 41.537033,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -10.89,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 220.935,
+    "ret_1d": 2.26,
+    "ret_5d": 0.43,
+    "ret_20d": 3.63,
+    "rsi14": 58.423743,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.46,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.95,
+    "ret_1d": -2.34,
+    "ret_5d": -0.24,
+    "ret_20d": 3.55,
+    "rsi14": 54.336839,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.35,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 48.13,
+    "ret_1d": 2.69,
+    "ret_5d": 5.62,
+    "ret_20d": -11.44,
+    "rsi14": 42.817692,
+    "trend": "downtrend",
+    "pct_from_52w_high": -56.18,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 487.3,
+    "ret_1d": 5.03,
+    "ret_5d": -4.13,
+    "ret_20d": -17.55,
+    "rsi14": 38.363712,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -27.47,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 752.72,
+    "ret_1d": 2.37,
+    "ret_5d": 0.08,
+    "ret_20d": -3.26,
+    "rsi14": 45.89073,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.7,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 45.2,
+    "ret_1d": -0.83,
+    "ret_5d": 7.44,
+    "ret_20d": 3.96,
+    "rsi14": 56.770724,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -40.21,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 81.96,
+    "ret_1d": 0.05,
+    "ret_5d": 0.28,
+    "ret_20d": 5.46,
+    "rsi14": 63.932861,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.61,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 10.11,
+    "ret_1d": 8.13,
+    "ret_5d": 12.33,
+    "ret_20d": -7.42,
+    "rsi14": 54.037016,
+    "trend": "downtrend",
+    "pct_from_52w_high": -40.62,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 34.33,
+    "ret_1d": 6.15,
+    "ret_5d": 4.25,
+    "ret_20d": -8.99,
+    "rsi14": 44.43491,
+    "trend": "downtrend",
+    "pct_from_52w_high": -44.88,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 142.64,
+    "ret_1d": -3.89,
+    "ret_5d": -9.07,
+    "ret_20d": -5.56,
+    "rsi14": 37.490224,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.98,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 28.97,
+    "ret_1d": -0.55,
+    "ret_5d": 0.03,
+    "ret_20d": -0.55,
+    "rsi14": 52.464147,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.94,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 156.88,
+    "ret_1d": 3.07,
+    "ret_5d": 3.18,
+    "ret_20d": 3.62,
+    "rsi14": 53.717072,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.66,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 52.955,
+    "ret_1d": 1.93,
+    "ret_5d": -1.33,
+    "ret_20d": 7.11,
+    "rsi14": 58.752109,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.07,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 107.32,
+    "ret_1d": 2.41,
+    "ret_5d": 7.04,
+    "ret_20d": -3.71,
+    "rsi14": 52.259579,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.06,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 61.93,
+    "ret_1d": 0.5,
+    "ret_5d": -7.91,
+    "ret_20d": -6.18,
+    "rsi14": 35.588804,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.72,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 57.98,
+    "ret_1d": 1.43,
+    "ret_5d": 0.73,
+    "ret_20d": 5.32,
+    "rsi14": 59.641671,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.43,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 168.85,
+    "ret_1d": 3.8,
+    "ret_5d": -0.51,
+    "ret_20d": -0.18,
+    "rsi14": 51.253201,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.04,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 170.85,
+    "ret_1d": 3.71,
+    "ret_5d": -1.93,
+    "ret_20d": -12.99,
+    "rsi14": 37.786082,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.94,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 90.89,
+    "ret_1d": 0.9,
+    "ret_5d": 0.07,
+    "ret_20d": 7.68,
+    "rsi14": 61.732048,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.69,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 44.65,
+    "ret_1d": 1.48,
+    "ret_5d": 2.31,
+    "ret_20d": 6.51,
+    "rsi14": 64.345576,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.08,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.81,
+    "ret_1d": 1.58,
+    "ret_5d": 0.32,
+    "ret_20d": 5.24,
+    "rsi14": 64.380876,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.91,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 188.38,
+    "ret_1d": 1.94,
+    "ret_5d": 2.05,
+    "ret_20d": 9.53,
+    "rsi14": 67.866994,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.05,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 120.97,
+    "ret_1d": 2.88,
+    "ret_5d": 2.38,
+    "ret_20d": 7.75,
+    "rsi14": 63.223158,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -2.63,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "INDA",
+   "venue": "alpaca",
+   "asset": "etf",
+   "price_at_research": 51.41,
+   "why_scanned": [],
+   "setups": [
+    "breakout above 20-day high"
+   ],
+   "atr_pct": 1.19,
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "price above SMA200 (49.1083)",
+      "RSI 76.5 (overbought)",
+      "breakout above 20\u2011day high (price 51.41 > high_20 51.13)",
+      "ATR low (0.61) indicating tight range",
+      "trend sideways/mixed"
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "no earnings or earnings\u2011play data provided",
+      "no fundamental metrics (PE, revenue) in dossier"
+     ]
+    },
+    "news_sentiment": {
+     "score": 4,
+     "points": [
+      "short volume 71.6% (well above normal)",
+      "Kronos forecast bearish (direction down, expected_move_pct -2.4%)",
+      "no news items listed",
+      "implied move 2.33% but put\u2011call ratio 0.96 (neutral)"
+     ]
+    },
+    "smart_money": {
+     "score": 5,
+     "points": [
+      "high short interest suggests bearish pressure",
+      "options market shows modest implied move (2.33%)",
+      "put\u2011call volume ratio ~1 (neutral)",
+      "price already above 20\u2011day high may trigger short covering",
+      "ATR\u2011based stop would be ~1\u202fATR away"
+     ]
+    },
+    "best_style": "short/fade",
+    "kronos": {
+     "score": -5,
+     "points": [
+      "Kronos: -2.4% expected over 5 days, 0% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The breakout above the 20\u2011day high and a recent 1\u2011day gain of 1.02% suggest momentum could keep pushing the ETF higher. The options market implies a 2.33% move by expiry, which could be to the upside, and the RSI, while high, can stay elevated in a choppy range.",
+    "catalysts": [
+     "breakout above 20\u2011day high",
+     "momentum_signal_record.win_pct 50%",
+     "implied_move_pct 2.33%"
+    ]
+   },
+   "bear": {
+    "case": "INDA is overbought (RSI 76.5), trading well above its 20\u2011day SMA and 200\u2011day SMA, and short interest is extremely high (71.6%). Kronos forecasts a 2.4% drop over the next 5 days with 0% probability of upside. The price is already above the recent 20\u2011day high, making a pull\u2011back likely.",
+    "risks": [
+     "price could continue to ride short\u2011cover rally",
+     "Kronos trust weight low (0.22)",
+     "breakout historically yields near\u2011zero edge (avg R 0.01)"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If the trade goes long, the ETF could reverse sharply as overbought conditions and massive short interest trigger a sell\u2011off, hitting the stop just above the recent high. If the trade goes short, a short\u2011cover rally could push price above the stop, leading to a loss larger than the modest target.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Both the historical breakout edge (avg R 0.01) and the desk's short/fade win rate (12%) are negative EV. Kronos is bearish but its trust weight is low, and the implied move is modest. With no clear high\u2011conviction edge, the trade does not meet the required EV threshold.",
+    "bucket": null,
+    "style": null,
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "Base short/fade win 12% and avg R -0.87 outweigh the modest bullish signals; EV is negative.",
+    "horizon": "1-5 days",
+    "thesis": "No trade is taken on INDA because the expected value is negative given the weak breakout edge and poor short\u2011fade track record. The overbought RSI and high short interest suggest a pull\u2011back, but the lack of a strong directional catalyst makes the risk/reward unattractive.",
+    "invalidation": "If the price breaks cleanly above 52.00 with volume surge, the bullish case would be re\u2011evaluated.",
+    "plain_english": "We decided not to trade INDA today. The chart shows it\u2019s overbought and the short\u2011interest is very high, which usually means the price could fall. However, the past data shows that the breakout pattern we see rarely makes money, and our short\u2011selling track record is poor. Because the math shows we\u2019d likely lose more than we could win, we stay out. If the price suddenly jumps above $52 with strong buying, we\u2019d reconsider.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 76.528313
+     },
+     {
+      "fact": "technicals.sma200",
+      "value": 49.108325
+     },
+     {
+      "fact": "short_volume.short_volume_pct_latest",
+      "value": 71.6
+     },
+     {
+      "fact": "kronos_forecast.direction",
+      "value": "down"
+     },
+     {
+      "fact": "kronos_forecast.expected_move_pct",
+      "value": -2.4
+     },
+     {
+      "fact": "technicals.high_20",
+      "value": 51.13
+     },
+     {
+      "fact": "technicals.price",
+      "value": 51.41
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 1
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 6,
+    "problems": [
+     "cited 'kronos_forecast.direction', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "AAL",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 14.155,
+   "why_scanned": [
+    "one of today's most-traded stocks"
+   ],
+   "setups": [
+    "breakout above 20-day high"
+   ],
+   "atr_pct": 4.47,
+   "specialists": {
+    "technical": {
+     "score": 7,
+     "points": [
+      "AAL has broken above its 20-day high with strong momentum, trading at 14.155.",
+      "RSI is at 63.00, reflecting healthy buying pressure without being severely overbought.",
+      "Price is comfortably above the 20-day, 50-day, and 200-day moving averages."
+     ]
+    },
+    "fundamental": {
+     "score": 6,
+     "points": [
+      "Revenue growth year-over-year is solid at 12.32%, with strong last quarter growth of 19.31%.",
+      "Net margin remains negative at -0.79%, highlighting ongoing operational hurdles in the airline sector.",
+      "Debt-to-equity is high at 157.706, which adds risk in a volatile rate and fuel environment."
+     ]
+    },
+    "news_sentiment": {
+     "score": 6,
+     "points": [
+      "Stock surged on Monday as crude oil prices retreated toward $87 a barrel.",
+      "Headline correction confirmed airline sector strength and positive trading momentum.",
+      "Minor negative news included a close proximity incident at LAX, but market impact was minimal."
+     ]
+    },
+    "smart_money": {
+     "score": 6,
+     "points": [
+      "Appaloosa (Tepper) holds a substantial position worth $135.5M (1.8% of fund).",
+      "Short interest is notable at 15.8% of float, offering potential squeeze fuel on continued upside.",
+      "Institutions own 78.7% of the float, providing strong professional sponsorship."
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "Upcoming earnings date is not immediately today, but options expiry is November 13, 2026.",
+      "Past earnings beat expectations in 3 of the last 4 quarters, including a 20.5% surprise last quarter.",
+      "Implied move is 5.02% by the November 13 expiry, making it a high-beta trade sensitive to macro headlines."
+     ]
+    },
+    "best_style": "momentum",
+    "kronos": {
+     "score": -3,
+     "points": [
+      "Kronos: -1.3% expected over 5 days, 35% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "American Airlines is breaking out cleanly above its 20-day high with strong 1-day (7.4%) and 5-day (8.22%) momentum, fueled by retreating crude oil prices and heavy institutional backing. With 15.8% short interest, any continued upside can trigger a rapid short squeeze.",
+    "catalysts": [
+     "Crude oil prices retreating toward $87 a barrel lowers jet fuel costs.",
+     "Breakout above the 20-day high confirms strong short-term buyer control.",
+     "Appaloosa and heavy institutional sponsorship validate the underlying value."
+    ]
+   },
+   "bear": {
+    "case": "AAL remains a high-beta carrier with high debt-to-equity (157.7) and a negative net margin (-0.79%), making it vulnerable to sudden macro shocks like tomorrow's CPI inflation print. Furthermore, historical momentum signals on this symbol show a poor win rate, suggesting breakouts can quickly reverse.",
+    "risks": [
+     "Upcoming CPI inflation data on November 10 could trigger broader market risk-off sentiment.",
+     "High debt load and negative net margins leave little room for error if fuel prices spike again.",
+     "Desk base rates for momentum and breakout trades on this name have historically been weak."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The stock gaps down following a hotter-than-expected CPI inflation print tomorrow, erasing the recent breakout gains and triggering our stop loss below the 20-day average.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "Strong 1-day momentum, retreat in crude oil prices, and a clean breakout above the 20-day high offer a compelling tactical long setup despite choppy market conditions.",
+    "bucket": "tactical",
+    "style": "momentum",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 14.155,
+    "stop": 12.894,
+    "target": 15.35,
+    "conviction": 6,
+    "confidence_pct": 52,
+    "odds_reasoning": "Anchored on the 42.3% backtested win rate for 20-day high breakouts and strong 1-day momentum, adjusted down slightly for choppy market regime risks.",
+    "horizon": "1-5 days",
+    "thesis": "American Airlines is surging on falling crude oil prices and breaking out above its 20-day high. We enter long using shares to capture short-term momentum continuation. We will manage risk tightly with a stop below the 50-day average.",
+    "invalidation": "A daily close below the 50-day average (12.894) or a sudden spike in crude oil prices invalidates the bullish thesis.",
+    "plain_english": "We are buying American Airlines shares because the stock is breaking out [moving above a recent trading ceiling] to new short-term highs as oil prices fall. Our stop [an automatic exit order to limit losses] is set near the 50-day average [the average price over the last 50 days] to protect us if the trend reverses. We are targeting the analyst mean price target of 15.35.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 14.155
+     },
+     {
+      "fact": "technicals.ret_1d",
+      "value": 7.4
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 12.894
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 15.8
+     },
+     {
+      "fact": "short_interest_and_analysts.analyst_target_mean",
+      "value": 15.35
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.78,
+     "holding_days": 5,
+     "reached_pct": 26.9,
+     "windows": 495
+    },
+    "base_win_pct": 31,
+    "base_trades": 13,
+    "reward_to_risk": 0.95,
+    "confidence_used_pct": 40.1,
+    "expected_r": -0.22
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "reward-to-risk is only 0.95",
+     "negative expected value (-0.22R: 40.1% to make 0.95x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": -0.03,
+    "model_expected_r": -0.12,
+    "target_first_pct": 0,
+    "stop_first_pct": 5,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "RENDER/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.8-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current us"
+  }
+ ],
+ "ai_calls": 2,
+ "ai_attempts": 19,
+ "minutes": 5.4
+}

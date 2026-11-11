@@ -6071,11 +6071,12 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "173",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-08T21:51 entry order placed",
    "2026-11-09T05:42 filled 12006 @ 1.41081",
-   "2026-11-10T19:02 stop moved to breakeven"
+   "2026-11-10T19:02 stop moved to breakeven",
+   "2026-11-11T09:13 closed at 1.42401: hit target, P&L $+110.17"
   ],
   "oanda_trade_id": "174",
   "entry_price": 1.41081,
@@ -6094,7 +6095,17 @@
     "t": "2026-11-10T19:02:00-05:00",
     "stop": 1.41081
    }
-  ]
+  ],
+  "exit_price": 1.42401,
+  "exit_reason": "hit target",
+  "closed_at": "2026-11-11T09:13:01-05:00",
+  "pnl_usd": 110.17,
+  "r_result": 1.66,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The pair continued its uptrend, rising from the entry 1.41081 to the target 1.42401 and closing at the target, delivering a 1.66R profit.",
+   "lesson": "When the thesis aligns with a clear technical bias, use a predefined stop and a solid risk\u2011reward ratio; moving the stop to breakeven after the trade is in favor preserves gains while still allowing the full upside."
+  }
  },
  {
   "id": "2026-11-10-quant-1524-INDA",
@@ -6234,9 +6245,56 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "181",
+  "status": "open",
+  "notes": [
+   "2026-11-11T01:06 entry order placed",
+   "2026-11-11T09:13 filled 6256 @ 1.62308"
+  ],
+  "oanda_trade_id": "182",
+  "entry_price": 1.62308,
+  "filled_qty": 6256.0,
+  "filled_qty_initial": 6256.0,
+  "opened_at": "2026-11-11T09:13:01-05:00",
+  "last_price": 1.61893,
+  "max_r": 0,
+  "min_r": -0.25
+ },
+ {
+  "id": "2026-11-11-overnight-0426-USD_CHF",
+  "plan_file": "2026-11-11-overnight-0426.json",
+  "symbol": "USD_CHF",
+  "venue": "oanda",
+  "asset": "forex",
+  "direction": "long",
+  "bucket": "tactical",
+  "style": "macro",
+  "conviction": 6,
+  "confidence_pct": 48,
+  "horizon": "1-5 days",
+  "thesis": "USD/CHF is consolidating in an orderly fashion just -1.32% off its 52-week high of 0.83952 while remaining well above its 20-day SMA (0.823662) and 200-day SMA (0.801277). The structural interest rate divergence between the US Fed (supported by 4.88% 10-year yields) and the dovish SNB provides strong positive carry. While safe-haven flows provide some support to CHF, persistent USD dominance across G10 FX keeps the path of least resistance higher toward 0.8385.",
+  "atr_pct": 0.69,
+  "invalidation": "A daily close below the 20-day SMA and cluster support at 0.82270 invalidates the short-term bullish trend structure.",
+  "entry_plan": 0.83241,
+  "initial_stop": 0.8227,
+  "stop": 0.8227,
+  "target": 0.8385,
+  "qty": 6056,
+  "notional_usd": 6056.0,
+  "risk_usd": 70.65,
+  "risk_pct": 0.88,
+  "quote_to_usd": 1.2013310748309127,
+  "created_at": "2026-11-11T09:13:01-05:00",
+  "industry": null,
+  "pair_id": null,
+  "pair_with": null,
+  "expires_at": "2026-11-11T16:26:23-05:00",
+  "loan_usd": 0.0,
+  "loan_apr": 0.08,
+  "loan_basis": "margin",
+  "entry_order_id": "187",
   "status": "pending",
   "notes": [
-   "2026-11-11T01:06 entry order placed"
+   "2026-11-11T09:13 entry order placed"
   ]
  }
 ]

@@ -1,0 +1,1727 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-10",
+ "session": "intraday",
+ "created_at": "2026-11-10T19:14:27-05:00",
+ "dry_run": false,
+ "equity": 8020.96,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 50,
+  "bucket_weights": {
+   "core": 50,
+   "tactical": 35,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "mean reversion",
+    "macro/forex",
+    "earnings plays"
+   ],
+   "avoid": [
+    "momentum",
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "XLV",
+   "XLP",
+   "KRE",
+   "UUP"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "SOL/USD"
+  ],
+  "key_events": [
+   "CPI inflation release on 2026-11-10",
+   "Weekly jobless claims on 2026-11-12",
+   "PPI producer inflation on 2026-11-13"
+  ],
+  "overnight_read": "Global equities and crypto are under persistent selling pressure with Bitcoin trading near $73,400 amid looming rate-hike concerns and crypto fear & greed at 32. The US Dollar Index remains strong at 121.88, while Treasury yields stay elevated with the 10-year at 4.86%, keeping risk assets on the defensive ahead of today's CPI release.",
+  "summary": "Markets are trading defensively with a strong US dollar and elevated Treasury yields weighing on tech, semiconductors, and crypto. With the CPI inflation print hitting today, we are prioritizing defensive sectors like healthcare and consumer staples while keeping risk appetite measured at 50. Playbooks should focus on mean reversion and macro/forex plays rather than aggressive momentum buying."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.88",
+    "date": "2026-11-09"
+   },
+   "2-year Treasury yield": {
+    "value": "4.56",
+    "date": "2026-11-09"
+   },
+   "CPI (inflation index)": {
+    "value": "337.476",
+    "date": "2026-10-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "19.92",
+    "date": "2026-11-09"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.25",
+    "date": "2026-11-10"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.34",
+    "date": "2026-11-09"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.2",
+    "date": "2026-11-10"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.8803",
+    "date": "2026-11-06"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.459",
+    "date": "2026-10-30"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-11-10",
+    "event": "CPI inflation"
+   },
+   {
+    "date": "2026-11-12",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-13",
+    "event": "PPI producer inflation"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Retail sales"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Industrial production"
+   },
+   {
+    "date": "2026-11-19",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-20",
+    "event": "Consumer sentiment (UMich)"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 77.1,
+    "ret_1d": -2.38,
+    "ret_5d": -4.01,
+    "ret_20d": -11.55,
+    "rsi14": 40.97216,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -18.69,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 37.76,
+    "ret_1d": -1.74,
+    "ret_5d": -1.95,
+    "ret_20d": -6.65,
+    "rsi14": 40.232059,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.06,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 521.8,
+    "ret_1d": -0.29,
+    "ret_5d": 0.92,
+    "ret_20d": 1.1,
+    "rsi14": 51.306588,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.24,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 60.6,
+    "ret_1d": -0.7,
+    "ret_5d": -0.82,
+    "ret_20d": -7.82,
+    "rsi14": 41.05993,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.33,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 104.36,
+    "ret_1d": -0.57,
+    "ret_5d": 1.24,
+    "ret_20d": 0.86,
+    "rsi14": 51.866206,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.16,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 42.93,
+    "ret_1d": -0.14,
+    "ret_5d": 2.07,
+    "ret_20d": 4.2,
+    "rsi14": 56.601814,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.28,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 90.37,
+    "ret_1d": -1.21,
+    "ret_5d": -2.4,
+    "ret_20d": -7.14,
+    "rsi14": 38.136353,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.61,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 77.48,
+    "ret_1d": -0.1,
+    "ret_5d": 3.68,
+    "ret_20d": 5.79,
+    "rsi14": 64.654264,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.72,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 32.08,
+    "ret_1d": -1.63,
+    "ret_5d": 1.1,
+    "ret_20d": -25.17,
+    "rsi14": 31.20979,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -26.92,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 34.4,
+    "ret_1d": -0.75,
+    "ret_5d": 3.65,
+    "ret_20d": 0.67,
+    "rsi14": 57.564931,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.81,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 369.42,
+    "ret_1d": -2.66,
+    "ret_5d": 2.83,
+    "ret_20d": -3.21,
+    "rsi14": 45.897038,
+    "trend": "downtrend",
+    "pct_from_52w_high": -27.52,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 77.19,
+    "ret_1d": -0.41,
+    "ret_5d": 0.27,
+    "ret_20d": 0.65,
+    "rsi14": 52.342976,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.01,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 91.03,
+    "ret_1d": -0.84,
+    "ret_5d": -0.14,
+    "ret_20d": 2.01,
+    "rsi14": 53.47418,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.33,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 51.69,
+    "ret_1d": 0.54,
+    "ret_5d": 6.14,
+    "ret_20d": 9.42,
+    "rsi14": 77.588028,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.19,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 96.2,
+    "ret_1d": -3.27,
+    "ret_5d": 2.87,
+    "ret_20d": 13.66,
+    "rsi14": 56.804357,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.53,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 280.65,
+    "ret_1d": -0.66,
+    "ret_5d": 0.31,
+    "ret_20d": 1.43,
+    "rsi14": 51.683488,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.8,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 73.095,
+    "ret_1d": -0.48,
+    "ret_5d": 0.3,
+    "ret_20d": 5.84,
+    "rsi14": 55.223223,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.18,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 24.06,
+    "ret_1d": -1.03,
+    "ret_5d": 3.35,
+    "ret_20d": -2.67,
+    "rsi14": 49.907829,
+    "trend": "downtrend",
+    "pct_from_52w_high": -36.23,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 27.09,
+    "ret_1d": 0.37,
+    "ret_5d": 0.93,
+    "ret_20d": 9.5,
+    "rsi14": 58.768811,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -17.48,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 675.12,
+    "ret_1d": -0.62,
+    "ret_5d": -1.48,
+    "ret_20d": -9.21,
+    "rsi14": 40.238968,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.5,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 220.845,
+    "ret_1d": -0.05,
+    "ret_5d": 0.72,
+    "ret_20d": 3.54,
+    "rsi14": 58.203506,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.5,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 33.085,
+    "ret_1d": 0.38,
+    "ret_5d": 0.44,
+    "ret_20d": 3.94,
+    "rsi14": 55.772098,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.0,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 46.49,
+    "ret_1d": -3.43,
+    "ret_5d": 3.68,
+    "ret_20d": -13.09,
+    "rsi14": 38.102355,
+    "trend": "downtrend",
+    "pct_from_52w_high": -57.67,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 483.76,
+    "ret_1d": -0.75,
+    "ret_5d": -6.7,
+    "ret_20d": -17.74,
+    "rsi14": 37.749229,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -27.99,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 749.93,
+    "ret_1d": -0.37,
+    "ret_5d": -0.59,
+    "ret_20d": -3.61,
+    "rsi14": 44.618044,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.05,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 43.485,
+    "ret_1d": -3.75,
+    "ret_5d": 0.33,
+    "ret_20d": -2.02,
+    "rsi14": 50.193853,
+    "trend": "downtrend",
+    "pct_from_52w_high": -42.48,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 80.86,
+    "ret_1d": -1.34,
+    "ret_5d": -0.31,
+    "ret_20d": 3.61,
+    "rsi14": 52.36552,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.86,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 10.39,
+    "ret_1d": 3.08,
+    "ret_5d": 13.8,
+    "ret_20d": -8.94,
+    "rsi14": 58.349134,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -38.97,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 33.14,
+    "ret_1d": -3.49,
+    "ret_5d": 0.27,
+    "ret_20d": -11.34,
+    "rsi14": 40.556572,
+    "trend": "downtrend",
+    "pct_from_52w_high": -46.79,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 141.435,
+    "ret_1d": -0.86,
+    "ret_5d": -10.58,
+    "ret_20d": -7.61,
+    "rsi14": 36.560063,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -17.68,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.145,
+    "ret_1d": 0.6,
+    "ret_5d": 0.47,
+    "ret_20d": 0.43,
+    "rsi14": 59.190316,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.34,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 155.035,
+    "ret_1d": -1.19,
+    "ret_5d": 0.04,
+    "ret_20d": 5.61,
+    "rsi14": 51.503701,
+    "trend": "uptrend",
+    "pct_from_52w_high": -8.74,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 52.83,
+    "ret_1d": -0.21,
+    "ret_5d": 0.46,
+    "ret_20d": 6.26,
+    "rsi14": 57.82547,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.29,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 107.74,
+    "ret_1d": 0.35,
+    "ret_5d": 6.21,
+    "ret_20d": -4.04,
+    "rsi14": 53.442996,
+    "trend": "downtrend",
+    "pct_from_52w_high": -9.7,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 62.23,
+    "ret_1d": 0.47,
+    "ret_5d": -6.67,
+    "ret_20d": -7.4,
+    "rsi14": 37.105544,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.29,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 58.28,
+    "ret_1d": 0.5,
+    "ret_5d": 1.91,
+    "ret_20d": 6.31,
+    "rsi14": 61.061584,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.93,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 168.76,
+    "ret_1d": -0.08,
+    "ret_5d": -1.49,
+    "ret_20d": 0.05,
+    "rsi14": 51.070772,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.09,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 168.95,
+    "ret_1d": -1.13,
+    "ret_5d": -4.28,
+    "ret_20d": -13.92,
+    "rsi14": 36.354014,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.88,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 91.04,
+    "ret_1d": 0.17,
+    "ret_5d": 2.35,
+    "ret_20d": 8.14,
+    "rsi14": 62.140364,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.53,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 44.59,
+    "ret_1d": -0.11,
+    "ret_5d": 2.11,
+    "ret_20d": 6.6,
+    "rsi14": 63.740918,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.21,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.73,
+    "ret_1d": -0.14,
+    "ret_5d": 0.71,
+    "ret_20d": 4.44,
+    "rsi14": 63.382509,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.08,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 188.895,
+    "ret_1d": 0.3,
+    "ret_5d": 2.65,
+    "ret_20d": 11.34,
+    "rsi14": 68.51876,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.78,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 121.06,
+    "ret_1d": 0.04,
+    "ret_5d": 3.18,
+    "ret_20d": 7.74,
+    "rsi14": 63.379505,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -2.56,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "NVDA",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 169,
+   "why_scanned": [
+    "one of today's most-traded stocks",
+    "trending on Reddit (#1)"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "deeply oversold (bounce candidate)",
+    "volume surge (3.1x normal)",
+    "strong 20-day move (-26.1%)"
+   ],
+   "atr_pct": 5.15,
+   "specialists": {
+    "technical": {
+     "score": 6,
+     "points": [
+      "price 169 is below SMA20 206.1885 and SMA50 217.9698",
+      "RSI 23.98 indicates deep oversold condition",
+      "volume surge vol_ratio 3.1x normal",
+      "breakdown below 20\u2011day low (low_20 170.24) confirmed",
+      "ATR 8.698 suggests volatility but price is 1.0 ATR below low"
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "EPS growth YoY 125.15% and revenue growth YoY 83.38% show strong fundamentals",
+      "beta 2.354 indicates very high volatility",
+      "PE 22.33 is modest for growth but price far below analyst target 325.78",
+      "debt_to_equity 0.146 shows low leverage",
+      "insider activity: 25 open\u2011market sells worth $967.6M, no buys"
+     ]
+    },
+    "news_sentiment": {
+     "score": 4,
+     "points": [
+      "Recent scandal headlines (CEO affair, spy probe) drove selloff",
+      "Hot CPI and rising yields pressured tech stocks",
+      "Reddit rank #1 with 1240 mentions shows hype but also volatility",
+      "No positive earnings news; recent news mostly negative"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Large hedge\u2011fund holdings (e.g., Tiger Global 9.3% of fund)",
+      "Short interest low at 1.3% of float, days to cover 2.8",
+      "Short\u2011volume 34.8% (above normal 30\u201155% range) indicates some selling pressure",
+      "Insider sells $967.6M suggest bearish insider sentiment"
+     ]
+    },
+    "event_desk": {
+     "score": 3,
+     "points": [
+      "No earnings date provided in dossier",
+      "Past earnings surprises modestly positive (3.6\u20114.3% EPS beats)",
+      "No clear upcoming catalyst beyond market\u2011wide CPI release",
+      "Risk of gap up if scandal fades, but current news is negative"
+     ]
+    },
+    "best_style": "short/fade",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +17.4% expected over 5 days, 100% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Kronos forecast predicts a 17.4% upside in 5 days, RSI is extremely low, and volume is 3.1\u00d7 normal, suggesting a bounce from oversold conditions.",
+    "catalysts": [
+     "Kronos signal strength 4.18 (high confidence)",
+     "Deep oversold RSI <30",
+     "Recent volume surge"
+    ]
+   },
+   "bear": {
+    "case": "NVDA has broken below its 20\u2011day low, is trading well under its 20\u2011day SMA, and negative scandal news has driven the price down; high beta and elevated volatility increase downside risk.",
+    "risks": [
+     "Potential short squeeze is low (short % of float 1.3%)",
+     "Kronos forecast may be over\u2011optimistic (trust_weight 0.22)",
+     "Market regime is risk\u2011off, favoring defensive assets"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If the trade goes wrong, the price could rally on a surprise positive earnings beat or a rapid fade of the scandal, breaching the short stop and generating a loss larger than the expected move.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Both the technical breakdown and the negative news outweigh the optimistic Kronos forecast; the short\u2011fade edge has a historically low win rate and the expected value is negative.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": "Base win rate for short/fade breakdowns is ~40% and the Kronos upside has low trust weight; combined probability of profit is below 30%, giving negative EV.",
+    "horizon": null,
+    "thesis": "NVDA is deeply oversold and has broken its 20\u2011day low, but the market is risk\u2011off and the scandal\u2011driven selloff dominates. The modest upside suggested by Kronos is not enough to overcome the high downside risk and poor historical edge of short/fade trades.",
+    "invalidation": "If NVDA posts a strong earnings beat or the scandal narrative fades, causing a price jump above 180, the trade idea would be invalidated.",
+    "plain_english": "The stock is falling hard and is below key moving averages, which looks like a bad sign. Although a model predicts it could jump, the news is still negative and the market is cautious, so we skip the trade. If the company suddenly reports great earnings, we would reconsider.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 23.983264
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 206.1885
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 170.24
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 3.1
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 2.354
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 5.31
+     },
+     {
+      "fact": "kronos_forecast.direction",
+      "value": "up"
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 1.3
+     }
+    ],
+    "base_win_pct": 31,
+    "base_trades": 13
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 7,
+    "problems": [
+     "cited 'kronos_forecast.direction', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "NVDL",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 19.45,
+   "why_scanned": [
+    "one of today's most-traded stocks"
+   ],
+   "setups": [
+    "breakdown below 20-day low",
+    "deeply oversold (bounce candidate)",
+    "volume surge (5.8x normal)",
+    "strong 20-day move (-46.8%)"
+   ],
+   "atr_pct": 12.54,
+   "specialists": {
+    "technical": {
+     "score": 7,
+     "points": [
+      "price far below SMA20 (29.598) and SMA50 (33.4723)",
+      "RSI 23.996626 indicates deep oversold condition",
+      "breakdown below 20\u2011day low (price 19.45 < low_20 19.53)",
+      "ATR 2.438094 (~12.54% of price) shows high volatility",
+      "volume surge 5.8\u00d7 normal (vol_ratio 5.8)"
+     ]
+    },
+    "fundamental": {
+     "score": 3,
+     "points": [
+      "beta 3.878 (very high risk)",
+      "no earnings or fundamental catalyst listed",
+      "short interest 51.8% of float (crowded short)",
+      "insiders have zero buys in last 90 days",
+      "no earnings history or analyst ratings"
+     ]
+    },
+    "news_sentiment": {
+     "score": 4,
+     "points": [
+      "news only notes NVDL as heavily traded in leveraged\u2011ETF frenzy",
+      "no positive corporate news or catalyst",
+      "overall market sentiment defensive per overnight read",
+      "no earnings\u2011related news for NVDL"
+     ]
+    },
+    "smart_money": {
+     "score": 5,
+     "points": [
+      "short volume latest 51.8% (above normal 40\u201155%)",
+      "short interest 51.8% of float",
+      "put/call volume ratio 0.49 (more calls than puts)",
+      "options implied move 10.75% with IV 128.6% (high uncertainty)",
+      "no hedge\u2011fund holdings reported"
+     ]
+    },
+    "best_style": "short/fade",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +56.9% expected over 5 days, 100% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Kronos forecast predicts a 56.9% upside move with 100% probability, and the options market shows a call\u2011biased put/call ratio, suggesting bullish pressure.",
+    "catalysts": [
+     "AI model confidence (signal_strength 6.15)",
+     "potential short\u2011squeeze if news turns positive",
+     "overall market volatility may create rapid rebounds"
+    ]
+   },
+   "bear": {
+    "case": "Price has broken below its 20\u2011day low, is deeply oversold, and sits far under all moving averages; high short interest and bearish macro (strong USD, high yields) reinforce a downside view.",
+    "risks": [
+     "Kronos forecast could be right, causing a rapid bounce",
+     "Unexpected positive news or a short\u2011squeeze",
+     "Call\u2011biased options flow (put/call ratio <1)"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The stock rebounds sharply on unexpected positive news or a short\u2011squeeze, breaking above the 20\u2011day SMA; the stop is hit before the price can fall to the target, resulting in a loss.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Even though the breakdown and short\u2011interest suggest a bearish edge, the historical win rate for short/fade setups (12%) and the negative average R (-0.099) give a negative expected value. The projected reward\u2011to\u2011risk does not meet the 1.2x minimum, so the trade is not justified.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": null,
+    "horizon": null,
+    "thesis": "",
+    "invalidation": "",
+    "plain_english": "",
+    "evidence": [],
+    "base_win_pct": 31,
+    "base_trades": 13
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 0,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "HIMS",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.8-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current us"
+  },
+  {
+   "symbol": "TTD",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 15.43,
+   "why_scanned": [
+    "one of today's most-traded stocks"
+   ],
+   "setups": [
+    "breakout above 20-day high",
+    "volume surge (3.46x normal)",
+    "strong 20-day move (+26.8%)"
+   ],
+   "atr_pct": 5.03,
+   "specialists": {
+    "technical": {
+     "score": 6,
+     "points": [
+      "Price is at 15.43 with strong 5-day (+19.98%) and 20-day (+26.79%) momentum.",
+      "RSI is overbought at 70.71, signaling caution for immediate chasing.",
+      "Trading above both the 20-day SMA (12.98) and 50-day SMA (13.13), indicating a short-term trend shift."
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "Market cap of $7.25B with a P/E ratio of 17.83.",
+      "Robust revenue growth of 11.61% YoY and high gross margins at 76.87%.",
+      "Debt to equity is 0, showcasing a clean balance sheet."
+     ]
+    },
+    "news_sentiment": {
+     "score": 7,
+     "points": [
+      "Multiple analysts raised price targets following a Q3 beat on Nov 10, 2026.",
+      "UBS maintains Buy and raises target to $19, though Citi maintains Sell and raises target to $12.",
+      "Short interest is extremely high at 22.1% of float, providing potential squeeze fuel on good news."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Institutions own 83.2% of the float.",
+      "Short volume is elevated at 52.8%, showing aggressive bearish positioning underneath the rally.",
+      "Days to cover stands at 3.4 days."
+     ]
+    },
+    "event_desk": {
+     "score": 6,
+     "points": [
+      "Q3 earnings reported on Nov 10 beat expectations with actual EPS of 0.33 vs 0.2562 expected (+28.8% surprise).",
+      "Options market prices a 7.0% implied move by the Nov 13 expiry with 96.5% IV.",
+      "Stock reacted positively to recent news/earnings, but faces heavy short pressure and analyst target divergence."
+     ]
+    },
+    "best_style": "momentum",
+    "kronos": {
+     "score": -5,
+     "points": [
+      "Kronos: -7.7% expected over 5 days, 0% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The Trade Desk just delivered a strong Q3 earnings beat with a 28.8% positive surprise, triggering a wave of price target upgrades from major banks including UBS ($19) and Truist ($17). With 22.1% short interest and a volume surge 3.46x normal, the heavy short crowd is caught off guard and a short squeeze is fully underway.",
+    "catalysts": [
+     "Q3 EPS beat of 0.33 vs 0.2562 expected",
+     "Multiple analyst price target upgrades on November 10, 2026",
+     "Massive short interest (22.1%) providing squeeze fuel"
+    ]
+   },
+   "bear": {
+    "case": "Chasing a stock up nearly 27% in 20 days with an RSI of 70.71 in a defensive, choppy macro environment is a classic trap. Kronos forecasts a -7.65% pullback over the next 5 days, and top-tier analysts like Citi still maintain Sell ratings while short volume remains high at 52.8%.",
+    "risks": [
+     "RSI is heavily overbought at 70.71, leaving it vulnerable to a sharp mean-reversion drop",
+     "Kronos AI model forecasts a -7.65% move downward over the next 5 days",
+     "Broader market is in a risk-off, defensive posture with strong DXY and elevated yields"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy the breakout at 15.43 chasing the earnings hype and analyst upgrades, but the overbought RSI (70.71) and heavy short interest (22.1%) trigger a sharp profit-taking wave. The stock reverses below the 20-day SMA, hitting our stop loss as macro risk-off pressure takes over.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Despite strong recent earnings and analyst target upgrades, the stock is overbought (RSI 70.71), up 26.79% in 20 days, and the Kronos forecast points to a -7.65% decline over the next 5 days. Furthermore, our desk's historical win rate on momentum/breakout plays in choppy regimes is poor, and risk-off market conditions dictate passing on chased rallies.",
+    "bucket": "tactical",
+    "style": "momentum",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 4,
+    "confidence_pct": 38,
+    "odds_reasoning": "Based on a 38% desk base rate for chased momentum setups in choppy regimes combined with a bearish Kronos forecast of -7.65%.",
+    "horizon": "1-5 days",
+    "thesis": "The Trade Desk is experiencing an explosive post-earnings rally backed by analyst upgrades and high short interest. However, entering long after a 27% 20-day surge with an RSI above 70 violates our risk management parameters in a choppy macro environment. We choose to stay flat and avoid chasing an overextended asset.",
+    "invalidation": "A successful retest and consolidation above 15.29 without breaking down could re-establish a cleaner long entry.",
+    "plain_english": "We are passing on this trade because the stock has already jumped too fast and is looking overstretched [RSI over 70, meaning a price has risen too quickly and might pull back]. Even though the company reported good earnings, buying after a massive rally in a weak market has poor odds of success.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 70.713518
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": 26.79
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 22.1
+     },
+     {
+      "fact": "kronos_forecast.expected_move_pct",
+      "value": -7.65
+     }
+    ],
+    "base_win_pct": 31,
+    "base_trades": 13
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 4,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "CRWV",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 49.25,
+   "why_scanned": [
+    "one of today's most-traded stocks",
+    "trending on Reddit (#3)",
+    "earnings 2026-11-10"
+   ],
+   "setups": [
+    "strong 20-day move (-36.7%)"
+   ],
+   "atr_pct": 11.43,
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "price below 20\u2011day SMA (56.33)",
+      "price below 50\u2011day SMA (74.14)",
+      "price below 200\u2011day SMA (89.71)",
+      "RSI 14 = 36.36 (oversold but trend still down)",
+      "momentum signal now short",
+      "reversion signal record 0% win"
+     ]
+    },
+    "fundamental": {
+     "score": 4,
+     "points": [
+      "net margin -25.4% (loss making)",
+      "debt\u2011to\u2011equity 7.024 (high leverage)",
+      "beta 3.713 (very volatile)",
+      "insiders sold $1.559e+12 in last 90 days (strong bearish signal)"
+     ]
+    },
+    "news_sentiment": {
+     "score": 6,
+     "points": [
+      "executive comments bullish on demand through 2027",
+      "expecting adjusted net income positive H1 2028",
+      "Reddit rank 3 with 709 upvotes",
+      "Q2 and Q3 EPS surprises +16% and +15%"
+     ]
+    },
+    "smart_money": {
+     "score": 3,
+     "points": [
+      "short interest 22.4% of float (crowded short)",
+      "short volume latest 48.7% (unusual selling pressure)",
+      "insider sales dominate recent activity",
+      "hedge fund holdings modest relative to market cap"
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "earnings scheduled today 2026\u201111\u201110 (amc)",
+      "recent EPS surprises mixed (+15% & +16% then -22% & -11%)",
+      "high short interest raises risk of a gap up on positive surprise",
+      "recommend trading the reaction rather than holding through"
+     ]
+    },
+    "best_style": "short/fade",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +13.5% expected over 5 days, 90% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Kronos AI forecasts a 90% probability of price moving up 13.5% over the next 5 days, driven by recent positive earnings surprises and strong demand outlook",
+    "catalysts": [
+     "Kronos expected_move_pct 13.46%",
+     "recent EPS beats Q2 & Q3",
+     "high short interest could fuel a squeeze if news stays positive"
+    ]
+   },
+   "bear": {
+    "case": "Fundamentals are weak (negative margins, high debt, high beta) and technicals are in a deep downtrend with price far below all moving averages; short\u2011interest is already extreme, making a downside move plausible but also exposing to a short\u2011squeeze risk",
+    "risks": [
+     "Potential positive earnings surprise could trigger a sharp gap up",
+     "short\u2011squeeze dynamics given 22.4% float short and 48.7% short volume",
+     "macro risk\u2011off environment could further depress price but also increase volatility of options"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we entered a short position, a better\u2011than\u2011expected earnings surprise or a short\u2011squeeze could drive the stock sharply higher, gapping past the stop and wiping out the trade",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Both the desk's historical edge for short/fade trades is strongly negative and the Kronos bullish signal conflicts with weak fundamentals and a deep downtrend; expected value is negative",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": "",
+    "horizon": "",
+    "thesis": "",
+    "invalidation": "",
+    "plain_english": "We decided not to trade CRWV because the odds of making money are low. The stock is falling, has weak earnings and a lot of debt, and the desk\u2019s past short trades have lost money. Even though an AI model sees a possible rise, the risk of a big surprise move up is higher than any upside we could capture.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 49.25
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 56.33325
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 36.356076
+     },
+     {
+      "fact": "fundamentals.net_margin_pct",
+      "value": -25.4
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 22.4
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 90
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 17.46
+     }
+    ],
+    "base_win_pct": 31,
+    "base_trades": 13
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 7,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "NBIS",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 133.96,
+   "why_scanned": [
+    "trending on Reddit (#10)",
+    "earnings 2026-11-12"
+   ],
+   "setups": [
+    "strong 20-day move (-35.2%)"
+   ],
+   "atr_pct": 12.16,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "Price at 133.96 is well below both the 20-day SMA of 158.15 and 50-day SMA of 198.90, indicating a strong intermediate downtrend.",
+      "RSI is at 37.29, which is approaching oversold territory but has not confirmed a proper higher-low mean-reversion setup per desk rules.",
+      "The 14-day ATR is 16.29, showing extreme daily volatility that makes tight risk control difficult."
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "High revenue growth YoY at 488.15% and last quarter at 454.04%, but paired with an extremely high P/E ratio of 906.93.",
+      "Strong institutional sponsorship with 71.0% owned by institutions and major hedge funds like Lone Pine holding positions.",
+      "Insider activity shows heavy open-market selling with 48 sells totaling $155.98M over the last 90 days versus minimal buying."
+     ]
+    },
+    "news_sentiment": {
+     "score": 4,
+     "points": [
+      "Trending on Reddit as #10 with 68 mentions in 24 hours, but sentiment is clouded by scrutiny on AI cloud infrastructure and Microsoft reassessing partnerships.",
+      "CoreWeave CEO notes multiple sources of funding and $9B in prepayments, which indirectly impacts peer Nebius.",
+      "Headlines highlight potential volatility with options markets pricing in large potential swings around upcoming earnings."
+     ]
+    },
+    "smart_money": {
+     "score": 5,
+     "points": [
+      "Short interest is elevated at 20.2% of float with 2.6 days to cover, representing significant crowded short positioning.",
+      "Hedge fund backing is notable with Soros Fund Management and Lone Pine holding multi-million dollar stakes.",
+      "Short volume percentage remains steady around 34.6%, indicating persistent selling pressure from market participants."
+     ]
+    },
+    "event_desk": {
+     "score": 3,
+     "points": [
+      "Upcoming earnings are scheduled for 2026-11-12 before market open (bmo).",
+      "Historical earnings have consistently beaten expectations (e.g. last quarter surprise was 81.1%), but options imply a massive 17.43% move for the upcoming expiry.",
+      "Desk rulebook explicitly forbids holding stocks through earnings unless the style is 'earnings play', and past desk earnings plays have a poor win rate (-2.12 avg_r)."
+     ]
+    },
+    "best_style": "pass",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +12.5% expected over 5 days, 90% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Nebius is a hyper-growth AI infrastructure play with massive revenue growth (+488% YoY), strong backing from elite hedge funds like Lone Pine, and a crowded short interest of 20.2% that provides explosive squeeze potential if earnings beat expectations on November 12.",
+    "catalysts": [
+     "Upcoming earnings report on 2026-11-12 with a history of beating EPS estimates.",
+     "Potential short squeeze driven by 20.2% short float and strong multi-source funding announcements from peers.",
+     "Kronos AI forecast predicting a 12.51% expected move with a 90% probability of moving higher over the next 5 days."
+    ]
+   },
+   "bear": {
+    "case": "The bull case ignores severe macroeconomic headwinds, heavy insider dumping ($155.9M in recent sells), and a brutal technical downtrend where the stock trades far below its 20-day and 50-day moving averages. Furthermore, entering before earnings violates strict risk rules when options are pricing a massive 17.4% implied move.",
+    "risks": [
+     "Insiders have sold $155.9M worth of stock over the last 90 days with almost no open-market buying.",
+     "The stock is in a severe medium-term downtrend (ret_20d is -35.24%) and trading below major moving averages.",
+     "Upcoming earnings carry extreme gap risk with an options-implied move of 17.43%, and desk history on earnings plays is abysmal (-2.12 average R)."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy NBIS ahead of its November 12 earnings report to chase the Reddit hype and high short interest. Bad macro data and a disappointing earnings detail cause the stock to gap down past our stop-loss, resulting in a severe loss that matches our poor historical performance in earnings plays.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Passing on NBIS because holding through earnings violates firm rules, our historical record on earnings plays is deeply negative (-2.12 average R), and insider selling heavily outweighs buying despite high short interest.",
+    "bucket": "tactical",
+    "style": "earnings play",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 3,
+    "confidence_pct": 35,
+    "odds_reasoning": "Based on the desk's 0% win rate across past earnings plays and strict desk rules prohibiting holding through earnings without an explicit qualifying setup, the odds of a successful trade are poor.",
+    "horizon": "1-4 weeks",
+    "thesis": "Nebius Group is approaching a high-risk binary event with earnings scheduled for November 12. While short interest is high at 20.2% and revenue growth is explosive, heavy insider selling and a broken technical trend make this an unfavorable risk-reward setup. Sitting out avoids taking unhedged binary event risk in a choppy market regime.",
+    "invalidation": "An invalidation of this pass decision would require a confirmed post-earnings breakout above the 20-day SMA with strong fundamental guidance and a clear higher-low daily candle close.",
+    "plain_english": "We are passing on trading Nebius Group [an AI cloud infrastructure company] right now. Even though the stock has high short interest [shares borrowed and sold by traders betting on a drop], heavy insider selling and upcoming earnings create too much binary event risk [risk of a sudden massive price swing]. Our desk rules forbid holding stocks through earnings unless specific high-reward criteria are met, so we choose to stay in cash.",
+    "evidence": [
+     {
+      "fact": "upcoming_earnings.date",
+      "value": "2026-11-12"
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 20.2
+     },
+     {
+      "fact": "insiders_last_90d.sell_value_usd",
+      "value": 155983535
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 158.1545
+     },
+     {
+      "fact": "options_market.implied_move_pct",
+      "value": 17.43
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 3
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'upcoming_earnings.date', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "SNDK",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:openai/gpt-oss-120b: Groq rate limit (retry in 3948s)\ngemini-3.5-flash-lite: answer was missing required fields\ngemma-4-31b-it: Gemini error 500: {\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Internal error encountered.\",\n    \"status\": \"INTERNAL\"\n  }\n}\n"
+  },
+  {
+   "symbol": "YOU",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngroq:openai/gpt-oss-120b: Groq rate limit (retry in 2760s)\ngemini-3.5-flash-lite: answer was missing required fields\ngemma-4-31b-it: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. Fo"
+  },
+  {
+   "symbol": "MSTR",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.5-flash-lite: answer was missing required fields"
+  },
+  {
+   "symbol": "ASTS",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 33.51,
+   "why_scanned": [
+    "trending on Reddit (#8)"
+   ],
+   "setups": [
+    "strong 20-day move (-28.8%)"
+   ],
+   "atr_pct": 13.02,
+   "specialists": {
+    "technical": {
+     "score": 32,
+     "points": [
+      "Price at 33.51 is trading well below the 20-day SMA of 38.98, 50-day SMA of 51.23, and 200-day SMA of 74.87.",
+      "Down 28.8% over the past 20 days and down 9.16% in the last session with a high ATR of 4.36 (13.02%).",
+      "RSI14 at 35.96 reflects heavy downward momentum rather than a completed exhaustion base; price remains above 20-day low of 27.58."
+     ]
+    },
+    "fundamental": {
+     "score": 20,
+     "points": [
+      "Company posted an EPS of -0.44 for the quarter ending 2026-09-30, missing consensus expectations of -0.4114.",
+      "Gross margin stands at 39.17% with deeply negative net margins of -536.66% and return on equity of -35.08%.",
+      "Valuation remains stretched despite the sell-off with price-to-sales at 110.58 and debt-to-equity at 1.569."
+     ]
+    },
+    "news_sentiment": {
+     "score": 28,
+     "points": [
+      "Q3 financial results failed to satisfy expectations, triggering price target cuts from UBS ($43) and B. Riley ($48).",
+      "Broader macro headwinds with rising Treasury yields and tech/space sector sell-offs have exacerbated pressure.",
+      "Reddit mentions are elevated at rank #8, but sentiment is dominated by retail bagholders following post-earnings drops."
+     ]
+    },
+    "smart_money": {
+     "score": 35,
+     "points": [
+      "Short interest is elevated at 22.0% of float with 4.2 days to cover, signaling high institutional skepticism.",
+      "Short volume accounted for 59.3% of latest volume, well above the 5-day average of 47.3%.",
+      "Insiders sold $3.06M over the last 90 days against only $619K in open-market buys."
+     ]
+    },
+    "event_desk": {
+     "score": 30,
+     "points": [
+      "Q3 2026 earnings were just reported with an EPS miss of -7.0%, continuing a four-quarter streak of negative surprises (-7.0%, -8.7%, -188.5%, -59.3%).",
+      "Stock plunged 9.16% on the news and faces sequential broker downgrades and target cuts.",
+      "With the binary earnings event already having gapped down, chasing the breakdown or catching the knife offers poor risk-reward; holding or initiating through the immediate post-earnings aftermath is unadvised."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 4,
+     "points": [
+      "Kronos: +10.1% expected over 5 days, 85% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "ASTS is deeply oversold following an exaggerated -28.8% 20-day sell-off, and Kronos projects a 10.07% move higher over the next 5 days with an 85% probability of positive drift. With high short interest at 22% of float, any positive operational development or short-covering rally could trigger an explosive technical bounce toward the 20-day SMA.",
+    "catalysts": [
+     "Short covering squeeze above 35.00",
+     "Relief rally back toward 20-day SMA of 38.98",
+     "Potential commercial contract announcements post-earnings"
+    ]
+   },
+   "bear": {
+    "case": "Bullish bounce theories ignore the fundamental reality: ASTS missed quarterly estimates again, UBS and B. Riley slashed price targets, and net margin is -536.66%. The stock is in a severe long-term downtrend beneath all key moving averages, short volume just spiked to 59.3%, and desk rules forbid mean-reversion longs when price is beneath the 20-day and 50-day SMAs without a positive catalyst.",
+    "risks": [
+     "Continued liquidation toward 52-week low of 27.58",
+     "High beta of 3.08 amplifies market-wide risk-off pressure from rising yields",
+     "Dilution risk from capital-intensive satellite deployment"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "Taking a counter-trend long in ASTS into an earnings-induced sell-off results in immediate stop-out as elevated bond yields and persistent institutional selling drive price down to test its 52-week low at 27.58. Alternatively, attempting to short after a 9% down-day triggers a sharp 13% ATR squeeze fueled by 22% short float.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Long entry is forbidden by Desk Rule 2 (price below both 20-day and 50-day SMA without a positive fundamental catalyst) and Rule 4 (no confirmed higher-low candle close). Short entry is forbidden by Desk Rule 3 (beta is 3.075 and price has not confirmed a breakdown below its 20-day low of 27.58).",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 3,
+    "confidence_pct": 35,
+    "odds_reasoning": "Desk base rate for mean reversion is only 17% win rate (-0.44R avg), and rulebook filters prohibit both long and short entries under current conditions.",
+    "horizon": "1-5 days",
+    "thesis": "ASTS is experiencing severe downside momentum following a Q3 earnings miss and multiple price target downgrades. Taking a long mean-reversion trade violates desk rules requiring price to be above moving averages or supported by a clear catalyst, as well as the rule demanding a higher-low daily close. Simultaneously, shorting this high-beta name is prohibited unless it breaks below its 20-day low of 27.58. Given the lack of a permissible setup and negative expected value, passing is the disciplined call.",
+    "invalidation": "A daily close above the 20-day SMA of 38.98 would invalidate the bear thesis, while a confirmed break below 27.58 would permit a short setup under desk rules.",
+    "plain_english": "AST SpaceMobile tumbled over 9% following an earnings miss, and Wall Street firms cut their price targets. Our trading desk rules strictly forbid buying a falling stock that trades below its key moving averages [trendline indicators tracking recent average prices] without a positive catalyst. At the same time, we are barred from betting against [shorting] this volatile stock until it breaks below its 20-day low of 27.58. Because the rules block trades in both directions and the risks are high, we are passing on ASTS.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 33.51
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 38.975
+     },
+     {
+      "fact": "technicals.sma50",
+      "value": 51.2306
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 27.58
+     },
+     {
+      "fact": "fundamentals.beta",
+      "value": 3.075
+     },
+     {
+      "fact": "short_interest_and_analysts.short_pct_of_float",
+      "value": 22.0
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "SOXL",
+   "venue": "alpaca",
+   "asset": "stock",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.7-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current us"
+  },
+  {
+   "symbol": "XRP/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 1.0571,
+   "why_scanned": [],
+   "setups": [
+    "breakdown below 20-day low",
+    "deeply oversold (bounce candidate)",
+    "volume surge (2.19x normal)",
+    "strong 20-day move (-22.5%)"
+   ],
+   "atr_pct": 5.59,
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "Price at 1.0571 has broken down below its 20-day low of 1.0757 on an elevated volume ratio of 2.19x.",
+      "RSI14 is deeply oversold at 23.81, but price trades far below the 20-day SMA (1.2392), 50-day SMA (1.3550), and 200-day SMA (1.2646).",
+      "No higher-low candle has printed; price is in freefall with a 20-day return of -22.52%."
+     ]
+    },
+    "fundamental": {
+     "score": 2,
+     "points": [
+      "Crypto ecosystem liquidity is draining: 30-day stablecoin supply contracted by -4.6% to 292.0B.",
+      "Total DeFi value locked has plummeted -13.83% over the last 30 days to 77.5B.",
+      "Spot XRP ETFs are suffering their largest capital outflows in 8 months."
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "Crypto Fear & Greed index sits at 32 ('Fear'), reflecting persistent macro and regulatory pressure.",
+      "Hotter-than-expected CPI print and 10-year Treasury yields at 4.86% are crushing non-yielding speculative assets.",
+      "Headlines highlight $1.2B in system-wide liquidations and heavy retail dip-buying on Binance fighting institutional distribution."
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "Institutional holders are dumping via spot ETFs with record 8-month outflow streaks.",
+      "Smart money accumulation is absent in altcoins; flows are selectively hiding in BTC or exiting to cash.",
+      "High volume surge (2.19x) during a breakdown confirms institutional liquidation rather than accumulation."
+     ]
+    },
+    "crypto_desk": {
+     "score": 2,
+     "points": [
+      "XRP is sharply underperforming Bitcoin, sliding -12.33% over 5 days while BTC holds around $74,000.",
+      "Liquidity is rapidly evaporating with negative stablecoin net flows (-4.6%), creating severe air pockets on sell-offs.",
+      "Retail long positioning on Binance represents unbacked dip-buying against relentless ETF institutional outflows."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +12.6% expected over 5 days, 100% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "XRP is severely oversold with RSI at 23.81 and a 20-day z-score of -2.35. Kronos projects a 5-day mean reversion move of +12.55% back toward 1.13-1.29, and historical setups for deeply oversold bounces boast a 65.2% win rate.",
+    "catalysts": [
+     "Kronos 5-day horizon forecasting a 12.55% rebound with 100% prob_up",
+     "Historical edge on deeply oversold setups yielding 65.2% win rate and 0.484 avg R",
+     "Potential relief rally toward the 20-day SMA at 1.2392"
+    ]
+   },
+   "bear": {
+    "case": "Buying XRP here violates core desk rules. It trades below both the 20-day (1.2392) and 50-day (1.3550) SMAs with no fundamental catalyst, and price is plunging through the 20-day low of 1.0757 on 2.19x volume with zero confirmed higher-low close. The desk's crypto record is 0 wins in 7 trades (-0.8R avg); stepping in front of this institutional ETF exodus is reckless.",
+    "risks": [
+     "Explicit desk rule breach: long mean-reversion prohibited below 20/50 SMA without a fundamental catalyst and a daily higher-low close",
+     "Institutional ETF distribution driving price toward 52-week low of 0.9862",
+     "Macro backdrop with 10-year yields at 4.86% and DXY at 121.88 actively punishing speculative tokens"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "A long trade is stopped out almost immediately as retail dip-buyers are overwhelmed by continued ETF redemption selling, driving XRP through psychological support at $1.00 down to its 52-week low of 0.9862.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Crypto can only be traded long, but entering long violates multiple firm rules: price is below both the 20-day and 50-day SMAs without a catalyst, lacks a confirmed daily higher-low candle close, and desk crypto trades are 0-for-7.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 1,
+    "confidence_pct": 25,
+    "odds_reasoning": "Desk base rate on crypto is 0% (0/7, -0.8R) and mean reversion is 17%, heavily discounting the Kronos machine signal given active breakdown conditions and ETF outflows.",
+    "horizon": "1-5 days",
+    "thesis": "XRP/USD is in an aggressive downward trend, dropping -22.52% over 20 days and breaking below its 20-day low of 1.0757 on 2.19x average volume. Crypto cannot be shorted per desk rules, and going long is strictly prohibited by our rulebook because the asset is trading below its 20-day and 50-day SMAs without a confirmed higher-low close. With ETF outflows accelerating and macro liquidity draining, catching this falling knife offers negative expected value.",
+    "invalidation": "A daily candle close above the 20-day SMA at 1.2392 accompanied by positive net stablecoin inflows.",
+    "plain_english": "We are passing on XRP. Our trading desk rules only allow us to buy crypto (not bet against it), but buying here would be like trying to catch a falling knife. The coin is trading below all key trendlines (moving averages) and just broke down to fresh monthly lows on heavy volume as exchange-traded funds report heavy withdrawals. We require a clear sign of a price bottom before risking money, and that sign has not appeared.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 1.0571
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 1.075735
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 23.814419
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 2.19
+     },
+     {
+      "fact": "crypto_sentiment.fear_greed_now_0_100",
+      "value": 32
+     },
+     {
+      "fact": "crypto_sentiment.stablecoin_supply_change_30d_pct",
+      "value": -4.6
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "SOL/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.7-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current us"
+  },
+  {
+   "symbol": "ETH/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.7-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current us"
+  },
+  {
+   "symbol": "USD_CHF",
+   "venue": "oanda",
+   "asset": "forex",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.7-flash: Gemini error 0: network failure: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)"
+  },
+  {
+   "symbol": "USD_MXN",
+   "venue": "oanda",
+   "asset": "forex",
+   "status": "error",
+   "error": "All AI models failed:\ngemini-3.8-flash: Gemini error 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current us"
+  },
+  {
+   "symbol": "CAD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 111.886,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 0.57,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "Price at 111.886 is below the 20-day SMA (112.3758) and 200-day SMA (114.147165), indicating a weak short-term structure.",
+      "RSI at 44.857709 is neutral-to-weak, offering no oversold bounce signal.",
+      "Trend is flagged as 'sideways/mixed' with a 60-day return of -2.32%, suggesting downward drift.",
+      "Setup 'trend pullback to 20-day average' is historically weak for this desk (20% win rate, -0.5R avg)."
+     ]
+    },
+    "fundamental": {
+     "score": 6,
+     "points": [
+      "Hot US CPI suggests the Fed may hike or hold rates higher for longer, supporting USD strength.",
+      "USD strength typically pressures JPY (a yield-sensitive currency) and supports CAD (a commodity currency if oil is stable, though oil data is missing).",
+      "Interest rate gap favors USD over JPY, creating a structural headwind for CAD/JPY (which is effectively Short JPY / Long CAD, but in a USD-strong environment, JPY weakness is the primary driver)."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "News headline 'Hot US CPI puts a bigger Fed hike in play' is bearish for risk assets and bullish for USD.",
+      "Risk appetite is at 50, neutral, but the overnight read shows defensive positioning.",
+      "No specific CAD or JPY news provided, so sentiment is driven by the USD macro backdrop."
+     ]
+    },
+    "smart_money": {
+     "score": 5,
+     "points": [
+      "CAD speculators are net short (-12.0% of OI), which is a contrarian bullish signal for CAD if it reverses, but currently indicates bearish flow.",
+      "JPY speculators are net long (26.9% of OI), which is a contrarian bearish signal for JPY if it reverses, but currently indicates bullish flow.",
+      "Both positions are at high percentiles (85th and 82nd), suggesting crowded trades that could unwind, but direction is ambiguous without a catalyst."
+     ]
+    },
+    "fx_desk": {
+     "score": 7,
+     "points": [
+      "Interest rate gap: US CPI hot -> Fed hawkish -> USD strong. JPY is yield-sensitive, so USD/JPY likely up, meaning CAD/JPY likely down (Short CAD/JPY).",
+      "Carry: USD rates rising, JPY rates low. Carry favors USD/JPY, pressuring CAD/JPY.",
+      "Session: Asian and London sessions are key for JPY moves; NY session for USD/CAD.",
+      "Key levels: 112.00 (psychological), 111.00 (20-day low support), 113.667 (20-day high resistance).",
+      "USD trend: DXY at 121.88, strong. This is a headwind for CAD/JPY."
+     ]
+    },
+    "best_style": "macro",
+    "kronos": {
+     "score": -3,
+     "points": [
+      "Kronos: -0.6% expected over 5 days, 20% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "CAD is supported by commodity prices (implied stable) and JPY is overextended long by speculators (26.9% net long). A USD pullback could trigger a JPY short-covering rally, pushing CAD/JPY higher. The 20-day SMA at 112.3758 is close, and a bounce from 111.886 could target 112.50.",
+    "catalysts": [
+     "JPY speculative long position unwind",
+     "USD weakness on profit-taking after CPI"
+    ]
+   },
+   "bear": {
+    "case": "Hot US CPI strengthens USD, which pressures JPY (making it weaker) and CAD (if oil is soft). The trend is down (60d -2.32%), and price is below key SMAs. The desk's macro style has a 100% win rate, and this is a macro-driven short. The 20-day low at 110.935 is the next support, offering a 0.95 pip move from current price.",
+    "risks": [
+     "USD reversal if CPI is seen as peak inflation",
+     "JPY intervention if USD/JPY gets too high (not provided in data, but a known risk)",
+     "CAD strength if oil spikes (not provided in data)"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails if the US CPI data is interpreted as a peak, causing the Fed to signal a pause, which weakens the USD. This triggers a JPY rally (short-covering) and CAD weakness (if oil drops), pushing CAD/JPY above 112.3758 (20-day SMA) and invalidating the short thesis. The stop is hit at 112.50, resulting in a loss.",
+     "failure_more_likely": false
+    },
+    "decision": "short",
+    "reason": "Macro-driven short based on hot US CPI strengthening USD, which pressures JPY and CAD. The desk's macro style has a 100% win rate, and the trend is down. The setup is a fade of the recent weakness, targeting the 20-day low.",
+    "bucket": "tactical",
+    "style": "macro",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 111.886,
+    "stop": 112.522819,
+    "target": 110.935,
+    "conviction": 7,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base rate for macro is 100% (1 trade), but sample size is small. Kronos forecast is down (-0.57% expected move), supporting the short. Price behavior shows 43% of 1-day windows drop 0.5 ATR, making a 1.5 ATR move in 1-5 days plausible (59% of 20-day windows drop 1.5 ATR).",
+    "horizon": "1-5 days",
+    "thesis": "Hot US CPI strengthens the USD, which pressures JPY (yield-sensitive) and CAD (commodity currency). The CAD/JPY pair is in a downtrend (60d -2.32%) and below key SMAs. We are shorting the pair to target the 20-day low at 110.935, with a stop above the 20-day SMA at 112.52.",
+    "invalidation": "Price closes above 112.52 (20-day SMA + 1 ATR buffer) or USD weakens significantly on post-CPI commentary.",
+    "plain_english": "We are betting that the Canadian Dollar will fall against the Japanese Yen. This is because US inflation data was high, which makes the US Dollar stronger. A stronger US Dollar usually pushes the Japanese Yen down and the Canadian Dollar down. We are selling the pair now and will buy it back if it rises to 112.52 (our stop-loss) or sell it at 110.935 (our profit target).",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 111.886
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 112.3758
+     },
+     {
+      "fact": "technicals.low_20",
+      "value": 110.935
+     },
+     {
+      "fact": "kronos_forecast.expected_move_pct",
+      "value": -0.57
+     },
+     {
+      "fact": "price_behavior_in_atr.within_20_days.down.1.5_atr",
+      "value": 57
+     },
+     {
+      "fact": "news[0].headline",
+      "value": "Hot US CPI puts a bigger Fed hike in play"
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.58,
+     "holding_days": 5,
+     "reached_pct": 25.7,
+     "windows": 495
+    },
+    "base_win_pct": 100,
+    "base_trades": 1,
+    "reward_to_risk": 1.49,
+    "expected_r": 0.37
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'price_behavior_in_atr.within_20_days.down.1.5_atr', which isn't in the data",
+     "cited 'news[0].headline', which isn't in the data"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.27,
+    "model_expected_r": 0.91,
+    "target_first_pct": 65,
+    "stop_first_pct": 20,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  }
+ ],
+ "ai_calls": 8,
+ "ai_attempts": 52,
+ "minutes": 29.7
+}

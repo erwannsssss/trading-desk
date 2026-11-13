@@ -1,0 +1,160 @@
+{
+ "date": "2026-11-13",
+ "session": "quant",
+ "created_at": "2026-11-13T05:04:26-05:00",
+ "dry_run": false,
+ "equity": 8105.6,
+ "macro": {
+  "regime": "risk-off/defensive",
+  "risk_appetite": 55,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 45,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "short-term momentum on USD strength",
+    "crypto scalp shorts and selective mean-reversion bounces on washed-out RSI",
+    "macro positioning ahead of PPI inflation release"
+   ],
+   "avoid": [
+    "unhedged swing longs in mega-cap tech",
+    "chasing crowded short positions in EUR/USD",
+    "holding wide stops across weak altcoins"
+   ]
+  },
+  "favored": [
+   "USD/CAD (uptrend, RSI 67.05, 5d return +0.90%)",
+   "USD/CHF (uptrend, RSI 62.79, 5d return +1.82%)",
+   "PAXG/USD (+1.22% 1d return as safe-haven bid)"
+  ],
+  "avoid": [
+   "EUR/USD (crowded short at 1st percentile 3-year positioning, risking squeeze)",
+   "BTC/USD and altcoins for multi-day swing longs (Crypto Fear & Greed at 20, 30d DeFi TVL down -14.06%)",
+   "High-beta tech exposed to the Nvidia leadership transition"
+  ],
+  "key_events": [
+   "2026-11-13: PPI producer inflation release (critical for 10-year Treasury yield hovering at 4.98%)",
+   "2026-11-17: Retail sales and Industrial production data"
+  ],
+  "overnight_read": "Overnight action shows crypto cracking under geopolitical headlines, with BTC/USD dropping 1.51% to $70,294.35 and SOL/USD sliding to $80.67 on extreme fear (index at 20). The US Dollar remains firm against major pairs like CAD and CHF, while equity sentiment digests the Dow's 0.36% drop to 52,297.09 and leadership upheaval at Nvidia.",
+  "summary": "Macro conditions lean defensive as the 10-year Treasury yield sits near 5% at 4.98% and crypto suffers steep liquidations into extreme fear. We are favoring trend-continuation plays in strong dollar pairs like USD/CAD and USD/CHF while keeping risk strictly defined ahead of tomorrow's PPI report. In crypto, widespread RSI readings below 30 warrant nimble scalps rather than unhedged core longs. Overall, capital is focused on tactical momentum and short-side setups while staying alert to positioning squeezes in heavily shorted assets like the euro."
+ },
+ "ideas": [
+  {
+   "symbol": "AAVE/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 111.11,
+   "atr_pct": 9.38,
+   "setups": [
+    "oversold pullback in a long-term uptrend",
+    "strong 20-day move (-19.3%)"
+   ],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 111.11,
+    "stop": 98.08,
+    "target": 131.95,
+    "conviction": 6,
+    "confidence_pct": 50,
+    "horizon": "1-5 days",
+    "reason": "StatArb signals a mean\u2011reversion long on AAVE/USD with a decent 62% win\u2011rate over 8 past signals, but Kronos only sees a modest 0.1\u202fR edge and its 5\u2011day price forecast (\u22486% upside) falls far short of the 18.7% target. The 5\u2011day historical hit\u2011rate for a move of this size is just 18.4%, and the current macro is risk\u2011off with crypto under heavy liquidation pressure, making the upside target unrealistic. Quant desk: a stretched price likely to snap back. the same signal on AAVE/USD over 2 years: 8 trades, 62% winners, +0.62R on average; Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.10R.",
+    "thesis": "A stretched price likely to snap back on AAVE/USD. The same signal on aave/usd over 2 years: 8 trades, 62% winners, +0.62r on average. Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.10R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -19.33
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 31.611964
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 9.38
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.62
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.1
+     }
+    ],
+    "quant_edge_r": 0.29,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.29,
+    "reach": {
+     "target_distance_atr": 1.9,
+     "holding_days": 5,
+     "reached_pct": 18.4,
+     "windows": 495
+    },
+    "history": {
+     "signals": 8,
+     "win_pct": 62,
+     "avg_r": 0.62,
+     "best_r": 1.6,
+     "worst_r": -1.0
+    },
+    "kronos": {
+     "expected_r": 0.1,
+     "model_expected_r": 0.34,
+     "target_first_pct": 10,
+     "stop_first_pct": 10,
+     "paths": 20
+    },
+    "kronos_weight": 0.27
+   },
+   "specialists": {
+    "kronos": {
+     "score": 4,
+     "points": [
+      "Kronos: target first in 10% of 20 simulated futures, stop first in 10%, expected +0.10R"
+     ]
+    },
+    "quant_reversion": {
+     "score": 3,
+     "points": [
+      "the same signal on AAVE/USD over 2 years: 8 trades, 62% winners, +0.62R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 35,
+  "signals": 2,
+  "kronos": 24,
+  "kronos_weight": 0.27,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 2,
+   "behind_by": 2
+  },
+  "desk_note": "Arjun: Today\u2019s landscape is dominated by a defensive macro backdrop and a stressed crypto market, so we\u2019re tightening our risk on high\u2011volatility assets. We\u2019ll stay in trend\u2011continuation plays on strong\u2011dollar pairs and only take crypto scalps with very tight targets."
+ },
+ "ai_calls": 1,
+ "minutes": 1.3
+}

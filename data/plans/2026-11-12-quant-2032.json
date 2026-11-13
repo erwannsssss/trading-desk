@@ -1,0 +1,167 @@
+{
+ "date": "2026-11-12",
+ "session": "quant",
+ "created_at": "2026-11-12T20:32:34-05:00",
+ "dry_run": false,
+ "equity": 8074.37,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 70,
+  "bucket_weights": {
+   "core": 45,
+   "tactical": 40,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "mean_reversion",
+    "macro_forex",
+    "crypto"
+   ],
+   "avoid": [
+    "breakouts",
+    "earnings"
+   ]
+  },
+  "favored": [
+   "USD_JPY",
+   "USD_CAD",
+   "USD_CHF",
+   "GOLD",
+   "OIL",
+   "BTC/USD",
+   "ETH/USD"
+  ],
+  "avoid": [
+   "EUR_USD",
+   "GBP_USD",
+   "AUD_USD",
+   "DOGE/USD"
+  ],
+  "key_events": [
+   "Weekly jobless claims (Nov12,19)",
+   "PPI producer inflation (Nov13)",
+   "Retail sales (Nov17)",
+   "Industrial production (Nov17)",
+   "Consumer sentiment (Nov20)"
+  ],
+  "overnight_read": "USD shows strength against EUR, GBP and AUD while JPY remains steady; crypto is sideways with low fear (FG 28) suggesting a possible bounce in BTC and ETH; expect a modestly bullish open for risk assets but keep an eye on upcoming jobless claims and PPI data.",
+  "summary": "The market is in a choppy range with moderate volatility and a slightly loose financial environment. We stay aggressive (risk appetite 70) and tilt toward tactical plays, focusing on USD\u2011JPY, USD\u2011CAD, gold, oil and the dip\u2011buy opportunity in BTC/ETH. Avoid breakout\u2011heavy stocks and the weaker EUR and GBP pairs. Watch the jobless\u2011claims and PPI releases for short\u2011term direction on the dollar and risk assets."
+ },
+ "ideas": [
+  {
+   "symbol": "AAVE/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 114.13704,
+   "atr_pct": 8.85,
+   "setups": [
+    "strong 20-day move (-17.1%)"
+   ],
+   "why_scanned": [
+    "quant mean reversion signal (statarb)"
+   ],
+   "decision": {
+    "decision": "long",
+    "style": "quant mean reversion",
+    "bucket": "tactical",
+    "order_type": "limit",
+    "expression": "shares",
+    "entry": 114.14,
+    "stop": 101.51,
+    "target": 134.34,
+    "conviction": 6,
+    "confidence_pct": 50,
+    "horizon": "1-5 days",
+    "reason": "Statarb\u2019s mean\u2011reversion signal looks decent on paper (8\u2011trade history, 62% win, avg\u202fR\u202f0.62) but Kronos only adds a tiny edge (expected\u202fR\u202f0.08) and the 5\u2011day target has been hit in just 18.4% of past moves. Our desk\u2019s crypto track record is terrible (0% win on 7 alt\u2011coin trades) and the market is currently choppy, so the upside potential is outweighed by the risk. Quant desk: a stretched price likely to snap back. the same signal on AAVE/USD over 2 years: 8 trades, 62% winners, +0.62R on average; Kronos: target first in 15% of 20 simulated futures, stop first in 15%, expected +0.08R.",
+    "thesis": "A stretched price likely to snap back on AAVE/USD. The same signal on aave/usd over 2 years: 8 trades, 62% winners, +0.62r on average. Kronos: target first in 15% of 20 simulated futures, stop first in 15%, expected +0.08R.",
+    "premortem": {
+     "failure_story": "the signal fails as it does in the losing share of its history",
+     "failure_more_likely": false
+    },
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -17.13
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 33.384914
+     },
+     {
+      "fact": "technicals.atr_pct",
+      "value": 8.85
+     },
+     {
+      "fact": "quant_backtest.avg_r",
+      "value": 0.62
+     },
+     {
+      "fact": "kronos_odds.expected_r",
+      "value": 0.08
+     }
+    ],
+    "quant_edge_r": 0.29,
+    "decision_by_desk": "dropped at the quant desk meeting"
+   },
+   "quant": {
+    "kind": "reversion",
+    "seat": "statarb",
+    "edge_r": 0.29,
+    "reach": {
+     "target_distance_atr": 1.9,
+     "holding_days": 5,
+     "reached_pct": 18.4,
+     "windows": 495
+    },
+    "history": {
+     "signals": 8,
+     "win_pct": 62,
+     "avg_r": 0.62,
+     "best_r": 1.6,
+     "worst_r": -1.0
+    },
+    "kronos": {
+     "expected_r": 0.08,
+     "model_expected_r": 0.25,
+     "target_first_pct": 15,
+     "stop_first_pct": 15,
+     "paths": 20
+    },
+    "kronos_weight": 0.27
+   },
+   "specialists": {
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: target first in 15% of 20 simulated futures, stop first in 15%, expected +0.08R"
+     ]
+    },
+    "quant_reversion": {
+     "score": 3,
+     "points": [
+      "the same signal on AAVE/USD over 2 years: 8 trades, 62% winners, +0.62R on average"
+     ]
+    }
+   },
+   "status": "pass"
+  }
+ ],
+ "quant_summary": {
+  "markets": 35,
+  "signals": 2,
+  "kronos": 30,
+  "kronos_weight": 0.27,
+  "candidates_with_edge": 1,
+  "pace": {
+   "goal": 30,
+   "placed_today": 0,
+   "expected_by_now": 29,
+   "behind_by": 29
+  },
+  "desk_note": "The market is stuck in a tight range with modest dollar strength and risk assets wobbling. We stay aggressive on high\u2011conviction FX, gold, oil and the BTC/ETH dip\u2011buy, while avoiding alt\u2011coin setups."
+ },
+ "ai_calls": 1,
+ "minutes": 1.9
+}

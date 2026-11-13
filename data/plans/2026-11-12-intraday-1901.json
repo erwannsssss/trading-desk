@@ -1,0 +1,813 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-12",
+ "session": "intraday",
+ "created_at": "2026-11-12T19:01:02-05:00",
+ "dry_run": false,
+ "equity": 8082.88,
+ "macro": {
+  "regime": "choppy/range-bound",
+  "risk_appetite": 70,
+  "bucket_weights": {
+   "core": 45,
+   "tactical": 40,
+   "high_risk": 15
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "mean_reversion",
+    "macro_forex",
+    "crypto"
+   ],
+   "avoid": [
+    "breakouts",
+    "earnings"
+   ]
+  },
+  "favored": [
+   "USD_JPY",
+   "USD_CAD",
+   "USD_CHF",
+   "GOLD",
+   "OIL",
+   "BTC/USD",
+   "ETH/USD"
+  ],
+  "avoid": [
+   "EUR_USD",
+   "GBP_USD",
+   "AUD_USD",
+   "DOGE/USD"
+  ],
+  "key_events": [
+   "Weekly jobless claims (Nov12,19)",
+   "PPI producer inflation (Nov13)",
+   "Retail sales (Nov17)",
+   "Industrial production (Nov17)",
+   "Consumer sentiment (Nov20)"
+  ],
+  "overnight_read": "USD shows strength against EUR, GBP and AUD while JPY remains steady; crypto is sideways with low fear (FG 28) suggesting a possible bounce in BTC and ETH; expect a modestly bullish open for risk assets but keep an eye on upcoming jobless claims and PPI data.",
+  "summary": "The market is in a choppy range with moderate volatility and a slightly loose financial environment. We stay aggressive (risk appetite 70) and tilt toward tactical plays, focusing on USD\u2011JPY, USD\u2011CAD, gold, oil and the dip\u2011buy opportunity in BTC/ETH. Avoid breakout\u2011heavy stocks and the weaker EUR and GBP pairs. Watch the jobless\u2011claims and PPI releases for short\u2011term direction on the dollar and risk assets."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.98",
+    "date": "2026-11-10"
+   },
+   "2-year Treasury yield": {
+    "value": "4.73",
+    "date": "2026-11-10"
+   },
+   "CPI (inflation index)": {
+    "value": "337.476",
+    "date": "2026-10-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "17.49",
+    "date": "2026-11-11"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.24",
+    "date": "2026-11-12"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.3",
+    "date": "2026-11-11"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.24",
+    "date": "2026-11-12"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "121.8803",
+    "date": "2026-11-06"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.462",
+    "date": "2026-11-06"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-11-12",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-13",
+    "event": "PPI producer inflation"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Retail sales"
+   },
+   {
+    "date": "2026-11-17",
+    "event": "Industrial production"
+   },
+   {
+    "date": "2026-11-19",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-20",
+    "event": "Consumer sentiment (UMich)"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 76.47,
+    "ret_1d": -2.55,
+    "ret_5d": 4.54,
+    "ret_20d": -10.76,
+    "rsi14": 40.73629,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -19.35,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 37.24,
+    "ret_1d": -1.3,
+    "ret_5d": -0.32,
+    "ret_20d": -5.6,
+    "rsi14": 37.155497,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -10.31,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 522.455,
+    "ret_1d": -0.38,
+    "ret_5d": 1.59,
+    "ret_20d": 0.27,
+    "rsi14": 51.592998,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.12,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 61.13,
+    "ret_1d": -1.47,
+    "ret_5d": 5.31,
+    "ret_20d": -4.42,
+    "rsi14": 44.203488,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.59,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 104.01,
+    "ret_1d": -0.62,
+    "ret_5d": 1.28,
+    "ret_20d": 0.33,
+    "rsi14": 50.336619,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.48,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 42.815,
+    "ret_1d": -0.48,
+    "ret_5d": 0.15,
+    "ret_20d": 3.07,
+    "rsi14": 55.393286,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.54,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 91.48,
+    "ret_1d": -0.69,
+    "ret_5d": 3.65,
+    "ret_20d": -4.14,
+    "rsi14": 42.961423,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.5,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 77.64,
+    "ret_1d": -0.09,
+    "ret_5d": 2.08,
+    "ret_20d": 5.09,
+    "rsi14": 64.954806,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.52,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 31.86,
+    "ret_1d": -1.79,
+    "ret_5d": 0.31,
+    "ret_20d": -23.38,
+    "rsi14": 31.43596,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -27.43,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 33.46,
+    "ret_1d": -1.36,
+    "ret_5d": -4.24,
+    "ret_20d": -2.34,
+    "rsi14": 46.088208,
+    "trend": "downtrend",
+    "pct_from_52w_high": -18.11,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 354.83,
+    "ret_1d": -2.83,
+    "ret_5d": -5.5,
+    "ret_20d": -7.28,
+    "rsi14": 37.392152,
+    "trend": "downtrend",
+    "pct_from_52w_high": -30.38,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 76.98,
+    "ret_1d": -0.48,
+    "ret_5d": -0.39,
+    "ret_20d": 0.33,
+    "rsi14": 47.778683,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.27,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 90.19,
+    "ret_1d": -0.82,
+    "ret_5d": -1.94,
+    "ret_20d": 0.17,
+    "rsi14": 43.123803,
+    "trend": "downtrend",
+    "pct_from_52w_high": -5.21,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 51.55,
+    "ret_1d": -0.08,
+    "ret_5d": 3.06,
+    "ret_20d": 7.51,
+    "rsi14": 75.439533,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.44,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 93.8,
+    "ret_1d": -1.73,
+    "ret_5d": -4.9,
+    "ret_20d": 8.13,
+    "rsi14": 52.221658,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -17.64,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 278.42,
+    "ret_1d": -1.65,
+    "ret_5d": 2.75,
+    "ret_20d": 1.21,
+    "rsi14": 48.800673,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.53,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 72.51,
+    "ret_1d": -0.6,
+    "ret_5d": 0.28,
+    "ret_20d": 3.96,
+    "rsi14": 51.986745,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.93,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 22.9,
+    "ret_1d": -3.25,
+    "ret_5d": -7.51,
+    "ret_20d": -6.95,
+    "rsi14": 38.248011,
+    "trend": "downtrend",
+    "pct_from_52w_high": -39.31,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 26.6,
+    "ret_1d": 0.26,
+    "ret_5d": -5.94,
+    "ret_20d": 5.3,
+    "rsi14": 53.534012,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -18.98,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 689.38,
+    "ret_1d": -0.14,
+    "ret_5d": 6.54,
+    "ret_20d": -5.3,
+    "rsi14": 45.765148,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.63,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 220.75,
+    "ret_1d": -0.85,
+    "ret_5d": 1.79,
+    "ret_20d": 2.67,
+    "rsi14": 56.614841,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.54,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 32.78,
+    "ret_1d": 0.37,
+    "ret_5d": -3.1,
+    "ret_20d": 2.15,
+    "rsi14": 51.846913,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.79,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 45.16,
+    "ret_1d": -3.19,
+    "ret_5d": -3.77,
+    "ret_20d": -13.02,
+    "rsi14": 34.833314,
+    "trend": "downtrend",
+    "pct_from_52w_high": -58.88,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 504.43,
+    "ret_1d": -0.5,
+    "ret_5d": 12.66,
+    "ret_20d": -9.74,
+    "rsi14": 43.64112,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -24.92,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 757.37,
+    "ret_1d": -0.32,
+    "ret_5d": 3.32,
+    "ret_20d": -1.87,
+    "rsi14": 48.673834,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.1,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 42.325,
+    "ret_1d": -3.7,
+    "ret_5d": -4.0,
+    "ret_20d": -0.99,
+    "rsi14": 46.121348,
+    "trend": "downtrend",
+    "pct_from_52w_high": -44.01,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 79.72,
+    "ret_1d": -1.48,
+    "ret_5d": -2.7,
+    "ret_20d": 0.11,
+    "rsi14": 43.054881,
+    "trend": "downtrend",
+    "pct_from_52w_high": -9.16,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 10.47,
+    "ret_1d": 2.45,
+    "ret_5d": 12.94,
+    "ret_20d": -5.59,
+    "rsi14": 58.563182,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -38.5,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 32.35,
+    "ret_1d": -3.83,
+    "ret_5d": 4.42,
+    "ret_20d": -10.44,
+    "rsi14": 38.707295,
+    "trend": "downtrend",
+    "pct_from_52w_high": -48.06,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 146.11,
+    "ret_1d": 3.28,
+    "ret_5d": -1.42,
+    "ret_20d": -7.12,
+    "rsi14": 42.916011,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.96,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.42,
+    "ret_1d": 0.24,
+    "ret_5d": 1.73,
+    "ret_20d": 1.45,
+    "rsi14": 67.190402,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.07,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 151.17,
+    "ret_1d": -3.29,
+    "ret_5d": 1.87,
+    "ret_20d": 0.93,
+    "rsi14": 46.893485,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.02,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 52.32,
+    "ret_1d": -1.32,
+    "ret_5d": -0.02,
+    "ret_20d": 3.48,
+    "rsi14": 53.383217,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.23,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 107.58,
+    "ret_1d": -0.94,
+    "ret_5d": 3.11,
+    "ret_20d": -4.32,
+    "rsi14": 52.37762,
+    "trend": "downtrend",
+    "pct_from_52w_high": -9.84,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 64.31,
+    "ret_1d": 1.48,
+    "ret_5d": 4.35,
+    "ret_20d": -3.38,
+    "rsi14": 46.811889,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.33,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 58.2,
+    "ret_1d": -0.73,
+    "ret_5d": 1.22,
+    "ret_20d": 5.3,
+    "rsi14": 59.376938,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.06,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 169.42,
+    "ret_1d": -0.91,
+    "ret_5d": 4.28,
+    "ret_20d": 0.91,
+    "rsi14": 51.871519,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.73,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 173.73,
+    "ret_1d": -0.36,
+    "ret_5d": 6.99,
+    "ret_20d": -8.17,
+    "rsi14": 42.485547,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.52,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 91.07,
+    "ret_1d": -0.42,
+    "ret_5d": -0.2,
+    "ret_20d": 5.06,
+    "rsi14": 61.428221,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.49,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 44.345,
+    "ret_1d": -0.55,
+    "ret_5d": 0.1,
+    "ret_20d": 5.61,
+    "rsi14": 60.767071,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.74,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.82,
+    "ret_1d": 0.0,
+    "ret_5d": 1.2,
+    "ret_20d": 5.21,
+    "rsi14": 64.149269,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.88,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 187.83,
+    "ret_1d": -0.59,
+    "ret_5d": 1.58,
+    "ret_20d": 6.0,
+    "rsi14": 65.283911,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.33,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 120.44,
+    "ret_1d": -0.45,
+    "ret_5d": 2.38,
+    "ret_20d": 6.2,
+    "rsi14": 61.261157,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.06,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "SMCI",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 26.98,
+   "why_scanned": [
+    "one of today's most-traded stocks",
+    "trending on Reddit (#18)"
+   ],
+   "setups": [
+    "volume surge (2.61x normal)",
+    "strong 20-day move (-23.1%)"
+   ],
+   "atr_pct": 10.09,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "price below SMA20 (26.98<31.52)",
+      "RSI 36.37 indicates oversold",
+      "ATR 2.72 (~10% of price)",
+      "volume surge 2.61x normal",
+      "20\u2011day low 25.81 not yet touched"
+     ]
+    },
+    "fundamental": {
+     "score": 5,
+     "points": [
+      "PE 5.52 very low",
+      "EPS growth YoY 298.5%",
+      "revenue growth YoY 156.46%",
+      "debt/equity 0.538 modest",
+      "beta 2.267 high volatility"
+     ]
+    },
+    "news_sentiment": {
+     "score": 3,
+     "points": [
+      "DOJ investigation headline negative",
+      "CEO resignation negative",
+      "new server launch positive",
+      "Reddit hype moderate (rank 18)"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "insider sells $24.44M vs buys $0.05M",
+      "short interest 12.7% float, days to cover 2.1",
+      "hedge fund Soros holds 1.4% ($111.5M)",
+      "short volume ~47% latest"
+     ]
+    },
+    "event_desk": {
+     "score": 2,
+     "points": [
+      "no earnings date imminent",
+      "past earnings surprises strong (+32% to +74%)",
+      "no upcoming earnings to trade around",
+      "risk of gap down from DOJ probe"
+     ]
+    },
+    "best_style": "none",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +13.6% expected over 5 days, 100% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "SMCI has a massive earnings\u2011beat history and a new 6th\u2011gen AMD EPYC server line that could reignite AI\u2011hardware demand, while Kronos forecasts a 13.5% upside in the next 5 days with 100% probability.",
+    "catalysts": [
+     "launch of next\u2011gen servers (12/31)",
+     "historical earnings surprises >30%",
+     "low PE suggests undervaluation"
+    ]
+   },
+   "bear": {
+    "case": "The DOJ investigation and recent CEO exit have already driven the stock down >5% and the price sits well below all moving averages, indicating a downtrend; high short interest (12.7%) and heavy insider selling increase downside risk, and the desk's rules prohibit a long mean\u2011reversion or short without a confirmed breakdown.",
+    "risks": [
+     "negative news pressure",
+     "price below SMA20/50/200",
+     "no breakdown below 20\u2011day low (25.81)",
+     "high short\u2011interest squeeze potential"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we entered a long, the DOJ probe could trigger a sharp sell\u2011off, the stock could gap down past the 20\u2011day SMA and our stop at 1.5\u202fATR (\u224830.07) would be hit, resulting in a loss; the expected move from Kronos is low\u2011trust and the negative momentum could overwhelm any short\u2011term bounce.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "No entry criteria are satisfied (price not at support, no breakdown for short) and the expected value is negative given mixed news and rule constraints.",
+    "bucket": null,
+    "style": "none",
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "",
+    "horizon": "",
+    "thesis": "We skip trading SMCI because the stock is below all key averages, lacks a valid technical entry, and the negative news outweighs the modest upside forecast.",
+    "invalidation": "N/A",
+    "plain_english": "We are not taking a position in SMCI. The price is below its main moving averages, there is no clear signal to buy or sell, and recent bad news makes the trade too risky. Without a proper entry point, the trade would likely lose money.",
+    "evidence": [],
+    "base_win_pct": 31,
+    "base_trades": 13
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 0,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "CAT",
+   "venue": "alpaca",
+   "asset": "stock",
+   "price_at_research": 605.21,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-17.5%)"
+   ],
+   "atr_pct": 4.9,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "Price is in a clear downtrend, trading below the 20-day (651.16), 50-day (743.41), and 200-day (804.67) simple moving averages.",
+      "RSI is at 36.4, indicating it is approaching oversold levels but not yet extreme.",
+      "ATR is 29.65 (4.9% of price), indicating high volatility."
+     ]
+    },
+    "fundamental": {
+     "score": 6,
+     "points": [
+      "Strong trailing performance with revenue growth year-over-year at 20.26% and EPS growth at 30.81%.",
+      "P/E ratio of 23.58 and solid return on equity of 58.53%.",
+      "Heavy insider selling with $26.2 million in open-market sales over the last 90 days against negligible buying."
+     ]
+    },
+    "news_sentiment": {
+     "score": 5,
+     "points": [
+      "Recently awarded a $50 million annualized contract for data center energy storage.",
+      "Launched a new distribution sub-brand 'Cat Compact' for contractors in South Florida.",
+      "Mixed context with cyclical sector performance holding relatively stable."
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "Short interest is low at 2.0% of float, indicating lack of heavy short pressure.",
+      "Whale alerts noted in industrial sessions, but insider selling dominates recent Form 4 filings.",
+      "Options market shows a high put/call volume ratio of 5.08, signaling defensive positioning or bearish sentiment."
+     ]
+    },
+    "event_desk": {
+     "score": 5,
+     "points": [
+      "No immediate earnings date for the next few days; earnings history shows steady beats in past quarters.",
+      "Implied move for options expiry is 5.53% with 50.7% implied volatility.",
+      "Desk rule dictates not holding stocks through earnings unless using an earnings play style, but current setup is not an immediate earnings event."
+     ]
+    },
+    "best_style": "mean reversion",
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +4.4% expected over 5 days, 95% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "CAT is a world-class cyclical bellwether trading down 43.38% from its 52-week high, supported by robust fundamental growth (20.26% revenue growth) and recent contract wins in high-growth data center energy storage. With the Kronos forecast predicting a 95% probability of moving up over a 5-day horizon and an oversold RSI of 36.4, the stock is primed for a sharp mean-reversion bounce toward its 20-day moving average.",
+    "catalysts": [
+     "$50 million annualized contract win for data center energy storage.",
+     "Oversold daily technicals with a 20-day return of -17.53%.",
+     "Kronos AI model forecasting a bullish 5-day path with 95% up probability."
+    ]
+   },
+   "bear": {
+    "case": "The stock is in a severe multi-month downtrend, sitting well below all major moving averages (20, 50, and 200-day) with a 60-day return of -25.67%. Insiders have dumped over $26.2 million in shares over the last 90 days, and options markets are heavily skewed with a put/call ratio of 5.08, showing smart money expects further downside. Trying to catch a falling knife in a choppy market environment goes against our losing desk base rates for mean-reversion trades.",
+    "risks": [
+     "Heavy insider selling of $26.2 million versus minimal open-market buying.",
+     "Trading far below the 200-day moving average of 804.67, confirming a strong structural downtrend.",
+     "Desk base rate for mean-reversion trades is poor at 17% win rate over 12 past trades."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We buy the oversold dip at 605.21, but the broader market's choppy range turns risk-off. Heavy insider selling and strong institutional distribution resume, dragging CAT down past its 20-day low of 550.81 and triggering our stop-loss at 560.00.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Although Kronos forecasts a high probability bounce and the stock is deeply discounted, the desk's poor base rate for mean-reversion trades (17% win rate) combined with heavy insider selling and a structural downtrend below the 200-day average creates a negative expected value.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 3,
+    "confidence_pct": 35,
+    "odds_reasoning": "Based on the desk's 17% historical win rate for mean reversion trades and strong structural headwinds despite AI forecast probabilities.",
+    "horizon": "1-5 days",
+    "thesis": "Caterpillar is oversold after a sharp 17.5% decline over the last 20 days, trading significantly below its 200-day average. While there are catalysts like data center energy storage contracts and positive AI forecasts, the heavy insider selling and miserable desk win-rate for mean-reversion strategies make this a low-EV trade.",
+    "invalidation": "A confirmed close above the 20-day simple moving average accompanied by heavy volume surge.",
+    "plain_english": "We are passing on Caterpillar because even though the stock [share of ownership in a company] looks cheap after a big drop, the overall trend is pointing down and insiders [officers and major owners of the company] are heavily selling their shares. Our trading desk has a poor track record with this specific type of bounce trade, so we prefer to sit on our hands.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 605.21
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 36.410183
+     },
+     {
+      "fact": "technicals.sma200",
+      "value": 804.6722
+     },
+     {
+      "fact": "insiders_last_90d.sell_value_usd",
+      "value": 26211764
+     },
+     {
+      "fact": "options_market.put_call_volume_ratio",
+      "value": 5.08
+     }
+    ],
+    "base_win_pct": 17,
+    "base_trades": 12
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 2,
+ "ai_attempts": 11,
+ "minutes": 6.8
+}

@@ -6255,7 +6255,7 @@
   "filled_qty": 6256.0,
   "filled_qty_initial": 6256.0,
   "opened_at": "2026-11-11T09:13:01-05:00",
-  "last_price": 1.6284,
+  "last_price": 1.6272600000000002,
   "max_r": 0.31,
   "min_r": -0.25
  },
@@ -6292,10 +6292,11 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "187",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-11T09:13 entry order placed",
-   "2026-11-11T16:26 filled 6056 @ 0.83241"
+   "2026-11-11T16:26 filled 6056 @ 0.83241",
+   "2026-11-14T01:14 closed at 0.83852: hit target, P&L $+43.68"
   ],
   "oanda_trade_id": "188",
   "entry_price": 0.83241,
@@ -6304,7 +6305,17 @@
   "opened_at": "2026-11-11T16:26:10-05:00",
   "last_price": 0.837855,
   "max_r": 0.56,
-  "min_r": -0.08
+  "min_r": -0.08,
+  "exit_price": 0.83852,
+  "exit_reason": "hit target",
+  "closed_at": "2026-11-14T01:14:03-05:00",
+  "pnl_usd": 43.68,
+  "r_result": 0.62,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "USD/CHF rose from the entry of 0.83241 to the target of 0.8385, hitting the target and delivering a 0.62R profit (\u2248$43.68). The move validated the bullish carry, yield\u2011spread, and technical uptrend arguments in the thesis.",
+   "lesson": "Align stop\u2011losses with clear technical support levels; a disciplined risk limit lets the trade capture the full upside when the macro carry and trend stay intact."
+  }
  },
  {
   "id": "2026-11-11-morning-USD_MXN",
@@ -6349,9 +6360,9 @@
   "filled_qty": 3877.0,
   "filled_qty_initial": 3877.0,
   "opened_at": "2026-11-11T21:22:11-05:00",
-  "last_price": 18.5907,
+  "last_price": 18.53801,
   "max_r": 0.02,
-  "min_r": -0.09
+  "min_r": -0.24
  },
  {
   "id": "2026-11-11-morning-USD_CAD",

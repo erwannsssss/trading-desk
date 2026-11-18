@@ -1,0 +1,698 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-18",
+ "session": "intraday",
+ "created_at": "2026-11-18T17:46:31-05:00",
+ "dry_run": false,
+ "equity": 8188.7,
+ "macro": {
+  "regime": "risk-off/defensive",
+  "risk_appetite": 60,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 40,
+   "high_risk": 20
+  },
+  "playbook": {
+   "use": [
+    "macro/forex",
+    "mean reversion",
+    "defensive rotation"
+   ],
+   "avoid": [
+    "momentum",
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "UUP",
+   "XLP",
+   "XLU",
+   "XLF"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "XLE",
+   "GLD",
+   "SLV"
+  ],
+  "key_events": [
+   "2026-11-19 Weekly jobless claims",
+   "2026-11-25 GDP",
+   "2026-11-25 PCE inflation / spending"
+  ],
+  "overnight_read": "The US Dollar is dominating with the index at 122.6503 and UUP in an uptrend. Crypto is in a state of 'Extreme Fear' (11), while equity breadth is weak with only 35% of stocks above their 50-day average and an inverted VIX term structure signaling near-term stress.",
+  "summary": "The market is in a risk-off regime driven by a surging US Dollar and a heavy sell-off in growth and semiconductors. We are rotating into defensive sectors like staples (XLP) and utilities (XLU) while utilizing the extreme fear in crypto for speculative mean-reversion bets. With the VIX at 25.46 and poor breadth, we will avoid momentum chasing and focus on USD strength and defensive hedges ahead of the Nov 25 PCE and GDP data."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "5.1",
+    "date": "2026-11-17"
+   },
+   "2-year Treasury yield": {
+    "value": "4.8",
+    "date": "2026-11-17"
+   },
+   "CPI (inflation index)": {
+    "value": "337.476",
+    "date": "2026-10-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "25.46",
+    "date": "2026-11-17"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.27",
+    "date": "2026-11-18"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.43",
+    "date": "2026-11-17"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.19",
+    "date": "2026-11-18"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "122.6503",
+    "date": "2026-11-13"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.478",
+    "date": "2026-11-13"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-11-19",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-11-20",
+    "event": "Consumer sentiment (UMich)"
+   },
+   {
+    "date": "2026-11-24",
+    "event": "Industrial production"
+   },
+   {
+    "date": "2026-11-25",
+    "event": "GDP"
+   },
+   {
+    "date": "2026-11-25",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-11-25",
+    "event": "PCE inflation / spending"
+   },
+   {
+    "date": "2026-11-25",
+    "event": "Weekly jobless claims"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 71.04,
+    "ret_1d": 0.28,
+    "ret_5d": -9.47,
+    "ret_20d": -16.83,
+    "rsi14": 33.815382,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -25.08,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 34.11,
+    "ret_1d": -5.22,
+    "ret_5d": -9.59,
+    "ret_20d": -13.73,
+    "rsi14": 23.504119,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -17.85,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 501.7,
+    "ret_1d": -1.11,
+    "ret_5d": -4.34,
+    "ret_20d": -4.93,
+    "rsi14": 36.510808,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.93,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 57.8,
+    "ret_1d": -0.81,
+    "ret_5d": -6.83,
+    "ret_20d": -9.08,
+    "rsi14": 34.047641,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -19.24,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 100.26,
+    "ret_1d": -1.08,
+    "ret_5d": -4.2,
+    "ret_20d": -3.65,
+    "rsi14": 37.457807,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.93,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 41.025,
+    "ret_1d": -1.55,
+    "ret_5d": -4.64,
+    "ret_20d": -1.62,
+    "rsi14": 41.230171,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.53,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 88.04,
+    "ret_1d": -0.73,
+    "ret_5d": -4.43,
+    "ret_20d": -8.02,
+    "rsi14": 34.313451,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.94,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 73.66,
+    "ret_1d": -4.14,
+    "ret_5d": -5.21,
+    "ret_20d": -2.5,
+    "rsi14": 39.939225,
+    "trend": "downtrend",
+    "pct_from_52w_high": -8.46,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 30.06,
+    "ret_1d": -3.09,
+    "ret_5d": -7.34,
+    "ret_20d": -29.29,
+    "rsi14": 27.819823,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -31.53,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 32.37,
+    "ret_1d": -1.55,
+    "ret_5d": -4.57,
+    "ret_20d": -1.73,
+    "rsi14": 35.230564,
+    "trend": "downtrend",
+    "pct_from_52w_high": -20.78,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 341.22,
+    "ret_1d": -3.19,
+    "ret_5d": -6.56,
+    "ret_20d": -9.96,
+    "rsi14": 30.570136,
+    "trend": "downtrend",
+    "pct_from_52w_high": -33.05,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 76.65,
+    "ret_1d": 0.03,
+    "ret_5d": -0.9,
+    "ret_20d": 0.09,
+    "rsi14": 41.949794,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.69,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 90.72,
+    "ret_1d": 0.34,
+    "ret_5d": -0.24,
+    "ret_20d": 0.89,
+    "rsi14": 51.003511,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.66,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 51.42,
+    "ret_1d": -0.92,
+    "ret_5d": -0.33,
+    "ret_20d": 8.78,
+    "rsi14": 69.113533,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.68,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 92.67,
+    "ret_1d": 1.02,
+    "ret_5d": -2.91,
+    "ret_20d": 7.05,
+    "rsi14": 49.984665,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -18.63,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 270.1,
+    "ret_1d": 0.39,
+    "ret_5d": -4.59,
+    "ret_20d": -2.31,
+    "rsi14": 40.71363,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.26,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 70.49,
+    "ret_1d": -0.51,
+    "ret_5d": -3.37,
+    "ret_20d": -0.18,
+    "rsi14": 41.579228,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -9.52,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 21.72,
+    "ret_1d": -1.63,
+    "ret_5d": -8.24,
+    "ret_20d": -8.51,
+    "rsi14": 29.433606,
+    "trend": "downtrend",
+    "pct_from_52w_high": -42.43,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 27.76,
+    "ret_1d": -0.43,
+    "ret_5d": 4.64,
+    "ret_20d": 9.42,
+    "rsi14": 61.858036,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -15.44,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 659.98,
+    "ret_1d": 0.46,
+    "ret_5d": -4.4,
+    "ret_20d": -8.99,
+    "rsi14": 37.917691,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -13.49,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 215.49,
+    "ret_1d": -0.13,
+    "ret_5d": -3.22,
+    "ret_20d": -0.53,
+    "rsi14": 45.221808,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.88,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 34,
+    "ret_1d": 0.29,
+    "ret_5d": 4.1,
+    "ret_20d": 6.02,
+    "rsi14": 64.141827,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -11.62,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 40.69,
+    "ret_1d": -4.57,
+    "ret_5d": -12.78,
+    "ret_20d": -22.14,
+    "rsi14": 26.076708,
+    "trend": "downtrend",
+    "pct_from_52w_high": -62.95,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 459.45,
+    "ret_1d": -0.14,
+    "ret_5d": -9.37,
+    "ret_20d": -17.47,
+    "rsi14": 35.207205,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -31.61,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 731.12,
+    "ret_1d": -0.18,
+    "ret_5d": -3.78,
+    "ret_20d": -5.43,
+    "rsi14": 36.993101,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.46,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 37.82,
+    "ret_1d": -0.79,
+    "ret_5d": -13.95,
+    "ret_20d": -11.14,
+    "rsi14": 33.753625,
+    "trend": "downtrend",
+    "pct_from_52w_high": -49.97,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 80.26,
+    "ret_1d": 0.89,
+    "ret_5d": -0.82,
+    "ret_20d": 0.45,
+    "rsi14": 49.396896,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.55,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 10.62,
+    "ret_1d": 5.78,
+    "ret_5d": 3.91,
+    "ret_20d": 6.52,
+    "rsi14": 58.83996,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -37.62,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 29.415,
+    "ret_1d": -2.08,
+    "ret_5d": -12.56,
+    "ret_20d": -17.26,
+    "rsi14": 30.701884,
+    "trend": "downtrend",
+    "pct_from_52w_high": -52.77,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 136.11,
+    "ret_1d": -2.94,
+    "ret_5d": -3.79,
+    "ret_20d": -14.82,
+    "rsi14": 34.071664,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -20.78,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.615,
+    "ret_1d": 0.25,
+    "ret_5d": 0.9,
+    "ret_20d": 2.4,
+    "rsi14": 71.382594,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.08,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 145.05,
+    "ret_1d": -0.16,
+    "ret_5d": -7.2,
+    "ret_20d": -5.06,
+    "rsi14": 40.464669,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -14.62,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 50.44,
+    "ret_1d": -0.79,
+    "ret_5d": -4.87,
+    "ret_20d": -1.71,
+    "rsi14": 40.690778,
+    "trend": "downtrend",
+    "pct_from_52w_high": -7.67,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 105.59,
+    "ret_1d": 0.31,
+    "ret_5d": -2.77,
+    "ret_20d": -3.1,
+    "rsi14": 46.158259,
+    "trend": "downtrend",
+    "pct_from_52w_high": -11.51,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 61.31,
+    "ret_1d": -3.24,
+    "ret_5d": -3.25,
+    "ret_20d": -10.05,
+    "rsi14": 36.966333,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.6,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 56.43,
+    "ret_1d": -1.12,
+    "ret_5d": -3.75,
+    "ret_20d": 0.7,
+    "rsi14": 46.521761,
+    "trend": "uptrend",
+    "pct_from_52w_high": -6.01,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 164.68,
+    "ret_1d": -0.04,
+    "ret_5d": -3.68,
+    "ret_20d": -2.16,
+    "rsi14": 42.927726,
+    "trend": "downtrend",
+    "pct_from_52w_high": -12.26,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 163.75,
+    "ret_1d": 0.3,
+    "ret_5d": -6.09,
+    "ret_20d": -13.15,
+    "rsi14": 34.784246,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -19.43,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 91.19,
+    "ret_1d": -0.3,
+    "ret_5d": -0.28,
+    "ret_20d": 4.68,
+    "rsi14": 58.639711,
+    "trend": "uptrend",
+    "pct_from_52w_high": -2.45,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 43.63,
+    "ret_1d": 0.09,
+    "ret_5d": -2.15,
+    "ret_20d": 3.73,
+    "rsi14": 52.070032,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.3,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.54,
+    "ret_1d": 0.28,
+    "ret_5d": -0.64,
+    "ret_20d": 3.67,
+    "rsi14": 56.946024,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.48,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 181.19,
+    "ret_1d": -2.19,
+    "ret_5d": -4.11,
+    "ret_20d": 1.26,
+    "rsi14": 47.55083,
+    "trend": "uptrend",
+    "pct_from_52w_high": -5.79,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 119.19,
+    "ret_1d": 1.78,
+    "ret_5d": -1.49,
+    "ret_20d": 3.17,
+    "rsi14": 55.988034,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.06,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [
+  {
+   "symbol": "USD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 159.31,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 0.51,
+   "specialists": {
+    "technical": {
+     "score": 5,
+     "points": [
+      "price 159.31 above SMA20 158.51315 indicating slight bullish bias",
+      "RSI 57.5 neutral, no overbought/oversold signal",
+      "ATR 0.815 suggests modest daily volatility",
+      "trend classified as sideways/mixed, no clear direction"
+     ]
+    },
+    "fundamental": {
+     "score": 7,
+     "points": [
+      "US rates higher than JPY, creating positive carry for long USD/JPY",
+      "Fed minutes hint bigger Dec hike, supporting USD strength",
+      "BOJ remains dovish, no rate hikes expected"
+     ]
+    },
+    "news_sentiment": {
+     "score": 6,
+     "points": [
+      "Fed minutes news suggests higher rates for USD",
+      "Risk-off regime but USD index 122.65 uptrend",
+      "Crypto extreme fear indicates broader risk aversion"
+     ]
+    },
+    "smart_money": {
+     "score": 4,
+     "points": [
+      "CFTC spec net % open interest: USD long 26.9% down 2.1pts, JPY long 31.7% up 4.8pts",
+      "Speculators reducing USD exposure, increasing JPY exposure"
+     ]
+    },
+    "fx_desk": {
+     "score": 6,
+     "points": [
+      "Interest\u2011rate gap: US ~5% vs Japan ~0.1% (wide)",
+      "USD trend: DXY up, USD strength",
+      "Carry: long USD/JPY yields positive roll",
+      "Active session: Tokyo/London drive most moves",
+      "Key round numbers: 158, 160"
+     ]
+    },
+    "best_style": "macro",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: +0.0% expected over 5 days, 60% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "USD_JPY is poised to rise as the Fed signals a larger December hike, widening the US\u2011Japan rate differential and providing positive carry. The USD index is in an uptrend, and the pair is trading just above its 20\u2011day SMA, suggesting room for a modest pull\u2011up.",
+    "catalysts": [
+     "Fed minutes indicating higher rates",
+     "Positive carry from rate gap",
+     "USD index strength"
+    ]
+   },
+   "bear": {
+    "case": "The market is in a risk\u2011off mode, making JPY a safe\u2011haven and pulling USD_JPY lower. Smart\u2011money data shows speculators cutting USD exposure and increasing JPY net long. Historical trend\u2011pullback trades have a poor win rate (20%) and the pair\u2019s recent ATR\u2011based moves favor downside (down 0.5\u2011ATR 40% vs up 0.5\u2011ATR 35%).",
+    "risks": [
+     "Risk\u2011off sentiment could strengthen JPY",
+     "Smart\u2011money net short USD bias",
+     "Low Kronos signal strength (0.08)"
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we entered a long position, the Fed\u2011hike optimism could be priced in and a sudden risk\u2011off shift would push investors into JPY, causing USD_JPY to drop sharply and hit our stop. The weak historical edge for trend\u2011pullback trades would also likely result in a loss.",
+     "failure_more_likely": false
+    },
+    "decision": "pass",
+    "reason": "No clear edge: macro view favors USD but risk\u2011off sentiment and smart\u2011money data favor JPY; the best\u2011performing style (macro) has limited applicability here, and the trend\u2011pullback setup historically loses. Therefore the expected value is negative.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": null,
+    "confidence_pct": null,
+    "odds_reasoning": null,
+    "horizon": null,
+    "thesis": null,
+    "invalidation": null,
+    "plain_english": "We decided not to trade USD/JPY because the upside drivers (Fed rate hikes) are offset by strong risk\u2011off sentiment that usually strengthens the yen. The historical success rate for the available setups is low, so taking a position would have a negative expected value.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 159.31
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 158.51315
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 57.527983
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 60
+     },
+     {
+      "fact": "futures_positioning.USD.spec_net_pct_of_open_interest",
+      "value": 26.9
+     },
+     {
+      "fact": "futures_positioning.JPY.spec_net_pct_of_open_interest",
+      "value": 31.7
+     }
+    ],
+    "base_win_pct": 33,
+    "base_trades": 21
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 6,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 1,
+ "ai_attempts": 4,
+ "minutes": 2.9
+}

@@ -6245,20 +6245,31 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "181",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-11T01:06 entry order placed",
    "2026-11-11T09:13 filled 6256 @ 1.62308",
-   "2026-11-16T03:00 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}"
+   "2026-11-16T03:00 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}",
+   "2026-11-18T12:59 closed at 1.6332: time stop (1-5 days), P&L $+42.12"
   ],
   "oanda_trade_id": "182",
   "entry_price": 1.62308,
   "filled_qty": 6256.0,
   "filled_qty_initial": 6256.0,
   "opened_at": "2026-11-11T09:13:01-05:00",
-  "last_price": 1.6303999999999998,
+  "last_price": 1.6334499999999998,
   "max_r": 0.68,
-  "min_r": -0.25
+  "min_r": -0.25,
+  "exit_price": 1.6332,
+  "exit_reason": "time stop (1-5 days)",
+  "closed_at": "2026-11-18T12:59:59-05:00",
+  "pnl_usd": 42.12,
+  "r_result": 0.58,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The EUR/AUD rose from 1.62308 to 1.6332, delivering a modest profit (\u22480.58\u202fR) before the pre\u2011defined time stop forced an exit. The move was in the direction of the thesis but fell short of the 200\u2011day SMA target.",
+   "lesson": "Align the trade horizon and stop\u2011loss with the expected price move; if a tactical play expects a 1\u20115\u2011day swing, consider scaling out or adjusting the time stop to capture more of the upside."
+  }
  },
  {
   "id": "2026-11-11-overnight-0426-USD_CHF",
@@ -6355,16 +6366,18 @@
   "notes": [
    "2026-11-11T16:26 entry order placed",
    "2026-11-11T21:22 filled 3877 @ 18.6173",
-   "2026-11-15T20:14 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}"
+   "2026-11-15T20:14 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}",
+   "2026-11-18T13:00 emergency huddle (+1.2%): hold. Thesis intact and price move is within normal volatility; stop remains safely placed."
   ],
   "oanda_trade_id": "192",
   "entry_price": 18.6173,
   "filled_qty": 3877.0,
   "filled_qty_initial": 3877.0,
   "opened_at": "2026-11-11T21:22:11-05:00",
-  "last_price": 18.50242,
-  "max_r": 0.02,
-  "min_r": -0.58
+  "last_price": 18.7209,
+  "max_r": 0.31,
+  "min_r": -0.58,
+  "last_huddle": "2026-11-18T13:00:33-05:00"
  },
  {
   "id": "2026-11-11-morning-USD_CAD",

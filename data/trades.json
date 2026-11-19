@@ -6362,7 +6362,7 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "191",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-11T16:26 entry order placed",
    "2026-11-11T21:22 filled 3877 @ 18.6173",
@@ -6370,7 +6370,8 @@
    "2026-11-18T13:00 emergency huddle (+1.2%): hold. Thesis intact and price move is within normal volatility; stop remains safely placed.",
    "2026-11-18T19:05 emergency huddle (+0.7%): hold. Thesis unchanged and price move is within normal volatility; stop remains comfortably distant.",
    "2026-11-19T11:41 stop moved to breakeven",
-   "2026-11-19T11:41 emergency huddle (+0.8%): hold. Thesis unchanged and price move is within normal daily range; no invalidation level hit and no news, so we let the trade run to target."
+   "2026-11-19T11:41 emergency huddle (+0.8%): hold. Thesis unchanged and price move is within normal daily range; no invalidation level hit and no news, so we let the trade run to target.",
+   "2026-11-19T18:14 closed at 19.10054: hit target, P&L $+97.09"
   ],
   "oanda_trade_id": "192",
   "entry_price": 18.6173,
@@ -6390,7 +6391,17 @@
     "t": "2026-11-19T11:41:16-05:00",
     "stop": 18.6173
    }
-  ]
+  ],
+  "exit_price": 19.10054,
+  "exit_reason": "hit target",
+  "closed_at": "2026-11-19T18:14:14-05:00",
+  "pnl_usd": 97.09,
+  "r_result": 1.41,
+  "postmortem": {
+   "verdict": "right and won",
+   "what_happened": "The pair continued its multi\u2011month uptrend, climbing from the 18.6173 entry to the 19.10 target. The stop was never touched (moved to breakeven mid\u2011trade) and the trade exited cleanly at the target, delivering a 1.41\u202fR profit.",
+   "lesson": "When a macro trend is clear, use a tight, well\u2011placed stop and move it to breakeven as the trade progresses to lock in gains while letting the thesis run."
+  }
  },
  {
   "id": "2026-11-11-morning-USD_CAD",
@@ -6771,8 +6782,8 @@
   "filled_qty": 14022.0,
   "filled_qty_initial": 14022.0,
   "opened_at": "2026-11-19T02:18:04-05:00",
-  "last_price": 0.843545,
-  "max_r": 0.02,
+  "last_price": 0.8439399999999999,
+  "max_r": 0.07,
   "min_r": -0.02
  },
  {

@@ -1,14 +1,14 @@
 {
- "updated": "2026-11-19T02:18-05:00",
+ "updated": "2026-11-19T18:14-05:00",
  "window_days": 45,
  "board": [
   {
    "style": "macro",
-   "trades": 4,
+   "trades": 5,
    "win_rate": 100,
-   "avg_r": 1.08,
-   "pnl": 474.2,
-   "weight": 1.32
+   "avg_r": 1.14,
+   "pnl": 571.29,
+   "weight": 1.34
   },
   {
    "style": "quant momentum",
@@ -60,18 +60,18 @@
   }
  ],
  "calibration": {
-  "trades": 43,
+  "trades": 44,
   "factor": 0.8,
   "predicted": 52,
-  "actual": 28
+  "actual": 30
  },
  "exit_tuning": {
   "_all": {
-   "n": 41,
+   "n": 42,
    "planned_target_r": 1.68,
-   "p75_max_r": 0.65,
+   "p75_max_r": 0.67,
    "advice": [],
-   "winners_deepest_dip_r": 0.64
+   "winners_deepest_dip_r": 0.63
   }
  },
  "session_budget": {
@@ -91,7 +91,7 @@
     "trades": 10,
     "avg_r": -0.529,
     "win_rate": 20,
-    "budget": 0.7
+    "budget": 1.0
    },
    "quant": {
     "trades": 5,
@@ -99,22 +99,24 @@
     "win_rate": 60
    },
    "morning": {
-    "trades": 9,
-    "avg_r": -0.793,
-    "win_rate": 22
+    "trades": 10,
+    "avg_r": -0.573,
+    "win_rate": 30,
+    "budget": 0.7
    }
   },
   "multipliers": {
-   "evening": 0.7,
+   "morning": 0.7,
+   "evening": 1.0,
    "overnight": 1.3
   }
  },
  "edge_tilt": {
   "factor": 0.7,
-  "reason": "losing record: -0.41R a trade over the last 43; betting smaller until it turns",
-  "n": 43,
-  "avg_r": -0.413,
-  "p_value": 0.9933
+  "reason": "losing record: -0.37R a trade over the last 44; betting smaller until it turns",
+  "n": 44,
+  "avg_r": -0.372,
+  "p_value": 0.9868
  },
  "shadow_lessons": []
 }

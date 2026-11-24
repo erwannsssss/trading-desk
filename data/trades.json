@@ -6772,10 +6772,11 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "209",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-18T19:05 entry order placed",
-   "2026-11-19T02:18 filled 14022 @ 0.84337"
+   "2026-11-19T02:18 filled 14022 @ 0.84337",
+   "2026-11-24T13:35 closed at 0.83489: stopped out, P&L $-143.83"
   ],
   "oanda_trade_id": "210",
   "entry_price": 0.84337,
@@ -6784,7 +6785,17 @@
   "opened_at": "2026-11-19T02:18:04-05:00",
   "last_price": 0.8423149999999999,
   "max_r": 0.07,
-  "min_r": -0.5
+  "min_r": -0.5,
+  "exit_price": 0.83489,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-11-24T13:35:36-05:00",
+  "pnl_usd": -143.83,
+  "r_result": -1.02,
+  "postmortem": {
+   "verdict": "right but lost",
+   "what_happened": "The pair reversed shortly after entry, falling to the stop at 0.8349 despite the macro bullish view. The trade never moved in our favor (max +0.07R) and was stopped out at roughly 1R loss.",
+   "lesson": "When the price is near a key resistance and RSI is overbought, delay entry or tighten the thesis; avoid tight stops in such pull\u2011back zones."
+  }
  },
  {
   "id": "2026-11-18-morning-AAPL",
@@ -6892,9 +6903,9 @@
   "filled_qty": 15874.0,
   "filled_qty_initial": 15874.0,
   "opened_at": "2026-11-20T15:43:08-05:00",
-  "last_price": 105.6885,
+  "last_price": 105.87100000000001,
   "max_r": 0.75,
-  "min_r": 0
+  "min_r": -0.06
  },
  {
   "id": "2026-11-20-overnight-0510-USD_CAD",
@@ -6929,12 +6940,13 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "222",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-20T07:38 entry order placed",
    "2026-11-20T15:43 filled 24566 @ 1.43095",
    "2026-11-21T11:41 manage error: OANDA error 401: {\"errorMessage\":\"Insufficient authorization to perform request.\"}",
-   "2026-11-23T18:08 stop moved to breakeven"
+   "2026-11-23T18:08 stop moved to breakeven",
+   "2026-11-24T13:35 closed at 1.43093: stopped out, P&L $-0.35"
   ],
   "oanda_trade_id": "223",
   "entry_price": 1.43095,
@@ -6953,7 +6965,17 @@
     "t": "2026-11-23T18:08:47-05:00",
     "stop": 1.43095
    }
-  ]
+  ],
+  "exit_price": 1.43093,
+  "exit_reason": "stopped out",
+  "closed_at": "2026-11-24T13:35:36-05:00",
+  "pnl_usd": -0.35,
+  "r_result": -0.0,
+  "postmortem": {
+   "verdict": "wrong and lost",
+   "what_happened": "The pair rallied toward the 52\u2011week high, reaching about +1.14\u202fR, but then stalled and fell back, triggering the breakeven stop and closing with a tiny loss. The breakout never materialized, so the bullish macro thesis did not play out.",
+   "lesson": "When a trade relies on a breakout, factor in overbought/RSI warnings and give the price more room before moving the stop to breakeven."
+  }
  },
  {
   "id": "2026-11-20-quant-1602-SPY",

@@ -6893,22 +6893,33 @@
   "loan_apr": 0.08,
   "loan_basis": "margin",
   "entry_order_id": "218",
-  "status": "open",
+  "status": "closed",
   "notes": [
    "2026-11-20T07:38 entry order placed",
    "2026-11-20T15:43 filled 15874 @ 105.791",
    "2026-11-25T06:56 emergency huddle (-0.8%): hold. The move is within a normal daily range, the stop is untouched and the original downtrend thesis still holds.",
-   "2026-11-25T15:56 emergency huddle (+0.9%): hold. Thesis unchanged and price move is within a normal daily range, so we let the original plan run."
+   "2026-11-25T15:56 emergency huddle (+0.9%): hold. Thesis unchanged and price move is within a normal daily range, so we let the original plan run.",
+   "2026-11-27T17:26 closed at 106.0825: time stop (1-5 days), P&L $+0.00"
   ],
   "oanda_trade_id": "219",
   "entry_price": 105.791,
   "filled_qty": 15874.0,
   "filled_qty_initial": 15874.0,
   "opened_at": "2026-11-20T15:43:08-05:00",
-  "last_price": 106.2775,
+  "last_price": 106.0825,
   "max_r": 0.87,
   "min_r": -0.37,
-  "last_huddle": "2026-11-25T15:56:26-05:00"
+  "last_huddle": "2026-11-25T15:56:26-05:00",
+  "exit_price": 106.0825,
+  "exit_reason": "time stop (1-5 days)",
+  "closed_at": "2026-11-27T17:26:25-05:00",
+  "pnl_usd": 0.0,
+  "r_result": 0.0,
+  "postmortem": {
+   "verdict": "right but lost",
+   "what_happened": "The down\u2011trend thesis remained intact \u2013 AUD/JPY stayed below its key moving averages \u2013 but the price drifted slightly higher after entry and never moved toward the 103.84 target before the pre\u2011set time stop forced a closure at 106.08, resulting in a modest loss (\u22480.22\u202fR).",
+   "lesson": "Avoid rigid time\u2011based exits on macro\u2011trend trades; give the position enough time for the expected ATR\u2011sized move or use a trailing stop instead of a fixed time stop."
+  }
  },
  {
   "id": "2026-11-20-overnight-0510-USD_CAD",

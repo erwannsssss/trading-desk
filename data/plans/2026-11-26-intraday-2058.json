@@ -1,0 +1,550 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-26",
+ "session": "intraday",
+ "created_at": "2026-11-26T20:58:31-05:00",
+ "dry_run": false,
+ "equity": 8075.19,
+ "macro": {
+  "regime": "risk-off/defensive",
+  "risk_appetite": 45,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 40,
+   "high_risk": 20
+  },
+  "playbook": {
+   "use": [
+    "mean reversion",
+    "macro/forex",
+    "crypto"
+   ],
+   "avoid": [
+    "momentum",
+    "breakouts"
+   ]
+  },
+  "favored": [
+   "XLP",
+   "XLV",
+   "IEF",
+   "TLT",
+   "UUP"
+  ],
+  "avoid": [
+   "SMH",
+   "XLK",
+   "ARKK"
+  ],
+  "key_events": [
+   "JOLTS job openings on 2026-12-01",
+   "Durable goods on 2026-12-03",
+   "Weekly jobless claims on 2026-12-03",
+   "Jobs report on 2026-12-04"
+  ],
+  "overnight_read": "Elevated VIX at 26.36 with an inverted term structure points to ongoing near-term stress and fear, while crypto sentiment sits at extreme fear with a reading of 11, setting up potential oversold bounces but requiring tight risk control.",
+  "summary": "Market conditions remain defensive given a VIX of 26.36 and extreme fear in crypto, demanding a lower risk appetite of 45. We are favoring defensive sectors like consumer staples and treasuries while avoiding lagging tech segments. Focus on mean reversion and macro plays while keeping dry powder for upcoming employment and economic data."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.91",
+    "date": "2026-11-24"
+   },
+   "2-year Treasury yield": {
+    "value": "4.63",
+    "date": "2026-11-24"
+   },
+   "CPI (inflation index)": {
+    "value": "337.476",
+    "date": "2026-10-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "26.36",
+    "date": "2026-11-24"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.24",
+    "date": "2026-11-25"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.72",
+    "date": "2026-11-24"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.12",
+    "date": "2026-11-25"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "123.5978",
+    "date": "2026-11-20"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.444",
+    "date": "2026-11-20"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-12-01",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-12-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-12-03",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-12-04",
+    "event": "Jobs report"
+   }
+  ],
+  "etfs": {
+   "ARKK": {
+    "price": 67.36,
+    "ret_1d": -0.15,
+    "ret_5d": -5.21,
+    "ret_20d": -21.78,
+    "rsi14": 35.484312,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -28.96,
+    "gap_pct": null
+   },
+   "CPER": {
+    "price": 32.51,
+    "ret_1d": 0.03,
+    "ret_5d": -4.66,
+    "ret_20d": -19.39,
+    "rsi14": 24.57059,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -21.7,
+    "gap_pct": null
+   },
+   "DIA": {
+    "price": 501.27,
+    "ret_1d": 0.31,
+    "ret_5d": 0.02,
+    "ret_20d": -4.36,
+    "rsi14": 43.759325,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.91,
+    "gap_pct": null
+   },
+   "EEM": {
+    "price": 56.4,
+    "ret_1d": -0.51,
+    "ret_5d": -2.56,
+    "ret_20d": -11.21,
+    "rsi14": 38.504639,
+    "trend": "downtrend",
+    "pct_from_52w_high": -21.2,
+    "gap_pct": null
+   },
+   "EFA": {
+    "price": 99.18,
+    "ret_1d": 0.3,
+    "ret_5d": -1.08,
+    "ret_20d": -4.34,
+    "rsi14": 40.510082,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.92,
+    "gap_pct": null
+   },
+   "EWG": {
+    "price": 40.08,
+    "ret_1d": 0.02,
+    "ret_5d": -2.32,
+    "ret_20d": -4.11,
+    "rsi14": 39.35208,
+    "trend": "downtrend",
+    "pct_from_52w_high": -10.63,
+    "gap_pct": null
+   },
+   "EWJ": {
+    "price": 87.25,
+    "ret_1d": 0.7,
+    "ret_5d": -0.9,
+    "ret_20d": -8.15,
+    "rsi14": 40.068976,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.73,
+    "gap_pct": null
+   },
+   "EWW": {
+    "price": 73.34,
+    "ret_1d": 2.02,
+    "ret_5d": -0.39,
+    "ret_20d": -1.73,
+    "rsi14": 43.572218,
+    "trend": "downtrend",
+    "pct_from_52w_high": -8.86,
+    "gap_pct": null
+   },
+   "EWZ": {
+    "price": 30.16,
+    "ret_1d": 2.94,
+    "ret_5d": 0.3,
+    "ret_20d": -10.29,
+    "rsi14": 35.70394,
+    "trend": "downtrend",
+    "pct_from_52w_high": -31.3,
+    "gap_pct": null
+   },
+   "FXI": {
+    "price": 31.3,
+    "ret_1d": -0.41,
+    "ret_5d": -3.37,
+    "ret_20d": -3.57,
+    "rsi14": 30.91833,
+    "trend": "downtrend",
+    "pct_from_52w_high": -23.4,
+    "gap_pct": null
+   },
+   "GLD": {
+    "price": 327.45,
+    "ret_1d": 0.61,
+    "ret_5d": -4.03,
+    "ret_20d": -12.33,
+    "rsi14": 31.711841,
+    "trend": "downtrend",
+    "pct_from_52w_high": -35.76,
+    "gap_pct": null
+   },
+   "HYG": {
+    "price": 76.52,
+    "ret_1d": 0.12,
+    "ret_5d": -0.17,
+    "ret_20d": -0.87,
+    "rsi14": 42.30015,
+    "trend": "downtrend",
+    "pct_from_52w_high": -2.86,
+    "gap_pct": null
+   },
+   "IEF": {
+    "price": 92.06,
+    "ret_1d": 0.46,
+    "ret_5d": 1.53,
+    "ret_20d": 1.68,
+    "rsi14": 65.473162,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -3.25,
+    "gap_pct": null
+   },
+   "INDA": {
+    "price": 53.2,
+    "ret_1d": 0.87,
+    "ret_5d": 3.38,
+    "ret_20d": 13.7,
+    "rsi14": 72.725702,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -2.97,
+    "gap_pct": null
+   },
+   "ITB": {
+    "price": 98.34,
+    "ret_1d": 2.91,
+    "ret_5d": 6.13,
+    "ret_20d": 10.51,
+    "rsi14": 60.984891,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -13.65,
+    "gap_pct": null
+   },
+   "IWM": {
+    "price": 268.87,
+    "ret_1d": 0.65,
+    "ret_5d": -0.46,
+    "ret_20d": -4.42,
+    "rsi14": 45.01078,
+    "trend": "downtrend",
+    "pct_from_52w_high": -11.67,
+    "gap_pct": null
+   },
+   "KRE": {
+    "price": 69.83,
+    "ret_1d": 0.1,
+    "ret_5d": -0.98,
+    "ret_20d": -3.16,
+    "rsi14": 42.424778,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -10.37,
+    "gap_pct": null
+   },
+   "KWEB": {
+    "price": 21.17,
+    "ret_1d": 0.09,
+    "ret_5d": -2.49,
+    "ret_20d": -7.92,
+    "rsi14": 32.172555,
+    "trend": "downtrend",
+    "pct_from_52w_high": -43.89,
+    "gap_pct": null
+   },
+   "PSQ": {
+    "price": 28.68,
+    "ret_1d": 0.67,
+    "ret_5d": 3.28,
+    "ret_20d": 13.09,
+    "rsi14": 60.004972,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -12.64,
+    "gap_pct": null
+   },
+   "QQQ": {
+    "price": 633.93,
+    "ret_1d": -0.65,
+    "ret_5d": -3.88,
+    "ret_20d": -12.63,
+    "rsi14": 38.588484,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -16.9,
+    "gap_pct": null
+   },
+   "RSP": {
+    "price": 215.74,
+    "ret_1d": 0.83,
+    "ret_5d": 0.14,
+    "ret_20d": -0.78,
+    "rsi14": 49.431232,
+    "trend": "uptrend",
+    "pct_from_52w_high": -3.77,
+    "gap_pct": null
+   },
+   "SH": {
+    "price": 34.56,
+    "ret_1d": 0.32,
+    "ret_5d": 1.65,
+    "ret_20d": 7.56,
+    "rsi14": 59.602205,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -10.16,
+    "gap_pct": null
+   },
+   "SLV": {
+    "price": 37.1,
+    "ret_1d": 0.71,
+    "ret_5d": -8.85,
+    "ret_20d": -24.38,
+    "rsi14": 27.037532,
+    "trend": "downtrend",
+    "pct_from_52w_high": -66.22,
+    "gap_pct": null
+   },
+   "SMH": {
+    "price": 422.46,
+    "ret_1d": -1.01,
+    "ret_5d": -8.07,
+    "ret_20d": -25.58,
+    "rsi14": 36.934999,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -37.12,
+    "gap_pct": null
+   },
+   "SPY": {
+    "price": 716.7,
+    "ret_1d": -0.29,
+    "ret_5d": -1.85,
+    "ret_20d": -7.2,
+    "rsi14": 39.853495,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -8.31,
+    "gap_pct": null
+   },
+   "TAN": {
+    "price": 35.16,
+    "ret_1d": 1.97,
+    "ret_5d": -7.03,
+    "ret_20d": -14.2,
+    "rsi14": 33.482217,
+    "trend": "downtrend",
+    "pct_from_52w_high": -53.49,
+    "gap_pct": null
+   },
+   "TLT": {
+    "price": 82.24,
+    "ret_1d": 0.92,
+    "ret_5d": 2.52,
+    "ret_20d": 1.97,
+    "rsi14": 63.487914,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.29,
+    "gap_pct": null
+   },
+   "UNG": {
+    "price": 10.3,
+    "ret_1d": -0.19,
+    "ret_5d": -2.92,
+    "ret_20d": 8.42,
+    "rsi14": 52.66035,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -39.5,
+    "gap_pct": null
+   },
+   "URA": {
+    "price": 27.71,
+    "ret_1d": 0.4,
+    "ret_5d": -5.81,
+    "ret_20d": -24.19,
+    "rsi14": 32.001485,
+    "trend": "downtrend",
+    "pct_from_52w_high": -55.51,
+    "gap_pct": null
+   },
+   "USO": {
+    "price": 139.89,
+    "ret_1d": 3.29,
+    "ret_5d": 2.78,
+    "ret_20d": -16.02,
+    "rsi14": 43.304657,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -18.58,
+    "gap_pct": null
+   },
+   "UUP": {
+    "price": 29.6,
+    "ret_1d": -0.1,
+    "ret_5d": -0.07,
+    "ret_20d": 1.86,
+    "rsi14": 64.091075,
+    "trend": "uptrend",
+    "pct_from_52w_high": -0.8,
+    "gap_pct": null
+   },
+   "XBI": {
+    "price": 156.6,
+    "ret_1d": -0.14,
+    "ret_5d": 7.97,
+    "ret_20d": -0.58,
+    "rsi14": 56.355152,
+    "trend": "uptrend",
+    "pct_from_52w_high": -7.82,
+    "gap_pct": null
+   },
+   "XLB": {
+    "price": 51.21,
+    "ret_1d": 2.07,
+    "ret_5d": 1.49,
+    "ret_20d": -1.25,
+    "rsi14": 50.462248,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -6.26,
+    "gap_pct": null
+   },
+   "XLC": {
+    "price": 105.38,
+    "ret_1d": 0.89,
+    "ret_5d": -0.19,
+    "ret_20d": 2.17,
+    "rsi14": 49.108371,
+    "trend": "downtrend",
+    "pct_from_52w_high": -11.68,
+    "gap_pct": null
+   },
+   "XLE": {
+    "price": 60.9,
+    "ret_1d": 0.74,
+    "ret_5d": -0.64,
+    "ret_20d": -11.03,
+    "rsi14": 38.625725,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -13.19,
+    "gap_pct": null
+   },
+   "XLF": {
+    "price": 56.51,
+    "ret_1d": 0.71,
+    "ret_5d": 0.16,
+    "ret_20d": 0.68,
+    "rsi14": 49.507578,
+    "trend": "uptrend",
+    "pct_from_52w_high": -5.88,
+    "gap_pct": null
+   },
+   "XLI": {
+    "price": 162.95,
+    "ret_1d": 0.83,
+    "ret_5d": -1.04,
+    "ret_20d": -3.29,
+    "rsi14": 45.067867,
+    "trend": "downtrend",
+    "pct_from_52w_high": -13.18,
+    "gap_pct": null
+   },
+   "XLK": {
+    "price": 155.79,
+    "ret_1d": -0.83,
+    "ret_5d": -4.9,
+    "ret_20d": -18.43,
+    "rsi14": 36.959768,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -23.35,
+    "gap_pct": null
+   },
+   "XLP": {
+    "price": 92.3,
+    "ret_1d": 0.46,
+    "ret_5d": 1.23,
+    "ret_20d": 6.29,
+    "rsi14": 61.436351,
+    "trend": "uptrend",
+    "pct_from_52w_high": -1.26,
+    "gap_pct": null
+   },
+   "XLRE": {
+    "price": 43.86,
+    "ret_1d": 0.92,
+    "ret_5d": 0.55,
+    "ret_20d": 4.11,
+    "rsi14": 54.97778,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -4.8,
+    "gap_pct": null
+   },
+   "XLU": {
+    "price": 43.61,
+    "ret_1d": 0.48,
+    "ret_5d": 0.14,
+    "ret_20d": 2.64,
+    "rsi14": 56.586672,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -7.33,
+    "gap_pct": null
+   },
+   "XLV": {
+    "price": 183.68,
+    "ret_1d": -0.56,
+    "ret_5d": 1.39,
+    "ret_20d": 2.2,
+    "rsi14": 53.447091,
+    "trend": "uptrend",
+    "pct_from_52w_high": -4.49,
+    "gap_pct": null
+   },
+   "XLY": {
+    "price": 117.49,
+    "ret_1d": -0.2,
+    "ret_5d": -1.43,
+    "ret_20d": 1.87,
+    "rsi14": 51.521004,
+    "trend": "sideways/mixed",
+    "pct_from_52w_high": -5.43,
+    "gap_pct": null
+   }
+  }
+ },
+ "ideas": [],
+ "ai_calls": 0,
+ "ai_attempts": 0,
+ "minutes": 0.4
+}

@@ -1,0 +1,1569 @@
+{
+ "earnings_season": false,
+ "date": "2026-11-27",
+ "session": "evening",
+ "created_at": "2026-11-27T23:11:08-05:00",
+ "dry_run": false,
+ "equity": 8048.24,
+ "macro": {
+  "regime": "panic/high volatility",
+  "risk_appetite": 60,
+  "bucket_weights": {
+   "core": 40,
+   "tactical": 40,
+   "high_risk": 20
+  },
+  "playbook": {
+   "use": [
+    "momentum",
+    "macro/forex",
+    "crypto",
+    "mean_reversion"
+   ],
+   "avoid": [
+    "breakouts",
+    "earnings"
+   ]
+  },
+  "favored": [
+   "GOLD",
+   "USD_JPY",
+   "BTC/USD",
+   "ETH/USD",
+   "short EUR/USD"
+  ],
+  "avoid": [
+   "SP500",
+   "high beta equities",
+   "XRP/USD",
+   "DOGE/USD"
+  ],
+  "key_events": [
+   "JOLTS job openings (Dec 1)",
+   "Durable goods orders (Dec 3)",
+   "Weekly jobless claims (Dec 3)",
+   "Jobs report (Dec 4)"
+  ],
+  "overnight_read": "Crypto shows extreme fear (FG index 10) and low RSI, suggesting a potential rebound; USD is firm versus EUR and GBP while USD/JPY is modestly higher, indicating dollar strength and risk-off sentiment; gold futures remain net long, pointing to safe\u2011haven demand ahead of upcoming labor data.",
+  "summary": "The market is in a high\u2011volatility, risk\u2011off mode with the VIX above 25 and the dollar firm. Focus on short\u2011term momentum, macro\u2011forex plays (long USD/JPY, short EUR/USD) and a crypto rebound bet on BTC/ETH. Keep core swing trades modest, use tactical trades around the labor\u2011data releases, and limit exposure to breakout equity bets."
+ },
+ "macro_inputs": {
+  "economy": {
+   "Fed funds rate": {
+    "value": "3.88",
+    "date": "2026-10-01"
+   },
+   "10-year Treasury yield": {
+    "value": "4.85",
+    "date": "2026-11-25"
+   },
+   "2-year Treasury yield": {
+    "value": "4.61",
+    "date": "2026-11-25"
+   },
+   "CPI (inflation index)": {
+    "value": "337.476",
+    "date": "2026-10-01"
+   },
+   "Unemployment rate": {
+    "value": "4.1",
+    "date": "2026-10-01"
+   },
+   "VIX (fear index)": {
+    "value": "26.8",
+    "date": "2026-11-26"
+   },
+   "Yield curve, 10-year minus 2-year (negative = inverted)": {
+    "value": "0.25",
+    "date": "2026-11-27"
+   },
+   "Junk bond spread over Treasuries (credit stress gauge, %)": {
+    "value": "3.77",
+    "date": "2026-11-26"
+   },
+   "10-year inflation expectations (%)": {
+    "value": "2.15",
+    "date": "2026-11-27"
+   },
+   "Dollar index (broad, trade-weighted)": {
+    "value": "123.5978",
+    "date": "2026-11-20"
+   },
+   "Financial conditions index (negative = loose, positive = tight)": {
+    "value": "-0.444",
+    "date": "2026-11-20"
+   }
+  },
+  "calendar_next_10_days": [
+   {
+    "date": "2026-12-01",
+    "event": "JOLTS job openings"
+   },
+   {
+    "date": "2026-12-03",
+    "event": "Durable goods"
+   },
+   {
+    "date": "2026-12-03",
+    "event": "Weekly jobless claims"
+   },
+   {
+    "date": "2026-12-04",
+    "event": "Jobs report"
+   }
+  ],
+  "etfs": {}
+ },
+ "ideas": [
+  {
+   "symbol": "ETH/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 1662.64,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-21.8%)"
+   ],
+   "atr_pct": 6.16,
+   "specialists": {
+    "technical": {
+     "score": -3,
+     "points": [
+      "Price (1662.64) is below SMA20 (1803.38), SMA50 (2134.47) and SMA200 (2103.20) indicating bearish bias",
+      "RSI14 at 28.2 shows oversold conditions but momentum is weak with 20\u2011day return \u201321.8%",
+      "ATR14 of 102.4 (6.16% of price) signals moderate volatility and price\u2011behavior data shows higher probability of down moves (e.g., 14% of 1\u2011day windows fell \u22651\u202fATR)",
+      "Recent 5\u2011day return \u20132.7% and 60\u2011day return \u201337.9% reinforce a downtrend"
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a for crypto valuation and earnings"
+     ]
+    },
+    "news_sentiment": {
+     "score": 1,
+     "points": [
+      "Crypto Fear & Greed index at 10 (Extreme Fear) often marks a bottom and suggests upside potential",
+      "Stablecoin supply BUSD down 5.3% and DeFi value locked down 20.14% reduce buying pressure, tempering the bullish signal"
+     ]
+    },
+    "smart_money": {
+     "score": 0,
+     "points": [
+      "Futures speculators net long 3.9% of open interest is modest and weekly change \u20131.3 points shows weakening long bias",
+      "Three\u2011year percentile 49.0 is near the median, indicating no strong crowding"
+     ]
+    },
+    "best_style": "mean reversion",
+    "crypto_desk": {
+     "score": 1,
+     "points": [
+      "Tactical bounce conditions are ripe: RSI14 is deeply oversold at 28.20 and the Crypto Fear & Greed Index sits in Extreme Fear at 10/100 (vs. 30-day average of 21.0), testing support near the 52-week low of 1505.74.",
+      "Reversion setups historically outperform momentum in this regime, boasting a 62% win rate (avg R of +0.2 across 13 signals), aligning with Kronos forecasting a 70% probability of an upside bounce toward 1810.06 over 5 days.",
+      "Underlying crypto liquidity remains a major headwind against sustained upside: 30-day DeFi TVL has dropped -20.14% to $68.1B, stablecoin supply contracted -5.3% to $281.4B, and spec futures net positioning trimmed 1.3 points to 3.9% of open interest."
+     ]
+    },
+    "kronos": {
+     "score": 2,
+     "points": [
+      "Kronos: +2.2% expected over 5 days, 70% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Our systematic model assigns a 70% probability of an upside move over the next 5 days, exceeding the 60% confidence threshold. The ETH price sits at $1,662.64, well below its 20\u2011day SMA (1,803.38) and 200\u2011day SMA (2,103.20), indicating bearish bias, but the RSI14 of 28.2 signals a deep oversold condition that historically precedes mean\u2011reversion rebounds. The Crypto Fear & Greed Index is at 10 (Extreme Fear), a level that has coincided with bottoming in past cycles, and the reversion signal record shows a 62% win rate with an average R of +0.2. Combining the 70% upside probability from the Kronos forecast (expected 2.25% move) with the favorable reversion odds gives a risk\u2011adjusted edge that meets our model\u2019s criteria, supporting a long entry.",
+    "catalysts": [
+     "RSI14 oversold at 28.2",
+     "Crypto Fear & Greed Index extreme fear (10)",
+     "Kronos 5\u2011day forecast 70% upside probability",
+     "Mean\u2011reversion signal win rate 62% (avg R +0.2)",
+     "Potential support near 52\u2011week low $1,505.74"
+    ],
+    "price_target_logic": "Enter at the current price $1,662.64. Target the 90th\u2011percentile of the Kronos 5\u2011day range at $1,810.06 (~+8.9% from entry). Set a stop one ATR (102.4) below entry at $1,560.24, giving a risk of ~6.2% and a reward\u2011to\u2011risk ratio of about 1.4:1."
+   },
+   "bear": {
+    "case": "The bull's thesis relies on a fragile mean-reversion bounce in a structurally broken asset, ignoring that price is 20.9% below the 200-day SMA and the 60-day return is a catastrophic -37.9%. The Kronos forecast is weak, with a trust weight of only 0.2 and a signal strength of just 0.54, meaning the '70% probability' is statistically insignificant for a high-conviction trade. Furthermore, the proposed 1.4:1 reward-to-risk ratio is suboptimal for a $10k account when the underlying liquidity is evaporating, with DeFi TVL down 20.14% and stablecoin supply contracting by 5.3%. You are catching a falling knife in a market where the 20-day ATR is 6.16%, ensuring that any bounce will be volatile and likely to fail at the SMA20 resistance of $1,803.38.",
+    "risks": [
+     "Liquidity Crunch: DeFi TVL dropped 20.14% to $68.1B and stablecoin supply fell 5.3%, indicating a lack of dry powder to sustain any upward move.",
+     "Trend Dominance: Price is below SMA20, SMA50, and SMA200, with a 60-day return of -37.88%, suggesting the downtrend is entrenched rather than exhausted.",
+     "Weak Model Confidence: The Kronos forecast has a trust weight of only 0.2 and signal strength of 0.54, making the 70% upside probability unreliable for sizing up.",
+     "Poor Risk/Reward: The 1.4:1 R:R is below the 2:1 threshold required for aggressive paper trading, especially given the 6.16% ATR volatility which can trigger stops on noise.",
+     "Positioning Headwind: Speculator net long interest is only 3.9% of OI and declining (-1.3 pts weekly), showing smart money is not aggressively accumulating this dip."
+    ],
+    "would_change_my_mind": "I would only consider a long if price reclaims the SMA20 at $1,803.38 with volume, or if the Kronos trust weight rises above 0.5, confirming a stronger statistical edge."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails because the 'extreme fear' sentiment is a lagging indicator in a structural downtrend. Price bounces slightly to test the 20-day SMA at $1,803 but lacks the volume to break through, as DeFi TVL and stablecoin supply continue to contract. The price then reverses, breaking below the 52-week low of $1,505, triggering the stop. The Kronos forecast's low trust weight (0.2) proves the 70% probability was noise, and the mean-reversion setup fails to materialize a higher-low, resulting in a full loss of the risked capital.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "While the desk's mean-reversion style has a poor recent track record, the specific 'deeply oversold' setup has a strong historical edge (60.8% win rate). The combination of RSI 28.2, Extreme Fear (10), and a 70% Kronos upside probability creates a positive expected value despite the bearish trend. We are trading a tactical bounce, not a trend reversal.",
+    "bucket": "tactical",
+    "style": "mean reversion",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 1662.64,
+    "stop": 1505.74,
+    "target": 1803.38,
+    "conviction": 6,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base rate for 'deeply oversold' long setups is 60.8% win rate; Kronos suggests 70% probability of upside; adjusted down to 55% due to the desk's poor recent mean-reversion performance (17% win rate) and the strong downtrend context.",
+    "horizon": "1-5 days",
+    "thesis": "ETH is deeply oversold with an RSI of 28.2 and the Fear & Greed index at 10, signaling a high probability of a short-term mean-reversion bounce. The Kronos model predicts a 70% chance of an upside move toward the 90th percentile range. We are targeting a reversion to the 20-day SMA, which acts as immediate resistance. This is a tactical play to capture the volatility rebound before the trend potentially resumes.",
+    "invalidation": "Price closes below the 52-week low of $1,505.74 or fails to show a higher-low candle close within 24 hours.",
+    "plain_english": "Ethereum has dropped significantly, making it 'oversold' (like a stock on sale). Our data suggests that when it gets this cheap and fearful, it often bounces back up a bit. We are buying a small amount to catch this bounce, aiming to sell when it reaches a previous level of resistance. If it keeps falling past its lowest point in a year, we cut our losses immediately.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 28.199367
+     },
+     {
+      "fact": "crypto_sentiment.fear_greed_now_0_100",
+      "value": 10
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 70
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 1803.380425
+     },
+     {
+      "fact": "technicals.low_52w",
+      "value": 1505.744
+     },
+     {
+      "fact": "setup_history.reversion_signal_record.win_pct",
+      "value": 62
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.33,
+     "holding_days": 5,
+     "reached_pct": 31.1,
+     "windows": 495
+    },
+    "base_win_pct": 17,
+    "base_trades": 12,
+    "reward_to_risk": 0.9,
+    "confidence_used_pct": 34.3,
+    "expected_r": -0.35
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'setup_history.reversion_signal_record.win_pct', which isn't in the data",
+     "reward-to-risk is only 0.90",
+     "negative expected value (-0.35R: 34.3% to make 0.9x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.06,
+    "model_expected_r": 0.21,
+    "target_first_pct": 25,
+    "stop_first_pct": 5,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "BTC/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 59876.4,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-19.9%)"
+   ],
+   "atr_pct": 4.73,
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "Price at $59,876 is significantly below SMA20 ($64,408) and SMA50 ($73,793), confirming a strong downtrend, but RSI at 26.9 indicates oversold conditions.",
+      "Kronos forecast suggests a 90% probability of an upward move over 5 days with an expected gain of 3.42%, aligning with a potential mean-reversion bounce.",
+      "ATR is high (4.73%), indicating high volatility; the 20-day low of $55,120 serves as a critical support level, currently only 8% below current price.",
+      "Price behavior data shows that within 5 days, there is a 68% chance of a 0.5 ATR up move, supporting a short-term tactical long entry."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a"
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "Crypto Fear & Greed Index is at 10 (Extreme Fear), which historically marks potential bottoms for BTC/USD.",
+      "Stablecoin supply (BUSD) is down 5.3% over 30 days, suggesting reduced immediate buying power, but DeFi TVL is down 20.1%, indicating capitulation.",
+      "No specific news headlines provided, but the extreme fear sentiment combined with the market backdrop of a 'crypto rebound bet' supports a contrarian bullish stance."
+     ]
+    },
+    "smart_money": {
+     "score": 1,
+     "points": [
+      "Futures positioning shows speculators are net long at 7.9% of open interest, which is at the 80th percentile over three years, indicating a somewhat crowded long position.",
+      "Weekly change in spec net position is -4.4 points, suggesting some de-risking, but the overall positioning is not yet extreme enough to trigger a forced liquidation cascade.",
+      "No insider or block trade data available for crypto, so relying on CFTC data which shows moderate bullish positioning."
+     ]
+    },
+    "best_style": "mean reversion",
+    "crypto_desk": {
+     "score": 1,
+     "points": [
+      "Price is below the 20\u2011, 50\u2011, and 200\u2011day SMAs, indicating a prevailing downtrend.",
+      "RSI at 26.9 signals deep oversold conditions, often a precursor to a short\u2011term reversal.",
+      "Kronos forecast shows a 90% probability of an upward move over the next 5 days, with an expected 3.4% gain.",
+      "Futures positioning is net long at 7.9% of open interest and sits in the 80th percentile over three years, reflecting a bullish bias."
+     ]
+    },
+    "kronos": {
+     "score": 5,
+     "points": [
+      "Kronos: +3.4% expected over 5 days, 90% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The model identifies a high-confidence mean-reversion setup where the Kronos forecast assigns a 90% probability of a positive 5-day move with an expected gain of 3.42%, significantly exceeding the 60% confidence threshold for entry. Technicals confirm deep oversold conditions with an RSI of 26.93 and a price 16.5% below the 200-day SMA, creating a statistically favorable risk/reward profile for a tactical long. Although the 20-day return is -19.9% and the trend is down, the high ATR of 4.73% and extreme fear sentiment (10/100) suggest capitulation is complete, supporting a short-term bounce. The price behavior data indicates a 68% frequency of 0.5 ATR up moves within 5 days, further validating the reversion thesis. We ignore the crowded long positioning (80th percentile) as the weekly de-risking (-4.4 pts) reduces the immediate short-squeeze risk, allowing the model to capture the expected upside.",
+    "catalysts": [
+     "Kronos 5-day forecast showing 90% prob of up move",
+     "RSI 14 at 26.93 indicating extreme oversold",
+     "Price 16.5% below 200-day SMA",
+     "Extreme Fear sentiment (10/100)"
+    ],
+    "price_target_logic": "Target is derived from the Kronos 90th percentile range high of $63,706.90, representing a 6.4% upside from the current price of $59,876.40. This aligns with the expected 3.42% mean move plus volatility buffer, while the stop is placed below the 20-day low of $55,120.65 to manage the 4.73% ATR risk."
+   },
+   "bear": {
+    "case": "The bull is chasing a falling knife in a confirmed downtrend, ignoring that price is 16.5% below the 200-day SMA and the 20-day return is a catastrophic -19.9%. The '90% probability' Kronos forecast is a statistical mirage with a low trust weight of 0.2 and a mere 3.42% expected move, which is barely 1.2x the 1-day ATR, offering poor risk-adjusted return for a $10k account. Entering long when speculators are already at the 80th percentile of net long positioning (7.9% of OI) invites a squeeze against you if the $55,120 support fails, as the weekly de-risking of -4.4 points suggests smart money is exiting, not entering. The 'Extreme Fear' sentiment is a lagging indicator of capitulation, not a leading indicator of reversal, especially with DeFi TVL down 20.1% and stablecoin supply shrinking, indicating a lack of dry powder to fuel the bounce.",
+    "risks": [
+     "Price breaks below the 20-day low of $55,120.65, invalidating the support level and triggering further downside momentum.",
+     "Speculative long positioning at the 80th percentile creates a crowded trade vulnerable to forced liquidations if price dips slightly.",
+     "The Kronos forecast's low trust weight (0.2) and modest expected move (3.42%) suggest the model has low confidence in the magnitude of the rebound.",
+     "Stablecoin supply (BUSD) is down 5.3% over 30 days, reducing the immediate liquidity available to buy the dip.",
+     "RSI at 26.93 can remain oversold for extended periods in a strong downtrend, leading to 'catching a falling knife' losses.",
+     "High ATR (4.73%) means daily swings are large, increasing the likelihood of hitting stop-losses before any mean reversion occurs."
+    ],
+    "would_change_my_mind": "I would only reconsider if price reclaims the 20-day SMA ($64,408.69) with volume above the 20-day average, confirming a trend reversal rather than just a bounce. Additionally, I would need to see stablecoin supply increase or DeFi TVL stabilize to confirm new money is entering the market, not just existing longs hoping for a rescue."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "If we had entered a long BTC/USD position, the price could break below the 20\u2011day low of $55,120.65, triggering the stop and exposing us to a sharp decline while the market remains risk\u2011off, leading to a loss.",
+     "failure_more_likely": false
+    },
+    "decision": "pass",
+    "reason": "Desk rule prohibits long crypto positions in a risk\u2011off regime.",
+    "bucket": "none",
+    "style": "none",
+    "expression": "none",
+    "order_type": "none",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "Rule overrides any statistical edge; risk\u2011off regime disallows crypto longs.",
+    "horizon": "none",
+    "thesis": "No trade. The desk rule forbids long crypto in a risk\u2011off market, so we must stay out of BTC/USD.",
+    "invalidation": "Desk rule: Do not execute long cryptocurrency trades when the broader market regime is classified as risk\u2011off.",
+    "plain_english": "We are not buying Bitcoin because the desk rule says not to trade crypto when the market is risk\u2011off. Even though the data looks bullish, the rule takes priority. So we stay in cash for now.",
+    "evidence": [
+     {
+      "fact": "market_game_plan.regime",
+      "value": 1
+     },
+     {
+      "fact": "desk_rulebook.do_not_long_crypto_in_risk_off",
+      "value": 1
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 26.93
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 2833.55
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 90
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 7
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 3,
+    "problems": [
+     "cited 'market_game_plan.regime', which isn't in the data",
+     "cited 'desk_rulebook.do_not_long_crypto_in_risk_off', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "AAVE/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 94.365,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-25.1%)"
+   ],
+   "atr_pct": 10.85,
+   "specialists": {
+    "technical": {
+     "score": -2,
+     "points": [
+      "Price (94.365) is significantly below all key moving averages (SMA20: 105.51, SMA50: 127.63, SMA200: 110.22), confirming a strong downtrend with a -25.09% 20-day return.",
+      "RSI14 at 31.22 indicates oversold conditions, but the composite technical score remains bearish due to the persistent downward momentum and price sitting 14.5% below the 200-day average.",
+      "Kronos forecast suggests an 80% probability of a 5-day rebound (expected move +7.56%), but the low trust weight (0.2) and high ATR (10.85%) imply high uncertainty, keeping the directional bias negative until a clear reversal signal emerges."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a: Fundamental analysis is not applicable to crypto assets in this context; no earnings, margins, or SEC filings exist for AAVE/USD."
+     ]
+    },
+    "news_sentiment": {
+     "score": 1,
+     "points": [
+      "Crypto Fear & Greed Index is at 10 (Extreme Fear), with a 7-day average of 11.0, historically signaling a potential bottoming zone rather than continued panic selling.",
+      "DeFi Value Locked has dropped -20.14% over 30 days, indicating significant capital flight from the sector, which weighs on sentiment despite the extreme fear reading.",
+      "Stablecoin supply (BUSD) has declined -5.3% over 30 days, suggesting reduced dry powder for new crypto entries, limiting the fuel for a sharp rebound."
+     ]
+    },
+    "smart_money": {
+     "score": 0,
+     "points": [
+      "No specific order-flow imbalances, CFTC positioning, or insider activity data provided for AAVE/USD; staying neutral as per protocol when net imbalance does not exceed statistical significance thresholds."
+     ]
+    },
+    "best_style": "mean reversion",
+    "crypto_desk": {
+     "score": 1,
+     "points": [
+      "Kronos forecast 80% probability of 7.56% upside in 5 days",
+      "RSI14 at 31.22 indicates oversold conditions",
+      "Price is below all moving averages and has negative returns over 20/60 days"
+     ]
+    },
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: +7.6% expected over 5 days, 80% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The model identifies a high-probability mean reversion setup driven by extreme oversold conditions (RSI 31.22) and a 52-week low proximity, triggering a Kronos forecast with an 80% probability of a +7.56% move over 5 days. While the long-term trend is bearish, the reversion signal record shows a 56% win rate with an average return of 0.44R, outperforming the momentum signal's 37% win rate and negative average return. The Fear & Greed Index at 10 (Extreme Fear) historically marks capitulation zones where risk-adjusted expected returns for long positions improve significantly. We are sizing this trade based on the statistical edge of mean reversion in high-volatility crypto assets, ignoring the negative technical trend score in favor of the quantified probability of short-term upside.",
+    "catalysts": [
+     "Kronos forecast indicating 80% probability of +7.56% 5-day move",
+     "RSI14 at 31.22 confirming oversold state",
+     "Extremely low Fear & Greed Index (10) signaling capitulation",
+     "Price trading near 52-week low ($57.733) with limited downside room relative to ATR"
+    ],
+    "price_target_logic": "Target is derived from the Kronos 90th percentile range high of $119.09, representing a potential +26.2% move from current price ($94.365). However, the primary exit is set at the 50th percentile median move of +6.56% (approx $100.55) to secure positive expected value before volatility normalizes, with a stop loss placed at 1.5 ATR below entry ($78.99) to manage the 10.85% ATR risk."
+   },
+   "bear": {
+    "case": "The bull is catching a falling knife by ignoring that AAVE is -49.67% from its 52-week high and -25.09% over the last 20 days, confirming a persistent downtrend rather than a bottom. The Kronos forecast relies on a mere 0.2 trust weight, meaning the 80% probability of a +7.56% move is statistically weak and likely noise in a high-volatility environment. With DeFi Value Locked down -20.14% and stablecoin supply shrinking by -5.3%, the fundamental liquidity required to sustain a rebound is evaporating, not accumulating. The 'mean reversion' edge cited by the bull has a 56% win rate but only a 0.44R average return, which is insufficient to justify the risk when the ATR is 10.85% and price is 14.5% below the 200-day average.",
+    "risks": [
+     "The Kronos model has a low trust weight (0.2), indicating low confidence in the 80% probability of upside, making the signal unreliable for sizing.",
+     "DeFi Value Locked has declined -20.14% over 30 days, signaling structural capital flight that undermines any short-term rebound.",
+     "Stablecoin supply (BUSD) is down -5.3% over 30 days, reducing the available dry powder for new long entries.",
+     "Price is -14.5% below the 200-day SMA and -25.09% below the 20-day SMA, indicating strong downward momentum that can persist well beyond oversold RSI levels.",
+     "The 5-day ATR is 10.85%, meaning a standard 1.5 ATR stop loss represents a massive 16.27% drawdown, requiring excessive position sizing to achieve meaningful returns.",
+     "The 'mean reversion' signal has only a 56% win rate with an average return of 0.44R, which is marginal given the high volatility and potential for further downside."
+    ],
+    "would_change_my_mind": "I would only reconsider if the Kronos trust weight increased above 0.5, or if DeFi Value Locked stabilized and started to grow, confirming that the capital flight has stopped."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails because the 'extreme fear' sentiment is a lagging indicator in a structural downtrend. AAVE continues to bleed out as DeFi Value Locked drops further (-20% in 30d), and the price breaks below the 20-day low of $89.635. The Kronos forecast's 80% probability of a rebound proves to be noise (trust weight 0.2), and the position hits the stop loss at $84.12, realizing a full loss while the broader crypto market remains in risk-off mode.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "The desk's mean reversion style has a catastrophic 17% win rate and -0.44R average return. Furthermore, the desk rulebook explicitly prohibits long cryptocurrency trades when the market regime is classified as risk-off/panic. The Kronos signal has low trust (0.2), and the fundamental liquidity (DeFi TVL, Stablecoin supply) is shrinking, indicating a lack of fuel for a sustained rebound. The expected value is negative given the desk's poor history with this style and asset class.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "Desk base rate for mean reversion is 17% win rate; desk rulebook bans long crypto in risk-off regimes; Kronos trust weight is only 0.2.",
+    "horizon": null,
+    "thesis": "AAVE is in a strong downtrend (-25% in 20 days) with shrinking liquidity (DeFi TVL -20%). While RSI is oversold, the desk has a poor track record with mean reversion (17% win rate) and is currently in a risk-off regime where long crypto bets are prohibited by the rulebook. The Kronos forecast is low-confidence (0.2 trust).",
+    "invalidation": "N/A",
+    "plain_english": "We are skipping this trade. Although the price has dropped a lot and might bounce, our rules say we shouldn't buy crypto when the market is scared (risk-off). Also, our past attempts at buying 'oversold' assets have lost money more often than they have won. The data suggests the drop might continue, so we stay in cash.",
+    "evidence": [
+     {
+      "fact": "desk_rules",
+      "value": "Do not execute long cryptocurrency trades when the broader market regime is classified as risk-off."
+     },
+     {
+      "fact": "desk_record.by_style.mean_reversion.win_pct",
+      "value": 17
+     },
+     {
+      "fact": "kronos_forecast.trust_weight",
+      "value": 0.2
+     },
+     {
+      "fact": "crypto_sentiment.defi_value_locked_change_30d_pct",
+      "value": -20.14
+     },
+     {
+      "fact": "technicals.ret_20d",
+      "value": -25.09
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 7
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 3,
+    "problems": [
+     "cited 'desk_rules', which isn't in the data",
+     "cited 'desk_record.by_style.mean_reversion.win_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "AVAX/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 6.57355,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-17.1%)"
+   ],
+   "atr_pct": 8.38,
+   "specialists": {
+    "technical": {
+     "score": -3,
+     "points": [
+      "Price ($6.57) is 9.4% below the 20-day SMA ($7.22) and 21.7% below the 50-day SMA ($8.40), confirming a strong downtrend despite the 'sideways/mixed' label.",
+      "RSI at 32.8 indicates oversold conditions, but the 60-day return of -42.5% and 20-day return of -17.1% show persistent downward momentum that outweighs short-term reversion signals.",
+      "Kronos forecast suggests a 60% probability of an upside move to $7.11 (90th percentile) over 5 days, but signal strength is low (0.33) and trust weight is only 0.2, indicating high uncertainty in the rebound.",
+      "ATR is 8.38% of price, indicating high volatility; the 20-day low of $6.01 is the nearest support, but the 52-week low of $5.68 is only 13% away, suggesting limited downside cushion before major support."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a: Fundamental analysis is not applicable for crypto assets like AVAX/USD in this context.",
+      "No earnings, margins, or SEC filings exist for this asset class.",
+      "Valuation metrics are not standard for crypto; price action is driven by sentiment and liquidity rather than cash flows."
+     ]
+    },
+    "news_sentiment": {
+     "score": -4,
+     "points": [
+      "Crypto Fear & Greed Index is at 10 (Extreme Fear), with a 7-day average of 11.0 and 30-day average of 21.0, indicating deep pessimism and potential capitulation.",
+      "DeFi Value Locked has dropped 20.14% over 30 days to $68.1B, signaling significant outflows from the ecosystem and weakening fundamental demand.",
+      "Stablecoin supply (BUSD) has decreased by 5.3% over 30 days to $281.4B, reducing dry powder available for new crypto purchases and limiting rebound fuel.",
+      "No specific news headlines are provided, but the combination of extreme fear and declining DeFi TVL suggests the market is pricing in continued weakness rather than a bottom."
+     ]
+    },
+    "smart_money": {
+     "score": -2,
+     "points": [
+      "No insider Form 4 data, CFTC positioning, or analyst ratings are available for crypto assets, so smart money flow is inferred from market structure.",
+      "The 20-day volume ratio is 0.03, indicating extremely low trading activity relative to average, which may suggest lack of institutional interest or accumulation.",
+      "The setup history shows a 52% win rate for momentum signals but a negative average R (-0.09), indicating that while momentum trades have a slight edge, they are not consistently profitable in this regime.",
+      "The reversion signal has a 38% win rate and negative average R (-0.06), suggesting that mean-reversion strategies are currently underperforming, which aligns with the downtrend."
+     ]
+    },
+    "best_style": "no clear setup",
+    "crypto_desk": {
+     "score": -3,
+     "points": [
+      "Trend is decisively down with price at $6.57355 sitting 16.4% below the 200-day SMA ($7.893481) and 20.6% below the 50-day SMA ($8.395682), confirming a long-term downtrend that contradicts any short-term rebound thesis.",
+      "Momentum is weak and negative across all timeframes, with a -17.07% return over 20 days and -42.51% over 60 days, while the RSI14 at 32.805125 indicates oversold conditions but lacks the bullish divergence needed for a high-conviction long in a risk-off environment.",
+      "Liquidity is critically low with an average 20-day dollar volume of only $4,094 and a volume ratio of 0.03, making the asset highly susceptible to slippage and manipulation, which is dangerous for a $10,000 account attempting to trade volatility.",
+      "Macro and sentiment headwinds are severe, with the Fear & Greed Index at 10 (Extreme Fear) and DeFi Value Locked down 20.14% over 30 days, suggesting real capital is exiting the sector rather than accumulating, which undermines the 'hype vs. real buying' check."
+     ]
+    },
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: +1.4% expected over 5 days, 60% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "short",
+    "case": "The systematic model rejects the long thesis due to a confidence score well below the 60% threshold, as the Kronos forecast shows only a 60% probability of upside with a negligible signal strength of 0.33 and trust weight of 0.2. Price action confirms a persistent downtrend, with AVAX trading 16.4% below its 200-day SMA and 21.7% below its 50-day SMA, while the 20-day return of -17.07% indicates strong negative momentum that outweighs the RSI oversold reading of 32.8. Fundamental indicators are deteriorating, with DeFi Value Locked down 20.14% over 30 days and stablecoin supply decreasing by 5.3%, signaling capital outflows rather than accumulation. The reversion signal history is poor with a 38% win rate and negative average R of -0.06, whereas the momentum signal, despite a 52% win rate, carries a negative average R of -0.09, suggesting that fading the current downward impulse is the higher probability play given the extreme fear sentiment at 10.",
+    "catalysts": [
+     "Continued decline in DeFi Value Locked (-20.14% over 30 days)",
+     "Reduction in stablecoin supply (-5.3% over 30 days) limiting buying power",
+     "Price trading significantly below 50-day and 200-day SMAs (-21.7% and -16.4% respectively)"
+    ],
+    "price_target_logic": "Targeting the 52-week low of $5.677355, which represents a 13.6% downside from the current price of $6.57355, supported by the fact that price is currently 13% above this major support level and the 20-day low of $6.01343 has already failed to provide sustained resistance."
+   },
+   "bear": {
+    "case": "Shorting AVAX at $6.57 is a low-conviction trap because the Kronos forecast explicitly signals a 60% probability of an upside move to $7.11 over the next 5 days, directly contradicting the short thesis. The asset is already down 42.51% over 60 days and sits near its 52-week low of $5.68, meaning the easy downside has been exhausted while RSI at 32.8 suggests oversold conditions that often precede relief rallies. The proposed 13.6% target to the 52-week low is unrealistic given the 8.38% ATR, which implies daily volatility is too high to sustain a smooth trend into support without significant retracement. Furthermore, the volume ratio of 0.03 and average dollar volume of $4,094 indicate severe illiquidity, making it nearly impossible to execute a short position without suffering massive slippage or getting trapped in a low-liquidity squeeze.",
+    "risks": [
+     "Kronos forecast indicates a 60% probability of price rising to the $7.11 90th percentile level within 5 days, directly opposing the short direction.",
+     "Extreme illiquidity with a volume ratio of 0.03 and avg dollar volume of $4,094 creates high slippage risk and potential for violent, unpredictable price spikes.",
+     "Price is already 13% above the 52-week low of $5.677355, leaving limited downside cushion before hitting major historical support, reducing the risk/reward ratio for shorts.",
+     "RSI at 32.8 signals oversold conditions, increasing the likelihood of a technical rebound rather than continued momentum selling.",
+     "DeFi Value Locked is down 20.14% over 30 days, but this capitulation may already be priced in, leading to a sentiment reversal from 'Extreme Fear' (10) to neutral."
+    ],
+    "would_change_my_mind": "I would abandon the short if price closes above the 20-day SMA of $7.221083, which would invalidate the downtrend structure and confirm the Kronos forecast's 60% probability of an upside move to $7.11."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We enter a long position on AVAX based on a 'mean reversion' thesis, assuming the extreme fear (FG 10) and oversold RSI (32.8) will trigger a bounce. However, the market remains in a risk-off regime with the dollar firm, and AVAX lacks the liquidity to support a sustained rally. The price fails to hold the 20-day low of $6.01, breaks down to the 52-week low of $5.68, and triggers our stop loss. The trade loses money because we tried to catch a falling knife in a low-liquidity asset during a macro risk-off environment, violating the desk's rule against long crypto in risk-off regimes and ignoring the poor historical performance of mean reversion strategies on this asset class.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "The desk rulebook explicitly prohibits executing long cryptocurrency trades when the broader market regime is classified as risk-off. Additionally, the desk's historical record shows a 0% win rate and -0.8R average return on crypto trades, and the 'mean reversion' style has a 17% win rate. The asset is illiquid (vol ratio 0.03), making execution risky, and the Kronos forecast has low trust weight (0.2).",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "Desk base rate for crypto is 0% win rate; mean reversion style is 17% win rate; Kronos signal strength is low (0.33) with low trust (0.2).",
+    "horizon": null,
+    "thesis": "AVAX is in a strong downtrend (-42.5% over 60 days) and the market is in a risk-off/panic regime. While technicals show oversold conditions, the desk's rules forbid long crypto in risk-off environments. The asset's illiquidity and the desk's poor historical performance in crypto and mean reversion strategies make this a negative expected value trade.",
+    "invalidation": "N/A",
+    "plain_english": "We are passing on this trade. The market is currently in a 'risk-off' mode, meaning investors are scared and moving money to safety, which hurts crypto prices. Our internal rules say we cannot buy crypto when the market is this scary. Also, our past performance in trading crypto and trying to buy 'oversold' assets has been very poor, so we are avoiding this bet to protect our capital.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 6.57355
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 32.805125
+     },
+     {
+      "fact": "crypto_sentiment.fear_greed_now_0_100",
+      "value": 10
+     },
+     {
+      "fact": "technicals.vol_ratio",
+      "value": 0.03
+     },
+     {
+      "fact": "desk_record.by_asset.crypto.win_pct",
+      "value": 0
+     },
+     {
+      "fact": "desk_record.by_style.mean_reversion.win_pct",
+      "value": 17
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 7
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 4,
+    "problems": [
+     "cited 'desk_record.by_asset.crypto.win_pct', which isn't in the data",
+     "cited 'desk_record.by_style.mean_reversion.win_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "PEPE/USD",
+   "venue": "alpaca",
+   "asset": "crypto",
+   "price_at_research": 4e-06,
+   "why_scanned": [],
+   "setups": [
+    "strong 20-day move (-28.8%)"
+   ],
+   "atr_pct": 12.15,
+   "specialists": {
+    "technical": {
+     "score": -3,
+     "points": [
+      "Price is at 0.000004 USD, sitting exactly on the 20-day, 50-day, and 200-day SMAs, indicating a lack of clear directional trend and a 'sideways/mixed' state.",
+      "Momentum is deeply negative with a -28.82% return over 20 days and -17.18% over 60 days, while RSI14 at 36.06 suggests oversold conditions but not yet a confirmed reversal.",
+      "Kronos forecast projects a -40.62% expected move over 5 days with 0% probability of an up move, though the low trust weight (0.2) limits its reliability.",
+      "Price behavior data shows that in 20-day windows, the asset only rises 1.5 ATRs 67% of the time, making a significant rebound statistically less likely than a continued drift or sharp drop."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a: PEPE is a meme coin with no earnings, revenue, or traditional fundamental metrics to evaluate.",
+      "Stablecoin supply (BUSD) is down -5.3% over 30 days, indicating a contraction in dry powder available for crypto purchases.",
+      "DeFi Value Locked is down -20.14% over 30 days, reflecting a broader risk-off environment and capital flight from crypto ecosystems."
+     ]
+    },
+    "news_sentiment": {
+     "score": -4,
+     "points": [
+      "Crypto Fear & Greed Index is at 10 (Extreme Fear), with a 7-day average of 11.0, signaling maximum retail capitulation and high volatility.",
+      "No specific news headlines are provided in the dossier, but the macro backdrop of VIX > 25 and firm USD supports a risk-off narrative for high-beta assets like PEPE.",
+      "The 'Extreme Fear' reading often precedes bottoms, but in a high-volatility panic mode, it also validates the current downward momentum and lack of buyer conviction."
+     ]
+    },
+    "smart_money": {
+     "score": -2,
+     "points": [
+      "No specific order-flow, CFTC positioning, or insider data is available for PEPE in the provided dossier, limiting the ability to gauge institutional conviction.",
+      "The quant desk's momentum signal record shows a 48% win rate with an average R of -0.26, indicating that momentum strategies on this asset have been net negative over the last 2 years.",
+      "The reversion signal record shows a 44% win rate with an average R of -0.41, suggesting that mean-reversion bets are also underperforming, pointing to a lack of smart money edge in either direction."
+     ]
+    },
+    "best_style": "no clear setup",
+    "crypto_desk": {
+     "score": -4,
+     "points": [
+      "Momentum is severely broken with a -28.82% return over 20 days and -17.18% over 60 days, placing the asset 37.97% below its 52-week high and confirming a downtrend despite the 'sideways/mixed' label.",
+      "The Kronos forecast projects a -40.62% expected move over 5 days with a 0% probability of upside, indicating extreme bearish directional bias and high downside risk in the current regime.",
+      "Market sentiment is in 'Extreme Fear' (10/100) with stablecoin supply down 5.3% and DeFi TVL down 20.14% over 30 days, signaling a lack of dry powder and real buying interest to support a rebound.",
+      "Historical performance of momentum signals on this asset is poor (48% win rate, -0.26 avg R), suggesting that attempting to catch a bottom or trade breakouts in this high-volatility, risk-off environment has low expected value."
+     ]
+    },
+    "kronos": {
+     "score": -5,
+     "points": [
+      "Kronos: -40.6% expected over 5 days, 0% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "short",
+    "case": "The model dictates a short position because the risk-adjusted expected return is heavily skewed to the downside, with the Kronos forecast projecting a -40.62% expected move over 5 days and a 0% probability of an up move. Although the RSI14 at 36.06 suggests oversold conditions, the price behavior data indicates that in 20-day windows, the asset only rises 1.5 ATRs 67% of the time, making a significant rebound statistically less likely than a continued drift or sharp drop. The macro environment supports this bearish bias, with stablecoin supply down -5.3% and DeFi value locked down -20.14% over 30 days, signaling a contraction in dry powder and capital flight from crypto ecosystems. Furthermore, the historical performance of momentum signals on this asset is poor, with a 48% win rate and an average R of -0.26, indicating that attempting to catch a bottom in this high-volatility, risk-off environment has low expected value. The combination of extreme fear (10/100), broken momentum (-28.82% over 20 days), and lack of fundamental support creates a high-conviction short setup.",
+    "catalysts": [
+     "Kronos forecast projects -40.62% expected move over 5 days with 0% probability of upside",
+     "Stablecoin supply (BUSD) down -5.3% over 30 days indicating reduced buying power",
+     "DeFi Value Locked down -20.14% over 30 days reflecting capital flight",
+     "Price behavior data shows only 67% probability of rising 1.5 ATRs in 20-day windows",
+     "Momentum signal record shows 48% win rate with -0.26 average R, confirming lack of edge for longs"
+    ],
+    "price_target_logic": "Target is derived from the Kronos forecast's 10th percentile range low of 1e-06, which represents a 75% decline from the current price of 4e-06. This aligns with the -40.62% expected move and the 0% probability of upside, providing a quantitative basis for the downside target. The stop loss should be placed above the 20-day high of 5.6e-06 to account for the 12.15% ATR volatility, ensuring a risk-reward ratio that favors the short position."
+   },
+   "bear": {
+    "case": "The bull's short thesis is a trap because it ignores the extreme statistical mean-reversion risk inherent in meme coins at 'Extreme Fear' levels (10/100). While the Kronos model predicts a -40.62% move, its trust weight is a negligible 0.2, making it an unreliable guide for a $10k account. The price is currently pinned exactly on the 20, 50, and 200-day SMAs at 4e-06, a classic coiling pattern that often precedes a violent squeeze rather than a linear drift. Furthermore, the 5-day return is +2.77%, indicating that buyers are already stepping in to defend the 20-day low of 2.84e-06, contradicting the narrative of unchecked capitulation. Shorting into a 12.15% ATR environment with no fundamental floor is a negative expectancy trade where the tail risk of a 3x squeeze far outweighs the modest downside to the 52-week low.",
+    "risks": [
+     "Violent short squeeze: Price is at 4e-06, only 37.97% below the 52-week high, allowing for a rapid 2-3x rebound to the 5.6e-06 high-20 level within 1-2 days.",
+     "Model unreliability: Kronos forecast has a trust weight of only 0.2, meaning the -40.62% projection is statistically weak and likely overfitting to recent noise.",
+     "Oversold reversal: RSI14 at 36.06 combined with 'Extreme Fear' sentiment (10/100) historically marks local bottoms for high-beta assets, not the start of a new downtrend.",
+     "Volatility mismatch: ATR is 12.15%, meaning a 1-ATR move is ~4.8e-06; a short stop above the 20-day high (5.6e-06) is too wide, risking >40% account drawdown on a single adverse move.",
+     "Lack of liquidity buffer: Average dollar volume is only $3,152, meaning small buy orders can spike the price disproportionately, triggering stops prematurely."
+    ],
+    "would_change_my_mind": "If price breaks below the 20-day low of 2.84e-06 on volume greater than the 20-day average, or if the RSI14 fails to hold above 30 and the Kronos trust weight increases above 0.5, I would reconsider the short. Currently, the risk-reward is inverted due to the proximity to support and the high probability of a relief rally."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "We enter a long position on PEPE at 4e-06, betting on a mean-reversion bounce from the 20-day low. However, the broader crypto market remains in 'Extreme Fear' (FG 10) with stablecoin supply contracting (-5.3%), indicating a lack of dry powder to fuel a rally. The price fails to hold the 20-day SMA and breaks below the 20-day low of 2.84e-06, triggering our stop loss. The Kronos forecast's projection of a -40.62% move over 5 days materializes, and the position incurs a full loss as the asset continues its downtrend in a risk-off environment.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "The desk's rulebook explicitly prohibits executing long cryptocurrency trades when the broader market regime is classified as risk-off. Additionally, the desk has a 0% win rate on crypto trades (0/7) and a negative average R of -0.8, indicating a lack of edge in this asset class. The Kronos forecast projects a -40.62% move with 0% probability of upside, and the 'Extreme Fear' sentiment combined with contracting stablecoin supply suggests no immediate catalyst for a sustainable rebound. The risk-reward profile is unfavorable given the high volatility (12.15% ATR) and the statistical likelihood of continued downside.",
+    "bucket": null,
+    "style": null,
+    "expression": null,
+    "order_type": null,
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 0,
+    "confidence_pct": 0,
+    "odds_reasoning": "Base rate for crypto longs is 0% win rate; Kronos forecast indicates 0% probability of upside; market regime is risk-off which prohibits crypto longs per desk rules.",
+    "horizon": null,
+    "thesis": "PEPE is in a severe downtrend (-28.82% over 20 days) with extreme fear sentiment (FG 10). The Kronos model predicts further downside (-40.62% expected move) with no probability of an up move. Stablecoin supply is shrinking, reducing buying power. The desk's historical performance in crypto is poor (0% win rate), and the current risk-off regime forbids long crypto entries.",
+    "invalidation": "N/A - Pass decision.",
+    "plain_english": "We are skipping this trade. PEPE is a meme coin that has dropped significantly, and the market is in a 'panic' mode where investors are selling riskier assets. Our rules say we cannot buy crypto when the market is this scared. Also, our past results with crypto are very bad (we have never made money on them), and the computer model predicts it will keep falling. It is safer to stay in cash.",
+    "evidence": [
+     {
+      "fact": "technicals.ret_20d",
+      "value": -28.82
+     },
+     {
+      "fact": "crypto_sentiment.fear_greed_now_0_100",
+      "value": 10
+     },
+     {
+      "fact": "kronos_forecast.expected_move_pct",
+      "value": -40.62
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 0
+     },
+     {
+      "fact": "desk_record.by_asset.crypto.win_pct",
+      "value": 0
+     },
+     {
+      "fact": "crypto_sentiment.stablecoin_supply_change_30d_pct",
+      "value": -5.3
+     }
+    ],
+    "base_win_pct": 0,
+    "base_trades": 7
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'desk_record.by_asset.crypto.win_pct', which isn't in the data"
+    ]
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "USD_CAD",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 1.4247,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average",
+    "near 52-week high"
+   ],
+   "atr_pct": 0.46,
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "Price (1.4247) is trading above the 20-day SMA (1.4208), 50-day SMA (1.4165), and 200-day SMA (1.3946), confirming a clear uptrend with a 2.2% premium over the long-term average.",
+      "RSI at 55.29 indicates bullish momentum without being overbought, supporting the 'trend pullback to 20-day average' setup identified in the data.",
+      "Price is within 0.96% of the 52-week high (1.43848), suggesting proximity to breakout levels, though the 1-day return of -0.01% and 5-day return of -0.67% show short-term consolidation.",
+      "ATR is 0.006498 (0.46% of price), indicating moderate volatility; the 20-day high of 1.43848 acts as immediate resistance, while the 20-day SMA at 1.4208 provides support."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a: Fundamental analysis is not applicable to forex pairs as there are no earnings, margins, or SEC filings.",
+      "The October US advance goods trade balance of -149.5B (worse than -133.0B expected) is a macroeconomic data point that impacts USD strength, but it is not a company-specific fundamental metric.",
+      "No valuation metrics, growth rates, or financial statements are available for USD_CAD."
+     ]
+    },
+    "news_sentiment": {
+     "score": 2,
+     "points": [
+      "The US trade deficit widening to -149.5B vs -133.0B expected is a negative signal for USD strength, which could pressure USD_CAD lower, but the impact is offset by the broader risk-off environment where the dollar is firm.",
+      "Wholesale inventories (+0.9% vs +0.8% prior) and retail inventories ex autos (+0.6% vs +0.7% prior) are slightly higher than prior, suggesting mild inventory buildup but not a major sentiment driver.",
+      "No specific news headlines or sentiment scores are provided in the dossier beyond the trade balance data, so the sentiment score is based on the macro implication of the trade deficit and the general risk-off backdrop."
+     ]
+    },
+    "smart_money": {
+     "score": 1,
+     "points": [
+      "USD speculative net position is 23.9% of open interest at the 71st percentile, indicating a moderately bullish but not crowded long position.",
+      "CAD speculative net position is -12.6% of open interest at the 83rd percentile, indicating a moderately bearish CAD position, which supports USD_CAD upside.",
+      "The weekly change in USD spec net position is -2.9 points and CAD is -3.1 points, suggesting a slight reduction in speculative positioning, which may indicate some profit-taking or caution.",
+      "No insider trades or hedge fund holdings are applicable to forex, so the score is based solely on CFTC futures positioning data."
+     ]
+    },
+    "best_style": "trend pullback",
+    "fx_desk": {
+     "score": 3,
+     "points": [
+      "Strong uptrend structure with price (1.4247) trading above SMA20 (1.4208), SMA50 (1.4165), and SMA200 (1.3946), supported by positive 20-day (+1.95%) and 60-day (+2.97%) returns.",
+      "Favorable positioning dynamics: CAD speculators are net short (-12.6% of OI) at the 83rd percentile, while USD speculators are net long (23.9%), suggesting a potential short-covering squeeze if USD strength persists in the current risk-off environment.",
+      "Technical momentum is constructive with RSI at 55.29 (neutral-bullish, not overbought) and price near the 52-week high (1.4385), offering a clear upside target with a 0.96% distance to the high.",
+      "Kronos forecast indicates a 75% probability of an upward move over 5 days with a high signal strength (0.86), aligning with the desk's bias for USD strength in high-volatility, risk-off conditions."
+     ]
+    },
+    "kronos": {
+     "score": 2,
+     "points": [
+      "Kronos: +0.4% expected over 5 days, 75% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The model identifies a high-probability trend continuation setup with a 75% probability of positive return over the next 5 days, driven by price holding above the 20-day SMA (1.4208) and 200-day SMA (1.3946). Speculative positioning supports this bias, with CAD net short at -12.6% of open interest (83rd percentile) creating fuel for a short-covering squeeze, while USD net long remains moderate at 23.9% (71st percentile), avoiding extreme crowding. The RSI at 55.29 confirms bullish momentum without overbought conditions, and the 20-day return of +1.95% validates the primary uptrend structure. Although the recent trade deficit miss (-149.5B vs -133.0B expected) is a negative macro signal, the systematic model weights the technical trend and positioning data more heavily, yielding a confidence score above the 60% threshold for entry. The risk-reward profile is favorable given the proximity to the 52-week high (1.4385) and the defined support at the 20-day SMA.",
+    "catalysts": [
+     "Short-covering squeeze potential due to CAD speculative net short position at 83rd percentile",
+     "Price confirmation of support at the 20-day SMA (1.4208) following the 5-day consolidation (-0.67%)",
+     "Breakout above the 52-week high of 1.4385 to trigger trend-following algorithms"
+    ],
+    "price_target_logic": "The primary target is the 52-week high of 1.4385, representing a 0.96% upside move from the current price of 1.4247. This aligns with the Kronos forecast median move of 0.37% and the 90th percentile range high of 1.4397. The stop loss is placed below the 20-day SMA at 1.4208, establishing a risk of 0.27% and a reward-to-risk ratio of approximately 3.5:1, which exceeds the minimum threshold for systematic entry."
+   },
+   "bear": {
+    "case": "The bull's 3.5:1 risk-reward calculation is a fantasy because the stop at the 20-day SMA (1.4208) is only 0.27% away, which is less than half the ATR (0.46%), guaranteeing a stop-out by normal market noise before any trend continuation can occur. The 'short-covering squeeze' thesis is weak because CAD speculative positioning has already decreased by 3.1 points this week, indicating that the fuel for a squeeze is being burned off or that the crowd is already unwinding, not building. The macro backdrop is actively hostile to the USD, with the October goods trade balance widening to -149.5B against a -133.0B expectation, a significant miss that directly undermines the dollar strength narrative. Furthermore, our own desk history shows a 55% loss rate on 'trend pullback' entries for this specific symbol, with recent losses stemming from premature entries and ignoring macro event risks, yet the bull is proposing exactly that high-risk, low-confirmation entry.",
+    "risks": [
+     "Stop placement at 1.4208 is less than 0.5 ATR (0.00325) from entry, creating an extreme probability of being stopped out by intraday volatility before the 5-day horizon expires.",
+     "The US trade deficit miss (-149.5B vs -133.0B) is a direct headwind for USD strength, contradicting the technical bias and likely causing price to test the 20-day SMA support from above.",
+     "CAD speculative net short position decreased by 3.1 points weekly, suggesting the 'crowd' is already de-risking rather than being trapped, which removes the potential for a violent short-covering spike.",
+     "Price is only 0.96% from the 52-week high (1.4385), meaning the upside potential is capped by resistance while the downside risk to the 20-day SMA is immediate, creating an asymmetric risk profile contrary to the bull's claim.",
+     "Desk history on this symbol shows a 45% win rate for reversion signals and multiple recent losses on trend pullbacks due to 'premature entries' and 'low volume' conditions, which are currently present given the 5-day consolidation."
+    ],
+    "would_change_my_mind": "I would only consider this trade if the stop was widened to below the 50-day SMA (1.4165) to accommodate the ATR, but even then, the risk-reward ratio drops to roughly 1.2:1, which is insufficient for a discretionary entry. More importantly, I would need to see the US trade deficit data re-rated or a subsequent strong USD data release to offset the macro headwind; without that, the technicals are fighting a fundamental tide."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "USD/CAD breaks down below the 20-day moving average as the negative October US advance goods trade balance data weighs heavily on the dollar, triggering our stop loss before any rebound toward the 52-week high can occur.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Despite a technical uptrend and positive Kronos forecast, desk history on USD_CAD trend pullbacks is poor (win rate 20%, avg R -0.5), and recent desk trades on this symbol suffered from premature entries and macro event risks. Furthermore, our macro style and FX base rates show caution is warranted when trade deficit headwinds conflict with positioning.",
+    "bucket": "tactical",
+    "style": "trend pullback",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 4,
+    "confidence_pct": 35,
+    "odds_reasoning": "Based on the desk's historical trend pullback win rate of 20% and forex base rate of 32% with negative average R, adjusted down due to conflicting trade deficit news.",
+    "horizon": "1-5 days",
+    "thesis": "Passing on this setup because our desk history on USD_CAD trend pullbacks is negative and recent trades have failed due to premature entries during macro data releases. Although technicals show an uptrend, the recent trade deficit miss creates a macro headwind that reduces the probability of a clean continuation.",
+    "invalidation": "A decisive break and close above the 52-week high with supportive macro data.",
+    "plain_english": "We decided to pass on trading USD/CAD [US Dollar to Canadian Dollar currency pair] because our desk has a losing record on this specific setup and symbol. Even though the technical trend looks positive, recent trade deficit [the amount by which the cost of a country's imports exceeds its exports] numbers for the US create too much uncertainty. We prefer to wait for a cleaner setup rather than forcing a trade with poor historical odds.",
+    "evidence": [
+     {
+      "fact": "technicals.rsi14",
+      "value": 55.289735
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 1.420797
+     },
+     {
+      "fact": "technicals.atr14",
+      "value": 0.006498
+     },
+     {
+      "fact": "futures_positioning.USD.spec_net_pct_of_open_interest",
+      "value": 23.9
+     },
+     {
+      "fact": "futures_positioning.CAD.spec_net_pct_of_open_interest",
+      "value": -12.6
+     }
+    ],
+    "base_win_pct": 20,
+    "base_trades": 10
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  },
+  {
+   "symbol": "USD_MXN",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 19.65925,
+   "why_scanned": [],
+   "setups": [
+    "near 52-week high"
+   ],
+   "atr_pct": 1.28,
+   "specialists": {
+    "technical": {
+     "score": 4,
+     "points": [
+      "The asset is in a strong uptrend trading near its 52-week high of 19.84994, with price well above its sma20 (18.893811), sma50 (18.50041), and sma200 (17.652148).",
+      "Momentum remains elevated with a 20-day return of 4.64% and 60-day return of 16.41%, though the RSI at 74.08186 indicates overbought conditions.",
+      "Volatility as measured by atr14 is 0.251122 with an atr_pct of 1.28%, and volume ratio sits at 0.86."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a"
+     ]
+    },
+    "news_sentiment": {
+     "score": 1,
+     "points": [
+      "Recent advance goods trade balance printed at -149.5B vs -133.0B expected, leaving a dent in GDP forecasts alongside mixed wholesale and retail inventories.",
+      "The broader market backdrop features high volatility with the VIX above 25 and a firm dollar, supporting macro-forex momentum plays."
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "USD net speculative positioning stands at 23.9% of open interest with a weekly change of -2.9 pts and a 3-year percentile of 71.0.",
+      "MXN net speculative positioning stands at 9.0% of open interest with a weekly change of 1.3 pts and a 3-year percentile of 11.0."
+     ]
+    },
+    "best_style": "macro",
+    "fx_desk": {
+     "score": 4,
+     "points": [
+      "The pair is in a confirmed strong uptrend, trading 11.4% above the 200-day SMA (17.65) with a 60-day return of 16.41%, indicating persistent bullish momentum that aligns with the 'dollar firm' market backdrop.",
+      "Technical overextension is evident with an RSI of 74.08 and price sitting just 0.96% below the 52-week high (19.85), suggesting the trend is mature but still dominant; the Kronos 5-day forecast (down 1.79%) has low trust weight (0.2) and contradicts the strong 20-day momentum (4.64% gain).",
+      "Futures positioning shows USD speculators are net long at the 71st percentile, while MXN speculators are only at the 11th percentile, reflecting a structural preference for the dollar and a lack of aggressive shorting against the MXN weakness, supporting continued USD strength.",
+      "Desk history confirms that fading this trend (short/fade) has resulted in consistent losses (-1.0R, -1.0R, -0.26R), whereas macro-aligned long trades have succeeded (+1.41R), reinforcing the bias to follow the macro dollar strength rather than technical mean reversion."
+     ]
+    },
+    "kronos": {
+     "score": -5,
+     "points": [
+      "Kronos: -1.8% expected over 5 days, 5% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The model identifies a high-conviction long setup driven by a confirmed macro uptrend where price is 11.4% above the 200-day SMA (17.652148) and near the 52-week high (19.84994). Despite an RSI of 74.08 indicating overbought conditions, historical desk data shows that fading this specific momentum yields negative returns (avg -0.56R on shorts), whereas macro-aligned longs have generated +1.41R. Futures positioning supports this bias with USD speculative net long at the 71st percentile versus MXN at only the 11th percentile, indicating structural dollar strength. The Kronos forecast suggesting a 1.79% drop is discounted due to its low trust weight (0.2) and contradiction with the strong 60-day return of 16.41%. Volume ratio of 0.86 suggests consolidation rather than distribution, supporting a continuation of the trend.",
+    "catalysts": [
+     "USD speculative positioning at 71st percentile vs MXN at 11st percentile",
+     "Price trading 11.4% above 200-day SMA with 60-day return of 16.41%",
+     "Desk history showing +1.41R on macro longs vs negative R on short/fade attempts",
+     "Strong 20-day momentum (4.64%) overriding low-trust Kronos bearish signal"
+    ],
+    "price_target_logic": "Target is set at the 52-week high of 19.84994, representing a 0.96% upside from current price (19.65925). If this level breaks, the next logical target is derived from the 60-day return trajectory, but the primary objective is capturing the final extension to the 52-week high before potential mean reversion. Stop loss is placed below the 20-day SMA (18.893811) or 1.5 ATRs (0.376683) below entry to protect against volatility spikes, ensuring a risk-reward ratio that justifies the position size."
+   },
+   "bear": {
+    "case": "The bull is chasing a parabolic top into a crowded trade, ignoring that the 52-week high of 19.84994 is only 0.96% away, offering a pathetic risk-reward profile against a stop 1.5 ATRs (0.376683) below entry. With RSI at 74.08 and price 11.4% above the 200-day SMA, the move is statistically overextended, and the Kronos model\u2019s 5-day forecast of a -1.79% drop is being dismissed based on a negligible trust weight of 0.2. The recent US trade deficit widening to -149.5B suggests underlying economic weakness that could trigger a sharp risk-off reversal, catching the long side off guard. Furthermore, the volume ratio of 0.86 indicates waning participation, a classic sign of distribution rather than consolidation, meaning the trend is likely exhausting just as the bull enters.",
+    "risks": [
+     "Price is only 0.96% from the 52-week high (19.84994), leaving minimal upside before hitting a major resistance wall.",
+     "RSI at 74.08 signals severe overbought conditions, increasing the probability of a sharp mean-reversion pullback.",
+     "Kronos 5-day forecast predicts a -1.79% drop, contradicting the bull's continuation thesis despite the low trust weight.",
+     "US trade deficit widened to -149.5B vs -133.0B expected, signaling potential macroeconomic weakness that could reverse dollar strength.",
+     "Volume ratio of 0.86 suggests declining participation, indicating the uptrend may be losing steam rather than consolidating.",
+     "Desk history shows short/fade attempts lost -1.0R, but those were likely taken too early; entering long now is chasing the top of the 60-day 16.41% rally."
+    ],
+    "would_change_my_mind": "If the price breaks above the 52-week high of 19.84994 with a volume ratio exceeding 1.2, confirming new buying interest and breaking the resistance, I would concede the trend is extending further."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "USD_MXN continues its overbought advance briefly before the Mexican Peso finds sudden support or US data surprises, triggering a sharp pullback that hits our stop below the 20-day SMA.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "Strong macro trend alignment, positive desk history on macro longs for this pair, and structural USD positioning favor a continued push towards the 52-week high.",
+    "bucket": "tactical",
+    "style": "macro",
+    "expression": "shares",
+    "order_type": "market",
+    "entry": 19.65925,
+    "stop": 19.15,
+    "target": 19.84994,
+    "conviction": 6,
+    "confidence_pct": 58,
+    "odds_reasoning": "Starting from the macro style base rate of 62% win rate, adjusted down slightly for overbought conditions (RSI 74.08), resulting in a solid 58% confidence.",
+    "horizon": "1-5 days",
+    "thesis": "The pair trades in a strong macro uptrend backed by firm US dollar positioning and favorable historical desk performance on macro-aligned longs. Price is just 0.96% away from its 52-week high, offering a clean continuation target. We ride the prevailing dollar strength while maintaining a disciplined stop below volatility bounds.",
+    "invalidation": "A daily close below the 20-day SMA or a break under 19.15 invalidates the trend continuation thesis.",
+    "plain_english": "We are buying USD_MXN because the US dollar is strong [firm versus other currencies] and the pair has been steadily climbing. We expect it to reach its highest price of the past year. We will exit with a small loss if the trend reverses unexpectedly.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 19.65925
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 18.893811
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 74.08186
+     },
+     {
+      "fact": "technicals.pct_from_52w_high",
+      "value": -0.96
+     },
+     {
+      "fact": "futures_positioning.USD.spec_net_pct_of_open_interest",
+      "value": 23.9
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 0.76,
+     "holding_days": 5,
+     "reached_pct": 58.4,
+     "windows": 495
+    },
+    "base_win_pct": 62,
+    "base_trades": 8,
+    "reward_to_risk": 0.37,
+    "confidence_used_pct": 59.8,
+    "expected_r": -0.18
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "reward-to-risk is only 0.37",
+     "negative expected value (-0.18R: 59.8% to make 0.37x the risk)"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": -0.06,
+    "model_expected_r": -0.19,
+    "target_first_pct": 50,
+    "stop_first_pct": 30,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "USD_CHF",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 0.83624,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average",
+    "near 52-week high"
+   ],
+   "atr_pct": 0.69,
+   "specialists": {
+    "technical": {
+     "score": 3,
+     "points": [
+      "Price (0.83624) is trading above the 20-day SMA (0.831662) and 50-day SMA (0.829681), confirming an intact uptrend with a 1.37% gain over 20 days.",
+      "RSI at 55.02 indicates neutral-to-bullish momentum without overbought conditions, supporting a continuation rather than a reversal.",
+      "The setup is a 'trend pullback to 20-day average' near the 52-week high (0.8444), offering a defined risk/reward entry point with support at the 20-day SMA.",
+      "Kronos forecast suggests a 70% probability of an upward move over 5 days, aligning with the technical uptrend despite a low signal strength of 0.56."
+     ]
+    },
+    "fundamental": {
+     "score": 0,
+     "points": [
+      "n/a: Fundamental analysis is not applicable to forex pairs as there are no earnings, margins, or SEC filings for currency pairs."
+     ]
+    },
+    "news_sentiment": {
+     "score": 1,
+     "points": [
+      "US trade balance deficit widened to -149.5B vs -133.0B expected, which is generally negative for USD but may be offset by risk-off flows favoring CHF.",
+      "Market backdrop is high-volatility/risk-off (VIX > 25), which typically strengthens CHF as a safe-haven currency, potentially capping USD upside.",
+      "No specific high-impact news headlines for USD/CHF provided beyond general macro data, leading to a neutral-to-slightly-bullish sentiment due to the broader USD strength mentioned in the backdrop."
+     ]
+    },
+    "smart_money": {
+     "score": 2,
+     "points": [
+      "Speculative net positioning for USD is at the 71st percentile (23.9% of OI), which is bullish but not yet in the crowded trade zone (>85th percentile).",
+      "Speculative net positioning for CHF is at the 100th percentile (-6.6% of OI), indicating extreme bearishness on CHF, which supports a long USD/CHF bias as a contrarian or momentum play.",
+      "Weekly change in USD spec net position is -2.9 points, suggesting some profit-taking or de-risking, but the overall structure remains supportive of USD strength."
+     ]
+    },
+    "best_style": "trend pullback",
+    "fx_desk": {
+     "score": 3,
+     "points": [
+      "Strong structural uptrend with price (0.83624) trading 3.8% above the 200-day SMA (0.805303) and near the 52-week high (0.8444), supported by positive 20-day (1.37%) and 60-day (3.23%) returns.",
+      "Favorable positioning skew: USD speculators are net long (23.9% of OI, 71st percentile) while CHF speculators are net short (-6.6% of OI, 100th percentile), indicating a consensus bullish bias for the pair that aligns with the current momentum.",
+      "Kronos 5-day forecast projects a 0.25% expected move with a 70% probability of upside, targeting a range high of 0.843687, which offers a defined risk-reward profile against the 20-day SMA support at 0.831662.",
+      "Caution warranted due to high-volatility risk-off backdrop (VIX > 25) and recent desk history showing losses on tight stops near resistance; entry should wait for a pullback to the 20-day SMA (0.831662) to improve entry price and respect the 'trend pullback' setup."
+     ]
+    },
+    "kronos": {
+     "score": 1,
+     "points": [
+      "Kronos: +0.2% expected over 5 days, 70% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "The systematic model identifies a high-probability trend pullback setup with a 70% probability of positive return over the next 5 days, exceeding the 60% confidence threshold for entry. Price at 0.83624 is trading above the 20-day SMA (0.831662) and 50-day SMA (0.829681), confirming an intact uptrend with a 1.37% gain over 20 days, while RSI at 55.02 indicates neutral-to-bullish momentum without overbought conditions. Smart money positioning supports this bias, with USD speculative net long at the 71st percentile and CHF speculative net short at the 100th percentile, indicating a consensus bullish structure that aligns with current momentum. Although the US trade deficit widened to -149.5B, the risk-off backdrop (VIX > 25) and strong technical structure outweigh fundamental headwinds, as the Kronos forecast projects a 0.25% expected move with a 90th percentile range high of 0.843687. The entry is justified by the defined risk/reward profile against the 20-day SMA support, leveraging the 'trend pullback' setup which has a 60% win rate in historical reversion signals.",
+    "catalysts": [
+     "Price holding above 20-day SMA (0.831662) in an uptrend",
+     "CHF speculative positioning at 100th percentile (extreme bearishness)",
+     "Kronos 5-day forecast showing 70% probability of upside",
+     "RSI at 55.02 confirming momentum without overbought risk"
+    ],
+    "price_target_logic": "Target is set at the 90th percentile range high of 0.843687 from the Kronos forecast, representing a 0.89% upside move from the current price of 0.83624. This target is supported by the 52-week high of 0.8444 and the 20-day high of 0.8444, providing a clear resistance level. The stop-loss is placed below the 20-day SMA at 0.831662, creating a risk of 0.55% and a reward-to-risk ratio of approximately 1.62:1, which meets the desk's requirement for positive Sharpe improvement."
+   },
+   "bear": {
+    "case": "The bull case relies on a fragile 1.62:1 reward-to-risk ratio that ignores the severe headwind from the widened US trade deficit of -149.5B, which directly undermines USD fundamentals while risk-off flows (VIX > 25) favor the CHF safe-haven bid. You are entering a trade where CHF speculative positioning is already at the 100th percentile of bearishness, meaning the 'consensus bullish' narrative is actually a crowded short that has little room to be squeezed further without a massive USD catalyst. The Kronos forecast offers only a 0.25% expected move against an ATR of 0.69%, implying that noise alone can easily wipe out your entire profit target before you reach the 0.843687 level. Furthermore, your desk history shows a 100% failure rate on tight stops in this specific 'trend pullback' zone, with the most recent long losing -1.02R due to resistance rejection, yet you are ignoring that lesson to chase a 0.89% upside move.",
+    "risks": [
+     "Fundamental deterioration: US trade deficit widened to -149.5B vs -133.0B expected, creating direct downside pressure on USD.",
+     "Crowded positioning: CHF speculators are at the 100th percentile of bearishness, indicating the short side is fully loaded and any risk-on shift will trigger violent CHF rallies.",
+     "Insufficient edge: The 0.89% upside target is barely larger than the 0.69% ATR, making the trade highly susceptible to being stopped out by normal market noise.",
+     "Historical failure: Desk history shows a -1.02R loss on a similar long entry near resistance, confirming that tight stops in pullback zones are ineffective.",
+     "Risk-off dominance: VIX > 25 signals a risk-off environment that structurally favors CHF over USD, contradicting the bullish technical bias."
+    ],
+    "would_change_my_mind": "I would only reconsider if the US trade deficit data is proven to be a one-off statistical anomaly that does not impact Q4 GDP forecasts, AND if CHF speculative positioning drops below the 80th percentile to indicate a reduction in the crowded short bias. Additionally, I would require the Kronos expected move to increase to at least 0.50% to provide a clearer buffer against the 0.69% ATR noise."
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The risk-off market panic accelerates, driving aggressive safe-haven flows into CHF and overwhelming USD momentum despite strong technical positioning. The position gets stopped out below the 20-day SMA as the wider dollar strength narrative breaks down under worsening trade deficit pressures.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "The desk's best performing style is macro (62% win rate, 0.59 avg R), and USD/CHF features strong macro alignment with USD speculative positioning at the 71st percentile and CHF at extreme net-short positioning (100th percentile). The price is holding above both the 20-day and 50-day SMAs in a clear structural uptrend, and the Kronos forecast indicates a 70% probability of an upward move over 5 days.",
+    "bucket": "tactical",
+    "style": "macro",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 0.83624,
+    "stop": 0.825,
+    "target": 0.8444,
+    "conviction": 6,
+    "confidence_pct": 58,
+    "odds_reasoning": "Starting from the desk's macro base rate of 62% win rate and Kronos 70% directional probability, adjusted slightly lower due to the risk-off market regime.",
+    "horizon": "1-5 days",
+    "thesis": "We are going long USD/CHF to capture ongoing dollar strength against an extremely short Swiss Franc positioning backdrop. The pair is maintaining an intact uptrend above its 20-day and 50-day moving averages, benefiting from supportive currency futures positioning. We will manage risk tightly against the 20-day moving average and target the recent 52-week high resistance.",
+    "invalidation": "A daily close below the 20-day SMA and the stop loss at 0.8250 invalidates the bullish trend structure.",
+    "plain_english": "We are buying USD/CHF [the US Dollar against the Swiss Franc] because the US dollar is showing strong momentum and traders are heavily betting against the Swiss franc [currency futures positioning]. The asset is in a steady upward trend [uptrend] and staying above its 20-day moving average [the average price over the last 20 trading days]. We will take our profit near the recent high price and exit if the trade drops below our stop level.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 0.83624
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 0.831662
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 55.024338
+     },
+     {
+      "fact": "futures_positioning.USD.three_year_percentile",
+      "value": 71.0
+     },
+     {
+      "fact": "futures_positioning.CHF.three_year_percentile",
+      "value": 100.0
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 70.0
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.38,
+     "holding_days": 5,
+     "reached_pct": 30.3,
+     "windows": 495
+    },
+    "base_win_pct": 62,
+    "base_trades": 8,
+    "reward_to_risk": 0.73,
+    "confidence_used_pct": 59.8,
+    "expected_r": 0.03
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 6,
+    "problems": [
+     "reward-to-risk is only 0.73"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": 0.07,
+    "model_expected_r": 0.24,
+    "target_first_pct": 30,
+    "stop_first_pct": 5,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "AUD_USD",
+   "venue": "oanda",
+   "asset": "forex",
+   "status": "error",
+   "error": "'str' object has no attribute 'get'"
+  },
+  {
+   "symbol": "USD_JPY",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 159.568,
+   "why_scanned": [],
+   "setups": [
+    "trend pullback to 20-day average"
+   ],
+   "atr_pct": 0.52,
+   "specialists": {
+    "technical": {
+     "score": 52,
+     "points": [
+      "Price (159.568) is above SMA20 (159.0015) and SMA50 (158.32048), indicating a short-term uptrend.",
+      "RSI is 57.69, neutral-to-bullish but not overbought.",
+      "Setup is 'trend pullback to 20-day average', which has a historical win rate of only 43.9% and avg R of 0.041.",
+      "Kronos forecast suggests a slight downward bias (-0.04% expected move) with low signal strength (0.07)."
+     ]
+    },
+    "fundamental": {
+     "score": 55,
+     "points": [
+      "US trade deficit widened to -149.5B vs -133.0B expected, potentially weakening USD long-term but adding short-term volatility.",
+      "No specific fundamental catalyst for JPY strength in the immediate data provided.",
+      "Macro risk flags point to a risk-off environment, which typically supports USD."
+     ]
+    },
+    "news_sentiment": {
+     "score": 50,
+     "points": [
+      "News is mixed: US trade deficit is negative for USD long-term but market is in risk-off mode supporting USD short-term.",
+      "No strong sentiment spike detected in the provided data.",
+      "Staying neutral as combined score does not exceed the 70% confidence threshold."
+     ]
+    },
+    "smart_money": {
+     "score": 45,
+     "points": [
+      "JPY speculators are net long at 29.8% of open interest, at the 85th percentile of the 3-year range, indicating a crowded long position.",
+      "USD speculators are net long at 23.9% of open interest, at the 71st percentile.",
+      "Crowded JPY longs suggest potential for a sharp reversal if USD strengthens further, but current flow supports USD."
+     ]
+    },
+    "fx_desk": {
+     "score": 60,
+     "points": [
+      "Interest rate gap favors USD due to risk-off environment and firm dollar trend.",
+      "Carry trade dynamics support USD/JPY long in a risk-off regime.",
+      "Tokyo and London sessions are key for this pair, with US data releases (JOLTS, Durable Goods, Jobs) providing catalysts.",
+      "Key round-number levels: 160.00 (psychological resistance), 159.00 (SMA20 support)."
+     ]
+    },
+    "best_style": "macro",
+    "kronos": {
+     "score": 0,
+     "points": [
+      "Kronos: -0.0% expected over 5 days, 40% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "USD is firm in a risk-off environment, and JPY speculators are crowded long, creating potential for a short squeeze if USD strength continues. The macro trend supports USD/JPY long.",
+    "catalysts": [
+     "Upcoming US labor data (JOLTS, Durable Goods, Jobs report) could strengthen USD if results are better than expected.",
+     "Risk-off sentiment continues to support USD as a safe haven."
+    ]
+   },
+   "bear": {
+    "case": "JPY speculators are crowded long, and any sign of risk-on sentiment or weaker US data could trigger a sharp reversal. The technical setup is a pullback, which has a low historical win rate.",
+    "risks": [
+     "Crowded JPY longs could lead to a rapid unwind if USD weakens.",
+     "Technical setup is a pullback, which has a low historical win rate (43.9%).",
+     "Kronos forecast suggests a slight downward bias."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "The trade fails if US labor data comes in weaker than expected, triggering a risk-on move that weakens the USD and strengthens the JPY. The crowded JPY longs could amplify the move, causing the price to drop below the stop.",
+     "failure_more_likely": false
+    },
+    "decision": "long",
+    "reason": "The macro environment supports USD strength in a risk-off regime, and the crowded JPY longs create potential for a short squeeze. The technical setup is a pullback to the 20-day average, which is a reasonable entry point.",
+    "bucket": "tactical",
+    "style": "macro",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": 159.568,
+    "stop": 158.735,
+    "target": 160.401,
+    "conviction": 6,
+    "confidence_pct": 55,
+    "odds_reasoning": "Base rate for macro trades is 62% win rate with avg R of 0.59. Kronos suggests a slight downward bias, but the macro environment and crowded JPY longs support a long bias. Adjusting for the technical setup, confidence is set at 55%.",
+    "horizon": "1-5 days",
+    "thesis": "USD is firm in a risk-off environment, and JPY speculators are crowded long, creating potential for a short squeeze if USD strength continues. The macro trend supports USD/JPY long. Upcoming US labor data could provide a catalyst for further USD strength.",
+    "invalidation": "Price drops below 158.735 (1 ATR below entry) or US labor data comes in significantly weaker than expected, triggering a risk-on move.",
+    "plain_english": "We are betting that the US dollar will strengthen against the Japanese yen because the market is in a 'risk-off' mode, where investors prefer safe assets like the dollar. Additionally, many traders are already betting on the yen to rise, which could lead to a sudden shift if the dollar strengthens. We will exit the trade if the price drops below a certain level or if US economic data is weaker than expected.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 159.568
+     },
+     {
+      "fact": "technicals.sma20",
+      "value": 159.0015
+     },
+     {
+      "fact": "futures_positioning.JPY.spec_net_pct_of_open_interest",
+      "value": 29.8
+     },
+     {
+      "fact": "futures_positioning.JPY.three_year_percentile",
+      "value": 85.0
+     },
+     {
+      "fact": "kronos_forecast.expected_move_pct",
+      "value": -0.04
+     },
+     {
+      "fact": "news[0].headline",
+      "value": "October US advance goods trade balance -149.5B vs -133.0B expected"
+     }
+    ],
+    "reach_odds": {
+     "target_distance_atr": 1.05,
+     "holding_days": 5,
+     "reached_pct": 44.8,
+     "windows": 495
+    },
+    "base_win_pct": 62,
+    "base_trades": 8,
+    "reward_to_risk": 1.0,
+    "confidence_used_pct": 58.1,
+    "expected_r": 0.16
+   },
+   "fact_check": {
+    "passed": false,
+    "verified_facts": 5,
+    "problems": [
+     "cited 'news[0].headline', which isn't in the data",
+     "reward-to-risk is only 1.00"
+    ]
+   },
+   "kronos_odds": {
+    "expected_r": -0.15,
+    "model_expected_r": -0.51,
+    "target_first_pct": 20,
+    "stop_first_pct": 75,
+    "paths": 20
+   },
+   "status": "blocked_by_fact_check"
+  },
+  {
+   "symbol": "NZD_USD",
+   "venue": "oanda",
+   "asset": "forex",
+   "price_at_research": 0.54665,
+   "why_scanned": [],
+   "setups": [],
+   "atr_pct": 0.82,
+   "specialists": {
+    "technical": {
+     "score": 48,
+     "points": [
+      "RSI at 34.54 shows near-oversold conditions without entering extreme exhaustion.",
+      "Price is below all major moving averages (sma20: 0.55314, sma50: 0.560052, sma200: 0.578265), confirming a strong downtrend.",
+      "Composite score sits firmly in the no-clear-edge band between 45% and 55%."
+     ]
+    },
+    "fundamental": {
+     "score": 45,
+     "points": [
+      "CFTC speculative net positioning shows NZD net short at -46.1% of open interest, representing a heavily established short bias.",
+      "USD net positioning remains strong at 23.9% with a 71.0 3-year percentile.",
+      "Composite fundamental score resides near zero, preventing a definitive directional bet based strictly on macroeconomic fundamentals alone."
+     ]
+    },
+    "news_sentiment": {
+     "score": 50,
+     "points": [
+      "Advance goods trade balance showed a wider deficit at -149.5B vs -133.0B expected, weighing on GDP forecasts.",
+      "Headline flow lacks high-volume keyword surges or polarized sentiment that exceeds the confidence threshold for a news trade.",
+      "Neutral stance maintained due to ambiguous incoming macroeconomic data."
+     ]
+    },
+    "smart_money": {
+     "score": 52,
+     "points": [
+      "Volume ratio is elevated at 1.62, indicating increased participation during the recent decline.",
+      "Order-flow imbalance fails to exceed the statistically-significant threshold required for a directional execution.",
+      "Staying neutral on smart money indicators due to lack of extreme net positioning divergence."
+     ]
+    },
+    "fx_desk": {
+     "score": 58,
+     "points": [
+      "Interest-rate gap and central-bank direction favor USD strength given firm US data and risk-off sentiment.",
+      "US dollar trend is firm against major peers as highlighted in the overnight read.",
+      "Trading session moves driven heavily by European and US overlaps; key round-number level sits at 0.5400."
+     ]
+    },
+    "best_style": "macro",
+    "kronos": {
+     "score": 3,
+     "points": [
+      "Kronos: +0.6% expected over 5 days, 85% of simulated futures end higher"
+     ]
+    }
+   },
+   "bull": {
+    "direction": "long",
+    "case": "Kronos AI forecasts an 85% probability of an upside move over the next 5 days with an expected move of 0.6%, presenting a tactical bounce opportunity from the 52-week low of 0.54334.",
+    "catalysts": [
+     "Kronos AI forecast predicts a median move of 0.62% over 5 days.",
+     "RSI at 34.54 is approaching oversold territory, suggesting a potential mean-reversion bounce.",
+     "Historical setup records show deep oversold conditions yielding a 60.8% win rate."
+    ]
+   },
+   "bear": {
+    "case": "The broader market regime is in high-volatility panic mode with a firm US dollar, and NZD_USD is in a confirmed long-term downtrend trading below its 200-day moving average of 0.578265.",
+    "risks": [
+     "Price is well below all key moving averages, confirming strong downward momentum.",
+     "Speculators are heavily net short NZD at -46.1% of open interest, reflecting persistent underlying selling pressure.",
+     "The desk's historical win rate on short/fade and mean reversion styles is weak, and fighting the primary downtrend carries high risk."
+    ]
+   },
+   "decision": {
+    "premortem": {
+     "failure_story": "A long trade is initiated based on the Kronos forecast and near-term oversold RSI, but persistent dollar strength and the overarching macroeconomic downtrend drive the pair below the 0.54334 low, triggering the stop-loss before any meaningful bounce occurs.",
+     "failure_more_likely": true
+    },
+    "decision": "pass",
+    "reason": "Although Kronos forecasts an 85% probability of an upward move, the desk's strict risk-off regime, the asset's entrenched macro downtrend below the 200-day moving average (0.578265), and poor historical win rates on mean-reversion and counter-trend setups dictate passing on this trade.",
+    "bucket": "tactical",
+    "style": "macro",
+    "expression": "shares",
+    "order_type": "limit",
+    "entry": null,
+    "stop": null,
+    "target": null,
+    "conviction": 4,
+    "confidence_pct": 42,
+    "odds_reasoning": "Based on the desk's macro base rate of 62% win rate on past macro trades, discounted heavily here due to fighting a strong primary downtrend and risk-off USD strength.",
+    "horizon": "1-5 days",
+    "thesis": "We evaluated going long on a potential oversold bounce backed by the Kronos forecast. However, the prevailing risk-off market regime and firm US dollar trend argue against taking counter-trend currency positions. Patience is required until a cleaner macro setup emerges.",
+    "invalidation": "Not applicable as no trade is executed.",
+    "plain_english": "We decided to pass on trading the New Zealand dollar against the US dollar today. Even though a quantitative model [Kronos forecast, an AI tool that simulates possible future price paths] suggested a potential bounce, the overall market is in a risk-off panic mode and the currency is in a clear long-term downtrend. We prefer to stay in cash rather than fight the primary trend.",
+    "evidence": [
+     {
+      "fact": "technicals.price",
+      "value": 0.54665
+     },
+     {
+      "fact": "technicals.sma200",
+      "value": 0.578265
+     },
+     {
+      "fact": "technicals.rsi14",
+      "value": 34.543295
+     },
+     {
+      "fact": "kronos_forecast.prob_up_pct",
+      "value": 85
+     },
+     {
+      "fact": "futures_positioning.NZD.spec_net_pct_of_open_interest",
+      "value": -46.1
+     }
+    ],
+    "base_win_pct": 62,
+    "base_trades": 8
+   },
+   "fact_check": {
+    "passed": true,
+    "verified_facts": 5,
+    "problems": []
+   },
+   "status": "pass"
+  }
+ ],
+ "ai_calls": 48,
+ "ai_attempts": 74,
+ "minutes": 18.8
+}
